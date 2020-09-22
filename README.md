@@ -3,9 +3,9 @@
 Pre-requisists: *Install GNU's Multiple Precision Arithmetic Library (GMP)*
 
 ```
-$ git clone git@github.com:joagre/main.git
-$ git clone git@github.com:joagre/mpa.git
-$ git clone git@github.com:joagre/elgamal.git
+$ git clone git@github.com:obscrete/main.git
+$ git clone git@github.com:obscrete/mpa.git
+$ git clone git@github.com:obscrete/elgamal.git
 $ cd main
 $ make
 $ export ERL_LIBS=..
