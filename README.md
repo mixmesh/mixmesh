@@ -1,4 +1,4 @@
-# Quick start
+# Qick start
 
 Pre-requisists: *Install GNU's Multiple Precision Arithmetic Library (GMP)*
 
