@@ -8,8 +8,8 @@ $ git clone git@github.com:obscrete/elgamal.git
 $ git clone git@github.com:obscrete/json.git
 $ git clone git@github.com:obscrete/mpa.git
 $ git clone git@github.com:obscrete/obscrete.git
-$ export ERL_LIBS=.
 $ cd obscrete
+$ export ERL_LIBS=..
 $ make
 $ erl -pa ../elgamal/test
 Erlang/OTP 22 [erts-10.7] [source] [64-bit] [smp:8:8] [ds:8:8:10] [async-threads:1] [hipe]
