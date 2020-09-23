@@ -1,4 +1,4 @@
-LIBS=mpa elgamal
+LIBS=apptools elgamal json mpa
 TESTS=elgamal/test
 
 all:

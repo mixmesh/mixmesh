@@ -3,12 +3,14 @@
 Pre-requisists: *Install GNU's Multiple Precision Arithmetic Library (GMP)*
 
 ```
-$ git clone git@github.com:obscrete/main.git
-$ git clone git@github.com:obscrete/mpa.git
+$ git clone git@github.com:obscrete/apptools.git
 $ git clone git@github.com:obscrete/elgamal.git
-$ cd main
+$ git clone git@github.com:obscrete/json.git
+$ git clone git@github.com:obscrete/mpa.git
+$ git clone git@github.com:obscrete/obscrete.git
+$ export ERL_LIBS=.
+$ cd obscrete
 $ make
-$ export ERL_LIBS=..
 $ erl -pa ../elgamal/test
 Erlang/OTP 22 [erts-10.7] [source] [64-bit] [smp:8:8] [ds:8:8:10] [async-threads:1] [hipe]
 
