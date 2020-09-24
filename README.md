@@ -2,6 +2,8 @@
 
 Pre-requisists: *Install GNU's Multiple Precision Arithmetic Library (GMP)*
 
+## Test ElGamal
+
 ```
 $ git clone git@github.com:obscrete/apptools.git
 $ git clone git@github.com:obscrete/elgamal.git

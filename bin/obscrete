@@ -1,0 +1,77 @@
+#!/bin/sh
+
+usage()
+{
+    >&2 echo "obscrete --help | -h"
+    >&2 echo "    Display available options"
+    >&2 echo "obscrete [--config CONFIG-FILE] [--]"
+    >&2 echo "    Start Obscrete (put erl options after --)"
+    >&2 echo "obscrete --reload [--control-address ADDRESS] [--control-port PORT]"
+    >&2 echo "    Reload Obscrete"
+    >&2 echo "obscrete --stop [--control-address ADDRESS] [--control-port PORT]"
+    >&2 echo "    Stop Obscrete"
+    exit 100
+}
+
+erl=`which erl`
+if [ -z "${erl}" ]; then
+    >&2 echo "Could not find erl in path!"
+    exit 1
+fi
+
+bin_dir=${0%/*}
+erl_libs=${bin_dir}/../..
+pa="-pa ${erl_libs}/*/test"
+perform="-eval application:start(obscrete)"
+
+while :; do
+    case $1 in
+        --help | -h)
+            usage
+            ;;
+        --config)
+            if [ $# -lt 2 ]; then
+                usage
+            fi
+            config="--config $2"
+            shift
+            ;;
+        --reload)
+            shell="-noinput"
+            perform="-run obscrete_config_serv reload"
+            break
+            ;;
+        --control-address)
+            if [ $# -lt 2 ]; then
+                usage
+            fi
+            control_address="--control-address $2"
+            shift
+            ;;
+        --control-port)
+            if [ $# -lt 2 ]; then
+                usage
+            fi
+            control_port="--control-port $2"
+            shift
+            ;;
+        --stop)
+            shell="-noinput"
+            perform="-run obscrete_config_serv stop"
+            break
+            ;;
+        --)
+            shift
+            erl_options=$@
+            break
+            ;;
+        "")
+            break
+            ;;
+        *)
+            usage
+    esac
+    command shift
+done
+
+env ERL_LIBS=${erl_libs} ${erl} ${pa} ${config} ${shell} ${control_address} ${control_port} ${perform} ${erl_options}

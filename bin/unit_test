@@ -1,0 +1,44 @@
+#!/bin/sh
+
+usage()
+{
+    >&2 echo "unit_test [--config CONFIG-FILE] [--erl-config CONFIG-FILE] TEST-MODULES DIRS"
+    >&2 echo "    Run test modules"
+    exit 100
+}
+
+config="--config /etc/obscrete.conf"
+
+while :; do
+    case $1 in
+        --help | -h)
+            usage
+            ;;
+        --config)
+            if [ $# -lt 2 ]; then
+                usage
+            fi
+            config="--config $2"
+            shift
+            ;;
+        --erl-config)
+            if [ $# -lt 2 ]; then
+                usage
+            fi
+            erl_config="-config $2"
+            shift
+            ;;
+        *)
+            break
+            ;;
+    esac
+    command shift
+done
+
+if [ "$#" -lt 1 ]; then
+    usage
+fi
+
+bin_dir=${0%/*}
+base_dir=${bin_dir}/../..
+${bin_dir}/obscrete ${config} -- ${erl_config} -noinput -run unit_test_engine start ${base_dir} $*
