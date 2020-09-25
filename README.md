@@ -17,7 +17,7 @@
 
 <dl>
   <dt>./bin/obscrete</dt>
-  <dd>Can be used to start Obscrete, e.g. <code>./bin/obscrete --config etc/obscrete-no-players.conf</code>, but it can also reload the configuration files and stop Obscrete</dd>
+  <dd>Can be used to start Obscrete, e.g. <code>./bin/obscrete --config etc/obscrete-no-players.conf</code>, but it can also reload the configuration file and stop Obscrete</dd>
   <dt>./bin/unit_test</dt>
   <dd>Can be used to start a unit test, e.g. <code>./bin/unit_test --config ./etc/obscrete-no-players.conf elgamal</code>
 </dl>
