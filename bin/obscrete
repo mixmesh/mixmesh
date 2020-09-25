@@ -22,7 +22,7 @@ fi
 bin_dir=${0%/*}
 erl_libs=${bin_dir}/../..
 pa="-pa ${erl_libs}/*/test"
-perform="-eval application:start(obscrete)"
+perform="-eval obscrete:start()"
 
 while :; do
     case $1 in

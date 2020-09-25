@@ -1,5 +1,5 @@
-LIBS=apptools elgamal json mpa obscrete
-TESTS=elgamal/test
+LIBS=apptools elgamal json mpa obscrete pki
+TESTS=elgamal/test pki/test
 
 all:
 	for lib in $(LIBS) ; do \

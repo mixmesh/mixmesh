@@ -1,0 +1,3 @@
+* Add type specs to all exported functions and to all record fields
+* Add a dialyzer target to Makefiles
+* Start using reltool to create releases with boot scripts and ez files etc

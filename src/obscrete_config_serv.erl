@@ -3,16 +3,15 @@
 
 -include_lib("apptools/include/log.hrl").
 -include_lib("apptools/include/shorthand.hrl").
--include_lib("apptools/include/config.hrl").
 -include_lib("apptools/include/config_schema.hrl").
 
--define(DEFAULT_CONFIG_FILENAME, "/etc/obscrete.conf").
+-define(DEFAULT_CONFIG_FILENAME, <<"/etc/obscrete.conf">>).
 -define(DEFAULT_CONTROL_ADDRESS, {127, 0, 0, 1}).
 -define(DEFAULT_CONTROL_PORT, 23313).
 -define(OBSCRETE_CONFIG_SCHEMA,
         [{'load-paths',
           [#json_type{name = path,
-                      typical = ["/foo/bar/ebin"],
+                      typical = [<<"/foo/bar/ebin">>],
                       reloadable = false}]},
          {'obscrete-control',
           [{listen,
@@ -80,7 +79,7 @@ start_link() ->
                                 ['obscrete-control', listen],
                                 fun config_handler/1) of
         {ok, Pid} ->
-            ok = code:add_pathsz(?config(['load-paths'])),
+            ok = code:add_pathsz(config:lookup(['load-paths'])),
             {ok, Pid};
         {error, Reason} ->
             die("~s: ~s", [ConfigFilename, config_serv:format_error(Reason)]),
