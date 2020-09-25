@@ -2,7 +2,7 @@
 
 usage()
 {
-    >&2 echo "unit_test [--config CONFIG-FILE] [--erl-config CONFIG-FILE] TEST-MODULES DIRS"
+    >&2 echo "unit_test [--config CONFIG-FILE] TEST-MODULES DIRS"
     >&2 echo "    Run test modules"
     exit 100
 }
@@ -21,13 +21,6 @@ while :; do
             config="--config $2"
             shift
             ;;
-        --erl-config)
-            if [ $# -lt 2 ]; then
-                usage
-            fi
-            erl_config="-config $2"
-            shift
-            ;;
         *)
             break
             ;;
@@ -41,4 +34,4 @@ fi
 
 bin_dir=${0%/*}
 base_dir=${bin_dir}/../..
-${bin_dir}/obscrete ${config} -- ${erl_config} -noinput -run unit_test_engine start ${base_dir} $*
+${bin_dir}/obscrete ${config} -- -noinput -run unit_test_engine start ${base_dir} $*
