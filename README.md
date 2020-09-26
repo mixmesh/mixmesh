@@ -5,7 +5,7 @@
 * Install https://gmplib.org/
 * git clone git@github.com:obscrete/apptools.git
 * git clone git@github.com:obscrete/elgamal.git
-* git clone git@github.com:obscrete/json.git
+* git clone git@github.com:obscrete/jsone.git
 * git clone git@github.com:obscrete/mpa.git
 * git clone git@github.com:obscrete/obscrete.git
 * git clone git@github.com:obscrete/pki.git
