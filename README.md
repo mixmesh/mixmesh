@@ -9,6 +9,7 @@
 * git clone git@github.com:obscrete/mpa.git
 * git clone git@github.com:obscrete/obscrete.git
 * git clone git@github.com:obscrete/pki.git
+* git clone git@github.com:obscrete/rstar.git
 * cd obscrete
 * export ERL_LIBS=..
 * make -f Makefile.top-level
