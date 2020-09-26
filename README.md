@@ -1,4 +1,4 @@
-# Obscrete top-level application
+# The Obscrete top-level application
 
 ## Building
 
