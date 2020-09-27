@@ -1,5 +1,8 @@
-LIBS=apptools elgamal jsone mpa obscrete pki rstar tor
-TESTS=elgamal/test pki/test
+ERL=$(shell which erl)
+ERL_TOP=$(ERL:%/bin/erl=%)
+
+LIBS=apptools elgamal jsone mail mpa obscrete pki rstar tor
+TESTS=elgamal/test mail/test pki/test
 
 all:
 	for lib in $(LIBS) ; do \
@@ -16,10 +19,34 @@ clean:
 	for lib in $(LIBS) ; do \
 		(cd ../$$lib && $(MAKE) clean) || exit 1; \
 	done
+	rm -f dialyzer.plt
 
 mrproper: clean cleanfluff
+	rm -f dialyzer_init.plt
 
 cleanfluff:
 	for lib in $(LIBS) ; do \
 		find ../$$lib \( -name erl_crash.dump -or -name "*~" -or -name '#*' -or -name '.#*' \) -exec rm {} \;; \
 	done
+
+#
+# Type checking
+#
+
+.PHONY: dialyzer
+
+DIALYZER_APPS=mail
+
+dialyzer: dialyzer.plt
+	dialyzer --verbose --no_native_cache --no_check_plt --plt $< -r $(DIALYZER_APPS:%=../%/ebin)
+
+dialyzer.plt: dialyzer_init.plt
+	rm -f $@ ; cp $< $@
+	dialyzer --verbose --no_native_cache --check_plt --plt $@ || true
+
+DIALYZER_PLT_APPS=erts kernel stdlib sasl
+
+dialyzer_init.plt:
+	rm -f $@
+	@echo "BEWARE: This will take several minutes the first time..."
+	dialyzer --verbose --no_native_cache --build_plt --output_plt $@ -r $(DIALYZER_PLT_APPS:%=$(ERL_TOP)/lib/erlang/lib/%-*/ebin)

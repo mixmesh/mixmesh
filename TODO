@@ -1,3 +1,5 @@
-* Add type specs to all exported functions and to all record fields
+* Verify that reload works
+* duplactaion of mktemp
+* Add type specs to all exported functions and to all record fields. This is an anomaly. We created Scotty to add gradual typing and just because its not ready I have stopped using types alltogether. :-)
 * Add a dialyzer target to Makefiles
 * Start using reltool to create releases with boot scripts and ez files etc
