@@ -11,7 +11,7 @@
 -define(OBSCRETE_CONFIG_SCHEMA,
         [{'load-paths',
           [#json_type{name = path,
-                      typical = [<<"/foo/bar/ebin">>],
+                      typical = <<"/foo/bar/ebin">>,
                       reloadable = false}]},
          {'obscrete-control',
           [{listen,

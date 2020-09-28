@@ -35,7 +35,9 @@ cleanfluff:
 
 .PHONY: dialyzer
 
-DIALYZER_APPS=mail
+# I skip mpa application, i.e. the dummy mpz module irritates dialyzer.
+# The rstar application is out of scope as well.
+DIALYZER_APPS=apptools elgamal jsone mail obscrete pki tor
 
 dialyzer: dialyzer.plt
 	dialyzer --verbose --no_native_cache --no_check_plt --plt $< -r $(DIALYZER_APPS:%=../%/ebin)
@@ -44,7 +46,7 @@ dialyzer.plt: dialyzer_init.plt
 	rm -f $@ ; cp $< $@
 	dialyzer --verbose --no_native_cache --check_plt --plt $@ || true
 
-DIALYZER_PLT_APPS=erts kernel stdlib sasl
+DIALYZER_PLT_APPS=compiler crypto erts hipe kernel mnesia runtime_tools sasl stdlib syntax_tools tools
 
 dialyzer_init.plt:
 	rm -f $@
