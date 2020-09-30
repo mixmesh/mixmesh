@@ -1,0 +1,63 @@
+#!/usr/bin/env escript
+%% -*- erlang -*-
+
+%% This script creates the appropriate file structure needed to
+%% start Obscrete. You call this command with a single root directory
+%% as input, e.g. "./mkconfigdir /tmp/obscrete/alice". If you do this
+%% the following will be created:
+%%
+%% /tmp/obscrete/alice/pki/
+%% /tmp/obscrete/alice/player/temp/
+%% /tmp/obscrete/alice/maildrop/spooler/
+%%
+%% As it happens this is the root directory used for the Obscrete
+%% config files under ./obscrete/etc/*.conf.
+%%
+%% WARNING: This command will remove all files in the directories (if
+%% any exists)
+
+main([RootDir]) ->
+    PkiDir = filename:join([RootDir, "pki"]),
+    PlayerTempDir = filename:join([RootDir, "player", "temp"]),
+    MaildropSpoolerDir = filename:join([RootDir, "maildrop", "spooler"]),
+    ensure_empty_libs([PkiDir, PlayerTempDir, MaildropSpoolerDir]);
+main(_) ->
+    io:format(standard_error, "Usage: mkconfigdir <ROOT-DIR>\n", []).
+
+ensure_empty_libs([]) ->
+    ok;
+ensure_empty_libs([Dir|Rest]) ->
+    case ensure_empty_lib(Dir) of
+        ok ->
+            ensure_empty_libs(Rest);
+        {error, Reason} ->
+            io:format(standard_error, "~s: ~s\n",
+                      [Dir, file:format_error(Reason)])
+    end.
+
+ensure_empty_lib(Dir) ->
+    io:format("Ensure ~s\n", [Dir]),
+    case filelib:ensure_dir(Dir) of
+        ok ->
+            make_dir(Dir);
+        {error, Reason} ->
+            {error, Reason}
+    end.
+
+make_dir(Dir) ->
+    case file:make_dir(Dir) of
+        ok ->
+            erase_dir(Dir);
+        {error, eexist} ->
+            erase_dir(Dir);
+        {error, Reason} ->
+            {error, Reason}
+    end.
+
+erase_dir(Dir) ->
+    {ok, Filenames} = file:list_dir(Dir),
+    lists:foreach(
+      fun(Filename) ->
+              io:format("Delete ~s\n", [filename:join([Dir, Filename])]),
+              file:delete(filename:join([Dir, Filename]))
+      end, Filenames).
