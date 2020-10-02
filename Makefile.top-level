@@ -22,6 +22,11 @@ clean:
 	done
 	rm -f dialyzer.plt
 
+megapull:
+	for lib in $(LIBS) ; do \
+		(cd ../$$lib && git pull) || exit 1; \
+	done
+
 mrproper: clean cleanfluff
 	rm -f dialyzer_init.plt
 
