@@ -18,6 +18,7 @@ git clone git@github.com:obscrete/obscrete.git
 git clone git@github.com:obscrete/pki.git
 git clone git@github.com:obscrete/player.git
 git clone git@github.com:obscrete/rstar.git
+git clone git@github.com:obscrete/simulator.git
 git clone git@github.com:obscrete/tor.git
 ```
 

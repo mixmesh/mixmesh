@@ -1,7 +1,8 @@
+# -*- MakeFile -*- 
 ERL=$(shell which erl)
 ERL_TOP=$(ERL:%/bin/erl=%)
 
-LIBS=apptools elgamal jsone mail mpa obscrete pki player rstar tor
+LIBS=apptools elgamal jsone mail mpa obscrete pki player rstar simulator tor
 TESTS=elgamal/test mail/test pki/test
 
 all:
@@ -35,9 +36,9 @@ cleanfluff:
 
 .PHONY: dialyzer
 
-# I skip mpa application, i.e. the dummy mpz module irritates dialyzer.
+# I skip the mpa application, i.e. the dummy mpz module irritates dialyzer.
 # The rstar application is out of scope as well.
-DIALYZER_APPS=apptools elgamal jsone mail obscrete pki player tor
+DIALYZER_APPS=apptools elgamal jsone mail obscrete pki player simulator tor
 
 dialyzer: dialyzer.plt
 	dialyzer --verbose --no_native_cache --no_check_plt --plt $< -r $(DIALYZER_APPS:%=../%/ebin)
