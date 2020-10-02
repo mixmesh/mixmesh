@@ -36,12 +36,12 @@ cleanfluff:
 
 .PHONY: dialyzer
 
-# I skip the mpa application, i.e. the dummy mpz module irritates dialyzer.
-# The rstar application is out of scope as well.
-DIALYZER_APPS=apptools elgamal jsone mail obscrete pki player simulator tor
+# The rstar application is out of scope
+DIALYZER_APPS=apptools elgamal jsone mail mpa obscrete pki player simulator tor
 
+# FIXME: I remove beams files here!!!Z
 dialyzer: dialyzer.plt
-	dialyzer --verbose --no_native_cache --no_check_plt --plt $< -r $(DIALYZER_APPS:%=../%/ebin)
+	echo "WARNING: gmp_nif.beam and simulator_nif.beam are removed!!!" ; rm -f ../mpa/ebin/gmp_nif.beam ../simulator/ebin/simulator_nif.beam ; dialyzer --verbose --no_native_cache --no_check_plt --plt $< -r $(DIALYZER_APPS:%=../%/ebin)
 
 dialyzer.plt: dialyzer_init.plt
 	rm -f $@ ; cp $< $@
