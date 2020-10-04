@@ -87,6 +87,7 @@ The simulator can be started like this:
 ```
 $ cd obscrete
 $ ulimit -n 4000
+$ ../simulator/bin/mkconfigdirs /tmp 100
 $ ./bin/simulator --config ./etc/obscrete-simulator.conf
 ```
 
