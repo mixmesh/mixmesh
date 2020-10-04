@@ -86,7 +86,7 @@ The simulator can be started like this:
 
 ```
 $ cd obscrete
-$ ./bin/simualtor --config ./etc/obscrete-simulator.conf
+$ ./bin/simulator --config ./etc/obscrete-simulator.conf
 ```
 
 ![A very short simulation](/doc/simulation.gif)
@@ -99,7 +99,7 @@ $ ./bin/simualtor --config ./etc/obscrete-simulator.conf
   <dt>./bin/obscrete</dt>
   <dd>Start Obscrete, e.g. <code>./bin/obscrete --config etc/obscrete.conf</code>, but it can also reload the configuration file and stop Obscrete</dd>
   <dt>./bin/simulator</dt>
-  <dd>Start a simulation, e.g. <code>./bin/simulator --config ./etc/obscrete-simualtor.conf</code>
+  <dd>Start a simulation, e.g. <code>./bin/simulator --config ./etc/obscrete-simulator.conf</code>
   <dt>./bin/run_test</dt>
   <dd>Run a test, e.g. <code>./bin/run_test --config ./etc/obscrete-do-nothing.conf belgamal</code>
   <dt>./src/obscrete_app.erl</dt>
