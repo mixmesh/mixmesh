@@ -104,9 +104,9 @@ $ ./bin/simulator --config ./etc/obscrete-simulator.conf
   <dt>./bin/run_test</dt>
   <dd>Run a test, e.g. <code>./bin/run_test --config ./etc/obscrete-do-nothing.conf belgamal</code>
   <dt>./src/obscrete_app.erl</dt>
-  <dd>Top-level application module</dd>
+  <dd>The top-level application module</dd>
   <dt>./src/obscrete_sup.erl</dt>
-  <dd>Top-level supervisor module</dd>
+  <dd>The top-level supervisor module</dd>
   <dt>./src/obscrete_config_serv.erl</dt>
   <dd>Obscrete configuration file handling</dd>
   <dt>./src/obscrete_log_serv.erl</dt>
