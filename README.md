@@ -88,7 +88,7 @@ $ cd obscrete
 $ ./bin/simualtor --config ./etc/obscrete-simulator.conf
 ```
 
-![A very short simulation](/doc/simulation.gif)
+[A very short simulation](/doc/simulation.gif)
 
 ## Files
 
