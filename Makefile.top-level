@@ -23,6 +23,14 @@ clean:
 	done
 	rm -f dialyzer.plt
 
+mrproper: clean cleanfluff
+	rm -f dialyzer_init.plt
+
+cleanfluff:
+	for lib in $(LIBS) ; do \
+		find ../$$lib \( -name erl_crash.dump -or -name "*~" -or -name '#*' -or -name '.#*' \) -exec rm {} \;; \
+	done
+
 runtests:
 	for test in $(TESTS) ; do \
 		(cd ../$$test && make runtest) || exit 1; \
@@ -31,14 +39,6 @@ runtests:
 megapull:
 	for lib in $(LIBS) ; do \
 		(cd ../$$lib && git pull) || exit 1; \
-	done
-
-mrproper: clean cleanfluff
-	rm -f dialyzer_init.plt
-
-cleanfluff:
-	for lib in $(LIBS) ; do \
-		find ../$$lib \( -name erl_crash.dump -or -name "*~" -or -name '#*' -or -name '.#*' \) -exec rm {} \;; \
 	done
 
 #

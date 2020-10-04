@@ -2,76 +2,113 @@
 
 ## Build Obscrete
 
-### Install external libraries
+### Install external dependencies
 
-Install https://gmplib.org/
+You need to install GMP (for arbitrary precision arithmetic support) and Simple2D (for the simulator).
 
-### Clone appropriate repositories
+On Ubuntu:
 
-```
-git clone git@github.com:obscrete/apptools.git
-git clone git@github.com:obscrete/elgamal.git
-git clone git@github.com:obscrete/jsone.git
-git clone git@github.com:obscrete/mail.git
-git clone git@github.com:obscrete/mpa.git
-git clone git@github.com:obscrete/obscrete.git
-git clone git@github.com:obscrete/pki.git
-git clone git@github.com:obscrete/player.git
-git clone git@github.com:obscrete/rstar.git
-git clone git@github.com:obscrete/simulator.git
-git clone git@github.com:obscrete/tor.git
-```
+`$ sudo apt install libgmp-dev`
 
-### Make
+and
 
 ```
-cd obscrete
-export ERL_LIBS=..
-make -f Makefile.top-level
+$ sudo apt install libsdl2-dev
+$ sudo apt install libsdl2-image-dev
+$ sudo apt install libsdl2-mixer-dev
+$ sudo apt install libsdl2-ttf-dev
 ```
+
+followed by
+
+```
+$ git clone https://github.com/simple2d/simple2d
+$ cd simple2d
+$ make
+$ sudo make install
+```
+
+### Clone repositories
+
+```
+$ git clone git@github.com:obscrete/apptools.git
+$ git clone git@github.com:obscrete/elgamal.git
+$ git clone git@github.com:obscrete/jsone.git
+$ git clone git@github.com:obscrete/mail.git
+$ git clone git@github.com:obscrete/mpa.git
+$ git clone git@github.com:obscrete/obscrete.git
+$ git clone git@github.com:obscrete/pki.git
+$ git clone git@github.com:obscrete/player.git
+$ git clone git@github.com:obscrete/rstar.git
+$ git clone git@github.com:obscrete/simulator.git
+$ git clone git@github.com:obscrete/tor.git
+```
+
+### Build repositories
+
+```
+$ cd obscrete
+$ export ERL_LIBS=..
+$ make -f Makefile.top-level all
+```
+
+Makefile.top-level has a number of other useful targets, e.g. clean, mrproper, *runtests*, megapull and *dialyzer*.
 
 ## Prepare Obscrete
 
+Create a mandatory file structure needed by Obscrete:
+
+```
+$ cd obscrete
 `./bin/mkconfigdir /tmp/obscrete/alice`
 
-This command created the appropriate directory structure needed to
-start Obscrete, i.e.
+The above command creates something like:
 
 * /tmp/obscrete/alice/pki/
 * /tmp/obscrete/alice/player/temp/
 * /tmp/obscrete/alice/maildrop/spooler/
 
+These directories harmonize with the needs of the Obscrete configuration files in ./obscrete/etc/*.conf
+
 ## Start Obscrete
 
-`./bin/obscrete --config ./etc/obscrete-simulator.conf`
+Start Obscrete with an appropriate configuration file, e.g.
 
-This command started Obscrete with a ./etc/obscrete.conf configuration,
-which happens to require the directory structure created above with
-`mkconfigdir`.
+```
+$ cd obscrete
+$ ./bin/obscrete --config ./etc/obscrete.conf
+```
 
 ## Start simulator
 
-`./bin/obscrete --config ./etc/obscrete-simulator.conf -- -run simulator`
+The simulator can be started like this:
 
-To be explained...
+```
+$ cd obscrete
+$ ./bin/simualtor --config ./etc/obscrete-simulator.conf
+```
+
+![A very short simulation](/doc/simulation.gif)
 
 ## Files
 
 <dl>
   <dt>./bin/mkconfigdir</dt>
-  <dd>Creates the appropriate file structure needed to start Obscrete. You call this command with a single root directory as input, e.g. <code>./mkconfigdir /tmp/obscrete/alice</code>.</dd>
+  <dd>Creates the appropriate file structure needed to start Obscrete. You call this command with a single root directory as input, e.g. <code>./bin/mkconfigdir /tmp/obscrete/alice</code>.</dd>
   <dt>./bin/obscrete</dt>
   <dd>Starts Obscrete, e.g. <code>./bin/obscrete --config etc/obscrete.conf</code>, but it can also reload the configuration file and stop Obscrete</dd>
-  <dt>./bin/unit_test</dt>
-  <dd>Start a unit test, e.g. <code>./bin/unit_test --config ./etc/obscrete-do-nothing.conf belgamal</code>
+  <dt>./bin/simulator</dt>
+  <dd>Start a simulation, e.g. <code>./bin/simulator --config ./etc/obscrete-simualtor.conf</code>
+  <dt>./bin/run_test</dt>
+  <dd>Run a test, e.g. <code>./bin/run_test --config ./etc/obscrete-do-nothing.conf belgamal</code>
   <dt>./src/obscrete_app.erl</dt>
   <dd>Top-level application module</dd>
   <dt>./src/obscrete_sup.erl</dt>
   <dd>Top-level supervisor module</dd>
   <dt>./src/obscrete_config_serv.erl</dt>
-  <dd>Configuration file handling</dd>
+  <dd>Obscrete configuration file handling</dd>
   <dt>./src/obscrete_log_serv.erl</dt>
-  <dd>Log handling</dd>
+  <dd>Obscrete log handling</dd>
   <dt>./src/obscrete.erl</dt>
-  <dd>Exports a single <code>start/0</code> which starts all other Obscrete applications, i.e. the <code>obscrete</code> command eventually calls this function. We should later on use reltool to build releases with boot scripts and ez files etc.</dd>
+  <dd>Exports a single <code>start/0</code> which starts all other Obscrete applications, i.e. the <code>obscrete</code> command calls this function. We should use reltool to build releases with boot scripts and ez files etc instead.</dd>
 </dl>
