@@ -3,8 +3,7 @@ ERL=$(shell which erl)
 ERL_TOP=$(ERL:%/bin/erl=%)
 
 LIBS=apptools elgamal jsone mail mpa obscrete pki player rstar simulator tor
-#TESTS=elgamal/test mail/test pki/test player/test tor/test
-TESTS=mail/test pki/test player/test tor/test
+TESTS=elgamal/test mail/test pki/test player/test tor/test
 
 all:
 	for lib in $(LIBS) ; do \
