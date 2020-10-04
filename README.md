@@ -60,7 +60,7 @@ Create a mandatory file structure needed by Obscrete:
 
 ```
 $ cd obscrete
-`./bin/mkconfigdir /tmp/obscrete/alice`
+$ `./bin/mkconfigdir /tmp/obscrete/alice`
 ```
 
 The above command creates something like:
@@ -95,9 +95,9 @@ $ ./bin/simualtor --config ./etc/obscrete-simulator.conf
 
 <dl>
   <dt>./bin/mkconfigdir</dt>
-  <dd>Creates the appropriate file structure needed to start Obscrete. You call this command with a single root directory as input, e.g. <code>./bin/mkconfigdir /tmp/obscrete/alice</code>.</dd>
+  <dd>Create the appropriate file structure needed to start Obscrete. You call this command with a single root directory as input, e.g. <code>./bin/mkconfigdir /tmp/obscrete/alice</code>.</dd>
   <dt>./bin/obscrete</dt>
-  <dd>Starts Obscrete, e.g. <code>./bin/obscrete --config etc/obscrete.conf</code>, but it can also reload the configuration file and stop Obscrete</dd>
+  <dd>Start Obscrete, e.g. <code>./bin/obscrete --config etc/obscrete.conf</code>, but it can also reload the configuration file and stop Obscrete</dd>
   <dt>./bin/simulator</dt>
   <dd>Start a simulation, e.g. <code>./bin/simulator --config ./etc/obscrete-simualtor.conf</code>
   <dt>./bin/run_test</dt>
