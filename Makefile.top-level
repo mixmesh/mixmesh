@@ -50,7 +50,7 @@ megapull:
 # The rstar application is out of scope
 DIALYZER_APPS=apptools elgamal jsone mail mpa obscrete pki player simulator tor
 
-# FIXME: I remove beams files here!!!Z
+# FIXME: I remove beams files here!!!
 dialyzer: dialyzer.plt
 	@echo "BEWARE: gmp_nif.beam and simulator_nif.beam are removed permanently!!!"
 	rm -f ../mpa/ebin/gmp_nif.beam ../simulator/ebin/simulator_nif.beam
