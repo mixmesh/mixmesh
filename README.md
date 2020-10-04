@@ -36,6 +36,10 @@ And
 
 	sudo apt install swaks
 
+To have the tor tests pass the test suite you need to install tor
+
+	sudo apt install tor
+
 ### Clone repositories
 
 ```
@@ -60,7 +64,11 @@ $ export ERL_LIBS=..
 $ make -f Makefile.top-level all
 ```
 
-Makefile.top-level has a number of other useful targets, e.g. clean, mrproper, *runtests*, megapull and *dialyzer*.
+### Does it work? - run the tests
+
+    make -f Makefile.top-level runtests
+	
+Makefile.top-level has a number of other useful targets, e.g. clean, mrproper, megapull and *dialyzer*.
 
 ## Prepare Obscrete
 
