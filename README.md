@@ -28,6 +28,14 @@ $ make
 $ sudo make install
 ```
 
+To run player tests the program mpop and swaks must be installed
+
+	sudo apt install mpop
+	
+And
+
+	sudo apt install swaks
+
 ### Clone repositories
 
 ```
