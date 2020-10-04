@@ -3,7 +3,8 @@ ERL=$(shell which erl)
 ERL_TOP=$(ERL:%/bin/erl=%)
 
 LIBS=apptools elgamal jsone mail mpa obscrete pki player rstar simulator tor
-TESTS=elgamal/test mail/test pki/test
+#TESTS=elgamal/test mail/test pki/test player/test tor/test
+TESTS=mail/test pki/test player/test tor/test
 
 all:
 	for lib in $(LIBS) ; do \
@@ -21,6 +22,11 @@ clean:
 		(cd ../$$lib && $(MAKE) clean) || exit 1; \
 	done
 	rm -f dialyzer.plt
+
+runtests:
+	for test in $(TESTS) ; do \
+		(cd ../$$test && make runtest) || exit 1; \
+	done
 
 megapull:
 	for lib in $(LIBS) ; do \
@@ -46,7 +52,9 @@ DIALYZER_APPS=apptools elgamal jsone mail mpa obscrete pki player simulator tor
 
 # FIXME: I remove beams files here!!!Z
 dialyzer: dialyzer.plt
-	echo "WARNING: gmp_nif.beam and simulator_nif.beam are removed!!!" ; rm -f ../mpa/ebin/gmp_nif.beam ../simulator/ebin/simulator_nif.beam ; dialyzer --verbose --no_native_cache --no_check_plt --plt $< -r $(DIALYZER_APPS:%=../%/ebin)
+	@echo "BEWARE: gmp_nif.beam and simulator_nif.beam are removed permanently!!!"
+	rm -f ../mpa/ebin/gmp_nif.beam ../simulator/ebin/simulator_nif.beam
+	dialyzer --verbose --no_native_cache --no_check_plt --plt $< -r $(DIALYZER_APPS:%=../%/ebin)
 
 dialyzer.plt: dialyzer_init.plt
 	rm -f $@ ; cp $< $@

@@ -1,1 +1,7 @@
+what has happended with elgamal? update test etc
+
+* Update all README.md files + add obscrete.gif
+
+* Check how pre-population of buffers is done best, now broken
+
 * Start using reltool to create releases with boot scripts and ez files etc

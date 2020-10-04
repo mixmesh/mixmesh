@@ -2,8 +2,8 @@
 
 usage()
 {
-    >&2 echo "unit_test [--config CONFIG-FILE] TEST-MODULES DIRS"
-    >&2 echo "    Run test modules"
+    >&2 echo "simulator [--config CONFIG-FILE]"
+    >&2 echo "    Run simulator"
     exit 100
 }
 
@@ -28,10 +28,10 @@ while :; do
     command shift
 done
 
-if [ "$#" -lt 1 ]; then
+if [ "$#" -lt 0 ]; then
     usage
 fi
 
 bin_dir=${0%/*}
 base_dir=${bin_dir}/../..
-${bin_dir}/obscrete ${config} -- -noinput -run unit_test_engine start ${base_dir} $*
+${bin_dir}/obscrete ${config} -- -noinput -run simulator start

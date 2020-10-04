@@ -5,4 +5,9 @@ start() ->
     ok = application:start(sasl),
     ok = application:start(obscrete),
     ok = application:start(pki),
-    ok = application:start(player).
+    case config:lookup([player, enabled]) of
+        true ->
+            ok = application:start(player);
+        false ->
+            skip
+    end.
