@@ -61,6 +61,7 @@ Create a mandatory file structure needed by Obscrete:
 ```
 $ cd obscrete
 `./bin/mkconfigdir /tmp/obscrete/alice`
+```
 
 The above command creates something like:
 
@@ -88,7 +89,7 @@ $ cd obscrete
 $ ./bin/simualtor --config ./etc/obscrete-simulator.conf
 ```
 
-[A very short simulation](/doc/simulation.gif)
+![A very short simulation](/doc/simulation.gif)
 
 ## Files
 
