@@ -13,6 +13,7 @@ A) How to read/write public keys from PKI server?
      (The box must use the phone's Internet connection. How?)
   3) From a PKI server introduced as a hidden service on Tor
      (The box must use the phone's Internet connection. How?)
+* Nudge message box parameters. K and F? Message buffer size? What is the max message size?
 * How should we import new keys into A1? An app? Mounted disk? How?
 * Get ElGamal completely ready, i.e. verify&sign, reencrypted and padded
 * Make players message buffers persistent
