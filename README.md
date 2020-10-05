@@ -77,7 +77,7 @@ Create a mandatory file structure needed by Obscrete:
 
 ```
 $ cd obscrete
-$ `./bin/mkconfigdir /tmp/obscrete/alice`
+$ ./bin/mkconfigdir /tmp/obscrete/alice
 ```
 
 The above command creates something like:
