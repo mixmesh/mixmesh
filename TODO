@@ -1,7 +1,32 @@
-what has happended with elgamal? update test etc
+* Check how pre-population of buffers is done best, now broken in simualtor_serv.erl
+* Start using reltool/servtator create releases with boot scripts and ez files etc
 
-* Update all README.md files + add obscrete.gif
+---
 
-* Check how pre-population of buffers is done best, now broken
+Possible input to new TODO:
 
-* Start using reltool to create releases with boot scripts and ez files etc
+* Iron out the box installation procedure of the box in detail
+* Get the netlink service stable and let it call player_serv:update_neighbours/1
+A) How to read/write public keys from PKI server?
+  1) From a local only non-networking PKI server (as it is today)
+  2) From a central SSL based PKI-server over the net
+     (The box must use the phone's Internet connection. How?)
+  3) From a PKI server introduced as a hidden service on Tor
+     (The box must use the phone's Internet connection. How?)
+* How should we import new keys into A1? An app? Mounted disk? How?
+* Get ElGamal completely ready, i.e. verify&sign, reencrypted and padded
+* Make players message buffers persistent
+* Look into message fullness behaviour during message exchange
+* Do not reconnect with a neighbour player until a certain amount of time has elapsed (even though a player reappears)
+* Re-exchange messages with persistent neighbour players after a certain time
+
+=== red line
+
+* How do we handle DOS attacks?
+* Wait until the message buffer is full until players start to exchange message (maybe just create dummy messages galore)
+* Move the players private key out from *.conf files and PIN-encode it
+* Add SSL to SMTP and POP3 servers
+B) Support a hybrid encryption approach in order to support media streams
+* Add resend/ack/seqnumber etc to better support B?
+* Write bridge servers as hidden services on Tor to bridge traffic between different geograophic islans of Obscrete nets (jocke*nyc@gmail.com) (The box must use the phone's Internet connection. How?)
+* Talk to a campus and ask them if we can install our boxes in their attics, say 20 boxes on KTH. A 500kr each.
