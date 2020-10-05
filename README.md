@@ -30,15 +30,15 @@ $ sudo make install
 
 To run player tests the program mpop and swaks must be installed
 
-	sudo apt install mpop
+`$ sudo apt install mpop`
 	
-And
+and
 
-	sudo apt install swaks
+`sudo apt install swaks`
 
 To have the tor tests pass the test suite you need to install tor
 
-	sudo apt install tor
+`sudo apt install tor`
 
 ### Clone repositories
 
@@ -66,9 +66,10 @@ $ make -f Makefile.top-level all
 
 ### Does it work? - run the tests
 
-    make -f Makefile.top-level runtests
+`make -f Makefile.top-level runtests`
 	
-Makefile.top-level has a number of other useful targets, e.g. clean, mrproper, megapull and *dialyzer*.
+Makefile.top-level has a number of other useful targets, e.g. clean,
+mrproper, megapull and *dialyzer*.
 
 ## Prepare Obscrete
 
@@ -85,7 +86,8 @@ The above command creates something like:
 * /tmp/obscrete/alice/player/temp/
 * /tmp/obscrete/alice/maildrop/spooler/
 
-These directories harmonize with the needs of the Obscrete configuration files in ./obscrete/etc/*.conf
+These directories harmonize with the needs of the Obscrete
+configuration files in ./obscrete/etc/*.conf
 
 ## Start Obscrete
 

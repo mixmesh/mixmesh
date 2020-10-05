@@ -37,6 +37,7 @@ runtests:
 
 megapull:
 	for lib in $(LIBS) ; do \
+		echo "Pull $$lib"; \
 		(cd ../$$lib && git pull) || exit 1; \
 	done
 
