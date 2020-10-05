@@ -30,11 +30,10 @@ $ sudo make install
 
 To run player tests the program mpop and swaks must be installed
 
-`$ sudo apt install mpop`
-	
-and
-
-`sudo apt install swaks`
+```
+$ sudo apt install mpop
+$ sudo apt install swaks
+```
 
 To have the tor tests pass the test suite you need to install tor
 
