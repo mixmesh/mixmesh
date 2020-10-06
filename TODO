@@ -5,25 +5,30 @@
 
 Possible input to new TODO (pseudo random order):
 
-* What about the code I have added so far. What do we need to change in order to have a common best practice?
-* Get ElGamal app ready, i.e. remove bugs, make it compatible with dialyzer, start using verify&sign, reencryption and padding.
-* Iron out the box installation procedure of the box in detail
-* Get the netlink service stable and let it call player_serv:update_neighbours/1
+
+* dialyzer, start using verify&sign, reencryption and padding.
+* specify exact hardware for first demo. Led, keypad etc.
+** Iron out the box installation procedure of the box in detail
+* allow multiple instances of nodis to supply simulator/player api
 A) How to read/write public keys from PKI server?
-  1) From a local only non-networking PKI server (as it is today)
+  1) From a local only non-networking PKI server (as it is today) per player 
+
+
+* How should we import new keys into A1? An app? Mounted disk? How?
+** Examplel simple web ui, import export show delete
+** Export secret key once at startup
+* Make players message buffers persistent!
+* Look into message fullness behaviour during message exchange
+* Do not reconnect with a neighbour player until a certain amount of time has elapsed (even though a player reappears) (nodis)
+* Re-exchange messages with persistent neighbour players after a certain time (nodis)
+
+=== red line
+* Nudge message box parameters. K and F? Message buffer size? What is the max message size?
+  1) Keep public key database encrypted on disk somehow
   2) From a central SSL based PKI-server over the net
      (The box must use the phone's Internet connection. How?)
   3) From a PKI server introduced as a hidden service on Tor
      (The box must use the phone's Internet connection. How?)
-* Nudge message box parameters. K and F? Message buffer size? What is the max message size?
-* How should we import new keys into A1? An app? Mounted disk? How?
-* Make players message buffers persistent
-* Look into message fullness behaviour during message exchange
-* Do not reconnect with a neighbour player until a certain amount of time has elapsed (even though a player reappears)
-* Re-exchange messages with persistent neighbour players after a certain time
-
-=== red line
-
 * How do we handle DOS attacks?
 * Wait until the message buffer is full until players start to exchange message (maybe just create dummy messages galore)
 * Move the players private key out from *.conf files and PIN-encode it
