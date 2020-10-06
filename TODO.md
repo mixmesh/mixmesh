@@ -1,50 +1,48 @@
+# TODO
 * Check how pre-population of buffers is done best, now broken in simualtor_serv.erl
 * Start using reltool/servator create releases with boot scripts and ez files etc (ez files are not really needed since we have various other stuff like nifs etc)
 
 ---
 
-Possible input to new TODO (pseudo random order):
+## Possible input to new TODO (pseudo random order):
 
-* demo hardware platform, raspberry pi zero W/H
-* use pisuger2 battery that can read battery status and
-* power-up rpi on progammable RTC, can possibly save som power
+## Demo hardware
+* Raspberry pi zero W/H
+* Use pisuger2 battery that can read battery status and
+* Power-up rpi on progammable RTC, can possibly save som power
 * Membrane numeric keypad (with i2c) support for pincode entries
  Somthing like <https://www.seeedstudio.com/Sealed-Membrane-3x4-button-pad-with-sticker-p-1044.html> but with i2c interface?
 * Total wipe BUTTON (under a easy to flip cover)
 * LEDS
-** activity, indicate how many node buddies we see
-** battery status (5 leds) (- o o o o o +)
-** app status RED (down) YELLOW (start) GREEN (running)
-** bluetooth status  BLUE (connection runnning),
+.* activity, indicate how many node buddies we see
+.* battery status (5 leds) (- o o o o o +)
+.* app status RED (down) YELLOW (start) GREEN (running)
+.* bluetooth status  BLUE (connection runnning),
 maybe BUTTON to terminate connection
 * Bluetooth connection
-** none-routable (enough with no dns option?) with dhcpd.
-** Test bluetooth connection from Android and iOS.
+.* none-routable (enough with no dns option?) with dhcpd.
+.* Test bluetooth connection from Android and iOS.
 * USB ether connection
-** usb connection, none-routable (enough with no dns option?)
+.* usb connection, none-routable (enough with no dns option?)
 * DHCPD for more than one interface
  both interface, pan0 and wlan0, must be able to hand out ONE address
  to ONE device a the time (sequrity?) 
  ) maybe fix the erlang implementation...?
 
-
+## Fixes needed
 * dialyzer, start using verify&sign, reencryption and padding.
-* specify exact hardware for first demo. Led, keypad etc.
-** Iron out the box installation procedure of the box in detail
-* allow multiple instances of nodis to supply simulator/player api
-A) How to read/write public keys from PKI server?
-  1) From a local only non-networking PKI server (as it is today) per player 
-
-
+* Iron out the box installation procedure of the box in detail
+* Read/write public keys from PKI server?
+..From a local only non-networking PKI server (as it is today) per player
 * How should we import new keys into A1? An app? Mounted disk? How?
-** Examplel simple web ui, import export show delete
-** Export secret key once at startup
+.* Examplel simple web ui, import export show delete
+.* Export secret key once at startup
 * Make players message buffers persistent!
 * Look into message fullness behaviour during message exchange
 * Do not reconnect with a neighbour player until a certain amount of time has elapsed (even though a player reappears) (nodis)
 * Re-exchange messages with persistent neighbour players after a certain time (nodis)
 
-=== red line
+## Red line
 * Nudge message box parameters. K and F? Message buffer size? What is the max message size?
   1) Keep public key database encrypted on disk somehow
   2) From a central SSL based PKI-server over the net
