@@ -3,8 +3,10 @@
 
 ---
 
-Possible input to new TODO:
+Possible input to new TODO (pseudo random order):
 
+* What about the code I have added so far. What do we need to change in roder to have common best practice?
+* Get ElGamal ready, i.e. remove bugs, use verify&sign, reencryption and padding
 * Iron out the box installation procedure of the box in detail
 * Get the netlink service stable and let it call player_serv:update_neighbours/1
 A) How to read/write public keys from PKI server?
@@ -15,7 +17,6 @@ A) How to read/write public keys from PKI server?
      (The box must use the phone's Internet connection. How?)
 * Nudge message box parameters. K and F? Message buffer size? What is the max message size?
 * How should we import new keys into A1? An app? Mounted disk? How?
-* Get ElGamal completely ready, i.e. verify&sign, reencrypted and padded
 * Make players message buffers persistent
 * Look into message fullness behaviour during message exchange
 * Do not reconnect with a neighbour player until a certain amount of time has elapsed (even though a player reappears)
