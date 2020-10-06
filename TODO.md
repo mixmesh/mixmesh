@@ -28,6 +28,11 @@ maybe BUTTON to terminate connection
  both interface, pan0 and wlan0, must be able to hand out ONE address
  to ONE device a the time (sequrity?) 
  ) maybe fix the erlang implementation...?
+ 
+## WEB ui
+* use inets or exo/exo\_http\_server to serv REST api and some web pages.
+* configure bluetooth interface (on/off)
+* configure import/export/delete and show public keys, both yours and others.
 
 ## Fixes needed
 * dialyzer, start using verify&sign, reencryption and padding.
