@@ -1,9 +1,31 @@
 * Check how pre-population of buffers is done best, now broken in simualtor_serv.erl
-* Start using reltool/servtator create releases with boot scripts and ez files etc
+* Start using reltool/servator create releases with boot scripts and ez files etc (ez files are not really needed since we have various other stuff like nifs etc)
 
 ---
 
 Possible input to new TODO (pseudo random order):
+
+* demo hardware platform, raspberry pi zero W/H
+* use pisuger2 battery that can read battery status and
+* power-up rpi on progammable RTC, can possibly save som power
+* Membrane numeric keypad (with i2c) support for pincode entries
+ Somthing like <https://www.seeedstudio.com/Sealed-Membrane-3x4-button-pad-with-sticker-p-1044.html> but with i2c interface?
+* Total wipe BUTTON (under a easy to flip cover)
+* LEDS
+** activity, indicate how many node buddies we see
+** battery status (5 leds) (- o o o o o +)
+** app status RED (down) YELLOW (start) GREEN (running)
+** bluetooth status  BLUE (connection runnning),
+maybe BUTTON to terminate connection
+* Bluetooth connection
+** none-routable (enough with no dns option?) with dhcpd.
+** Test bluetooth connection from Android and iOS.
+* USB ether connection
+** usb connection, none-routable (enough with no dns option?)
+* DHCPD for more than one interface
+ both interface, pan0 and wlan0, must be able to hand out ONE address
+ to ONE device a the time (sequrity?) 
+ ) maybe fix the erlang implementation...?
 
 
 * dialyzer, start using verify&sign, reencryption and padding.
