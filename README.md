@@ -37,7 +37,7 @@ $ sudo apt install swaks
 
 To have the tor tests pass the test suite you need to install tor
 
-`sudo apt install tor`
+`$ sudo apt install tor`
 
 ### Clone repositories
 
@@ -104,6 +104,7 @@ The simulator can be started like this:
 ```
 $ cd obscrete
 $ ulimit -n 4000
+$ ./bin/mkconfigdir /tmp/obscrete/alice
 $ ../simulator/bin/mkconfigdirs /tmp 100
 $ ./bin/simulator --config ./etc/obscrete-simulator.conf
 ```
