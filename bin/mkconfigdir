@@ -1,57 +1,55 @@
 #!/usr/bin/env escript
 %% -*- erlang -*-
 
-%% This script creates the appropriate file structure needed to
-%% start Obscrete. You call this command with a single root directory
-%% as input, e.g. "./mkconfigdir /tmp/obscrete/alice". If you do this
-%% the following will be created:
+%% This script creates the appropriate file structure needed to start
+%% Obscrete. You call this command with an obscrete directory and the
+%% name of a player as input, e.g. "./mkconfigdir /tmp/obscrete alice".
+%% If you do this the following will be created:
 %%
-%% /tmp/obscrete/alice/pki/
+%% /tmp/obscrete/pki/data
 %% /tmp/obscrete/alice/player/temp/
-%% /tmp/obscrete/alice/maildrop/spooler/
+%% /tmp/obscrete/alice/player/pki/data/
+%% /tmp/obscrete/alice/player/maildrop/spooler/
 %%
-%% As it happens this is the root directory used for the Obscrete
-%% config files under ./obscrete/etc/*.conf.
-%%
-%% WARNING: This command will remove all files in the directories (if
-%% any exists)
+%% As it happens this is the file structure used by the configuration
+%% files under ./obscrete/etc/*.conf.
 
-main([RootDir]) ->
-    PkiDir = filename:join([RootDir, "pki"]),
-    PlayerTempDir = filename:join([RootDir, "player", "temp"]),
-    MaildropSpoolerDir = filename:join([RootDir, "maildrop", "spooler"]),
-    ensure_empty_libs([PkiDir, PlayerTempDir, MaildropSpoolerDir]);
+main([ObscreteDir, PlayerName]) ->
+    PkiDataDir = filename:join([ObscreteDir, <<"pki">>, <<"data">>]),
+    ok = ensure_libs([PkiDataDir], false),
+    PlayerDir = filename:join([ObscreteDir, PlayerName, <<"player">>]),
+    PlayerTempDir = filename:join([PlayerDir, "temp"]),
+    PlayerPkiDataDir = filename:join([PlayerDir, "pki", "data"]),
+    PlayerMaildropSpoolerDir =
+        filename:join([PlayerDir, "maildrop", "spooler"]),
+    ensure_libs([PlayerTempDir, PlayerPkiDataDir, PlayerMaildropSpoolerDir],
+                true);
 main(_) ->
-    io:format(standard_error, "Usage: mkconfigdir <ROOT-DIR>\n", []).
+    io:format(standard_error,
+              "Usage: mkconfigdir <OBSCRETE-DIR> <PLAYER-NAME>\n",
+              []).
 
-ensure_empty_libs([]) ->
+ensure_libs([], _Erase) ->
     ok;
-ensure_empty_libs([Dir|Rest]) ->
-    case ensure_empty_lib(Dir) of
-        ok ->
-            ensure_empty_libs(Rest);
-        {error, Reason} ->
-            io:format(standard_error, "~s: ~s\n",
-                      [Dir, file:format_error(Reason)])
-    end.
-
-ensure_empty_lib(Dir) ->
+ensure_libs([Dir|Rest], Erase) ->
     io:format("Ensure ~s\n", [Dir]),
     case filelib:ensure_dir(Dir) of
         ok ->
-            make_dir(Dir);
+            case file:make_dir(Dir) of
+                ok ->
+                    ensure_libs(Rest, Erase);
+                {error, eexist} when Erase ->
+                    ok = erase_dir(Dir),
+                    ensure_libs(Rest, Erase);
+                {error, eexist} ->
+                    ensure_libs(Rest, Erase);
+                {error, Reason} ->
+                    io:format(standard_error, "~s: ~s\n",
+                              [Dir, file:format_error(Reason)])
+            end;
         {error, Reason} ->
-            {error, Reason}
-    end.
-
-make_dir(Dir) ->
-    case file:make_dir(Dir) of
-        ok ->
-            erase_dir(Dir);
-        {error, eexist} ->
-            erase_dir(Dir);
-        {error, Reason} ->
-            {error, Reason}
+            io:format(standard_error, "~s: ~s\n",
+                      [Dir, file:format_error(Reason)])
     end.
 
 erase_dir(Dir) ->
@@ -60,4 +58,5 @@ erase_dir(Dir) ->
       fun(Filename) ->
               io:format("Delete ~s\n", [filename:join([Dir, Filename])]),
               file:delete(filename:join([Dir, Filename]))
-      end, Filenames).
+      end, Filenames),
+    ok.

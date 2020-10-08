@@ -2,7 +2,7 @@
 ERL=$(shell which erl)
 ERL_TOP=$(ERL:%/bin/erl=%)
 
-LIBS=apptools elgamal jsone mail mpa obscrete pki player rstar simulator tor
+LIBS=apptools elgamal jsone mail mpa nodis obscrete pki player rstar simulator tor
 TESTS=elgamal/test mail/test pki/test player/test tor/test
 
 all:
@@ -27,7 +27,7 @@ mrproper: clean cleanfluff
 
 cleanfluff:
 	for lib in $(LIBS) ; do \
-		find ../$$lib \( -name erl_crash.dump -or -name "*~" -or -name '#*' -or -name '.#*' \) -exec rm {} \;; \
+		find ../$$lib \( -name erl_crash.dump -or -name '*.beam' -or -name "*~" -or -name '#*' -or -name '.#*' \) -exec rm {} \;; \
 	done
 
 runtests:
@@ -48,7 +48,7 @@ megapull:
 .PHONY: dialyzer
 
 # The rstar application is out of scope
-DIALYZER_APPS=apptools elgamal jsone mail mpa obscrete pki player simulator tor
+DIALYZER_APPS=apptools jsone mail mpa nodis obscrete pki player simulator tor
 
 # FIXME: I remove beams files here!!!
 dialyzer: dialyzer.plt

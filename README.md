@@ -76,17 +76,18 @@ Create a mandatory file structure needed by Obscrete:
 
 ```
 $ cd obscrete
-$ ./bin/mkconfigdir /tmp/obscrete/alice
+$ ./bin/mkconfigdir /tmp/obscrete alice
 ```
 
-The above command creates something like:
+mkconfigdir in this case created:
 
-* /tmp/obscrete/alice/pki/
+* /tmp/obscrete/pki/data
 * /tmp/obscrete/alice/player/temp/
-* /tmp/obscrete/alice/maildrop/spooler/
+* /tmp/obscrete/alice/player/pki/data/
+* /tmp/obscrete/alice/player/maildrop/spooler/
 
-These directories harmonize with the needs of the Obscrete
-configuration files in ./obscrete/etc/*.conf
+As it happens this is the file structure used by the configuration
+files under ./obscrete/etc/*.conf.
 
 ## Start Obscrete
 
@@ -104,9 +105,9 @@ The simulator can be started like this:
 ```
 $ cd obscrete
 $ ulimit -n 4000
-$ ./bin/mkconfigdir /tmp/obscrete/alice
-$ ../simulator/bin/mkconfigdirs /tmp 100
-$ ./bin/simulator --config ./etc/obscrete-simulator.conf
+$ ./bin/mkconfigdir /tmp/obscrete alice
+$ ../simulator/bin/mkconfigdirs /tmp/obscrete 100
+$ ./bin/simulator --config ./etc/obscrete.conf
 ```
 
 ![A very short simulation](/doc/simulation.gif)
@@ -119,7 +120,7 @@ $ ./bin/simulator --config ./etc/obscrete-simulator.conf
   <dt>./bin/obscrete</dt>
   <dd>Start Obscrete, e.g. <code>./bin/obscrete --config etc/obscrete.conf</code>, but it can also reload the configuration file and stop Obscrete</dd>
   <dt>./bin/simulator</dt>
-  <dd>Start a simulation, e.g. <code>./bin/simulator --config ./etc/obscrete-simulator.conf</code>
+  <dd>Start a simulation, e.g. <code>./bin/simulator --config ./etc/obscrete.conf</code>
   <dt>./bin/run_test</dt>
   <dd>Run a test, e.g. <code>./bin/run_test --config ./etc/obscrete-do-nothing.conf belgamal</code>
   <dt>./src/obscrete_app.erl</dt>
