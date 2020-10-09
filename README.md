@@ -109,7 +109,7 @@ The data set must be one of "circle", "square", "epfl", "roma" or
 Proceed with:
 
 ```
-$ ulimit -n 4000
+$ ulimit -n 65535
 $ ./bin/mkconfig /tmp/obscrete alice
 $ ../simulator/bin/mkconfig square
 $ ./bin/obscrete --config ./etc/obscrete.conf
