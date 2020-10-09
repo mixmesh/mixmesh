@@ -106,7 +106,7 @@ To start the simulator, first enable it in ./etc/obscrete.conf, e.g.
 The data set must be one of "circle", "square", "epfl", "roma" or
 "it".
 
-NOTE: In order to start the Roma simulation you must first follow the instructions in [../simulator/priv/roma_taxi/README.md](../simulator/priv/roma_taxi/README.md).
+NOTE: In order to start the Roma simulation you must first follow the instructions in [../simulator/priv/roma_taxi/README.md](https://github.com/obscrete/simulator/blob/main/priv/roma_taxi/README.md).
 
 Proceed with:
 
