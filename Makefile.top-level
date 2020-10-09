@@ -1,4 +1,4 @@
-# -*- MakeFile -*- 
+# -*- MakeFile -*-
 ERL=$(shell which erl)
 ERL_TOP=$(ERL:%/bin/erl=%)
 
@@ -37,8 +37,14 @@ runtests:
 
 megapull:
 	for lib in $(LIBS) ; do \
-		echo "Pull $$lib"; \
+		echo "** Pull $$lib"; \
 		(cd ../$$lib && git pull) || exit 1; \
+	done
+
+megastatus:
+	for lib in $(LIBS) ; do \
+		echo "** Get status for $$lib"; \
+		(cd ../$$lib && git status) || exit 1; \
 	done
 
 #
