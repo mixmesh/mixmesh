@@ -10,4 +10,10 @@ start() ->
             ok = application:start(player);
         false ->
             skip
+    end,
+    case config:lookup([simulator, enabled]) of
+        true ->
+            {ok, _} = application:ensure_all_started(simulator);
+        false ->
+            skip
     end.

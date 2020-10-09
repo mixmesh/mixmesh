@@ -66,7 +66,7 @@ $ make -f Makefile.top-level all
 ### Does it work? - run the tests
 
 `make -f Makefile.top-level runtests`
-	
+
 Makefile.top-level has a number of other useful targets, e.g. clean,
 mrproper, megapull and *dialyzer*.
 
@@ -74,10 +74,7 @@ mrproper, megapull and *dialyzer*.
 
 Create a mandatory file structure needed by Obscrete:
 
-```
-$ cd obscrete
-$ ./bin/mkconfigdir /tmp/obscrete alice
-```
+`$ ./bin/mkconfigdir /tmp/obscrete alice`
 
 mkconfigdir in this case created:
 
@@ -93,24 +90,32 @@ files under ./obscrete/etc/*.conf.
 
 Start Obscrete with an appropriate configuration file, e.g.
 
-```
-$ cd obscrete
-$ ./bin/obscrete --config ./etc/obscrete.conf
-```
+`./bin/obscrete --config ./etc/obscrete.conf`
 
 ## Start simulator
 
-The simulator can be started like this:
+To start the simulator, first enable it in ./etc/obscrete.conf, e.g.
 
 ```
-$ cd obscrete
+"simulator": {
+    "enabled": true,
+    "data-set": "square"
+}
+```
+
+The data set must be one of "circle", "square", "epfl", "roma" or
+"it".
+
+Proceed with:
+
+```
 $ ulimit -n 4000
-$ ./bin/mkconfigdir /tmp/obscrete alice
-$ ../simulator/bin/mkconfigdirs /tmp/obscrete 100
-$ ./bin/simulator --config ./etc/obscrete.conf
+$ ./bin/mkconfig /tmp/obscrete alice
+$ ../simulator/bin/mkconfig square
+$ ./bin/obscrete --config ./etc/obscrete.conf
 ```
 
-![A very short simulation](/doc/simulation.gif)
+![A very short simulation using the square data set](/doc/simulation.gif)
 
 ## Files
 

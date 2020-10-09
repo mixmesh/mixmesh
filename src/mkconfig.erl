@@ -1,5 +1,6 @@
-#!/usr/bin/env escript
-%% -*- erlang -*-
+-module(mkconfig).
+-export([start/1]).
+-export([ensure_libs/2, return/1]).
 
 %% This script creates the appropriate file structure needed to start
 %% Obscrete. You call this command with an obscrete directory and the
@@ -14,7 +15,9 @@
 %% As it happens this is the file structure used by the configuration
 %% files under ./obscrete/etc/*.conf.
 
-main([ObscreteDir, PlayerName]) ->
+-spec start([string()]) -> no_return().
+
+start([ObscreteDir, PlayerName]) ->
     PkiDataDir = filename:join([ObscreteDir, <<"pki">>, <<"data">>]),
     ok = ensure_libs([PkiDataDir], false),
     PlayerDir = filename:join([ObscreteDir, PlayerName, <<"player">>]),
@@ -23,11 +26,8 @@ main([ObscreteDir, PlayerName]) ->
     PlayerMaildropSpoolerDir =
         filename:join([PlayerDir, "maildrop", "spooler"]),
     ensure_libs([PlayerTempDir, PlayerPkiDataDir, PlayerMaildropSpoolerDir],
-                true);
-main(_) ->
-    io:format(standard_error,
-              "Usage: mkconfigdir <OBSCRETE-DIR> <PLAYER-NAME>\n",
-              []).
+                true),
+    return(0).
 
 ensure_libs([], _Erase) ->
     ok;
@@ -45,11 +45,13 @@ ensure_libs([Dir|Rest], Erase) ->
                     ensure_libs(Rest, Erase);
                 {error, Reason} ->
                     io:format(standard_error, "~s: ~s\n",
-                              [Dir, file:format_error(Reason)])
+                              [Dir, file:format_error(Reason)]),
+                    return(100)
             end;
         {error, Reason} ->
             io:format(standard_error, "~s: ~s\n",
-                      [Dir, file:format_error(Reason)])
+                      [Dir, file:format_error(Reason)]),
+            return(200)
     end.
 
 erase_dir(Dir) ->
@@ -60,3 +62,6 @@ erase_dir(Dir) ->
               file:delete(filename:join([Dir, Filename]))
       end, Filenames),
     ok.
+
+return(Status) ->
+    erlang:halt(Status).
