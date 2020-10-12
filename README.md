@@ -74,9 +74,9 @@ mrproper, megapull and *dialyzer*.
 
 Create a mandatory file structure needed by Obscrete:
 
-`$ ./bin/mkconfigdir /tmp/obscrete alice`
+`$ ./bin/mkconfig /tmp/obscrete alice`
 
-mkconfigdir in this case created:
+mkconfig in this case created:
 
 * /tmp/obscrete/pki/data
 * /tmp/obscrete/alice/player/temp/
@@ -100,12 +100,14 @@ To start the simulator, first enable it in ./etc/obscrete.conf, e.g.
 ```
 "simulator": {
     "enabled": true,
+	"renderer" : "sdl",
     "data-set": "square"
 }
 ```
 
 The data set must be one of "circle", "square", "epfl", "roma" or
 "it".
+And the renderer must be one of "sdl" (default) or "epx".
 
 NOTE: In order to start the Roma simulation you must first follow the instructions in [../simulator/priv/roma_taxi/README.md](https://github.com/obscrete/simulator/blob/main/priv/roma_taxi/README.md).
 
