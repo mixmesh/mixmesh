@@ -1,11 +1,6 @@
-
-
 # TODO
-* smtp-proxy -> smtp-server
-* Check how pre-population of buffers is done best, now broken in simualtor_serv.erl
-* Start using reltool/servator create releases with boot scripts and ez files etc (ez files are not really needed since we have various other stuff like nifs etc)
 
----
+* Check how pre-population of buffers is done best, now broken in simualtor_serv.erl
 
 ## Possible input to new TODO (pseudo random order):
 
@@ -38,10 +33,10 @@ maybe BUTTON to terminate connection
 * configure import/export/delete and show public keys, both yours and others.
 
 ## Fixes needed
-* dialyzer, start using verify&sign, reencryption and padding.
+* Dialyzer fixes for elgamal
+* Start using verify&sign of messages
 * Iron out the box installation procedure of the box in detail
 * Read/write public keys from PKI server?
-..From a local only non-networking PKI server (as it is today) per player
 * How should we import new keys into A1? An app? Mounted disk? How?
 .* Examplel simple web ui, import export show delete
 .* Export secret key once at startup
