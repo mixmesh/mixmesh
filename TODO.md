@@ -38,7 +38,13 @@ maybe BUTTON to terminate connection
 * How should we import new keys into A1? An app? Mounted disk? How?
 .* Examplel simple web ui, import export show delete
 .* Export secret key once at startup
+
+
+
 * Look into message fullness behaviour during message exchange
+
+
+
 * Do not reconnect with a neighbour player until a certain amount of time has elapsed (even though a player reappears) (nodis)
 * Re-exchange messages with persistent neighbour players after a certain time (nodis)
 

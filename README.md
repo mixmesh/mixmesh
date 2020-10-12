@@ -100,14 +100,13 @@ To start the simulator, first enable it in ./etc/obscrete.conf, e.g.
 ```
 "simulator": {
     "enabled": true,
-	"renderer" : "sdl",
+    "renderer" : "sdl",
     "data-set": "square"
 }
 ```
 
 The data set must be one of "circle", "square", "epfl", "roma" or
-"it".
-And the renderer must be one of "sdl" (default) or "epx".
+"it", and the renderer must be one of "sdl" or "epx".
 
 NOTE: In order to start the Roma simulation you must first follow the instructions in [../simulator/priv/roma_taxi/README.md](https://github.com/obscrete/simulator/blob/main/priv/roma_taxi/README.md).
 
