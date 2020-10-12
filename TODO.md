@@ -1,7 +1,5 @@
 # TODO
 
-* Check how pre-population of buffers is done best, now broken in simualtor_serv.erl
-
 ## Possible input to new TODO (pseudo random order):
 
 ## Demo hardware
@@ -40,7 +38,6 @@ maybe BUTTON to terminate connection
 * How should we import new keys into A1? An app? Mounted disk? How?
 .* Examplel simple web ui, import export show delete
 .* Export secret key once at startup
-* Make players message buffers persistent!
 * Look into message fullness behaviour during message exchange
 * Do not reconnect with a neighbour player until a certain amount of time has elapsed (even though a player reappears) (nodis)
 * Re-exchange messages with persistent neighbour players after a certain time (nodis)

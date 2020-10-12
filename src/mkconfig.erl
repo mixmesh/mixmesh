@@ -9,6 +9,7 @@
 %%
 %% /tmp/obscrete/pki/data
 %% /tmp/obscrete/alice/player/temp/
+%% /tmp/obscrete/alice/player/buffer/
 %% /tmp/obscrete/alice/player/pki/data/
 %% /tmp/obscrete/alice/player/maildrop/spooler/
 %%
@@ -22,10 +23,14 @@ start([ObscreteDir, PlayerName]) ->
     ok = ensure_libs([PkiDataDir], true),
     PlayerDir = filename:join([ObscreteDir, PlayerName, <<"player">>]),
     PlayerTempDir = filename:join([PlayerDir, "temp"]),
+    PlayerBufferDir = filename:join([PlayerDir, "buffer"]),
     PlayerPkiDataDir = filename:join([PlayerDir, "pki", "data"]),
     PlayerMaildropSpoolerDir =
         filename:join([PlayerDir, "maildrop", "spooler"]),
-    ensure_libs([PlayerTempDir, PlayerPkiDataDir, PlayerMaildropSpoolerDir],
+    ensure_libs([PlayerTempDir,
+                 PlayerBufferDir,
+                 PlayerPkiDataDir,
+                 PlayerMaildropSpoolerDir],
                 true),
     return(0).
 

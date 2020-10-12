@@ -80,6 +80,7 @@ mkconfigdir in this case created:
 
 * /tmp/obscrete/pki/data
 * /tmp/obscrete/alice/player/temp/
+* /tmp/obscrete/alice/player/buffer/
 * /tmp/obscrete/alice/player/pki/data/
 * /tmp/obscrete/alice/player/maildrop/spooler/
 
