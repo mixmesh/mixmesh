@@ -19,7 +19,7 @@
 
 start([ObscreteDir, PlayerName]) ->
     PkiDataDir = filename:join([ObscreteDir, <<"pki">>, <<"data">>]),
-    ok = ensure_libs([PkiDataDir], false),
+    ok = ensure_libs([PkiDataDir], true),
     PlayerDir = filename:join([ObscreteDir, PlayerName, <<"player">>]),
     PlayerTempDir = filename:join([PlayerDir, "temp"]),
     PlayerPkiDataDir = filename:join([PlayerDir, "pki", "data"]),

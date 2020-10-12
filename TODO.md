@@ -1,4 +1,7 @@
+
+
 # TODO
+* smtp-proxy -> smtp-server
 * Check how pre-population of buffers is done best, now broken in simualtor_serv.erl
 * Start using reltool/servator create releases with boot scripts and ez files etc (ez files are not really needed since we have various other stuff like nifs etc)
 
@@ -26,9 +29,9 @@ maybe BUTTON to terminate connection
 .* usb connection, none-routable (enough with no dns option?)
 * DHCPD for more than one interface
  both interface, pan0 and wlan0, must be able to hand out ONE address
- to ONE device a the time (sequrity?) 
+ to ONE device a the time (sequrity?)
  ) maybe fix the erlang implementation...?
- 
+
 ## WEB ui
 * use inets or exo/exo\_http\_server to serv REST api and some web pages.
 * configure bluetooth interface (on/off)
