@@ -2,6 +2,43 @@
 
 ## Possible input to new TODO (pseudo random order):
 
+## Next week
+
+### Tony
+
+* Fix elgamal 
+* Make sure all segments are the same size!
+* Nym max length, set to 32.
+* Player over ipv4 !
+* Bluetooth connection
+.* none-routable (enough with no dns option?) with dhcpd.
+* USB ether connection
+.* usb connection, none-routable (enough with no dns option?)
+.* Test bluetooth connection from Android and iOS.
+* DHCPD for more than one interface
+ both interface, pan0 and wlan0, must be able to hand out ONE address
+ to ONE device a the time (sequrity?)
+ ) maybe fix the erlang implementation...?
+* copy and rename exo/exo\_http\_server seazone_ws to serv REST api and 
+  some web pages. 
+* document all REST commands with examples!
+* Re-exchange messages with persistent neighbour players after a certain time (simulate with nodis)
+
+
+### Joakim
+* Start using verify&sign of messages
+* DES3 encrypt, on FILE, secret key, use pin code as generator
+* Player pin code (digitsx6) instead of password
+* (User) password for smtp, pop3 and web.
+* Use elgamal remove use of belgamal call verify when possible
+* Check mail client support for unverified messages
+* move db_player to player? now player\_serv need simualtor to build 
+  maybe move player\_db to player\_serv.hrl?
+* Player may receive multiple up from nodis. Reexchage if not ongoing.
+* Pin code master encrypt public key and user passwords and private key
+* Check how to lookup encrypted public keys and nym! on disk
+
+
 ## Demo hardware
 * Raspberry pi zero W/H
 * Use pisuger2 battery that can read battery status and
@@ -15,24 +52,14 @@
 .* app status RED (down) YELLOW (start) GREEN (running)
 .* bluetooth status  BLUE (connection runnning),
 maybe BUTTON to terminate connection
-* Bluetooth connection
-.* none-routable (enough with no dns option?) with dhcpd.
-.* Test bluetooth connection from Android and iOS.
-* USB ether connection
-.* usb connection, none-routable (enough with no dns option?)
-* DHCPD for more than one interface
- both interface, pan0 and wlan0, must be able to hand out ONE address
- to ONE device a the time (sequrity?)
- ) maybe fix the erlang implementation...?
 
 ## WEB ui
-* use inets or exo/exo\_http\_server to serv REST api and some web pages.
 * configure bluetooth interface (on/off)
 * configure import/export/delete and show public keys, both yours and others.
 
 ## Fixes needed
-* Dialyzer fixes for elgamal
-* Start using verify&sign of messages
+
+* packet mode for player_sync. Is packet 2 enough or do we need packet 4?
 * Iron out the box installation procedure of the box in detail
 * Read/write public keys from PKI server?
 * How should we import new keys into A1? An app? Mounted disk? How?
@@ -41,22 +68,24 @@ maybe BUTTON to terminate connection
 
 
 
+## Buffer session
+
+* Model way of message exchange. 
+* Wait until the message buffer is full? until players start to exchange message (maybe just create dummy messages galor)
 * Look into message fullness behaviour during message exchange
-
-
-
-* Do not reconnect with a neighbour player until a certain amount of time has elapsed (even though a player reappears) (nodis)
-* Re-exchange messages with persistent neighbour players after a certain time (nodis)
+* Message buffer size?
+* May node have different max buffer size and parameters K and F?
 
 ## Red line
-* Nudge message box parameters. K and F? Message buffer size? What is the max message size?
-  1) Keep public key database encrypted on disk somehow
-  2) From a central SSL based PKI-server over the net
+* Nudge message box parameters. K and F?  What is the max message size?
+* PKI modes
+.* Keep public key database encrypted on disk somehow
+.* From a central SSL based PKI-server over the net
      (The box must use the phone's Internet connection. How?)
-  3) From a PKI server introduced as a hidden service on Tor
+.* From a PKI server introduced as a hidden service on Tor
      (The box must use the phone's Internet connection. How?)
 * How do we handle DOS attacks?
-* Wait until the message buffer is full until players start to exchange message (maybe just create dummy messages galore)
+
 * Move the players private key out from *.conf files and PIN-encode it
 * Add SSL to SMTP and POP3 servers
 B) Support a hybrid encryption approach in order to support media streams
