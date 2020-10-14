@@ -6,9 +6,6 @@
 
 ### Tony
 
-* Fix elgamal 
-* Make sure all segments are the same size!
-* Nym max length, set to 32.
 * Player over ipv4 !
 * Bluetooth connection
 .* none-routable (enough with no dns option?) with dhcpd.
@@ -41,8 +38,9 @@
 
 ## Demo hardware
 * Raspberry pi zero W/H
-* Use pisuger2 battery that can read battery status and
-* Power-up rpi on progammable RTC, can possibly save som power
+* Use pisuger2 battery that can read battery status and 
+  power-up rpi on progammable RTC, can possibly save som power
+  (Ordered 2020-10-14)
 * Membrane numeric keypad (with i2c) support for pincode entries
  Somthing like <https://www.seeedstudio.com/Sealed-Membrane-3x4-button-pad-with-sticker-p-1044.html> but with i2c interface?
 * Total wipe BUTTON (under a easy to flip cover)
