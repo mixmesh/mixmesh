@@ -16,8 +16,8 @@
  both interface, pan0 and wlan0, must be able to hand out ONE address
  to ONE device a the time (sequrity?)
  ) maybe fix the erlang implementation...?
-* copy and rename exo/exo\_http\_server seazone_ws to serv REST api and 
-  some web pages. 
+* copy and rename exo/exo\_http\_server seazone_ws to serv REST api and
+  some web pages.
 * document all REST commands with examples!
 * Re-exchange messages with persistent neighbour players after a certain time (simulate with nodis)
 
@@ -29,8 +29,6 @@
 * (User) password for smtp, pop3 and web.
 * Use elgamal remove use of belgamal call verify when possible
 * Check mail client support for unverified messages
-* move db_player to player? now player\_serv need simualtor to build 
-  maybe move player\_db to player\_serv.hrl?
 * Player may receive multiple up from nodis. Reexchage if not ongoing.
 * Pin code master encrypt public key and user passwords and private key
 * Check how to lookup encrypted public keys and nym! on disk
@@ -38,7 +36,7 @@
 
 ## Demo hardware
 * Raspberry pi zero W/H
-* Use pisuger2 battery that can read battery status and 
+* Use pisuger2 battery that can read battery status and
   power-up rpi on progammable RTC, can possibly save som power
   (Ordered 2020-10-14)
 * Membrane numeric keypad (with i2c) support for pincode entries
@@ -68,7 +66,7 @@ maybe BUTTON to terminate connection
 
 ## Buffer session
 
-* Model way of message exchange. 
+* Model way of message exchange.
 * Wait until the message buffer is full? until players start to exchange message (maybe just create dummy messages galor)
 * Look into message fullness behaviour during message exchange
 * Message buffer size?
