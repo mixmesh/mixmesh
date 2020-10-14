@@ -29,7 +29,6 @@
 * (User) password for smtp, pop3 and web.
 * Use elgamal remove use of belgamal call verify when possible
 * Check mail client support for unverified messages
-* Player may receive multiple up from nodis. Reexchage if not ongoing.
 * Pin code master encrypt public key and user passwords and private key
 * Check how to lookup encrypted public keys and nym! on disk
 

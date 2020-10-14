@@ -110,7 +110,13 @@ The data set must be one of "circle", "square", "epfl", "roma" or
 
 NOTE: In order to start the Roma simulation you must first follow the instructions in [../simulator/priv/roma_taxi/README.md](https://github.com/obscrete/simulator/blob/main/priv/roma_taxi/README.md).
 
-Proceed with:
+Update /etc/systemd/user.conf and /etc/systemd/system.conf so that:
+
+`DefaultLimitNOFILE=65535`
+
+You must reboot in order for the systemd change to take effect.
+
+Then proceed with:
 
 ```
 $ ulimit -n 65535
