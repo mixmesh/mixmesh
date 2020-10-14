@@ -1,7 +1,9 @@
 -module(obscrete).
 -export([start/0]).
--export([export_public_key/0,
-	 import_public_key/1, import_public_key/2]).
+-export([export_public_key/0]).
+-export([import_public_key/1, import_public_key/2]).
+-export([list_public_keys/0]).
+
 -export([emit_key_pair/0]).
 
 -include_lib("pki/include/pki_serv.hrl").
@@ -30,6 +32,14 @@ emit_key_pair() ->
     {Pk,Sk} = belgamal:generate_key_pair(),
     io:format("\"public-key\": \"~s\",\n", [Pk]),
     io:format("\"secret-key\": \"~s\",\n", [Sk]).
+
+list_public_keys() ->
+    ets:foldl(
+      fun(#pki_user{name=Name,public_key=Pk}, _Acc) ->
+	      MD5 = crypto:hash(md5, belgamal:public_key_to_binary(Pk)),
+	      Fs = [tl(integer_to_list(B+16#100,16)) || <<B>> <= MD5],
+	      io:format("~16s -- ~s\n", [Name, string:join(Fs, ":")])
+      end, ok, pki_db).
 
 %% export a public key in a format useful for pki
 export_public_key() ->
