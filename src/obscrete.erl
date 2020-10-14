@@ -11,7 +11,7 @@ start() ->
         false ->
             skip
     end,
-    case config:lookup([simulator, enabled]) of
+    case config:lookup([simulator, enabled], false) of
         true ->
             {ok, _} = application:ensure_all_started(simulator);
         false ->
