@@ -13,6 +13,7 @@
 start() ->
     ok = application:start(sasl),
     ok = ssl:start(),
+    ok = application:start(apptools),
     ok = application:start(obscrete),
     ok = application:start(pki),
     case config:lookup([player, enabled]) of
