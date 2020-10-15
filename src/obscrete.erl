@@ -1,8 +1,11 @@
 -module(obscrete).
--export([start/0]).
+-export([start/0, salt_password/1]).
+
+%% Exported: start
 
 start() ->
     ok = application:start(sasl),
+    ok = ssl:start(),
     ok = application:start(obscrete),
     ok = application:start(pki),
     case config:lookup([player, enabled]) of
@@ -17,3 +20,9 @@ start() ->
         false ->
             skip
     end.
+
+%% Exported: salt_password
+
+salt_password(Password) ->
+    io:format("~s\n", [player_password:salt(Password)]),
+    erlang:halt(0).
