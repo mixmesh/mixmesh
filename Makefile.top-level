@@ -1,24 +1,42 @@
 # -*- MakeFile -*-
+# Get path abobe where this Makefile is located
+LPATH=$(abspath $(dir $(realpath $(firstword $(MAKEFILE_LIST))))..)
+
 ERL=$(shell which erl)
 ERL_TOP=$(ERL:%/bin/erl=%)
 
-LIBS=apptools elgamal jsone mail mpa nodis obscrete pki player rstar simulator tor
-TESTS=elgamal/test mail/test pki/test player/test tor/test
+ALL_LIST = $(shell (cd $(LPATH); ls -I "Makefile*" -I "*~"))
+APP_LIST = apptools elgamal jsone mail mpa nodis obscrete pki player
+SIM_LIST = rstar simulator tor
+TEST_LIST = $(shell (cd $(LPATH); ls -d */test))
 
-all:
-	for lib in $(LIBS) ; do \
-		(cd ../$$lib && $(MAKE) all) || exit 1; \
-	done
-	for test in $(TESTS) ; do \
-		(cd ../$$test && $(MAKE) all) || exit 1; \
+#GITURL = https://github.com/obscrete
+GITURL = git@github.com:obscrete
+
+
+# make all (directories found in parent) and test 
+all: allapp test
+	@echo "ok"
+
+# make all apps found in parent
+allapp:
+	@for lib in $(ALL_LIST) ; do \
+		(cd $(LPATH)/$$lib && $(MAKE) all) || exit 1; \
 	done
 
+# Make the pure application, that is not simulator
+app:
+	@for lib in $(APP_LIST) ; do \
+		(cd $(LPATH)/$$lib && $(MAKE) all) || exit 1; \
+	done
+
+# clean test and all apps found
 clean:
-	for test in $(TESTS) ; do \
-		(cd ../$$test && $(MAKE) clean) || exit 1; \
+	@for test in $(TEST_LIST) ; do \
+		(cd $(LPATH)/$$test && $(MAKE) clean) || exit 1; \
 	done
-	for lib in $(LIBS) ; do \
-		(cd ../$$lib && $(MAKE) clean) || exit 1; \
+	@for lib in $(ALL_LIST) ; do \
+		(cd $(LPATH)/$$lib && $(MAKE) clean) || exit 1; \
 	done
 	rm -f dialyzer.plt
 
@@ -26,26 +44,64 @@ mrproper: clean cleanfluff
 	rm -f dialyzer_init.plt
 
 cleanfluff:
-	for lib in $(LIBS) ; do \
-		find ../$$lib \( -name erl_crash.dump -or -name '*.beam' -or -name "*~" -or -name '#*' -or -name '.#*' \) -exec rm {} \;; \
+	@for lib in $(ALL_LIST) ; do \
+		find $(LPATH)/$$lib \( -name erl_crash.dump -or -name '*.beam' -or -name "*~" -or -name '#*' -or -name '.#*' \) -exec rm {} \;; \
 	done
 
-runtests:
-	for test in $(TESTS) ; do \
-		(cd ../$$test && make runtest) || exit 1; \
+# build test listed 
+test:
+	@for test in $(TEST_LIST) ; do \
+		(cd $(LPATH)/$$test && $(MAKE) all) || exit 1; \
 	done
 
-megapull:
-	for lib in $(LIBS) ; do \
+# run test listed 
+runtests: test
+	@for test in $(TEST_LIST) ; do \
+		(cd $(LPATH)/$$test && make runtest) || exit 1; \
+	done
+
+# pull all repos found in parent directory
+megapull: pull
+pull:
+	@for lib in $(ALL_LIST) ; do \
 		echo "==== Pull $$lib ===="; \
-		(cd ../$$lib && git pull) || exit 1; \
+		(cd $(LPATH)/$$lib && git pull) || exit 1; \
 	done
 
-megastatus:
-	for lib in $(LIBS) ; do \
-		echo "==== Get status for $$lib ===="; \
-		(cd 	../$$lib && git status) || exit 1; \
+# get status for all repos found in parent directory
+megastatus: status
+status:
+	@for lib in $(ALL_LIST) ; do \
+		echo "==== Status of $$lib ===="; \
+		(cd $(LPATH)/$$lib && git status -s) || exit 1; \
 	done
+
+# Clone everything
+megaclone: clone simclone
+
+# Clone the application, except obscrete!
+clone:
+	@for lib in $(filter-out obscrete,$(APP_LIST)) ; do \
+		echo "==== Clone $$lib ===="; \
+		(cd $(LPATH) && git clone $(GITURL)/$$lib) || exit 1; \
+	done
+
+# Clone the simulator apps
+simclone:
+	@for lib in $(SIM_LIST) ; do \
+		echo "==== Clone $$lib ===="; \
+		(cd $(LPATH) && git clone $(GITURL)/$$lib) || exit 1; \
+	done
+
+# print som info
+info:
+	@echo "LPATH="$(LPATH)
+	@echo "ERL_TOP="$(ERL_TOP)
+	@echo "ALL="$(ALL_LIST)
+	@echo "APP="$(APP_LIST)
+	@echo "SIM="$(SIM_LIST)
+	@echo "TEST="$(TEST_LIST)
+	@echo "CLONE="$(filter-out obscrete,$(APP_LIST))
 
 #
 # Type checking
@@ -59,8 +115,8 @@ DIALYZER_APPS=apptools jsone mail mpa nodis obscrete pki player simulator tor
 # FIXME: I remove beams files here!!!
 dialyzer: dialyzer.plt
 	@echo "BEWARE: gmp_nif.beam and simulator_nif.beam are removed permanently!!!"
-	rm -f ../mpa/ebin/gmp_nif.beam ../simulator/ebin/simulator_nif.beam
-	dialyzer --verbose --no_native_cache --no_check_plt --plt $< -r $(DIALYZER_APPS:%=../%/ebin)
+	rm -f $(LPATH)/mpa/ebin/gmp_nif.beam $(LPATH)/simulator/ebin/simulator_nif.beam
+	dialyzer --verbose --no_native_cache --no_check_plt --plt $< -r $(DIALYZER_APPS:%=$(LPATH)/%/ebin)
 
 dialyzer.plt: dialyzer_init.plt
 	rm -f $@ ; cp $< $@
