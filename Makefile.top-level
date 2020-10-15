@@ -6,15 +6,15 @@ ERL=$(shell which erl)
 ERL_TOP=$(ERL:%/bin/erl=%)
 
 ALL_LIST = $(shell (cd $(LPATH); ls -I "Makefile*" -I "*~"))
-APP_LIST = apptools elgamal jsone mail mpa nodis obscrete pki player
-SIM_LIST = rstar simulator tor
+APP_LIST = apptools elgamal jsone mail mpa nodis obscrete pki player tor
+SIM_LIST = rstar simulator
 TEST_LIST = $(shell (cd $(LPATH); ls -d */test))
 
 #GITURL = https://github.com/obscrete
 GITURL = git@github.com:obscrete
 
 
-# make all (directories found in parent) and test 
+# make all (directories found in parent) and test
 all: allapp test
 	@echo "ok"
 
@@ -48,13 +48,13 @@ cleanfluff:
 		find $(LPATH)/$$lib \( -name erl_crash.dump -or -name '*.beam' -or -name "*~" -or -name '#*' -or -name '.#*' \) -exec rm {} \;; \
 	done
 
-# build test listed 
+# build test listed
 test:
 	@for test in $(TEST_LIST) ; do \
 		(cd $(LPATH)/$$test && $(MAKE) all) || exit 1; \
 	done
 
-# run test listed 
+# run test listed
 runtests: test
 	@for test in $(TEST_LIST) ; do \
 		(cd $(LPATH)/$$test && make runtest) || exit 1; \
