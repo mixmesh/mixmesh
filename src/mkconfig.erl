@@ -12,13 +12,14 @@
 %% /tmp/obscrete/alice/player/buffer/
 %% /tmp/obscrete/alice/player/pki/data/
 %% /tmp/obscrete/alice/player/maildrop/spooler/
+%% /tmp/obscrete/alice/player/ssl/
 %%
 %% As it happens this is the file structure used by the configuration
 %% files under ./obscrete/etc/*.conf.
 
 -spec start([string()]) -> no_return().
 
-start([ObscreteDir, PlayerName]) ->
+start([ObscreteDir, SourceCertFilename, PlayerName]) ->
     PkiDataDir = filename:join([ObscreteDir, <<"pki">>, <<"data">>]),
     ok = ensure_libs([PkiDataDir], true),
     PlayerDir = filename:join([ObscreteDir, PlayerName, <<"player">>]),
@@ -27,17 +28,28 @@ start([ObscreteDir, PlayerName]) ->
     PlayerPkiDataDir = filename:join([PlayerDir, "pki", "data"]),
     PlayerMaildropSpoolerDir =
         filename:join([PlayerDir, "maildrop", "spooler"]),
+    PlayerSSLDir = filename:join([PlayerDir, "ssl"]),
     ensure_libs([PlayerTempDir,
                  PlayerBufferDir,
                  PlayerPkiDataDir,
-                 PlayerMaildropSpoolerDir],
+                 PlayerMaildropSpoolerDir,
+                 PlayerSSLDir],
                 true),
-    return(0).
+    TargetCertFilename = filename:join([PlayerDir, "ssl", "cert.pem"]),
+    io:format("Copies ~s to ~s\n", [SourceCertFilename, TargetCertFilename]),
+    case file:copy(SourceCertFilename, TargetCertFilename) of
+        {ok, _} ->
+            return(0);
+        {error, Reason} ->
+            io:format(standard_error, "~s: ~s\n",
+                      [SourceCertFilename, file:format_error(Reason)]),
+            return(100)
+    end.
 
 ensure_libs([], _Erase) ->
     ok;
 ensure_libs([Dir|Rest], Erase) ->
-    io:format("Ensure ~s\n", [Dir]),
+    io:format("Ensures ~s\n", [Dir]),
     case filelib:ensure_dir(Dir) of
         ok ->
             case file:make_dir(Dir) of
@@ -63,7 +75,7 @@ erase_dir(Dir) ->
     {ok, Filenames} = file:list_dir(Dir),
     lists:foreach(
       fun(Filename) ->
-              io:format("Delete ~s\n", [filename:join([Dir, Filename])]),
+              io:format("Deletes ~s\n", [filename:join([Dir, Filename])]),
               file:delete(filename:join([Dir, Filename]))
       end, Filenames),
     ok.

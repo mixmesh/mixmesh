@@ -1,23 +1,24 @@
 #!/bin/sh
 
-usage()
-{
-    >&2 echo "mkconfig <OBSCRETE-DIR> <PLAYER-NAME>"
-    exit 100
-}
-
-if [ $# -lt 2 ]; then
-   usage
-fi
-
 erl=`which erl`
 if [ -z "${erl}" ]; then
     >&2 echo "Could not find erl in path!"
     exit 1
 fi
 
+usage()
+{
+    >&2 echo "mkconfig <OBSCRETE-DIR> <CERTIFICATE-FILE> <PLAYER-NAME>"
+    exit 100
+}
+
+if [ $# -ne 3 ]; then
+   usage
+fi
+
+
 bin_dir=${0%/*}
 erl_libs=${bin_dir}/../..
 pa="-pa ${erl_libs}/*/ebin"
 
-env ERL_LIBS=${erl_libs} ${erl} ${pa} -noshell -run mkconfig start $1 $2
+env ERL_LIBS=${erl_libs} ${erl} ${pa} -noshell -run mkconfig start $1 $2 $3
