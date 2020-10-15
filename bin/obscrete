@@ -98,4 +98,9 @@ while :; do
     command shift
 done
 
-env ERL_LIBS=${erl_libs} ${erl} ${pa} ${config} ${shell} ${control_address} ${control_port} ${perform} ${erl_options}
+erl_config="-config ${bin_dir}/obscrete.config"
+if [ -d ${bin_dir}/../../simulator ]; then
+    erl_config="-config ${bin_dir}/simulator.config"
+fi
+
+env ERL_LIBS=${erl_libs} ${erl} ${pa} ${erl_config} ${config} ${shell} ${control_address} ${control_port} ${perform} ${erl_options}
