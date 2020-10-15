@@ -3,13 +3,16 @@
 -export([export_public_key/0]).
 -export([import_public_key/1, import_public_key/2]).
 -export([list_public_keys/0]).
-
+-export([salt_password/1]).
 -export([emit_key_pair/0]).
 
 -include_lib("pki/include/pki_serv.hrl").
 
+%% Exported: start
+
 start() ->
     ok = application:start(sasl),
+    ok = ssl:start(),
     ok = application:start(obscrete),
     ok = application:start(pki),
     case config:lookup([player, enabled]) of
@@ -33,6 +36,8 @@ emit_key_pair() ->
     io:format("\"public-key\": \"~s\",\n", [Pk]),
     io:format("\"secret-key\": \"~s\",\n", [Sk]).
 
+%% Exported: list_public_keys
+
 list_public_keys() ->
     ets:foldl(
       fun(#pki_user{name=Name,public_key=Pk}, _Acc) ->
@@ -40,6 +45,8 @@ list_public_keys() ->
 	      Fs = [tl(integer_to_list(B+16#100,16)) || <<B>> <= MD5],
 	      io:format("~16s -- ~s\n", [Name, string:join(Fs, ":")])
       end, ok, pki_db).
+
+%% Exported: export_public_key
 
 %% export a public key in a format useful for pki
 export_public_key() ->
@@ -61,6 +68,8 @@ export_public_key() ->
 	    false
     end.
 
+%% Exported: import_public_key
+
 import_public_key(Key) ->
     import_public_key(Key, undefined).
 
@@ -77,3 +86,9 @@ import_public_key(<<"PKI:",PkiUser64/binary>>, Name) when
 	Res ->
 	    Res
     end.
+
+%% Exported: salt_password
+
+salt_password(Password) ->
+    io:format("~s\n", [player_password:salt(Password)]),
+    erlang:halt(0).

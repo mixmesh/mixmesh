@@ -72,9 +72,13 @@ mrproper, megapull and *dialyzer*.
 
 ## Prepare Obscrete
 
-Create a mandatory file structure needed by Obscrete:
+Create a self-signed certificate to be used by the SMTP/POP3 SSL servers:
 
-`$ ./bin/mkconfig /tmp/obscrete alice`
+`$ ./bin/obscrete --generate-self-signed-certificate > cert.pem`
+
+and then create a mandatory file structure needed by Obscrete:
+
+`$ ./bin/mkconfig /tmp/obscrete cert.pem alice`
 
 mkconfig in this case created:
 
@@ -83,6 +87,7 @@ mkconfig in this case created:
 * /tmp/obscrete/alice/player/buffer/
 * /tmp/obscrete/alice/player/pki/data/
 * /tmp/obscrete/alice/player/maildrop/spooler/
+* /tmp/obscrete/alice/player/ssl/
 
 As it happens this is the file structure used by the configuration
 files under ./obscrete/etc/*.conf.
@@ -120,8 +125,9 @@ Then proceed with:
 
 ```
 $ ulimit -n 65535
-$ ./bin/mkconfig /tmp/obscrete alice
-$ ../simulator/bin/mkconfig square
+$ ./bin/obscrete --generate-self-signed-certificate > cert.pem
+$ ./bin/mkconfig /tmp/obscrete cert.pem alice
+$ ../simulator/bin/mkconfig cert.pem square
 $ ./bin/obscrete --config ./etc/obscrete.conf
 ```
 
