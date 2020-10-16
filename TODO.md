@@ -6,21 +6,12 @@
 
 ### Tony
 
-* Player over ipv4 !
 * Bluetooth connection
-.* none-routable (enough with no dns option?) with dhcpd.
+  none-routable (enough with no dns option?) with dhcpd.
 * USB ether connection
-.* usb connection, none-routable (enough with no dns option?)
-.* Test bluetooth connection from Android and iOS.
-* DHCPD for more than one interface
- both interface, pan0 and wlan0, must be able to hand out ONE address
- to ONE device a the time (sequrity?)
- ) maybe fix the erlang implementation...?
-* copy and rename exo/exo\_http\_server seazone_ws to serv REST api and
-  some web pages.
+  usb connection, none-routable (enough with no dns option?)
+* Test bluetooth connection from Android and iOS.
 * document all REST commands with examples!
-* Re-exchange messages with persistent neighbour players after a certain time (simulate with nodis)
-
 
 ### Joakim
 * Start using verify&sign of messages
@@ -31,7 +22,6 @@
 * Check mail client support for unverified messages
 * Pin code master encrypt public key and user passwords and private key
 * Check how to lookup encrypted public keys and nym! on disk
-
 
 ## Demo hardware
 * Raspberry pi zero W/H
