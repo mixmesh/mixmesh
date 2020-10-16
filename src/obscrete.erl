@@ -11,13 +11,20 @@
 %% Exported: start
 
 start() ->
+    ensure_all_loaded(),
     ok = application:start(sasl),
-    ok = ssl:start(),
+    {ok,_} = application:ensure_all_started(ssl),
     ok = application:start(apptools),
-    ok = application:start(obscrete),
+    ok = application:start(obscrete), %% pki use config!
     ok = application:start(pki),
+    ok = application:start(jsone),
+    ok = application:load(nodis),   %% start only in single player mode
+    ok = application:start(mail),
+    ok = application:start(mpa),
+    ok = application:start(elgamal),
     case config:lookup([player, enabled]) of
         true ->
+	    ok = application:start(rester),
             ok = application:start(player);
         false ->
             skip
@@ -28,6 +35,16 @@ start() ->
         false ->
             skip
     end.
+
+
+%% load applications needed for config schemas
+ensure_all_loaded() ->
+    ok = application:load(apptools),
+    ok = application:load(pki),
+    ok = application:load(player),
+    ok = application:load(obscrete).
+    %% application:load(simulator).
+    
 
 %% utility
 
