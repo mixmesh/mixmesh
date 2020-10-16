@@ -12,4 +12,6 @@
                                     {module, simulator_config_schema}]},
          {appended_config_schema, []}]},
   {mod, {obscrete_app, []}},
-  {applications, [kernel, stdlib]}]}.
+  {applications, [kernel, stdlib, apptools]}
+]}.
+
