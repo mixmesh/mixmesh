@@ -121,4 +121,4 @@ export ERL_LIBS=${erl_libs}:$ERL_LIBS
 # uncomment to debug execution or add -x flag :-)
 # echo ${erl} ${pa} ${erl_config} ${config} ${shell} ${control_address} ${control_port} ${perform} ${erl_options}
 
-${erl} -sname obscrete ${pa} ${erl_config} ${config} ${shell} ${control_address} ${control_port} ${perform} ${erl_options}
+${erl} -sname obscrete@localhost ${pa} ${erl_config} ${config} ${shell} ${control_address} ${control_port} ${perform} ${erl_options}
