@@ -5,6 +5,7 @@
 -export([list_public_keys/0]).
 -export([salt_password/1]).
 -export([emit_key_pair/0]).
+-export([status/0]).
 
 -include_lib("pki/include/pki_serv.hrl").
 
@@ -44,7 +45,11 @@ ensure_all_loaded() ->
     ok = application:load(player),
     ok = application:load(obscrete).
     %% application:load(simulator).
-    
+
+%% called from servator service
+%% could basically print any thing 
+status() ->
+    io:format("running\n", []).
 
 %% utility
 
