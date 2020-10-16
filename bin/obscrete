@@ -118,6 +118,7 @@ fi
 # needed for servator(build release)/epx(simulator) etc
 export ERL_LIBS=${erl_libs}:$ERL_LIBS
 
-echo ${erl} ${pa} ${erl_config} ${config} ${shell} ${control_address} ${control_port} ${perform} ${erl_options}
+# uncomment to debug execution or add -x flag :-)
+# echo ${erl} ${pa} ${erl_config} ${config} ${shell} ${control_address} ${control_port} ${perform} ${erl_options}
 
 ${erl} ${pa} ${erl_config} ${config} ${shell} ${control_address} ${control_port} ${perform} ${erl_options}
