@@ -3,8 +3,7 @@
 -export([export_public_key/0]).
 -export([import_public_key/1, import_public_key/2]).
 -export([list_public_keys/0]).
--export([salt_password/1]).
--export([emit_key_pair/0]).
+%%-export([emit_key_pair/0]).
 
 -include_lib("pki/include/pki_serv.hrl").
 
@@ -31,20 +30,27 @@ start() ->
 
 %% utility
 
+%% NOTENOTENOTENOTE
+%% emit_key_pair/0 should not be used. Use the following obscrete
+%% commands instead:
+%% $ ./obscrete/bin/obscrete -pin-salt
+%% followed by:
+%% $ ./obscrete/bin/obscrete -elgamal-keys 123456 <PIN-salt from above> alice
+%% NOTENOTENOTENOTE
 %% Convenience function - print new keypair in config format
-emit_key_pair() ->
-    {Pk,Sk} = belgamal:generate_key_pair(),
-    io:format("\"public-key\": \"~s\",\n", [Pk]),
-    io:format("\"secret-key\": \"~s\",\n", [Sk]).
+%emit_key_pair() ->
+%    {Pk,Sk} = belgamal:generate_key_pair(),
+%    io:format("\"public-key\": \"~s\",\n", [Pk]),
+%    io:format("\"secret-key\": \"~s\",\n", [Sk]).
 
 %% Exported: list_public_keys
 
 list_public_keys() ->
     ets:foldl(
-      fun(#pki_user{name=Name,public_key=Pk}, _Acc) ->
-	      MD5 = crypto:hash(md5, belgamal:public_key_to_binary(Pk)),
+      fun(#pki_user{nym=Nym,public_key=Pk}, _Acc) ->
+	      MD5 = crypto:hash(md5, elgamal:public_key_to_binary(Pk)),
 	      Fs = [tl(integer_to_list(B+16#100,16)) || <<B>> <= MD5],
-	      io:format("~16s -- ~s\n", [Name, string:join(Fs, ":")])
+	      io:format("~16s -- ~s\n", [Nym, string:join(Fs, ":")])
       end, ok, pki_db).
 
 %% Exported: export_public_key
@@ -53,15 +59,15 @@ list_public_keys() ->
 export_public_key() ->
     case config:lookup([player, enabled]) of
 	true ->
-	    Name = config:lookup([player, username]),
+	    Nym = config:lookup([player, username]),
 	    case config:lookup([player, spiridon, 'public-key'], false) of
 		false ->
 		    false;
 		Pk ->
-		    PkiUser = #pki_user{name=Name,
+		    PkiUser = #pki_user{nym=Nym,
 					password=(<<"">>),
 					email=(<<"">>),
-					public_key=Pk},
+					public_key=elgamal:binary_to_public_key(Pk)},
 		    <<"PKI:",
 		      (base64:encode(term_to_binary(PkiUser)))/binary>>
 	    end;
@@ -74,12 +80,12 @@ export_public_key() ->
 import_public_key(Key) ->
     import_public_key(Key, undefined).
 
-import_public_key(<<"PKI:",PkiUser64/binary>>, Name) when
-      is_binary(Name); Name =:= undefined ->
+import_public_key(<<"PKI:",PkiUser64/binary>>, Nym) when
+      is_binary(Nym); Nym =:= undefined ->
     PkiUserBin = base64:decode(PkiUser64),
     PkiUser0 = binary_to_term(PkiUserBin),
-    PkiUser = if Name =:= undefined -> PkiUser0;
-		 true -> PkiUser0#pki_user{name=Name}
+    PkiUser = if Nym =:= undefined -> PkiUser0;
+		 true -> PkiUser0#pki_user{nym=Nym}
 	      end,
     case pki_serv:create(PkiUser) of
 	{error, user_already_exists} ->
@@ -87,9 +93,3 @@ import_public_key(<<"PKI:",PkiUser64/binary>>, Name) when
 	Res ->
 	    Res
     end.
-
-%% Exported: salt_password
-
-salt_password(Password) ->
-    io:format("~s\n", [player_password:salt(Password)]),
-    erlang:halt(0).

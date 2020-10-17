@@ -6,7 +6,7 @@ ERL=$(shell which erl)
 ERL_TOP=$(ERL:%/bin/erl=%)
 
 ALL_LIST = $(shell (cd $(LPATH); ls -I "Makefile*" -I "*~"))
-APP_LIST = apptools elgamal jsone mail mpa nodis obscrete pki player tor
+APP_LIST = apptools elgamal enacl jsone mail mpa nodis obscrete pki player tor
 SIM_LIST = rstar simulator
 TEST_LIST = $(shell (cd $(LPATH); ls -d */test))
 
@@ -110,19 +110,19 @@ info:
 .PHONY: dialyzer
 
 # The rstar application is out of scope
-DIALYZER_APPS=apptools jsone mail mpa nodis obscrete pki player simulator tor
+DIALYZER_APPS=apptools elgamal enacl jsone mail mpa nodis obscrete pki player simulator tor
 
-# FIXME: I remove beams files here!!!
+# FIXME: *_nif.beam files confuse dialyzer so I just delete them :-)
 dialyzer: dialyzer.plt
 	@echo "BEWARE: gmp_nif.beam and simulator_nif.beam are removed permanently!!!"
-	rm -f $(LPATH)/mpa/ebin/gmp_nif.beam $(LPATH)/simulator/ebin/simulator_nif.beam
+	rm -f $(LPATH)/mpa/ebin/gmp_nif.beam $(LPATH)/simulator/ebin/simulator_nif.beam $(LPATH)/elgamal/ebin/belgamal.beam
 	dialyzer --verbose --no_native_cache --no_check_plt --plt $< -r $(DIALYZER_APPS:%=$(LPATH)/%/ebin)
 
 dialyzer.plt: dialyzer_init.plt
 	rm -f $@ ; cp $< $@
 	dialyzer --verbose --no_native_cache --check_plt --plt $@ || true
 
-DIALYZER_PLT_APPS=compiler crypto erts hipe kernel mnesia runtime_tools sasl stdlib syntax_tools tools
+DIALYZER_PLT_APPS=asn1 compiler crypto erts ftp hipe inets kernel mnesia public_key runtime_tools sasl ssl stdlib syntax_tools tftp tools
 
 dialyzer_init.plt:
 	rm -f $@

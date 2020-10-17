@@ -10,10 +10,14 @@ usage()
     >&2 echo "    Reload Obscrete"
     >&2 echo "obscrete --stop [--control-address <IP-ADDRESS>] [--control-port <PORT>]"
     >&2 echo "    Stop Obscrete"
-    >&2 echo "obscrete --generate-self-signed-certificate"
-    >&2 echo "    Generate dummy self signed certificate to stdout"
-    >&2 echo "obscrete --salt-password <PASSWORD>"
-    >&2 echo "    Generate a salted password"
+    >&2 echo "obscrete --digest-password <PASSWORD>"
+    >&2 echo "    Digest a password"
+    >&2 echo "obscrete --elgamal-keys <PIN> <PIN-SALT> <NYM>"
+    >&2 echo "    Generate a new ElGamal public/secret key pair"
+    >&2 echo "obscrete --pin-salt"
+    >&2 echo "    Generate a new PIN salt"
+    >&2 echo "obscrete --self-signed-ssl-cert"
+    >&2 echo "    Generate a self-signed SSL certificate"
     exit 100
 }
 
@@ -64,7 +68,37 @@ while :; do
             perform="-run obscrete_config_serv stop"
             break
             ;;
-        --generate-self-signed-certificate)
+        --digest-password)
+            if [ $# -ne 2 ]; then
+                usage
+            fi
+            shell="-noinput"
+            perform="-run obscrete_command digest_password $2"
+            shift
+            break
+            ;;
+        --elgamal-keys)
+            if [ $# -ne 4 ]; then
+                usage
+            fi
+            shell="-noinput"
+            perform="-run obscrete_command elgamal_keys $2 $3 $4"
+            shift
+            break
+            ;;
+        --pin-salt)
+            if [ $# -ne 1 ]; then
+                usage
+            fi
+            shell="-noinput"
+            perform="-run obscrete_command pin_salt"
+            shift
+            break
+            ;;
+        --self-signed-ssl-cert)
+            if [ $# -ne 1 ]; then
+                usage
+            fi
             if which openssl > /dev/null; then
                 openssl req -new -newkey rsa:2048 -days 365 -nodes -x509 -subj "/" -keyout /tmp/key.pem -out /tmp/cert.pem > /dev/null 2>&1
                 cat /tmp/key.pem /tmp/cert.pem
@@ -74,15 +108,6 @@ while :; do
                 >&2 echo "OpenSSL must be installed to create a certificate"
                 exit 1
             fi
-            ;;
-        --salt-password)
-            if [ $# -lt 2 ]; then
-                usage
-            fi
-            shell="-noinput"
-            perform="-run obscrete salt_password $2"
-            shift
-            break
             ;;
         --)
             shift

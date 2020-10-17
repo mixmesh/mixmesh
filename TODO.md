@@ -21,17 +21,13 @@
 * document all REST commands with examples!
 * Re-exchange messages with persistent neighbour players after a certain time (simulate with nodis)
 
-
 ### Joakim
-* Start using verify&sign of messages
-* DES3 encrypt, on FILE, secret key, use pin code as generator
-* Player pin code (digitsx6) instead of password
-* (User) password for smtp, pop3 and web.
-* Use elgamal remove use of belgamal call verify when possible
-* Check mail client support for unverified messages
-* Pin code master encrypt public key and user passwords and private key
-* Check how to lookup encrypted public keys and nym! on disk
 
+* Convert all code to use the "nym" instead of "*name*" and "username" etc.
+  Check with Tony.
+* Clean payload from unintersting bloat. Check with Tony.
+* Align ::
+* Clean elgamal.erl from cruft
 
 ## Demo hardware
 * Raspberry pi zero W/H
@@ -62,7 +58,6 @@ maybe BUTTON to terminate connection
 .* Export secret key once at startup
 
 
-
 ## Buffer session
 
 * Model way of message exchange.
@@ -72,6 +67,13 @@ maybe BUTTON to terminate connection
 * May node have different max buffer size and parameters K and F?
 
 ## Red line
+
+* Add scram-sha1 password digest support to POP3/SMTP servers
+* Make it possible to have serveral mail accounts on a single box. Maybe.
+* Move digested passwords from config file into a passwd file on disk (especially if we support several mail accounts on a single box). Use Argon2 or just encrypt the whole passwd file using secretbox or whatever.
+* Consider using libsodium. Safer and faster.
+* Add delays between login attempts to SMTP/POP3 servers (Argon2 hashing is to heavy)
+
 * Nudge message box parameters. K and F?  What is the max message size?
 * PKI modes
 .* Keep public key database encrypted on disk somehow
