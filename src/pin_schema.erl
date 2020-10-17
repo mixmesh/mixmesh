@@ -1,4 +1,4 @@
--module(obscrete_config_schema).
+-module(pin_schema).
 -export([get/0]).
 
 -include_lib("apptools/include/config_schema.hrl").

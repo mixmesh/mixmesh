@@ -8,61 +8,6 @@
 -define(DEFAULT_CONFIG_FILENAME, <<"/etc/obscrete.conf">>).
 -define(DEFAULT_CONTROL_ADDRESS, {127, 0, 0, 1}).
 -define(DEFAULT_CONTROL_PORT, 23313).
--define(OBSCRETE_CONFIG_SCHEMA,
-        [{'load-paths',
-          [#json_type{name = path,
-                      typical = <<"/foo/bar/ebin">>,
-                      reloadable = false}]},
-         {'obscrete-control',
-          [{listen,
-            #json_type{name = ipv4address_port,
-                       typical = {{127,0,0,1}, 23765},
-                       reloadable = false}}]},
-         {logs,
-          [{daemon,
-            [{enabled,
-              #json_type{name = bool, typical = true}},
-             {filter,
-              [{show,
-                [#json_type{name = atom, typical = '*'}]},
-               {hide,
-                [#json_type{name = atom, typical = '*'}]}]},
-             {tty,
-              #json_type{name = bool, typical = false}},
-             {file,
-              [{enabled,
-                #json_type{name = bool, typical = true}},
-               {path,
-                #json_type{name = writable_file,
-                           typical = <<"daemon.log">>}}]}]},
-           {dbg,
-            [{enabled,
-              #json_type{name = bool, typical = true}},
-             {filter,
-              [{show,
-                [#json_type{name = atom, typical = '*'}]},
-               {hide,
-                [#json_type{name = atom, typical = '*'}]}]},
-             {tty,
-              #json_type{name = bool, typical = false}},
-             {file,
-              [{enabled,
-                #json_type{name = bool, typical = true}},
-               {path,
-                #json_type{name = writable_file,
-                           typical = <<"dbg.log">>}}]}]},
-           {error,
-            [{enabled,
-              #json_type{name = bool, typical = true}},
-             {tty,
-              #json_type{name = bool, typical = true}},
-             {file,
-              [{enabled,
-                #json_type{name = bool, typical = true}},
-               {path,
-                #json_type{name = writable_directory,
-                           typical = <<"./">>}}]}]}]}
-        ]).
 
 %% Exported: start_link
 
@@ -71,15 +16,10 @@
 
 start_link() ->
     ConfigFilename = config_filename(),
-    ConfigSchema =
-        extra_config_schema(prepended_config_schema) ++
-        ?OBSCRETE_CONFIG_SCHEMA ++ 
-        extra_config_schema(appended_config_schema),
-    case config_serv:start_link(?MODULE, ConfigFilename, ConfigSchema,
+    case config_serv:start_link(?MODULE, ConfigFilename, get_schemas(),
                                 ['obscrete-control', listen],
                                 fun config_handler/1) of
         {ok, Pid} ->
-            ok = code:add_pathsz(config:lookup(['load-paths'])),
             {ok, Pid};
         {error, Reason} ->
             die("~s: ~s", [ConfigFilename, config_serv:format_error(Reason)]),
@@ -94,17 +34,14 @@ config_filename() ->
             ?DEFAULT_CONFIG_FILENAME
     end.
 
-extra_config_schema(Parameter) ->
-    {ok, ConfigSchema} = application:get_env(obscrete, Parameter),
-    load_config_schema(ConfigSchema).
+get_schemas() ->
+    {ok, Schemas} = application:get_env(obscrete, schemas),
+    load_schemas(Schemas).
 
-load_config_schema([]) ->
+load_schemas([]) ->
     [];
-load_config_schema([{module, Module}|Rest]) ->
-    Module:get() ++ load_config_schema(Rest);
-load_config_schema([{filename, Filename}|Rest]) ->
-    {module, Module} = code:load_abs(Filename),
-    Module:get() ++ load_config_schema(Rest).
+load_schemas([Module|Rest]) ->
+    Module:get() ++ load_schemas(Rest).
 
 config_handler(Socket) ->
     receive
