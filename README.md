@@ -4,11 +4,12 @@
 
 ### Install external dependencies
 
-You need to install GMP (for arbitrary precision arithmetic support) and Simple2D (for the simulator).
+You need to install GMP (for arbitrary precision arithmetic support) and Simple2D (for the simulator). Also libsodium is used.
 
 On Ubuntu:
 
-`$ sudo apt install libgmp-dev`
+    $ sudo apt install libgmp-dev
+    $ sudo apt install libsodium	
 
 and
 
