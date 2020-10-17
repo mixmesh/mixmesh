@@ -1,7 +1,7 @@
 %% -*- erlang -*-
 {application, obscrete,
  [{description,"The Obscrete top-level application"},
-  {vsn, "1.0"},
+  {vsn, "0.9"},
   {modules, [obscrete_app,
              obscrete_config_serv,
              obscrete_log_serv,
@@ -13,4 +13,6 @@
                                     {module, simulator_config_schema}]},
          {appended_config_schema, []}]},
   {mod, {obscrete_app, []}},
-  {applications, [kernel, stdlib]}]}.
+  {applications, [kernel, stdlib, apptools]}
+]}.
+

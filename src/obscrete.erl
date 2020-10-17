@@ -4,19 +4,27 @@
 -export([import_public_key/1, import_public_key/2]).
 -export([list_public_keys/0]).
 %%-export([emit_key_pair/0]).
+-export([status/0]).
 
 -include_lib("pki/include/pki_serv.hrl").
 
 %% Exported: start
 
 start() ->
+    ensure_all_loaded(),
     ok = application:start(sasl),
-    ok = ssl:start(),
+    {ok,_} = application:ensure_all_started(ssl),
     ok = application:start(apptools),
-    ok = application:start(obscrete),
+    ok = application:start(obscrete), %% pki use config!
     ok = application:start(pki),
+    ok = application:start(jsone),
+    ok = application:load(nodis),   %% start only in single player mode
+    ok = application:start(mail),
+    ok = application:start(mpa),
+    ok = application:start(elgamal),
     case config:lookup([player, enabled]) of
         true ->
+	    ok = application:start(rester),
             ok = application:start(player);
         false ->
             skip
@@ -28,14 +36,28 @@ start() ->
             skip
     end.
 
+
+%% load applications needed for config schemas
+ensure_all_loaded() ->
+    ok = application:load(apptools),
+    ok = application:load(pki),
+    ok = application:load(player),
+    ok = application:load(obscrete).
+    %% application:load(simulator).
+
+%% called from servator service
+%% could basically print any thing
+status() ->
+    io:format("running\n", []).
+
 %% utility
 
 %% NOTENOTENOTENOTE
 %% emit_key_pair/0 should not be used. Use the following obscrete
 %% commands instead:
-%% $ ./obscrete/bin/obscrete -pin-salt
+%% $ ./obscrete/bin/obscrete --pin-salt
 %% followed by:
-%% $ ./obscrete/bin/obscrete -elgamal-keys 123456 <PIN-salt from above> alice
+%% $ ./obscrete/bin/obscrete --elgamal-keys 123456 <PIN-salt from above> alice
 %% NOTENOTENOTENOTE
 %% Convenience function - print new keypair in config format
 %emit_key_pair() ->

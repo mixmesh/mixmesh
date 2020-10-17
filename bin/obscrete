@@ -4,7 +4,7 @@ usage()
 {
     >&2 echo "obscrete --help | -h"
     >&2 echo "    Display available options"
-    >&2 echo "obscrete [--config <CONFIG-FILE>] [--]"
+    >&2 echo "obscrete [--simulator] [--config <CONFIG-FILE>] [--]"
     >&2 echo "    Start Obscrete (put erl options after --)"
     >&2 echo "obscrete --reload [--control-address <IP-ADDRESS>] [--control-port <PORT>]"
     >&2 echo "    Reload Obscrete"
@@ -31,6 +31,7 @@ bin_dir=${0%/*}
 erl_libs=${bin_dir}/../..
 pa="-pa ${erl_libs}/*/test"
 perform="-eval obscrete:start()"
+simulator=0
 
 while :; do
     case $1 in
@@ -109,6 +110,8 @@ while :; do
                 exit 1
             fi
             ;;
+	--simulator)
+	    simulator=1
         --)
             shift
             erl_options=$@
@@ -123,9 +126,21 @@ while :; do
     command shift
 done
 
-erl_config="-config ${bin_dir}/obscrete.config"
-if [ -d ${bin_dir}/../../simulator ]; then
-    erl_config="-config ${bin_dir}/simulator.config"
+if [ ${simulator} -eq 1 ]; then
+    if [ -d ${bin_dir}/../../simulator ]; then
+	erl_config="-config ${bin_dir}/simulator.config"
+    else
+        >&2 echo "no simulator directory found"
+	exit 1
+    fi
+else
+    erl_config="-config ${bin_dir}/obscrete.config"
 fi
 
-env ERL_LIBS=${erl_libs} ${erl} ${pa} ${erl_config} ${config} ${shell} ${control_address} ${control_port} ${perform} ${erl_options}
+# needed for servator(build release)/epx(simulator) etc
+export ERL_LIBS=${erl_libs}:$ERL_LIBS
+
+# uncomment to debug execution or add -x flag :-)
+# echo ${erl} ${pa} ${erl_config} ${config} ${shell} ${control_address} ${control_port} ${perform} ${erl_options}
+
+${erl} -sname obscrete@localhost ${pa} ${erl_config} ${config} ${shell} ${control_address} ${control_port} ${perform} ${erl_options}

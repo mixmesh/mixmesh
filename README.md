@@ -41,6 +41,19 @@ To have the tor tests pass the test suite you need to install tor
 
 ### Clone repositories
 
+Create a directory where you will build obscrete
+
+	$ mkdir path-to-obscrete
+	$ cd path-to-obscrete
+
+Then clone the obscrete app
+
+	$ git clone git@github.com:obscrete/obscrete
+
+
+If you want to clone one by one, or you must fix something else,
+then this is the app list
+
 ```
 $ git clone git@github.com:obscrete/apptools.git
 $ git clone git@github.com:obscrete/elgamal.git
@@ -57,15 +70,40 @@ $ git clone git@github.com:obscrete/tor.git
 
 ### Build repositories
 
-```
-$ cd obscrete
-$ export ERL_LIBS=..
-$ make -f Makefile.top-level all
-```
+Well, you could then enter obscrete app and write
+
+    $ cd path-to-obscrete/obscrete
+	$ make -f Makefile.top-level
+
+Or you may be want to make it easy and create a link at top level?
+
+    $ cd path-to-obscrete
+	$ ln -s obscrete/Makefile.top-level Makefile
+
+From this step you can fetch all the needed applications
+
+	$ make clone
+
+And if you (maybe later) want the simulator
+
+	$ make simclone
+
+Or everything
+
+	$ make megaclone
+
+To build all application and tests you type
+
+	$ make
+
+When developing you may want to setup ERL\_LIBS so it includes
+the obscrete directory
+
+	$ export ERL_LIBS=$ERL_LIBS:path-to-obscrete
 
 ### Does it work? - run the tests
 
-`make -f Makefile.top-level runtests`
+	$ make runtests
 
 Makefile.top-level has a number of other useful targets, e.g. clean,
 mrproper, megapull and *dialyzer*.
@@ -100,7 +138,7 @@ Start Obscrete with an appropriate configuration file, e.g.
 
 ## Start simulator
 
-To start the simulator, first enable it in ./etc/obscrete.conf, e.g.
+To start the simulator, use ./etc/simulator.conf, e.g.
 
 ```
 "simulator": {
@@ -128,7 +166,7 @@ $ ulimit -n 65535
 $ ./bin/obscrete --self-signed-ssl-cert > cert.pem
 $ ./bin/mkconfig /tmp/obscrete cert.pem alice
 $ ../simulator/bin/mkconfig cert.pem square
-$ ./bin/obscrete --config ./etc/obscrete.conf
+$ ./bin/obscrete --simulator --config ./etc/simulator.conf
 ```
 
 ![A very short simulation using the square data set](/doc/simulation.gif)

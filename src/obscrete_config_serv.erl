@@ -95,7 +95,7 @@ config_filename() ->
     end.
 
 extra_config_schema(Parameter) ->
-    {ok, ConfigSchema} = application:get_env(Parameter),
+    {ok, ConfigSchema} = application:get_env(obscrete, Parameter),
     load_config_schema(ConfigSchema).
 
 load_config_schema([]) ->
