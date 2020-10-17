@@ -57,6 +57,7 @@ then this is the app list
 ```
 $ git clone git@github.com:obscrete/apptools.git
 $ git clone git@github.com:obscrete/elgamal.git
+$ git clone git@github.com:obscrete/enacl.git
 $ git clone git@github.com:obscrete/jsone.git
 $ git clone git@github.com:obscrete/mail.git
 $ git clone git@github.com:obscrete/mpa.git

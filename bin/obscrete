@@ -112,6 +112,7 @@ while :; do
             ;;
 	--simulator)
 	    simulator=1
+            ;;
         --)
             shift
             erl_options=$@
