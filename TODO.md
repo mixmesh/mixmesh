@@ -12,7 +12,7 @@
   usb connection, none-routable (enough with no dns option?)
 * Test bluetooth connection from Android and iOS.
 * document all REST commands with examples!
-* Clean elgamal.erl from obsolete comments and remove non-used function
+* Clean elgamal.erl from obsolete comments and remove non-used functions
 
 ### Joakim
 
