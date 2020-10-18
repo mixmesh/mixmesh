@@ -9,7 +9,7 @@ I found some great advice here:
 * https://www.w3.org/TR/mobile-bp/
 * https://developer.android.com/guide/webapps/best-practices
 
-# Overal layout
+# Overall layout
 
 I suggest that we use a vertical bottom icon navigation bar on all **pages** (if applicable). Commonality and ease of use.
 
