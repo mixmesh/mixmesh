@@ -16,8 +16,6 @@
 
 ### Joakim
 
-* Clean payload from unintersting bloat. Check with Tony.
-
 ## Demo hardware
 * Raspberry pi zero W/H
 * Use pisuger2 battery that can read battery status and
