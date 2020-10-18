@@ -25,7 +25,7 @@ Navigation bar: **none**
 
 ## Page: Initialization screen
 
-A newly initialized box only provides this single initialization page to the user (for at most one hour). On this page the player's secret key is shown as a 2d-barcode together with instructions on how important it is to make a backup copy of it. There is one button on this page: "I understand!".
+A newly initialized box only provides this single initialization page to the user (for at most one hour). On this page the secret key is shown as a 2d-barcode together with instructions on how important it is to make a backup copy of it. There is one button on this page: "I understand!".
 
 If the user clicks on the button he/she is taken to a new page where a nym and password must be given. All details on how to the create a mail account is also listed here, i.e. IP-address, port numbers and SSL settings etc. Ideally we should ask the user if we are allowed to automatically create a mail account. Not for the faint of heart though. Hard. There is one button on this page: "Finish".
 
@@ -33,7 +33,7 @@ Navigation bar: **none**
 
 ## Page: My Key
 
-Well, here the user's nym and public key is shown as a 2d-barcode and other users can go to their "Import player" page to import it.
+Well, here the user's nym and public key is shown as a 2d-barcode and other users can go to their "Import key" page to import it.
 
 Navigation bar: | **My Key** | *Import Key* | *List keys* | *Import key bundle* | *Settings* |
 
