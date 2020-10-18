@@ -71,7 +71,7 @@ The user is asked to provide a key bundle using a file-upload input field and an
 
 Navigation bar: | *My Key* | *Import Key* | *List Keys* | **Import Key Bundle** | *Settings* |
 
-## Page: Settings
+## Page: *Settings*
 
 * Mail server ip address
 * Mail server ports
