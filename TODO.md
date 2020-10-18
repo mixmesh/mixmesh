@@ -12,14 +12,11 @@
   usb connection, none-routable (enough with no dns option?)
 * Test bluetooth connection from Android and iOS.
 * document all REST commands with examples!
+* Clean elgamal.erl from obsolete comments and remove non-used function
 
 ### Joakim
 
-* Convert all code to use the "nym" instead of "*name*" and "username" etc.
-  Check with Tony.
 * Clean payload from unintersting bloat. Check with Tony.
-* Align ::
-* Clean elgamal.erl from cruft
 
 ## Demo hardware
 * Raspberry pi zero W/H
