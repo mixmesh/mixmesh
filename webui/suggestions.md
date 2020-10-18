@@ -61,7 +61,7 @@ Functions:
 * Selected keys can be deleted in a single swoop with a "delete-selected" button
 * All keys can be selected using a "select-all" checkbox
 * A live search input field can be seen in the upper right corner. It makes it possible to do substring-filtering on nyms.
-* A user can select keys in the list and export them as a single key bundle using an "export-selected" button. The user is then prompted for a password and an "export" button appears. If clicked the box encrypts a bundle with the selected key and presnets the user with a new page with some info what to do an a "save" button. The user puts the bundle in a place of his/her choosing.
+* A user can select keys in the list and export them as a single key bundle using an "export-selected" button. The user is then prompted for a password and an "export" button appears. If clicked the box encrypts a bundle with the selected key and presents the user with a new page with some info what to do and a "save" button (a link to a .txt file with a base64 encoded key bundle). The user puts the bundle in a place of his/her choosing.
 
 Navigation bar: | *My Key* | *Import Key* | **List keys** | *Import key bundle* | *Settings* |
 
