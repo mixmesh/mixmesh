@@ -1,6 +1,6 @@
-# General stuff
+# Suggestions: The making of a Web UI
 
-We should in the end probably use a framwork such as [UIkit](https://getuikit.com/docs/introduction). That way we can just write plain HTML and adorn it as seen in, for example, https://getuikit.com/docs/list and https://getuikit.com/docs/iconnav. This way we can avoid CSS altogether. We don't even need to import an icon pack (https://getuikit.com/docs/icon). :-)
+We should in the end probably use a framwork such as [UIkit](https://getuikit.com/docs/introduction). That way we can just write plain HTML and adorn it as seen in, for example, https://getuikit.com/docs/list and https://getuikit.com/docs/iconnav. This way we can avoid CSS altogether. We do not even need to import an icon pack if we use https://getuikit.com/docs/icon. :-)
 
 To start with we should probably use plain unadorned HTML though.
 
@@ -11,57 +11,63 @@ I found some great advice here:
 
 # Overal layout
 
-I suggest that we use a vertical bottom icon navigation bar on all **pages**. Commonality and ease of use.
+I suggest that we use a vertical bottom icon navigation bar on all **pages** (when needed). Commonality and ease of use.
 
-This top-level navigation bar could have these entries (but with icons):
+The top-level navigation bar could have these entries (but with icons):
 
-| *My Key* | *Import Key* | *List players* | *Import key bundle* | *Settings* |
+| *My Key* | *Import Key* | *List keys* | *Import key bundle* | *Settings* |
 
 # Pages
 
 ## Page: Splash screen
 
-Shown initially in 2 seconds to impress noone. :-P
+Shown initially for 2 seconds to impress noone. :-P
 
 Navigation bar: **none**
 
 ## Page: Initialization screen
 
-A newly initialized box only provides this single page to the user (for at most one hour). On this page the player's secret key is shown as a 2d-barcode together with instructions on how to important it is to make a backup of this key. There is one button on this page: "I understand!".
+A newly initialized box only provides this single initialization page to the user (for at most one hour). On this page the player's secret key is shown as a 2d-barcode together with instructions on how to important it is to make a backup copy of it. There is one button on this page: "I understand!".
 
-If the user clicks the button he/she is taken to a new page where a nym and appropriate mail password isi given 
+If the user clicks the button he/she is taken to a new page where a nym and password must be given. All details on how the create a mail account is listed here as well, i.e. IP-address, port numbers and SSL settings etc. Ideally we should ask the user if we should a mail account automatically in the user's mail reader. Not for the faint of heart. There is one button on this page: "Finish".
 
-No navigation bar
+Navigation bar: **none**
 
-## Page: List players
+## Page: My Key
 
-Show a list of players, i.e. their nyms and public keys.
+Well, here the user's nym + public key is shown as a 2d-barcode and other users can go to their "Import player" page to import it.
 
-Functions:
+Navigation bar: | **My Key** | *Import Key* | *List keys* | *Import key bundle* | *Settings* |
 
-* Players are sorted alphabetically on nym
-* If the user clicks on a player a 2d-barcode + OCR string is shown
-* A player is deleted if the user clicks on its right aligned trash icon
-* A user can select several indvidually with checkboxes
-* Selected players can be deleted in a single swoop
-* All players can be selected using a dedicated "select-all" checkbox
-* A live filter search input field can be seen in the upper right corner. It makes it possible to substring-filter players in the list.
-* A user can select players in the list and export them as a single bundle using an activated "export" icon in the navigation bar. The user is prompted for a password and after it has been provided an encrypted player bundle is prepared on the box. On success the user is presented with a save button which points to a temporary link on the box.
-
-## Page: Import player
+## Page: Import key
 
 A live camera feed is started. On Android a 2d-barcode engine can be activated using the JavascriptInterface support, e.g.
 https://stackoverflow.com/a/14606975.
 
-As soon as a valid 2d-barcode has been read the user is taken back to the Web UI and the player is auto-imported to the box, and shown as a new 2d-barcode (and OCR string). If something fails in the process the user is informed.
+As soon as a valid 2d-barcode has been read the user is taken back to the browser and the key is auto-imported on the box, and shown as a new 2d-barcode. If something fails in the process the user is informed.
 
-## Page: Import a bundle of players
+Navigation bar: | *My Key* | **Import Key** | *List keys* | *Import key bundle* | *Settings* |
+
+## Page: List keys
+
+Shows a list of keys, i.e. nyms and public keys.
+
+Functions:
+
+* Keys are sorted alphabetically on nym
+* If the user clicks on a key a 2d-barcode is shown as an overlay on the page (it has a close box)
+* A key is deleted if the user clicks on its right aligned trash icon
+* A user can select several indvidually keys with checkboxes
+* Selected keys can be deleted in a single swoop with a "delete-selected" button
+* All keys can be selected using a "select-all" checkbox
+* A live search input field can be seen in the upper right corner. It makes it possible to do substring-filter on nyms in the list.
+* A user can select keys in the list and export them as a single bundle using an "export-selected" button. The user is then prompted for a password and an "export" button. When clicked the box encrypts a bundle with the selcted keys. On success the user is presented with a "save" button which points to a temporary link on the box. The user puts the bundle in a place of his/her choosing.
+
+Navigation bar: | *My Key* | *Import Key* | **List keys** | *Import key bundle* | *Settings* |
+
+## Page: Import key bundle
 
 The user is asked to provide a player bundle using a file-upload input field and an appropriate password. An "import" icon is activated in the navigation bar as soon as a URL and password has been given. If the user clicks on "import" the whole bundle is uploaded to the box, and decrypted. The user is on success taken to the "List players" page.
-
-## Page: Show the users own 2d-barcode
-
-Well, the user's nym + public key is shown as a 2d-barcode and other users can go to their "Import player" page to import it.
 
 ## Page: Mail settings (lower prio)
 
