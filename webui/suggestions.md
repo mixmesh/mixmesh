@@ -67,12 +67,16 @@ Navigation bar: | *My Key* | *Import Key* | **List keys** | *Import key bundle* 
 
 ## Page: Import key bundle
 
-The user is asked to provide a player bundle using a file-upload input field and an appropriate password. An "import" icon is activated in the navigation bar as soon as a URL and password has been given. If the user clicks on "import" the whole bundle is uploaded to the box, and decrypted. The user is on success taken to the "List players" page.
+The user is asked to provide a player bundle using a file-upload input field and an appropriate password. An "import" button is activated as soon as an URL and password has been provided. When clicked the whole bundle is uploaded to the box and decrypted. The user is on success taken to the "List players" page or provided with an failure reason.
 
-## Page: Mail settings (lower prio)
+Navigation bar: | *My Key* | *Import Key* | *List keys* | **Import key bundle** | *Settings* |
 
-The user can change the POP3/SMTP ports (and possiblly other mail related parameters) and manage a list of mail accounts (and their passwords) which should be granted mail service on the box. I know. :-) Maybe not.
+## Page: Settings
 
-## Page: System settings
+Mail settings:
+
+* Mail server ip address
+* Mail server ports
+* SSL settings
 
 We will come up with loads of them. I'm sure. :-)
