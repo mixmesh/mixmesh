@@ -44,7 +44,7 @@ Navigation bar: | **My Key** | *Import Key* | *List keys* | *Import key bundle* 
 A live camera feed is started. On Android a 2d-barcode engine can be activated using the `JavascriptInterface` support, e.g.
 https://stackoverflow.com/a/14606975.
 
-As soon as a valid 2d-barcode has been read by the 2d-barcode engone the user is taken back to the browser and the key is auto-imported to the box. On success a the new key's 2d-barcode is shown. If something fails the user is informed.
+As soon as a valid 2d-barcode has been read by the 2d-barcode engine the user is taken back to the browser and the key is auto-imported to the box. On success a the new key's 2d-barcode is shown. If something fails the user is informed.
 
 Navigation bar: | *My Key* | **Import Key** | *List keys* | *Import key bundle* | *Settings* |
 
