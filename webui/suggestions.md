@@ -15,7 +15,7 @@ I suggest that we use a vertical bottom icon navigation bar on all **pages** (if
 
 The navigation bar could have these entries (with icons):
 
-| *My Key* | *Import Key* | *List keys* | *Import key bundle* | *Settings* |
+| *My Key* | *Import Key* | *List Keys* | *Import Key Kundle* | *Settings* |
 
 # Pages
 
@@ -33,22 +33,22 @@ If the user clicks on the button he/she is taken to a new page where a nym and p
 
 Navigation bar: **none**
 
-## Page: My Key
+## Page: *My Key*
 
 Well, here the user's nym and public key is shown as a 2d-barcode and other users can go to their "Import key" page to import it.
 
 Navigation bar: | **My Key** | *Import Key* | *List keys* | *Import key bundle* | *Settings* |
 
-## Page: Import key
+## Page: *Import Key*
 
 A live camera feed is started. On Android a 2d-barcode engine can be activated using the `JavascriptInterface` support, e.g.
 https://stackoverflow.com/a/14606975.
 
 As soon as a valid 2d-barcode has been read by the 2d-barcode engine the user is taken back to the browser and the key is auto-imported to the box. On success a the new key's 2d-barcode is shown. If something fails the user is informed.
 
-Navigation bar: | *My Key* | **Import Key** | *List keys* | *Import key bundle* | *Settings* |
+Navigation bar: | *My Key* | **Import Key** | *List Keys* | *Import Key Bundle* | *Settings* |
 
-## Page: List keys
+## Page: *List Keys*
 
 Shows a list of keys, i.e. nyms and public keys.
 
@@ -63,13 +63,13 @@ Functions:
 * A live search input field can be seen in the upper right corner. It makes it possible to do substring-filtering on nyms.
 * A user can select keys in the list and export them as a single key bundle using an "export-selected" button. The user is then prompted for a password and an "export" button appears. If clicked the box encrypts a bundle with the selected key and presents the user with a new page with some info what to do and a "save" button (a link to a .txt file with a base64 encoded key bundle). The user puts the bundle in a place of his/her choosing.
 
-Navigation bar: | *My Key* | *Import Key* | **List keys** | *Import key bundle* | *Settings* |
+Navigation bar: | *My Key* | *Import Key* | **List Keys** | *Import Key Bundle* | *Settings* |
 
-## Page: Import key bundle
+## Page: *Import Key Bundle*
 
 The user is asked to provide a key bundle using a file-upload input field and an appropriate password. An "import" button is activated as soon as an URL and password has been provided. When clicked the whole bundle is uploaded to the box and decrypted. The user is on success taken to the "List keys" page or provided with a failure reason.
 
-Navigation bar: | *My Key* | *Import Key* | *List keys* | **Import key bundle** | *Settings* |
+Navigation bar: | *My Key* | *Import Key* | *List Keys* | **Import Key Bundle** | *Settings* |
 
 ## Page: Settings
 
