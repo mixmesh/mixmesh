@@ -40,10 +40,9 @@ maybe BUTTON to terminate connection
 * packet mode for player_sync. Is packet 2 enough or do we need packet 4?
 * Iron out the box installation procedure of the box in detail
 * Read/write public keys from PKI server?
-* How should we import new keys into A1? An app? Mounted disk? How?
-.* Examplel simple web ui, import export show delete
+* How should we import new keys? An app? Mounted disk? How?
+.* Example simple web ui, import export show delete
 .* Export secret key once at startup
-
 
 ## Buffer session
 
@@ -58,21 +57,9 @@ maybe BUTTON to terminate connection
 * Add scram-sha1 password digest support to POP3/SMTP servers
 * Make it possible to have serveral mail accounts on a single box. Maybe.
 * Move digested passwords from config file into a passwd file on disk (especially if we support several mail accounts on a single box). Use Argon2 or just encrypt the whole passwd file using secretbox or whatever.
-* Consider using libsodium. Safer and faster.
 * Add delays between login attempts to SMTP/POP3 servers (Argon2 hashing is to heavy)
-
-* Nudge message box parameters. K and F?  What is the max message size?
-* PKI modes
-.* Keep public key database encrypted on disk somehow
-.* From a central SSL based PKI-server over the net
-     (The box must use the phone's Internet connection. How?)
-.* From a PKI server introduced as a hidden service on Tor
-     (The box must use the phone's Internet connection. How?)
-* How do we handle DOS attacks?
-
-* Move the players private key out from *.conf files and PIN-encode it
-* Add SSL to SMTP and POP3 servers
-B) Support a hybrid encryption approach in order to support media streams
+* If the box use a central PKI server over TOR or SSL it must tether on the phone Intenet connection. How?
+* Support a hybrid encryption approach in order to support media streams
 * Add resend/ack/seqnumber etc to better support B?
 * Write bridge servers as hidden services on Tor to bridge traffic between different geograophic islans of Obscrete nets (jocke*nyc@gmail.com) (The box must use the phone's Internet connection. How?)
 * Talk to a campus and ask them if we can install our boxes in their attics, say 20 boxes on KTH. A 500kr each.
