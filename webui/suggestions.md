@@ -35,7 +35,7 @@ Navigation bar: **none**
 
 ## Page: My Key
 
-Well, here the user's nym and public key is shown as a 2d-barcode and other users can go to their "Import key" page to import it.
+Well, here the user's nym and public key shown as a 2d-barcode and other users can go to their "Import key" page to import it.
 
 Navigation bar: | **My Key** | *Import Key* | *List keys* | *Import key bundle* | *Settings* |
 
