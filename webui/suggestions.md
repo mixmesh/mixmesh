@@ -67,7 +67,7 @@ Navigation bar: | *My Key* | *Import Key* | **List keys** | *Import key bundle* 
 
 ## Page: Import key bundle
 
-The user is asked to provide a key bundle using a file-upload input field and an appropriate password. An "import" button is activated as soon as an URL and password has been provided. When clicked the whole bundle is uploaded to the box and decrypted. The user is on success taken to the "List players" page or provided with a failure reason.
+The user is asked to provide a key bundle using a file-upload input field and an appropriate password. An "import" button is activated as soon as an URL and password has been provided. When clicked the whole bundle is uploaded to the box and decrypted. The user is on success taken to the "List keys" page or provided with a failure reason.
 
 Navigation bar: | *My Key* | *Import Key* | *List keys* | **Import key bundle** | *Settings* |
 
