@@ -6,13 +6,11 @@
 
 ### Tony
 
-* Bluetooth connection
-  none-routable (enough with no dns option?) with dhcpd.
-* USB ether connection
-  usb connection, none-routable (enough with no dns option?)
-* Test bluetooth connection from Android and iOS.
+* Test bluetooth connection, various clients
 
 ### Joakim
+
+* Document README.md pin-salt digest etc etc HOW to use it in what order ...
 
 ## Demo hardware
 * Raspberry pi zero W/H
