@@ -32,6 +32,7 @@ erl_libs=${bin_dir}/../..
 pa="-pa ${erl_libs}/*/test"
 perform="-eval obscrete:start()"
 simulator=0
+sname="-sname obscrete@localhost"
 
 while :; do
     case $1 in
@@ -48,6 +49,7 @@ while :; do
         --reload)
             shell="-noinput"
             perform="-run obscrete_config_serv reload"
+            sname=""
             break
             ;;
         --control-address)
@@ -67,6 +69,7 @@ while :; do
         --stop)
             shell="-noinput"
             perform="-run obscrete_config_serv stop"
+            sname=""
             break
             ;;
         --digest-password)
@@ -76,6 +79,7 @@ while :; do
             shell="-noinput"
             perform="-run obscrete_command digest_password $2"
             shift
+            sname=""
             break
             ;;
         --elgamal-keys)
@@ -93,6 +97,7 @@ while :; do
             fi
             shell="-noinput"
             perform="-run obscrete_command pin_salt"
+            sname=""
             shift
             break
             ;;
@@ -144,4 +149,4 @@ export ERL_LIBS=${erl_libs}:$ERL_LIBS
 # uncomment to debug execution or add -x flag :-)
 # echo ${erl} ${pa} ${erl_config} ${config} ${shell} ${control_address} ${control_port} ${perform} ${erl_options}
 
-${erl} -sname obscrete@localhost ${pa} ${erl_config} ${config} ${shell} ${control_address} ${control_port} ${perform} ${erl_options}
+${erl} ${sname} ${pa} ${erl_config} ${config} ${shell} ${control_address} ${control_port} ${perform} ${erl_options}

@@ -7,7 +7,10 @@
              obscrete_log_serv,
              obscrete_sup]},
   {registered, [obscrete_app, obscrete_sup]},
+  {env, [{schemas, [pin_schema,
+                    global_pki_server_schema,
+                    player_schema,
+                    obscrete_control_schema,
+                    logs_schema]}]},
   {mod, {obscrete_app, []}},
-  {applications, [kernel, stdlib, apptools]}
-]}.
-
+  {applications, [kernel, stdlib, apptools]}]}.

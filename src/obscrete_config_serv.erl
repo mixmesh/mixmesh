@@ -1,5 +1,5 @@
 -module(obscrete_config_serv).
--export([start_link/0, stop/0, reload/0]).
+-export([start_link/0, stop/0, subscribe/0, reload/0]).
 
 -include_lib("apptools/include/log.hrl").
 -include_lib("apptools/include/shorthand.hrl").
@@ -68,6 +68,11 @@ stop() ->
         {error, Reason} ->
             die(config_serv:format_error(Reason), [])
     end.
+
+%% Exported: subscribe
+
+subscribe() ->
+    config_serv:subscribe(?MODULE).
 
 %% Exported: reload
 
