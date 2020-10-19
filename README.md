@@ -114,7 +114,7 @@ mrproper, megapull and *dialyzer*.
 
 Create a self-signed certificate to be used by the SMTP/POP3 SSL servers:
 
-`$ ./bin/obscrete --self-signed-cert > cert.pem`
+`$ ./bin/obscrete --self-signed-ssl-cert > cert.pem`
 
 and then create a mandatory file structure needed by Obscrete:
 
