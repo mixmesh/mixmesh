@@ -7,11 +7,6 @@
              obscrete_log_serv,
              obscrete_sup]},
   {registered, [obscrete_app, obscrete_sup]},
-  {env, [{prepended_config_schema, [{module, obscrete_config_schema},
-                                    {module, pki_config_schema},
-                                    {module, player_config_schema},
-                                    {module, simulator_config_schema}]},
-         {appended_config_schema, []}]},
   {mod, {obscrete_app, []}},
   {applications, [kernel, stdlib, apptools]}
 ]}.
