@@ -40,10 +40,12 @@ elgamal_keys([Pin, PinSalt, Nym]) ->
                               "Error: PIN salt is not BASE64 encoded\n", []),
                     erlang:halt(100);
                 _ ->
-                    Key = enacl:pwhash(?l2b(Pin), DecodedPinSalt,
-                                       enacl:secretbox_KEYBYTES()),
+                    SharedKey =
+                        enacl:pwhash(?l2b(Pin), DecodedPinSalt,
+                                     enacl:secretbox_KEYBYTES()),
                     {PublicKey, EncryptedSecretKey} =
-                        player_crypto:encrypt_new_key_pair(Key, ?l2b(Nym)),
+                        player_crypto:encrypt_new_key_pair(
+                          SharedKey, ?l2b(Nym)),
                     io:format("-----BEGIN SECRET KEY-----\n"),
                     io:format("~s\n", [base64:encode(EncryptedSecretKey)]),
                     io:format("-----END SECRET KEY-----\n"),
