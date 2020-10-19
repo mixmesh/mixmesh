@@ -11,8 +11,6 @@
 * USB ether connection
   usb connection, none-routable (enough with no dns option?)
 * Test bluetooth connection from Android and iOS.
-* document all REST commands with examples!
-* Clean elgamal.erl from obsolete comments and remove non-used functions
 
 ### Joakim
 
@@ -34,6 +32,7 @@ maybe BUTTON to terminate connection
 ## WEB ui
 * configure bluetooth interface (on/off)
 * configure import/export/delete and show public keys, both yours and others.
+* document all REST commands with examples!
 
 ## Fixes needed
 
