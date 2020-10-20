@@ -78,7 +78,7 @@
             true ->
                 error_logger:error_report(
                   {?MODULE, ?LINE,
-                   lists:flatten(io_lib:format((_Format), Args))});
+                   lists:flatten(io_lib:format((_Format), (_Args)))});
             false  ->
                 silence
         end).
