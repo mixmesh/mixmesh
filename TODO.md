@@ -14,12 +14,11 @@
 
 ### Joakim
 
-* Document README.md pin-salt digest 
+* Document README.md pin-salt digest
 * Config schema order on top-level? etc HOW to use it in what order ...
 * Write OTP config from json?
 * Prio header POP/SMTP (Color = Farlig)
 * Body wrap SIGNATURE mismatch
-* Log debug format. Conditional call.
 * Where should rester_rest be located? obscrete\_rest?
 * Add webadmin password
 

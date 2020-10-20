@@ -1,8 +1,9 @@
 -module(obscrete_log_serv).
 -export([start_link/0]).
--export([read_config/0]).
+-export([is_log_enabled/1]).
 
 -include_lib("apptools/include/log_serv.hrl").
+-include("../include/log.hrl").
 
 %% Exported: start_link
 
@@ -10,16 +11,25 @@
 
 start_link() ->
     case log_serv:start_link(?MODULE, obscrete_config_serv,
-                             fun read_config/0) of
+                             fun read_config/0,
+                             fun config_updated/0) of
         {ok, Pid} ->
+            ?MODULE = ets:new(?MODULE, [public, named_table]),
+            true = config_updated(),
             {ok, Pid};
         {error, Reason} ->
             io:format(standard_error, log_serv:format_error(Reason), []),
             {error, Reason}
     end.
 
+%% Exported: is_log_enabled
+
+is_log_enabled(LogType) ->
+    [{LogType, Enabled}] = ets:lookup(?MODULE, LogType),
+    Enabled.
+
 %%
-%% Read log configuration
+%% Configuration
 %%
 
 read_config() ->
@@ -59,3 +69,11 @@ error_log_info() ->
     #error_log_info{enabled = Enabled,
                     tty = Tty,
                     file = {FileEnabled, FilePath}}.
+
+config_updated() ->
+    DaemonEnabled = config:lookup([logs, daemon, enabled]),
+    true = ets:insert(?MODULE, {daemon, DaemonEnabled}),
+    DbgEnabled = config:lookup([logs, dbg, enabled]),
+    true = ets:insert(?MODULE, {dbg, DbgEnabled}),
+    ErrorEnabled = config:lookup([logs, error, enabled]),
+    ets:insert(?MODULE, {error, ErrorEnabled}).

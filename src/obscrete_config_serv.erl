@@ -1,9 +1,9 @@
 -module(obscrete_config_serv).
 -export([start_link/0, stop/0, subscribe/0, reload/0]).
 
--include_lib("apptools/include/log.hrl").
 -include_lib("apptools/include/shorthand.hrl").
 -include_lib("apptools/include/config_schema.hrl").
+-include("../include/log.hrl").
 
 -define(DEFAULT_CONFIG_FILENAME, <<"/etc/obscrete.conf">>).
 -define(DEFAULT_CONTROL_ADDRESS, {127, 0, 0, 1}).

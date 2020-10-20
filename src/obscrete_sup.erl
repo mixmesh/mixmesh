@@ -11,11 +11,11 @@ start_link(Args) ->
 %% Exported: init
 
 init([]) ->
-    ConfigJsonServChildSpec =
+    ConfigJsonServSpec =
         {obscrete_config_serv, {obscrete_config_serv, start_link, []},
          permanent, brutal_kill, worker, [obscrete_config_serv]},
     LogServChildSpec =
         {obscrete_log_serv, {obscrete_log_serv, start_link, []},
          permanent, brutal_kill, worker, [obscrete_log_serv]},
     {ok, {{one_for_one, 3, 10},
-          [ConfigJsonServChildSpec, LogServChildSpec]}}.
+          [ConfigJsonServSpec, LogServChildSpec]}}.
