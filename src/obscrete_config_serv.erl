@@ -1,5 +1,5 @@
 -module(obscrete_config_serv).
--export([start_link/0, stop/0, subscribe/0, reload/0]).
+-export([start_link/0, stop/0, reload/0]).
 
 -include_lib("apptools/include/log.hrl").
 -include_lib("apptools/include/shorthand.hrl").
@@ -16,7 +16,7 @@
 
 start_link() ->
     ConfigFilename = config_filename(),
-    case config_serv:start_link(?MODULE, ConfigFilename, get_schemas(),
+    case config_serv:start_link(ConfigFilename, get_schemas(),
                                 ['obscrete-control', listen],
                                 fun config_handler/1) of
         {ok, Pid} ->
@@ -49,7 +49,7 @@ config_handler(Socket) ->
             init:stop(),
             ok;
         {tcp, Socket, <<"reload">>} ->
-            ?MODULE ! reload,
+            config_serv ! reload,
             ok;
         {tcp_closed, Socket} ->
             ok
@@ -68,11 +68,6 @@ stop() ->
         {error, Reason} ->
             die(config_serv:format_error(Reason), [])
     end.
-
-%% Exported: subscribe
-
-subscribe() ->
-    config_serv:subscribe(?MODULE).
 
 %% Exported: reload
 
