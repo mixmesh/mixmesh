@@ -6,11 +6,28 @@
 
 ### Tony
 
+* raspberry-pi-z installation guide (script?)
+* servator release guide
+* build a disk image to simplify everything, with a factor of 1000000
 * Test bluetooth connection, various clients
+* Rest command resize image or auto resize at start (at pin code entry)
 
 ### Joakim
 
-* Document README.md pin-salt digest etc etc HOW to use it in what order ...
+* Document README.md pin-salt digest 
+* Config schema order on top-level? etc HOW to use it in what order ...
+* Write OTP config from json?
+* Prio header POP/SMTP (Color = Farlig)
+* Body wrap SIGNATURE mismatch
+* Log debug format. Conditional call.
+* Where should rester_rest be located? obscrete\_rest?
+* Add webadmin password
+
+### Both
+
+* Write REST commands.
+* Talk about buffer management.
+
 
 ## Demo hardware
 * Raspberry pi zero W/H

@@ -2,6 +2,7 @@
 -export([digest_password/1, elgamal_keys/1, pin_salt/0]).
 
 -include_lib("apptools/include/shorthand.hrl").
+-include_lib("elgamal/include/elgamal.hrl").
 
 %% Exported: digest_password
 
@@ -14,9 +15,10 @@ digest_password([Password]) ->
 
 elgamal_keys([Pin, PinSalt, Nym]) ->
     case {length(Pin), lists:all(fun(C) -> C >= $0 andalso C =< $9 end, Pin)} of
-        _ when length(Nym) > 31 ->
+        _ when length(Nym) > ?MAX_NYM_SIZE ->
             io:format(standard_error,
-                      "Error: A NYM must at most contain 31 characters\n", []),
+                      "Error: A NYM must at most contain ~w characters\n", 
+		      [?MAX_NYM_SIZE]),
             erlang:halt(100);
         {PinLen, _} when PinLen /= 6 ->
             io:format(standard_error,
