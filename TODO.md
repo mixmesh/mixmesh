@@ -14,6 +14,7 @@
 
 ### Joakim
 
+* remove lib
 * Document README.md pin-salt digest
 * Config schema order on top-level? etc HOW to use it in what order ...
 * Write OTP config from json?
