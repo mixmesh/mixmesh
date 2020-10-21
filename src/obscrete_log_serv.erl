@@ -8,7 +8,7 @@
 -spec start_link() -> {'ok', pid()} | {'error', log_serv:error_reason()}.
 
 start_link() ->
-    case log_serv:start_link(config_serv, fun read_config/0) of
+    case log_serv:start_link(fun read_config/0) of
         {ok, Pid} ->
             {ok, Pid};
         {error, Reason} ->

@@ -76,6 +76,19 @@ status:
 		(cd $(LPATH)/$$lib && git status -s) || exit 1; \
 	done
 
+# commit all repos found in parent directory
+megacommit: commit
+commit:
+	@if [ ! -z "$(COMMENT)" ]; then \
+		for lib in $(ALL_LIST) ; do \
+			echo "==== Commit $$lib ===="; \
+			(cd $(LPATH)/$$lib && git commit -a -m "$(COMMENT)") || exit 1; \
+			echo "$(COMMENT)"; \
+		done \
+	else \
+		echo "COMMENT environment variable must be set!"; \
+	fi
+
 # Clone everything
 megaclone: clone simclone
 
