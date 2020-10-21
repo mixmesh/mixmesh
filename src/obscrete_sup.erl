@@ -17,5 +17,20 @@ init([]) ->
     LogServChildSpec =
         {obscrete_log_serv, {obscrete_log_serv, start_link, []},
          permanent, brutal_kill, worker, [obscrete_log_serv]},
-    {ok, {{one_for_one, 3, 10},
-          [ConfigJsonServSpec, LogServChildSpec]}}.
+    RestSpec = 
+	{obscrete_rest, {obscrete_rest, start_link, []},
+	 permanent, brutal_kill, worker, [obscrete_rest]},
+    case application:get_env(obscrete, schemas) of
+	{ok,Schemas} ->
+	    case lists:member(obscrete_http_schema, Schemas) of
+		true ->
+		    {ok, {{one_for_one, 3, 10},
+			  [ConfigJsonServSpec, LogServChildSpec, RestSpec]}};
+		false ->
+		    {ok, {{one_for_one, 3, 10},
+			  [ConfigJsonServSpec, LogServChildSpec]}}
+	    end;
+	undefined ->
+	    {ok, {{one_for_one, 3, 10},
+		  [ConfigJsonServSpec, LogServChildSpec]}}
+    end.
