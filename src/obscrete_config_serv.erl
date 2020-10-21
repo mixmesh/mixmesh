@@ -16,9 +16,12 @@
 
 start_link() ->
     ConfigFilename = config_filename(),
-    case config_serv:start_link(ConfigFilename, get_schemas(),
-                                ['obscrete-control', listen],
-                                fun config_handler/1) of
+    case config_serv:start_link(
+           ConfigFilename, get_schemas(),
+           fun() ->
+                   config:lookup(obscrete, ['obscrete-control', listen])
+           end,
+           fun config_handler/1) of
         {ok, Pid} ->
             {ok, Pid};
         {error, Reason} ->
