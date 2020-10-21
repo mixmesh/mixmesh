@@ -17,14 +17,15 @@ init([]) ->
     LogServChildSpec =
         {obscrete_log_serv, {obscrete_log_serv, start_link, []},
          permanent, brutal_kill, worker, [obscrete_log_serv]},
-    RestOrRun = 
-	try config:lookup(['http-server']) of
-	    _ ->
-		[{obscrete_rest, {obscrete_rest, start_link, []},
-		  permanent, brutal_kill, worker, [obscrete_rest]}]
-	catch
-	    throw:_Reason ->
-		[]
-	end,
-    {ok, {{one_for_one, 3, 10},
-          [ConfigJsonServSpec, LogServChildSpec | RestOrRun]}}.
+    RestSpec = 
+	{obscrete_rest, {obscrete_rest, start_link, []},
+	 permanent, brutal_kill, worker, [obscrete_rest]},
+    case application:get_env(obscrete, schemas) of
+	{ok,_} ->
+	    {ok, {{one_for_one, 3, 10},
+		  [ConfigJsonServSpec, LogServChildSpec, RestSpec]}};
+	undefined ->
+	    {ok, {{one_for_one, 3, 10},
+		  [ConfigJsonServSpec, LogServChildSpec]}}
+    end.
+
