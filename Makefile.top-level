@@ -82,7 +82,7 @@ commit:
 	@if [ ! -z "$(COMMENT)" ]; then \
 		for lib in $(ALL_LIST) ; do \
 			echo "==== Commit $$lib ===="; \
-			(cd $(LPATH)/$$lib && git commit -a -m "$(COMMENT)") || exit 1; \
+			(cd $(LPATH)/$$lib && git commit -a -m "$(COMMENT)" | true) || exit 1; \
 			echo "$(COMMENT)"; \
 		done \
 	else \
