@@ -21,11 +21,16 @@ init([]) ->
 	{obscrete_rest, {obscrete_rest, start_link, []},
 	 permanent, brutal_kill, worker, [obscrete_rest]},
     case application:get_env(obscrete, schemas) of
-	{ok,_} ->
-	    {ok, {{one_for_one, 3, 10},
-		  [ConfigJsonServSpec, LogServChildSpec, RestSpec]}};
+	{ok,Schemas} ->
+	    case lists:member(obscrete_http_schema, Schemas) of
+		true ->
+		    {ok, {{one_for_one, 3, 10},
+			  [ConfigJsonServSpec, LogServChildSpec, RestSpec]}};
+		false ->
+		    {ok, {{one_for_one, 3, 10},
+			  [ConfigJsonServSpec, LogServChildSpec]}}
+	    end;
 	undefined ->
 	    {ok, {{one_for_one, 3, 10},
 		  [ConfigJsonServSpec, LogServChildSpec]}}
     end.
-
