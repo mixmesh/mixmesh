@@ -15,6 +15,7 @@ start() ->
     ok = application:start(sasl),
     {ok,_} = application:ensure_all_started(ssl),
     ok = application:start(apptools),
+    ok = application:start(rester),
     ok = application:start(obscrete), %% pki use config!
     ok = application:start(pki),
     ok = application:start(jsone),
@@ -24,7 +25,6 @@ start() ->
     ok = application:start(elgamal),
     case config:lookup([player, enabled]) of
         true ->
-	    ok = application:start(rester),
             ok = application:start(player);
         false ->
             skip

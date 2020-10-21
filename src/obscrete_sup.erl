@@ -17,5 +17,9 @@ init([]) ->
     LogServChildSpec =
         {obscrete_log_serv, {obscrete_log_serv, start_link, []},
          permanent, brutal_kill, worker, [obscrete_log_serv]},
+    RestServChildSpec =
+        {obscrete_rest, {obscrete_rest, start_link, []},
+         permanent, brutal_kill, worker, [obscrete_rest]},
+
     {ok, {{one_for_one, 3, 10},
-          [ConfigJsonServSpec, LogServChildSpec]}}.
+          [ConfigJsonServSpec, LogServChildSpec, RestServChildSpec]}}.
