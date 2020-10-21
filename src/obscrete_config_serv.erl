@@ -35,13 +35,13 @@ config_filename() ->
     end.
 
 get_schemas() ->
-    {ok, Schemas} = application:get_env(obscrete, schemas),
-    load_schemas(Schemas).
+    {ok, AppSchemas} = application:get_env(obscrete, app_schemas),
+    get_schemas(AppSchemas).
 
-load_schemas([]) ->
+get_schemas([]) ->
     [];
-load_schemas([Module|Rest]) ->
-    Module:get() ++ load_schemas(Rest).
+get_schemas([{App, SchemaModule}|Rest]) ->
+    [{App, SchemaModule:get()}|get_schemas(Rest)].
 
 config_handler(Socket) ->
     receive
