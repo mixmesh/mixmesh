@@ -68,6 +68,14 @@ pull:
 		(cd $(LPATH)/$$lib && git pull) || exit 1; \
 	done
 
+# push all repos found in parent directory
+megapush: push
+push:
+	@for lib in $(ALL_LIST) ; do \
+		echo "==== Push $$lib ===="; \
+		(cd $(LPATH)/$$lib && git push) || exit 1; \
+	done
+
 # get status for all repos found in parent directory
 megastatus: status
 status:
