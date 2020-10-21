@@ -88,7 +88,12 @@ and find the IP of the raspberry pi and use that instead of reaspberrypi.local
 	sudo apt update
 	sudo apt upgrade
 
+ Install needed packages
+
 	sudo apt install git
+	sudo apt install wget
+	sudo apt install emacs-nox
+	sudo apt install isc-dhcp-server
 
 ### install Erlang
 
@@ -97,16 +102,38 @@ and find the IP of the raspberry pi and use that instead of reaspberrypi.local
 
 Now download Erlang, unpack, configure, make and install
 
+	mkdir src
+	cd src
 	wget http://erlang.org/download/otp_src_23.0.tar.gz
 	tar xf otp_src_23.0.tar.gz
 	./configure
 	make
 	make install
 
+Add erlang libraries to your path
+
+	emacs .bashrc
+	
+Append the lines
+
+	export ERL_LIBS=$HOME/erlang
+	export ERL_CRASH_DUMP_SECONDS=0
+	export EDITOR=emacs
 
 ### Install Obscrete
 
-    sudo apt install libgmp-dev
-    sudo apt install libsodium
+Fetch the top-level application
+
+	mkdir erlang
+	cd erlang
+	git clone git@github.com:obscrete/obscrete
+
+And make a link to the top-level makefile
 	
+	ln -s obscrete/Makefile.top-level Makefile
 	
+Now we can clone other applications need and build everything
+
+	make clone
+	make
+
