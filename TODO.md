@@ -14,15 +14,9 @@
 
 ### Joakim
 
-
-application: reload
-  configs_server just get a reload message
-  applicatin:reload stuff
-  subscribe on config paths (kanske)
-
-* Document README.md pin-salt digest
 * Prio header POP/SMTP (Color = Farlig)
 * Body wrap SIGNATURE mismatch
+* Document README.md pin-salt digest
 
 ### Both
 
