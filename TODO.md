@@ -20,7 +20,7 @@
 
 * Write REST commands.
 * Talk about buffer management.
-
+* Prata om en möjlig avnästlad lagring av config i app env.
 
 ## Demo hardware
 * Raspberry pi zero W/H
@@ -50,6 +50,7 @@ maybe BUTTON to terminate connection
 * How should we import new keys? An app? Mounted disk? How?
 .* Example simple web ui, import export show delete
 .* Export secret key once at startup
+* Go through all message mangling and make sure that we understand multipart MIME messages (when needed)
 
 ## Buffer session
 
