@@ -94,11 +94,11 @@ and find the IP of the raspberry pi and use that instead of reaspberrypi.local
 	sudo apt install wget
 	sudo apt install emacs-nox
 	sudo apt install isc-dhcp-server
-
-### install Erlang
-
+	sudo apt-get install bluez-tools 
 	sudo apt install libncurses-dev
-	sudo apt install libssl-dev
+	sudo apt install libssl-dev	
+
+### install Erlang (fixme used patched version)
 
 Now download Erlang, unpack, configure, make and install
 
