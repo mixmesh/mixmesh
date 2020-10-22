@@ -14,8 +14,6 @@
 
 ### Joakim
 
-* Prio header POP/SMTP (Color = Farlig)
-* Body wrap SIGNATURE mismatch
 * Document README.md pin-salt digest
 
 ### Both
