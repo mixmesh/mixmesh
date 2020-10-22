@@ -14,13 +14,15 @@
 
 ### Joakim
 
+
+application: reload
+  configs_server just get a reload message
+  applicatin:reload stuff
+  subscribe on config paths (kanske)
+
 * Document README.md pin-salt digest
-* Config schema order on top-level? etc HOW to use it in what order ...
-* Write OTP config from json?
 * Prio header POP/SMTP (Color = Farlig)
 * Body wrap SIGNATURE mismatch
-* Where should rester_rest be located? obscrete\_rest?
-* Add webadmin password
 
 ### Both
 
