@@ -19,7 +19,7 @@ start() ->
     ok = application:start(obscrete), %% pki use config!
     ok = application:start(pki),
     ok = application:start(jsone),
-    ok = application:load(nodis),   %% start only in single player mode
+    ok = application:start(nodis),
     ok = application:start(mail),
     ok = application:start(mpa),
     ok = application:start(elgamal),

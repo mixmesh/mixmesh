@@ -114,11 +114,11 @@ mrproper, megapull and *dialyzer*.
 
 Create a self-signed certificate to be used by the SMTP/POP3 SSL servers:
 
-`$ ./bin/obscrete --self-signed-ssl-cert > cert.pem`
+	./bin/obscrete --self-signed-ssl-cert > cert.pem
 
 and then create a mandatory file structure needed by Obscrete:
 
-`$ ./bin/mkconfig /tmp/obscrete cert.pem alice`
+	./bin/mkconfig /tmp/obscrete cert.pem alice
 
 mkconfig in this case created:
 
@@ -136,7 +136,7 @@ files under ./obscrete/etc/*.conf.
 
 Start Obscrete with an appropriate configuration file, e.g.
 
-`./bin/obscrete --config ./etc/obscrete.conf`
+	./bin/obscrete --config ./etc/obscrete.conf
 
 ## Start simulator
 
