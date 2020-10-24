@@ -14,15 +14,13 @@ This resource method **must** be called in order to use **any** other resource m
 <table>
   <tr>
     <th>Request</th>
-    <th>Success Response</th>
-    <th>Failure Response</th>
+    <th>Response</th>
   </tr>
   <tr>
     <td valign="top"><pre lang="json">{
   "nym": "&lt;string (<32 characters)&gt;"
 }</pre></td>
     <td valign="top">204</td>
-    <td valign="top">-</td>
   </tr>
 </table>
 
