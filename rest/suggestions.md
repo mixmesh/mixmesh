@@ -27,17 +27,21 @@ https://restfulapi.net/http-status-codes/
     <td valign="top"><pre lang="json">{
   "nym": "&lt;string (<32 characters)&gt;"
 }</pre></td>
-    <td valign="top">204 No Content</td>
+    <td valign="top">204</td>
     <td valign="top">-</td>
-    <td valign="top">This <em>must</em> be done before any other resource method can be performed on the player resource. NOTE: This resource method recreates the ElGamal keys.</td>
+    <td valign="top">This <em>must</em> be done before any other resource method can be performed on the player resource. This resource method recreates the ElGamal keys.</td>
   </tr>
 
   <tr>
     <td valign="top">/dj/player</td>
     <td valign="top">GET</td>
     <td valign="top">-</td>
-    <td valign="top">200 OK<pre lang="json">{
+    <td valign="top">200<pre lang="json">{
   "nym": "&lt;string (<32 characters)&gt;">,
+  "spiridon": {
+    "public-key": "&lt;A link to a 2D-barcode&gt;",
+    "secret-key": "&lt;A link to a 2D-barcode&gt;",
+  },
   "smtp-server": {
     "password": "&lt;string&gt;"
   },
@@ -45,8 +49,8 @@ https://restfulapi.net/http-status-codes/
     "password": "&lt;string&gt;"
   }
 }</pre></td>
-    <td valign="top">404 Not Found</td>
-    <td valign="top">-</td>
+    <td valign="top">404</td>
+    <td valign="top">The secret-key is only shown for one hour after box initialization</td>
   </tr>
 
   <tr>
@@ -60,8 +64,8 @@ https://restfulapi.net/http-status-codes/
     "password": "&lt;string&gt;"
   }
 }</pre></td>
-    <td valign="top">204 No Content</td>
-    <td valign="top">404 Not Found</td>
+    <td valign="top">204</td>
+    <td valign="top">404</td>
     <td valign="top">One or many of the JSON fields in the request body may be provided</td>
   </tr>
 </table>
