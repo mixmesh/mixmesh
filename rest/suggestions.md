@@ -25,7 +25,7 @@ https://restfulapi.net/http-status-codes/
     <td valign="top">/dj/player</td>
     <td valign="top">PUT</td>
     <td valign="top"><pre lang="json">{
-  "nym": "&lt;string (at most 31 characters)&gt;"
+  "nym": "&lt;string (<32 characters)&gt;"
 }</pre></td>
     <td valign="top">204 No Content</td>
     <td valign="top">-</td>
@@ -37,7 +37,7 @@ https://restfulapi.net/http-status-codes/
     <td valign="top">GET</td>
     <td valign="top">-</td>
     <td valign="top">200 OK<br><pre lang="json">{
-  "nym": "&lt;string (at most 31 characters)&gt;">,
+  "nym": "&lt;string (<32 characters)&gt;">,
   "smtp-server": {
     "password": "&lt;string&gt;"
   },
