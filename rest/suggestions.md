@@ -26,6 +26,8 @@ Used to recreate a player. This resource method **must** be called in order to c
 
 After box initialization the player is disabled and its default nym is set to "admin". Do the following to enable the player and to rename it to "alice":
 
+Typical use:
+
 `$ curl --user admin:hello --digest -v -X PUT -H "Content-Type: application/json" -d '{"nym": "alice"}' http://127.0.0.1:8443/dj/player`
 
 ### Resource `/dj/player` (**GET**)
@@ -50,6 +52,8 @@ Used to show all available information about the player. The "secret-key" is onl
     <td valign="top">404</td>
   </tr>
 </table>
+
+Typical use:
 
 `$ curl --user admin:hello --digest -v http://127.0.0.1:8443/dj/player`
 
@@ -82,6 +86,8 @@ Used to show a filtered set of information about the player. The "secret-key" is
   </tr>
 </table>
 
+Typical use:
+
 `$ curl --user alice:hello --digest -v -X POST -H "Content-Type: application/json" -d '{"spiridon": {smtp-server:": true}}' http://127.0.0.1:8443/dj/player/filter`
 
 ### Resource `/dj/player` (**PATCH**)
@@ -107,5 +113,7 @@ Used to patch the player. One or many of the JSON fields in the request can be s
     <td valign="top">404</td>
   </tr>
 </table>
+
+Typical use:
 
 `$ curl --user alice:hello --digest -v -X PATCH -H "Content-Type: application/json" -d '{"smtp-server:": {"password": "foobar"}}' http://127.0.0.1:8443/dj/player`
