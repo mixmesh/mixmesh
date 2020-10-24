@@ -20,7 +20,7 @@ Used to recreate a player. This resource method **must** be called in order to c
     <td valign="top"><pre lang="json">{
   "nym": "&lt;string (<32 characters)&gt;"
 }</pre></td>
-    <td valign="top">204</td>
+    <td valign="top">Status Code: 204</td>
   </tr>
 </table>
 
@@ -42,14 +42,14 @@ Used to show all available information about the player. The "secret-key" is onl
   </tr>
   <tr>
     <td valign="top">-</td>
-    <td valign="top">200<pre lang="json">{
+    <td valign="top">Status Code: 200<pre lang="json">{
   "nym": "&lt;string (<32 characters)&gt;",
   "spiridon": {
     "public-key": "&lt;A link to a 2D-barcode&gt;",
     "secret-key": "&lt;A link to a 2D-barcode&gt;"
   }
 }</pre></td>
-    <td valign="top">404</td>
+    <td valign="top">Status Code: 404</td>
   </tr>
 </table>
 
@@ -75,14 +75,14 @@ Used to show a filtered set of information about the player. The "secret-key" is
     "secret-key": "&lt;boolean&gt;"
   }
 }</pre></td>
-    <td valign="top">200<pre lang="json">{
+    <td valign="top">Status Code: 200<pre lang="json">{
   "nym": "&lt;string (<32 characters)&gt;",
   "spiridon": {
     "public-key": "&lt;A link to a 2D-barcode&gt;",
     "secret-key": "&lt;A link to a 2D-barcode&gt;"
   }
 }</pre></td>
-    <td valign="top">404</td>
+    <td valign="top">Status Code: 404</td>
   </tr>
 </table>
 
@@ -109,8 +109,8 @@ Used to patch the player. One or many of the JSON fields in the request can be s
     "password": "&lt;string&gt;"
   }
 }</pre></td>
-    <td valign="top">204</td>
-    <td valign="top">404</td>
+    <td valign="top">Status Code: 204</td>
+    <td valign="top">Status Code: 404</td>
   </tr>
 </table>
 
