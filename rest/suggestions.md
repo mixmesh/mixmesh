@@ -86,6 +86,8 @@ Used to show a filtered set of information about the player. The "secret-key" is
   </tr>
 </table>
 
+Note: A field excluded from the Request is the same thing as setting it to false.
+
 Typical use:
 
 `$ curl --user alice:hello --digest -v -X POST -H "Content-Type: application/json" -d '{"spiridon": {smtp-server:": true}}' http://127.0.0.1:8443/dj/player/filter`
