@@ -13,8 +13,8 @@ Used to (re)create a player. This resource method **must** be called first in or
 
 <table>
   <tr>
-    <th>Request</th>
-    <th>Success Response</th>
+    <th align="left">Request</th>
+    <th align="left">Success Response</th>
   </tr>
   <tr>
     <td valign="top"><pre lang="json">{
@@ -36,9 +36,9 @@ Used to show all available information about the player. The "secret-key" is onl
 
 <table>
   <tr>
-    <th>Request</th>
-    <th>Success Response</th>
-    <th>Failure Response</th>
+    <th align="left">Request</th>
+    <th align="left">Success Response</th>
+    <th align="left">Failure Response</th>
   </tr>
   <tr>
     <td valign="top">-</td>
@@ -63,9 +63,9 @@ Used to show a filtered set of information about the player. The "secret-key" is
 
 <table>
   <tr>
-    <th>Request</th>
-    <th>Success Response</th>
-    <th>Failure Response</th>
+    <th align="left">Request</th>
+    <th align="left">Success Response</th>
+    <th align="left">Failure Response</th>
   </tr>
   <tr>
     <td valign="top"><pre lang="json">{
@@ -98,9 +98,9 @@ Used to patch the player. One or many of the fields in the Request below can be 
 
 <table>
   <tr>
-    <th>Request</th>
-    <th>Success Response</th>
-    <th>Failure Response</th>
+    <th align="left">Request</th>
+    <th align="left">Success Response</th>
+    <th align="left">Failure Response</th>
   </tr>
   <tr>
     <td valign="top"><pre lang="json">{
