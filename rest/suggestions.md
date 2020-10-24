@@ -46,7 +46,7 @@ Used to inspect the player. The "secret-key" is only shown for one hour after bo
   "nym": "&lt;string (<32 characters)&gt;",
   "spiridon": {
     "public-key": "&lt;A link to a 2D-barcode&gt;",
-    "secret-key": "&lt;A link to a 2D-barcode&gt;",
+    "secret-key": "&lt;A link to a 2D-barcode&gt;"
   },
   "smtp-server": {
     "password": "&lt;string&gt;"
@@ -89,4 +89,4 @@ Used to patch the player. One or many of the JSON fields in the request can be s
 
 #### Example
 
-`$ curl --user alice:hello --digest -v -X PATCH -H "Content-Type: application/json" -d '{"smtp-server:": {"password": ""foobar"}}' http://127.0.0.1:8443/dj/player`
+`$ curl --user alice:hello --digest -v -X PATCH -H "Content-Type: application/json" -d '{"smtp-server:": {"password": "foobar"}}' http://127.0.0.1:8443/dj/player`
