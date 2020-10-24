@@ -7,30 +7,34 @@ I found some great advice here:
 * https://restfulapi.net/
 * https://restfulapi.net/http-status-codes/
 
-## Player
-
-https://restfulapi.net/http-status-codes/
+### Resource `/dj/player` (**PUT**)
 
 <table>
   <tr>
-    <th>RESOURCE</th>
-    <th>METHOD</th>
     <th>BODY</th>
     <th>SUCCESS</th>
     <th>FAILURE</th>
-    <th>COMMENT(S)</th>
   </tr>
 
   <tr>
-    <td valign="top">/dj/player</td>
-    <td valign="top">PUT</td>
     <td valign="top"><pre lang="json">{
   "nym": "&lt;string (<32 characters)&gt;"
 }</pre></td>
     <td valign="top">204</td>
     <td valign="top">-</td>
-    <td valign="top">This <em>must</em> be done before any other resource method can be performed on the player resource. This resource method recreates the ElGamal keys.</td>
   </tr>
+</table>
+
+This resource method **must** be called prior to calling any other resource method on the player resource. This resource method recreates the ElGamal keys.
+
+### Resource `/dj/player` (**GET**)
+
+
+
+
+    <th>COMMENT(S)</th>
+
+
 
   <tr>
     <td valign="top">/dj/player</td>
