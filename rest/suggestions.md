@@ -1,6 +1,6 @@
 # Suggestions: The making of a REST API
 
-This REST API is expressive enough to perform the operations described mentioned in the [suggested Web UI](../webui/suggestions.md).
+This suggested REST API is expressive enough to perform the operations described in the [suggested Web UI](../webui/suggestions.md).
 
 I found some great advice here:
 
@@ -9,7 +9,7 @@ I found some great advice here:
 
 ### Resource `/dj/player` (**PUT**)
 
-Used to recreate a player. This resource method **must** be called in order to call any other resource methods. The ELGamal keys under `player/spiridon/` (see below) will be recreated.
+Used to (re)create a player. This resource method **must** be called first in order to call any other resource methods. The keys under `player/spiridon/` (see below) are recreated.
 
 <table>
   <tr>
@@ -24,7 +24,7 @@ Used to recreate a player. This resource method **must** be called in order to c
   </tr>
 </table>
 
-After box initialization the player is disabled and its default nym is set to "admin". Do the following to enable the player and to rename it to "alice":
+After box initialization the player is disabled and its default nym is set to "admin". Do the following to enable the player and to rename it to "alice".
 
 Typical use:
 
@@ -92,7 +92,7 @@ Typical use:
 
 ### Resource `/dj/player` (**PATCH**)
 
-Used to patch the player. One or many of the JSON fields in the request can be specified.
+Used to patch the player. One or many of the fields in the Request below can be given.
 
 <table>
   <tr>
