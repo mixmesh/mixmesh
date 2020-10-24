@@ -9,7 +9,7 @@ I found some great advice here:
 
 ### Resource `/dj/player` (**PUT**)
 
-This resource method **must** be called in order to use **any** other resource methods. This resource method recreates the ELGamal keys under `player/spiridon`.
+Used to recreate a player. This resource method **must** be called in order to call any other resource methods. The ELGamal keys under `player/spiridon/` (see below) will be recreated.
 
 <table>
   <tr>
@@ -24,28 +24,26 @@ This resource method **must** be called in order to use **any** other resource m
   </tr>
 </table>
 
-#### Examples
+#### Example
 
 After box initialization the player is disabled and its default nym is set to "admin". Do the following to enable the player and to rename it to "alice":
 
 `$ curl --user admin:hello --digest -v -X PUT -H "Content-Type: application/json" -d '{"nym": "alice"}' http://127.0.0.1:8443/dj/player`
 
-
-
-
 ### Resource `/dj/player` (**GET**)
 
+Used to inspect the player.
 
+ > The "secret-key" is only shown for one hour after box initialization.
 
-
-    <th>COMMENT(S)</th>
-
-
-
+<table>
   <tr>
-    <td valign="top">/dj/player</td>
-    <td valign="top">GET</td>
-    <td valign="top">-</td>
+    <th>Request</th>
+    <th>Response</th>
+    <th>Response</th>
+  </tr>
+  <tr>
+    <td>-</td>
     <td valign="top">200<pre lang="json">{
   "nym": "&lt;string (<32 characters)&gt;">,
   "spiridon": {
@@ -60,8 +58,32 @@ After box initialization the player is disabled and its default nym is set to "a
   }
 }</pre></td>
     <td valign="top">404</td>
-    <td valign="top">The secret-key is only shown for one hour after box initialization</td>
   </tr>
+</table>
+
+#### Example
+
+`$ curl --user admin:hello --digest -v http://127.0.0.1:8443/dj/player`
+
+### Resource `/dj/player` (**PATCH**)
+
+
+
+
+    <td valign="top">
+  </tr>
+
+
+
+
+
+
+
+
+
+
+
+
 
   <tr>
     <td valign="top">/dj/player</td>
