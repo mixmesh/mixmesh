@@ -68,7 +68,7 @@ Used to show a filtered set of information about the player. The "secret-key" is
     <th>Failure Response</th>
   </tr>
   <tr>
-    <td valign="top">200<pre lang="json">{
+    <td valign="top"><pre lang="json">{
   "nym": "&lt;boolean&gt;",
   "spiridon": {
     "public-key": "&lt;boolean&gt;",
