@@ -9,6 +9,8 @@ I found some great advice here:
 
 ### Resource `/dj/player` (**PUT**)
 
+This resource method **must** be called in order to call **any** other resource methods on the player resource. This resource method recreates the ElGamal keys.
+
 <table>
   <tr>
     <th>Request</th>
@@ -25,7 +27,14 @@ I found some great advice here:
   </tr>
 </table>
 
-This resource method **must** be called prior to calling any other resource method on the player resource. This resource method recreates the ElGamal keys.
+#### Examples
+
+After box initialization the player is disabled and its default nym is set to "admin". Do the following to enable the player and to rename it "alice":
+
+`$ curl --user admin:hello --digest -v -X PUT -H "Content-Type: application/json" -d '{"nym": "alice"}' http://127.0.0.1:8443/dj/player`
+
+
+
 
 ### Resource `/dj/player` (**GET**)
 
