@@ -15,9 +15,7 @@ I found some great advice here:
 
 I suggest that we use a vertical bottom icon navigation bar on all **pages** (if applicable). Commonality and ease of use.
 
-The navigation bar could have these entries (with icons):
-
-| *My Key* | *Import Key* | *List Keys* | *Import Key Kundle* | *Settings* |
+The navigation bar could have these entries (with icons): | *My Key* | *Import Key* | *List Keys* | *Import Key Kundle* | *Settings* |
 
 # Pages
 
