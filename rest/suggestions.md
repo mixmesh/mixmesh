@@ -9,15 +9,14 @@ I found some great advice here:
 
 ### Resource `/dj/player` (**PUT**)
 
-This resource method **must** be called in order to call **any** other resource methods on the player resource. This resource method recreates the ElGamal keys.
+This resource method **must** be called in order to use **any** other resource methods. This resource method recreates the ELGamal keys under `player/spiridon`.
 
 <table>
   <tr>
     <th>Request</th>
-    <th>Success response</th>
-    <th>Failure response</th>
+    <th>Success Response</th>
+    <th>Failure Response</th>
   </tr>
-
   <tr>
     <td valign="top"><pre lang="json">{
   "nym": "&lt;string (<32 characters)&gt;"
@@ -29,7 +28,7 @@ This resource method **must** be called in order to call **any** other resource 
 
 #### Examples
 
-After box initialization the player is disabled and its default nym is set to "admin". Do the following to enable the player and to rename it "alice":
+After box initialization the player is disabled and its default nym is set to "admin". Do the following to enable the player and to rename it to "alice":
 
 `$ curl --user admin:hello --digest -v -X PUT -H "Content-Type: application/json" -d '{"nym": "alice"}' http://127.0.0.1:8443/dj/player`
 
