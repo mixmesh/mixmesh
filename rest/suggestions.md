@@ -25,7 +25,7 @@ https://restfulapi.net/http-status-codes/
     <td valign="top">/dj/player</td>
     <td valign="top">PUT</td>
     <td valign="top"><pre lang="json">{
-  "nym": <string (at most 31 characters)>
+  "nym": &lt;string (at most 31 characters)&gt;
 }</pre></td>
     <td valign="top">204 No Content</td>
     <td valign="top">-</td>
@@ -37,12 +37,12 @@ https://restfulapi.net/http-status-codes/
     <td valign="top">GET</td>
     <td valign="top">-</td>
     <td valign="top">200 OK:<br><pre lang="json">{
-  "nym": <string (at most 31 characters)>,
+  "nym": &lt;string (at most 31 characters)&gt;>,
   "smtp-server": {
-    "password": <string>
+    "password": &lt;string&gt;
   },
   "pop3-server": {
-    "password": <string>
+    "password": &lt;string&gt;
   }</pre></td>
     <td valign="top">404 Not Found</td>
     <td valign="top">-</td>
@@ -51,14 +51,14 @@ https://restfulapi.net/http-status-codes/
   <tr>
     <td valign="top">/dj/player</td>
     <td valign="top">PATCH</td>
-    <td valign="top">-</td>
     <td valign="top">200 OK:<br><pre lang="json">{
   "smtp-server": {
-    "password": <string>
+    "password": &lt;string&gt;
   },
   "pop3-server": {
-    "password": <string>
+    "password": &lt;string&gt;
   }</pre></td>
+    <td valign="top">204 No Content</td>
     <td valign="top">404 Not Found</td>
     <td valign="top">One or many of the JSON fields in the request body may be provided</td>
   </tr>
