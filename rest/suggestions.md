@@ -36,14 +36,15 @@ https://restfulapi.net/http-status-codes/
     <td valign="top">/dj/player</td>
     <td valign="top">GET</td>
     <td valign="top">-</td>
-    <td valign="top">200 OK<br><pre lang="json">{
+    <td valign="top">200 OK<pre lang="json">{
   "nym": "&lt;string (<32 characters)&gt;">,
   "smtp-server": {
     "password": "&lt;string&gt;"
   },
   "pop3-server": {
     "password": "&lt;string&gt;"
-  }</pre></td>
+  }
+}</pre></td>
     <td valign="top">404 Not Found</td>
     <td valign="top">-</td>
   </tr>
@@ -57,7 +58,8 @@ https://restfulapi.net/http-status-codes/
   },
   "pop3-server": {
     "password": "&lt;string&gt;"
-  }</pre></td>
+  }
+}</pre></td>
     <td valign="top">204 No Content</td>
     <td valign="top">404 Not Found</td>
     <td valign="top">One or many of the JSON fields in the request body may be provided</td>
