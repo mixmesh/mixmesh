@@ -1,6 +1,6 @@
 # Suggestions: The making of a Web UI
 
-This suggested Web UI will not use the REST API, i.e. it will not be a single page web application (to start with). The suggested [REST API](../rest/suggestions.md) is expressive enough build such a single page web appliccation though.
+This suggested Web UI will not use the REST API, i.e. it will not be a single page web application (to start with). The [suggested REST API](../rest/suggestions.md) is expressive enough build such a single page web appliccation though.
 
 We should in the end probably use a framwork such as [UIkit](https://getuikit.com/docs/introduction). That way we can just write plain HTML and adorn it as seen in, for example, https://getuikit.com/docs/list and https://getuikit.com/docs/iconnav. This way we can avoid CSS altogether. We do not even need to import an icon pack if we use https://getuikit.com/docs/icon. :-)
 
