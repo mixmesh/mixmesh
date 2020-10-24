@@ -14,7 +14,7 @@ Used to recreate a player. This resource method **must** be called in order to c
 <table>
   <tr>
     <th>Request</th>
-    <th>Response</th>
+    <th>Success Response</th>
   </tr>
   <tr>
     <td valign="top"><pre lang="json">{
@@ -32,20 +32,18 @@ After box initialization the player is disabled and its default nym is set to "a
 
 ### Resource `/dj/player` (**GET**)
 
-Used to inspect the player.
-
- > The "secret-key" is only shown for one hour after box initialization.
+Used to inspect the player. The "secret-key" is only shown for one hour after box initialization.
 
 <table>
   <tr>
     <th>Request</th>
-    <th>Response</th>
-    <th>Response</th>
+    <th>Success Response</th>
+    <th>Failure Response</th>
   </tr>
   <tr>
     <td>-</td>
     <td valign="top">200<pre lang="json">{
-  "nym": "&lt;string (<32 characters)&gt;">,
+  "nym": "&lt;string (<32 characters)&gt;",
   "spiridon": {
     "public-key": "&lt;A link to a 2D-barcode&gt;",
     "secret-key": "&lt;A link to a 2D-barcode&gt;",
@@ -67,27 +65,15 @@ Used to inspect the player.
 
 ### Resource `/dj/player` (**PATCH**)
 
+Used to patch the player. One or many of the JSON fields in the request can be specified.
 
-
-
-    <td valign="top">
-  </tr>
-
-
-
-
-
-
-
-
-
-
-
-
-
+<table>
   <tr>
-    <td valign="top">/dj/player</td>
-    <td valign="top">PATCH</td>
+    <th>Request</th>
+    <th>Success Response</th>
+    <th>Failure Response</th>
+  </tr>
+  <tr>
     <td valign="top"><pre lang="json">{
   "smtp-server": {
     "password": "&lt;string&gt;"
@@ -98,6 +84,9 @@ Used to inspect the player.
 }</pre></td>
     <td valign="top">204</td>
     <td valign="top">404</td>
-    <td valign="top">One or many of the JSON fields in the request body may be provided</td>
   </tr>
 </table>
+
+#### Example
+
+`$ curl --user alice:hello --digest -v -X PATCH -H "Content-Type: application/json" -d '{"smtp-server:": {"password": ""foobar"}}' http://127.0.0.1:8443/dj/player`
