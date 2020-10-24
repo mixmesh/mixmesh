@@ -11,9 +11,9 @@ I found some great advice here:
 
 <table>
   <tr>
-    <th>BODY</th>
-    <th>SUCCESS</th>
-    <th>FAILURE</th>
+    <th>Request</th>
+    <th>Success response</th>
+    <th>Failure response</th>
   </tr>
 
   <tr>
