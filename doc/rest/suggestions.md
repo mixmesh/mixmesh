@@ -269,7 +269,7 @@ Used to export a key bundle.
   </tr>
   <tr>
     <td valign="top"><pre lang="json">["&lt;nym (<32 characters)&gt;"]</pre></td>
-    <td valign="top">Status Code: 200<br>BASE64 encoded key bundle</td>
+    <td valign="top">Status Code: 200<br>&lt;BASE64 encoded key bundle&gt;</td>
   </tr>
 </table>
 
