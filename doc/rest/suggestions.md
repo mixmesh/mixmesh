@@ -181,7 +181,13 @@ Used to show a key for a specific nym.
 
 Typical use:
 
-`$ curl --user admin:hello --digest -v http://127.0.0.1:8443/dj/key/alice`
+```
+$ curl --user admin:hello --digest http://127.0.0.1:8443/dj/key/alice
+{
+  "nym": "alice",
+  "public-key": "BWFsaWNlxgDD8BleR0lZOyTVMuguqs9IE1E7SuWgsyyNNNp4vrrQZbpF8PSiEhju2dL3cMnc5ZFAoe41NQ4+C45r+Xwk9dpo3sn5Uwj+ETZw5nC\/StW+YeAlApeCZVL126AcOhQPtgRNyajc84Qg0dM7K5UDic\/81kb0EqkaZ1awtwUrmPs="
+}
+``` 
 
 ### `/dj/key/filter` (**POST**)
 
