@@ -178,7 +178,7 @@ Used to show a filtered set of keys. At most 100 keys will be returned.
 <table>
   <tr>
     <th align="left">Request</th>
-    <th align="left">Success Response</th>
+    <th align="left">Response</th>
   </tr>
   <tr>
     <td valign="top"><pre lang="json">["&lt;sub-string nym (<32 characters)&gt;"]</pre></td>
@@ -245,7 +245,7 @@ Used to delete a filtered set of keys.
 <table>
   <tr>
     <th align="left">Request</th>
-    <th align="left">Success Response</th>
+    <th align="left">Response</th>
   </tr>
   <tr>
     <td valign="top"><pre lang="json">["&lt;nym (<32 characters)&gt;"]</pre></td>
@@ -267,7 +267,7 @@ Used to export a key bundle.
 <table>
   <tr>
     <th align="left">Request</th>
-    <th align="left">Success Response</th>
+    <th align="left">Response</th>
   </tr>
   <tr>
     <td valign="top"><pre lang="json">["&lt;nym (<32 characters)&gt;"]</pre></td>
@@ -286,7 +286,7 @@ Used to import a key bundle.
 <table>
   <tr>
     <th align="left">Request</th>
-    <th align="left">Success Response</th>
+    <th align="left">Response</th>
   </tr>
   <tr>
     <td valign="top">&lt;BASE64 encoded key bundle&gt;</td>
