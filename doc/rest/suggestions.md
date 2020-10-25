@@ -159,8 +159,8 @@ $ curl --user admin:hello --digest http://127.0.0.1:8443/dj/key
     "nym": "p1",
     "public-key": "AnAxBNN4r35tVwRRktbu2N83GmvDvTBdmTNeMLP+u6lPSfM4\/Oby3tGF07qbtQdaZgteOAXj3pB7xNhJbARmril0avcbbXs\/HlfJlidui7JZM0T7Uu+qWmq7X3qAUnYA42rM6lEI7pnfuKn+X4SW\/HTbaW4kBBjq3f\/ERruD2W5c9KoI"
   }
-  ]
-  ```
+]
+```
   
 ### `/dj/key/<nym>` (**GET**)
 
