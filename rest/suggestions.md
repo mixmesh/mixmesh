@@ -11,7 +11,7 @@ I found some great advice here:
 
 ### Resource `/dj/player` (**PUT**)
 
-Used to (re)create a player. This resource method **must** be called first in order to call any other resource methods. The keys under `player/spiridon/` (see below) are recreated.
+Used to (re)create a player. **Must** be called prior to any other resource method calls. **BEWARE**: The player's keys are recreated.
 
 <table>
   <tr>
@@ -26,15 +26,13 @@ Used to (re)create a player. This resource method **must** be called first in or
   </tr>
 </table>
 
-After box initialization the player is disabled and its default nym is set to "admin". Do the following to enable the player and to rename it to "alice".
-
-Typical use:
+After box initialization the player is disabled and its default nym is set to "admin". Do the following to enable the player and to rename it to "alice":
 
 `$ curl --user admin:hello --digest -v -X PUT -H "Content-Type: application/json" -d '{"nym": "alice"}' http://127.0.0.1:8443/dj/player`
 
 ### Resource `/dj/player` (**GET**)
 
-Used to show all available information about the player. The "secret-key" is only available for one hour after box initialization.
+Used to show all available information about the player. **NOTE**: The "secret-key" is only available for one hour after box initialization.
 
 <table>
   <tr>
@@ -46,9 +44,9 @@ Used to show all available information about the player. The "secret-key" is onl
     <td valign="top">-</td>
     <td valign="top">Status Code: 200<pre lang="json">{
   "nym": "&lt;string (<32 characters)&gt;",
-  "spiridon": {
-    "public-key": "&lt;A link to a 2D-barcode&gt;",
-    "secret-key": "&lt;A link to a 2D-barcode&gt;"
+  "keys": {
+    "public-key": "&lt;A base64 encoded 2D-barcode&gt;",
+    "secret-key": "&lt;A base64 encoded 2D-barcode&gt;"
   }
 }</pre></td>
     <td valign="top">Status Code: 404</td>
