@@ -13,7 +13,7 @@ I found some great advice here:
 
 Used to (re)create a player.
 
-**NOTE**: Must be called prior to any other resource method calls. The player's keys are recreated.
+**NOTE**: Must be called prior to any other resource method calls. The player's keys will be recreated!!
 
 <table>
   <tr>
@@ -92,7 +92,7 @@ Used to show a filtered set of information about the player.
   </tr>
 </table>
 
-Excluded filter fileds are excluded from the response.
+Omitted filter request fields are excluded from response.
 
 Typical use:
 
@@ -249,7 +249,8 @@ Used to delete a filtered set of keys.
     <td valign="top"><pre lang="json">["&lt;nym (<32 characters)&gt;"]</pre></td>
     <td valign="top">Status Code: 200<pre lang="json">{
   "failed": [{"nym": "&lt;string (<32 characters)&gt;",
-              "reason": "&lt;string&gt;"}]</pre></td>
+              "reason": "&lt;string&gt;"}]
+}</pre></td>
   </tr>
 </table>
 
