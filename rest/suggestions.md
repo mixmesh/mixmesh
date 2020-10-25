@@ -11,12 +11,14 @@ I found some great advice here:
 
 ### Resource `/dj/player` (**PUT**)
 
-Used to (re)create a player. **Must** be called prior to any other resource method calls. **BEWARE**: The player's keys are recreated.
+Used to (re)create a player.
+
+**NOTE**: Must be called prior to any other resource method calls. The player's keys are recreated.
 
 <table>
   <tr>
     <th align="left">Request</th>
-    <th align="left">Success Response</th>
+    <th align="left">Response</th>
   </tr>
   <tr>
     <td valign="top"><pre lang="json">{
@@ -32,7 +34,9 @@ After box initialization the player is disabled and its default nym is set to "a
 
 ### Resource `/dj/player` (**GET**)
 
-Used to show all available information about the player. **NOTE**: The "secret-key" is only available for one hour after box initialization.
+Used to show all available information about the player.
+
+**NOTE**: The "secret-key" is only available for one hour after box initialization.
 
 <table>
   <tr>
@@ -59,7 +63,9 @@ Typical use:
 
 ### Resource `/dj/player/filter` (**POST**)
 
-Used to show a filtered set of information about the player. The "secret-key" is only available for one hour after box initialization.
+Used to show a filtered set of information about the player.
+
+**NOTE**: The "secret-key" is only available for one hour after box initialization.
 
 <table>
   <tr>
@@ -70,14 +76,14 @@ Used to show a filtered set of information about the player. The "secret-key" is
   <tr>
     <td valign="top"><pre lang="json">{
   "nym": "&lt;boolean&gt;",
-  "spiridon": {
+  "keys": {
     "public-key": "&lt;boolean&gt;",
     "secret-key": "&lt;boolean&gt;"
   }
 }</pre></td>
     <td valign="top">Status Code: 200<pre lang="json">{
   "nym": "&lt;string (<32 characters)&gt;",
-  "spiridon": {
+  "keys": {
     "public-key": "&lt;A link to a 2D-barcode&gt;",
     "secret-key": "&lt;A link to a 2D-barcode&gt;"
   }
@@ -86,11 +92,11 @@ Used to show a filtered set of information about the player. The "secret-key" is
   </tr>
 </table>
 
-Note: A field excluded from the Request is the same thing as setting it to false.
+Excluded filter fileds are excluded from the response.
 
 Typical use:
 
-`$ curl --user alice:hello --digest -v -X POST -H "Content-Type: application/json" -d '{"spiridon": {smtp-server:": true}}' http://127.0.0.1:8443/dj/player/filter`
+`$ curl --user alice:hello --digest -v -X POST -H "Content-Type: application/json" -d '{"keys": {smtp-server:": true}}' http://127.0.0.1:8443/dj/player/filter`
 
 ### Resource `/dj/player` (**PATCH**)
 
