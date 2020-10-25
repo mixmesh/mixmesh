@@ -142,7 +142,7 @@ Used to show all available keys. At most 100 keys will be returned.
     <td valign="top">Status Code: 200<pre lang="json">[{
   "nym": "&lt;string (<32 characters)&gt;",
   "public-key": "&lt;BASE64 encoded 2D-barcode&gt;"
-}]</pre></td>
+ }]</pre></td>
   </tr>
 </table>
 
