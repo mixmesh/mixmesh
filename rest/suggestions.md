@@ -182,14 +182,14 @@ Used to show a filtered set of keys. At most 100 keys will be returned.
     <td valign="top"><pre lang="json">["&lt;sub-string nym (<32 characters)&gt;"]</pre></td>
     <td valign="top">Status Code: 200<pre lang="json">[{
   "nym": "&lt;string (<32 characters)&gt;",
-  "public-key": "&lt;A link to a 2D-barcode&gt;"
+  "public-key": "&lt;A BASE64 encoded 2D-barcode&gt;"
 }]</pre></td>
   </tr>
 </table>
 
 Typical use:
 
-`$ curl --user alice:hello --digest -v -X POST -H "Content-Type: application/json" -d '[{"nym": "ali"}]' http://127.0.0.1:8443/dj/key/filter`
+`$ curl --user alice:hello --digest -v -X POST -H "Content-Type: application/json" -d '["ali"]' http://127.0.0.1:8443/dj/key/filter`
 
 ### `/dj/key` (**PUT**)
 
@@ -204,15 +204,16 @@ Used to import a new key.
   <tr>
     <td valign="top"><pre lang="json">{
   "nym": "&lt;string (<32 characters)&gt;",
-  "public-key": "&lt;A parsed 2D-barcode new nym/key pair (BASE64 encoded)&gt;"
-}]</pre></td>
+  "public-key": "&lt;A BASE64 encoded 2D-barcode&gt;"
+}</pre></td>
+    <td valign="top">Status Code: 204</td>
     <td valign="top">Status Code: 403</td>
   </tr>
 </table>
 
 Typical use:
 
-`$ curl --user alice:hello --digest -v -X PUT -H "Content-Type: application/json" -d '{{"nym": "bob"}, {"public-key": "=GST61#8=="}}' http://127.0.0.1:8443/dj/key`
+`$ curl --user alice:hello --digest -v -X PUT -H "Content-Type: application/json" -d '{"nym": "bob", "public-key": "=GST61#8=="}' http://127.0.0.1:8443/dj/key`
 
 ### `/dj/key/&lt;nym&gt;` (**DELETE**)
 
