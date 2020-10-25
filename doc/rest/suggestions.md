@@ -49,8 +49,8 @@ Used to show all available information about the player.
     <td valign="top">Status Code: 200<pre lang="json">{
   "nym": "&lt;string (<32 characters)&gt;",
   "keys": {
-    "public-key": "&lt;A BASE64 encoded 2D-barcode&gt;",
-    "secret-key": "&lt;A BASE64 encoded 2D-barcode&gt;"
+    "public-key": "&lt;BASE64 encoded 2D-barcode&gt;",
+    "secret-key": "&lt;BASE64 encoded 2D-barcode&gt;"
   }
 }</pre></td>
     <td valign="top">Status Code: 404</td>
@@ -141,7 +141,7 @@ Used to show all available keys. At most 100 keys will be returned.
     <td valign="top">-</td>
     <td valign="top">Status Code: 200<pre lang="json">[{
   "nym": "&lt;string (<32 characters)&gt;",
-  "public-key": "&lt;A BASE64 encoded 2D-barcode&gt;"
+  "public-key": "&lt;BASE64 encoded 2D-barcode&gt;"
 }]</pre></td>
   </tr>
 </table>
@@ -161,7 +161,7 @@ Used to show a key for a specific nym.
   </tr>
   <tr>
     <td valign="top">-</td>
-    <td valign="top">Status Code: 200<br>&lt;A BASE64 encoded 2D-barcode&gt;</td>
+    <td valign="top">Status Code: 200<br>&lt;BASE64 encoded 2D-barcode&gt;</td>
   </tr>
 </table>
 
@@ -182,7 +182,7 @@ Used to show a filtered set of keys. At most 100 keys will be returned.
     <td valign="top"><pre lang="json">["&lt;sub-string nym (<32 characters)&gt;"]</pre></td>
     <td valign="top">Status Code: 200<pre lang="json">[{
   "nym": "&lt;string (<32 characters)&gt;",
-  "public-key": "&lt;A BASE64 encoded 2D-barcode&gt;"
+  "public-key": "&lt;BASE64 encoded 2D-barcode&gt;"
 }]</pre></td>
   </tr>
 </table>
@@ -204,7 +204,7 @@ Used to import a new key.
   <tr>
     <td valign="top"><pre lang="json">{
   "nym": "&lt;string (<32 characters)&gt;",
-  "public-key": "&lt;A BASE64 encoded 2D-barcode&gt;"
+  "public-key": "&lt;BASE64 encoded 2D-barcode&gt;"
 }</pre></td>
     <td valign="top">Status Code: 204</td>
     <td valign="top">Status Code: 403</td>
