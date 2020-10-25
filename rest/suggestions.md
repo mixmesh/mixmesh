@@ -49,8 +49,8 @@ Used to show all available information about the player.
     <td valign="top">Status Code: 200<pre lang="json">{
   "nym": "&lt;string (<32 characters)&gt;",
   "keys": {
-    "public-key": "&lt;A base64 encoded 2D-barcode&gt;",
-    "secret-key": "&lt;A base64 encoded 2D-barcode&gt;"
+    "public-key": "&lt;A BASE64 encoded 2D-barcode&gt;",
+    "secret-key": "&lt;A BASE64 encoded 2D-barcode&gt;"
   }
 }</pre></td>
     <td valign="top">Status Code: 404</td>
@@ -141,7 +141,7 @@ Used to show all available keys. At most 100 keys will be returned.
     <td valign="top">-</td>
     <td valign="top">Status Code: 200<pre lang="json">[{
   "nym": "&lt;string (<32 characters)&gt;",
-  "public-key": "&lt;A base64 encoded 2D-barcode&gt;"
+  "public-key": "&lt;A BASE64 encoded 2D-barcode&gt;"
 }]</pre></td>
   </tr>
 </table>
@@ -161,7 +161,7 @@ Used to show a key for a specific nym.
   </tr>
   <tr>
     <td valign="top">-</td>
-    <td valign="top">Status Code: 200<br>&lt;A base64 encoded 2D-barcode&gt;</td>
+    <td valign="top">Status Code: 200<br>&lt;A BASE64 encoded 2D-barcode&gt;</td>
   </tr>
 </table>
 
@@ -179,15 +179,8 @@ Used to show a filtered set of keys. At most 100 keys will be returned.
     <th align="left">Success Response</th>
   </tr>
   <tr>
-    <td valign="top"><pre lang="json">[{
-  "nym": "&lt;sub-string (<32 characters)&gt;",
-}]</pre></td>
+    <td valign="top"><pre lang="json">["&lt;sub-string nym (<32 characters)&gt;"]</pre></td>
     <td valign="top">Status Code: 200<pre lang="json">[{
-  "nym": "&lt;string (<32 characters)&gt;",
-  "public-key": "&lt;A link to a 2D-barcode&gt;"
-},
-...
-{
   "nym": "&lt;string (<32 characters)&gt;",
   "public-key": "&lt;A link to a 2D-barcode&gt;"
 }]</pre></td>
@@ -211,7 +204,7 @@ Used to import a new key.
   <tr>
     <td valign="top"><pre lang="json">{
   "nym": "&lt;string (<32 characters)&gt;",
-  "public-key": "&lt;A parsed 2D-barcode new nym/key pair (base64 encoded)&gt;"
+  "public-key": "&lt;A parsed 2D-barcode new nym/key pair (BASE64 encoded)&gt;"
 }]</pre></td>
     <td valign="top">Status Code: 403</td>
   </tr>
@@ -277,7 +270,7 @@ Used to export a key bundle.
   </tr>
   <tr>
     <td valign="top"><pre lang="json">["&lt;nym (<32 characters)&gt;", .., "&lt;nym (<32 characters)&gt;"]</pre></td>
-    <td valign="top">Status Code: 200<br>Base64 encoded key bundle</td>
+    <td valign="top">Status Code: 200<br>BASE64 encoded key bundle</td>
   </tr>
 </table>
 
@@ -295,7 +288,7 @@ Used to import a key bundle.
     <th align="left">Success Response</th>
   </tr>
   <tr>
-    <td valign="top">&lt;Base64 encoded key bundle&gt;</td>
+    <td valign="top">&lt;BASE64 encoded key bundle&gt;</td>
     <td valign="top">Status Code: 204</td>
   </tr>
 </table>
