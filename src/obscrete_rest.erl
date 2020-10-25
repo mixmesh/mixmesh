@@ -50,11 +50,11 @@ wait_for_serv_(_Name, 0, _Timeout) ->
 wait_for_serv_(Name, I, Timeout) ->
     case is_pid(whereis(Name)) of
 	true -> ok;
-	false -> 
+	false ->
 	    timer:sleep(Timeout),
 	    wait_for_serv_(Name, I-1, Timeout)
     end.
-	    
+
 do_start(Start) ->
     %% wait for config server to start max 5000
     wait_for_serv(config_serv, 5000),
@@ -75,7 +75,7 @@ do_start(Start) ->
 	end,
     SendTimeout =
 	proplists:get_value(send_timeout, S0, ?SEND_TIMEOUT),
-    
+
     S01 = lists:foldl(fun(Key,Ai) ->
 			      proplists:delete(Key,Ai)
 		      end, S0, [port,idle_timeout,send_timeout]),
@@ -94,7 +94,9 @@ do_start(Start) ->
 	 {send_timeout, SendTimeout} | S01],
     rester_http_server:Start(Port, ResterHttpArgs).
 
-handle_http_request(Socket, Request, Body, _Options) ->
+handle_http_request(Socket, Request, Body, Options) ->
+    io:format("********** OPTIONS: ~p\n", [Options]),
+
     ?dbg_log_fmt("request = ~s, headers=~s, body=~p",
 		[rester_http:format_request(Request),
 		 rester_http:format_hdr(Request#http_request.headers),
@@ -188,7 +190,7 @@ handle_http_get(Socket, Request, Url, Tokens, _Body, dj) ->
     _Access = access(Socket),
     _Accept = rester_http:accept_media(Request),
     case Tokens of
-	_ ->
+        ["key"] ->
 	    handle_http_get(Socket, Request, Url, Tokens, _Body, v1)
     end.
 
