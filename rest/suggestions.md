@@ -7,9 +7,9 @@ I found some great advice here:
 * https://restfulapi.net/
 * https://restfulapi.net/http-status-codes/
 
-## Player
+## Resource: Player
 
-### Resource `/dj/player` (**PUT**)
+### `/dj/player` (**PUT**)
 
 Used to (re)create a player.
 
@@ -32,7 +32,7 @@ After box initialization the player is disabled and its default nym is set to "a
 
 `$ curl --user admin:hello --digest -v -X PUT -H "Content-Type: application/json" -d '{"nym": "alice"}' http://127.0.0.1:8443/dj/player`
 
-### Resource `/dj/player` (**GET**)
+### `/dj/player` (**GET**)
 
 Used to show all available information about the player.
 
@@ -61,7 +61,7 @@ Typical use:
 
 `$ curl --user admin:hello --digest -v http://127.0.0.1:8443/dj/player`
 
-### Resource `/dj/player/filter` (**POST**)
+### `/dj/player/filter` (**POST**)
 
 Used to show a filtered set of information about the player.
 
@@ -96,11 +96,11 @@ Excluded filter fileds are excluded from the response.
 
 Typical use:
 
-`$ curl --user alice:hello --digest -v -X POST -H "Content-Type: application/json" -d '{"keys": {smtp-server:": true}}' http://127.0.0.1:8443/dj/player/filter`
+`$ curl --user alice:hello --digest -v -X POST -H "Content-Type: application/json" -d '{"keys": {"public-key": true}}' http://127.0.0.1:8443/dj/player/filter`
 
-### Resource `/dj/player` (**PATCH**)
+### `/dj/player` (**PATCH**)
 
-Used to patch the player. One or many of the fields in the Request below can be given.
+Used to patch the player. One or several of the fields in the Request can be given.
 
 <table>
   <tr>
@@ -126,9 +126,9 @@ Typical use:
 
 `$ curl --user alice:hello --digest -v -X PATCH -H "Content-Type: application/json" -d '{"smtp-server:": {"password": "foobar"}}' http://127.0.0.1:8443/dj/player`
 
-## Key
+## Resource: Key
 
-### Resource `/dj/key` (**GET**)
+### `/dj/key` (**GET**)
 
 Used to show all available keys. At most 100 keys will be returned.
 
@@ -155,7 +155,7 @@ Typical use:
 
 `$ curl --user admin:hello --digest -v http://127.0.0.1:8443/dj/key`
 
-### Resource `/dj/key/&lt;nym&gt;` (**GET**)
+### `/dj/key/&lt;nym&gt;` (**GET**)
 
 Used to show a key for a specific nym.
 
@@ -174,7 +174,7 @@ Typical use:
 
 `$ curl --user admin:hello --digest -v http://127.0.0.1:8443/dj/key/alice`
 
-### Resource `/dj/key/filter` (**POST**)
+### `/dj/key/filter` (**POST**)
 
 Used to show a filtered set of keys. At most 100 keys will be returned.
 
@@ -203,7 +203,7 @@ Typical use:
 
 `$ curl --user alice:hello --digest -v -X POST -H "Content-Type: application/json" -d '[{"nym": "ali"}]' http://127.0.0.1:8443/dj/key/filter`
 
-### Resource `/dj/key` (**PUT**)
+### `/dj/key` (**PUT**)
 
 Used to import a new key.
 
@@ -226,7 +226,7 @@ Typical use:
 
 `$ curl --user alice:hello --digest -v -X PUT -H "Content-Type: application/json" -d '{{"nym": "bob"}, {"public-key": "=GST61#8=="}}' http://127.0.0.1:8443/dj/key`
 
-### Resource `/dj/key/&lt;nym&gt;` (**DELETE**)
+### `/dj/key/&lt;nym&gt;` (**DELETE**)
 
 Used to delete a key for a specific nym.
 
@@ -247,7 +247,7 @@ Typical use:
 
 `$ curl --user alice:hello --digest -v -X DELETE http://127.0.0.1:8443/dj/key/bob`
 
-### Resource `/dj/key/filter` (**DELETE**)
+### `/dj/key/filter` (**DELETE**)
 
 Used to delete a filtered set of keys.
 
@@ -271,7 +271,7 @@ Typical use:
 
 `$ curl --user alice:hello --digest -v -X DELETE -H "Content-Type: application/json" -d '["bob"]' http://127.0.0.1:8443/dj/key/filter`
 
-### Resource `/dj/key/export` (**POST**)
+### `/dj/key/export` (**POST**)
 
 Used to export a key bundle.
 
