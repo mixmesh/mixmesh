@@ -149,14 +149,14 @@ Used to show all available keys. At most 100 keys will be returned.
 Typical use:
 
 ```
-$ curl --user admin:hello --digest http://127.0.0.1:8443/dj/key
+$ curl --user admin:hello --digest http://127.0.0.1:8444/dj/key
 [
   {
     "nym": "alice",
     "public-key": "BWFsaWNlxgDD8BleR0lZOyTVMuguqs9IE1E7SuWgsyyNNNp4vrrQZbpF8PSiEhju2dL3cMnc5ZFAoe41NQ4+C45r+Xwk9dpo3sn5Uwj+ETZw5nC\/StW+YeAlApeCZVL126AcOhQPtgRNyajc84Qg0dM7K5UDic\/81kb0EqkaZ1awtwUrmPs="
   },
   {
-    "nym": "p1",
+    "nym": "bob",
     "public-key": "AnAxBNN4r35tVwRRktbu2N83GmvDvTBdmTNeMLP+u6lPSfM4\/Oby3tGF07qbtQdaZgteOAXj3pB7xNhJbARmril0avcbbXs\/HlfJlidui7JZM0T7Uu+qWmq7X3qAUnYA42rM6lEI7pnfuKn+X4SW\/HTbaW4kBBjq3f\/ERruD2W5c9KoI"
   }
 ]
