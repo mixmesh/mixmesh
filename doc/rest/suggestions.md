@@ -84,8 +84,8 @@ Used to show a filtered set of information about the player.
     <td valign="top">Status Code: 200<pre lang="json">{
   "nym": "&lt;string (<32 characters)&gt;",
   "keys": {
-    "public-key": "&lt;A link to a 2D-barcode&gt;",
-    "secret-key": "&lt;A link to a 2D-barcode&gt;"
+    "public-key": "&lt;BASE64 encoded 2D-barcode&gt;",
+    "secret-key": "&lt;BASE64 encoded 2D-barcode&gt;"
   }
 }</pre></td>
     <td valign="top">Status Code: 404</td>
