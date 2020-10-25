@@ -150,7 +150,7 @@ Typical use:
 
 `$ curl --user admin:hello --digest -v http://127.0.0.1:8443/dj/key`
 
-### `/dj/key/&lt;nym&gt;` (**GET**)
+### `/dj/key/<nym>` (**GET**)
 
 Used to show a key for a specific nym.
 
@@ -161,7 +161,7 @@ Used to show a key for a specific nym.
   </tr>
   <tr>
     <td valign="top">-</td>
-    <td valign="top">Status Code: 200<pre>&lt;A link to a 2D-barcode&gt;</pre></td>
+    <td valign="top">Status Code: 200<br>&lt;A base64 encoded 2D-barcode&gt;</td>
   </tr>
 </table>
 
