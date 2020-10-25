@@ -158,11 +158,13 @@ Used to show a key for a specific nym.
   <tr>
     <th align="left">Request</th>
     <th align="left">Success Response</th>
+    <th align="left">Failure Response</th>
   </tr>
   <tr>
     <td valign="top">-</td>
     <td valign="top">Status Code: 200<br>&lt;BASE64 encoded 2D-barcode&gt;</td>
-  </tr>
+    <td valign="top">Status Codes: 404</td>
+</tr>
 </table>
 
 Typical use:
