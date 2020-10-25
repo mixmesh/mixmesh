@@ -14,7 +14,7 @@ init([]) ->
     ConfigJsonServSpec =
         {obscrete_config_serv, {obscrete_config_serv, start_link, []},
          permanent, brutal_kill, worker, [obscrete_config_serv]},
-    LogServChildSpec =
+    LogServSpec =
         {obscrete_log_serv, {obscrete_log_serv, start_link, []},
          permanent, brutal_kill, worker, [obscrete_log_serv]},
     RestSpec =
@@ -25,12 +25,12 @@ init([]) ->
 	    case lists:member({obscrete, obscrete_http_schema}, AppSchemas) of
 		true ->
 		    {ok, {{one_for_one, 3, 10},
-			  [ConfigJsonServSpec, LogServChildSpec, RestSpec]}};
+			  [ConfigJsonServSpec, LogServSpec, RestSpec]}};
 		false ->
 		    {ok, {{one_for_one, 3, 10},
-			  [ConfigJsonServSpec, LogServChildSpec]}}
+			  [ConfigJsonServSpec, LogServSpec]}}
 	    end;
 	undefined ->
 	    {ok, {{one_for_one, 3, 10},
-		  [ConfigJsonServSpec, LogServChildSpec]}}
+		  [ConfigJsonServSpec, LogServSpec]}}
     end.
