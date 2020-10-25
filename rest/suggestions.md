@@ -215,7 +215,7 @@ Typical use:
 
 `$ curl --user alice:hello --digest -v -X PUT -H "Content-Type: application/json" -d '{"nym": "bob", "public-key": "=GST61#8=="}' http://127.0.0.1:8443/dj/key`
 
-### `/dj/key/&lt;nym&gt;` (**DELETE**)
+### `/dj/key/<nym>` (**DELETE**)
 
 Used to delete a key for a specific nym.
 
@@ -246,13 +246,10 @@ Used to delete a filtered set of keys.
     <th align="left">Success Response</th>
   </tr>
   <tr>
-    <td valign="top"><pre lang="json">["&lt;nym (<32 characters)&gt;", .., "&lt;nym (<32 characters)&gt;"]</pre></td>
+    <td valign="top"><pre lang="json">["&lt;nym (<32 characters)&gt;"]</pre></td>
     <td valign="top">Status Code: 200<pre lang="json">{
   "failed": [{"nym": "&lt;string (<32 characters)&gt;",
-              "reason": "&lt;string&gt;"}, ..,
-             {"nym": "&lt;string (<32 characters)&gt;",
-              "reason": "&lt;string&gt;"}]
-}</pre></td>
+              "reason": "&lt;string&gt;"}]</pre></td>
   </tr>
 </table>
 
@@ -270,7 +267,7 @@ Used to export a key bundle.
     <th align="left">Success Response</th>
   </tr>
   <tr>
-    <td valign="top"><pre lang="json">["&lt;nym (<32 characters)&gt;", .., "&lt;nym (<32 characters)&gt;"]</pre></td>
+    <td valign="top"><pre lang="json">["&lt;nym (<32 characters)&gt;"]</pre></td>
     <td valign="top">Status Code: 200<br>BASE64 encoded key bundle</td>
   </tr>
 </table>
