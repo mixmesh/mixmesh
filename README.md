@@ -163,13 +163,11 @@ You must reboot in order for the systemd change to take effect.
 
 Then proceed with:
 
-```
-$ ulimit -n 65535
-$ ./bin/obscrete --self-signed-ssl-cert > cert.pem
-$ ./bin/mkconfig /tmp/obscrete cert.pem alice
-$ ../simulator/bin/mkconfig cert.pem square
-$ ./bin/obscrete --simulator --config ./etc/simulator.conf
-```
+	ulimit -n 65535
+	./bin/obscrete --self-signed-ssl-cert > cert.pem
+	./bin/mkconfig /tmp/obscrete cert.pem alice
+	../simulator/bin/mkconfig cert.pem square
+	./bin/obscrete --simulator --config ./etc/simulator.conf
 
 ![A very short simulation using the square data set](/doc/simulation.gif)
 
