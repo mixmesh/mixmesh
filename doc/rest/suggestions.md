@@ -55,7 +55,7 @@ Used to show all available information about the player.
     "secret-key": "&lt;BASE64 binary&gt;"
   }
 }</pre></td>
-    <td valign="top">404, 400</td>
+    <td valign="top">400, 404</td>
   </tr>
 </table>
 
@@ -90,7 +90,7 @@ Used to show a filtered set of information about the player.
     "secret-key": "&lt;BASE64 binary&gt;"
   }
 }</pre></td>
-    <td valign="top">404, 400</td>
+    <td valign="top">400, 404</td>
   </tr>
 </table>
 
@@ -120,7 +120,7 @@ Used to patch the player. One or several of the fields in the Request can be giv
   }
 }</pre></td>
     <td valign="top">204</td>
-    <td valign="top">404, 400</td>
+    <td valign="top">400, 404</td>
   </tr>
 </table>
 
@@ -179,7 +179,7 @@ Used to show a key for a specific nym.
   <tr>
     <td valign="top">-</td>
     <td valign="top">200<br>&lt;BASE64 binary&gt;</td>
-    <td valign="top">404, 400</td>
+    <td valign="top">400, 404</td>
 </tr>
 </table>
 
@@ -320,7 +320,7 @@ Typical usage:
 
 ```
 $ curl --user alice:hello --digest -X POST -H "Content-Type: application/json" -d '["alice", "p42"]' http://127.0.0.1:8444/dj/key/export
-"AIUDcDQyAVhSeZp9niFBbEbUUwue0FpJnraVlsMUCJfMlGaOZHNqA1HD5uxevxbDumkCPcM693C9MWSb7k0FWaJgKeBWCLp9wpJ3DTz3nPcl5+A\/zOqA6z89MNGXEuGFv4\/+px4p0JZeT+7zIFMMHXUZmItfW3a04mcNn96POw87vw74f3J7AIYFYWxpY2XGAMPwGV5HSVk7JNUy6C6qz0gTUTtK5aCzLI002ni+utBlukXw9KISGO7Z0vdwydzlkUCh7jU1Dj4Ljmv5fCT12mjeyflTCP4RNnDmcL9K1b5h4CUCl4JlUvXboBw6FA+2BE3JqNzzhCDR0zsrlQOJz\/zWRvQSqRpnVrC3BSuY+w=="
+"AANwNDIAhQNwNDIBWFJ5mn2eIUFsRtRTC57QWkmetpWWwxQIl8yUZo5kc2oDUcPm7F6\/FsO6aQI9wzr3cL0xZJvuTQVZomAp4FYIun3CkncNPPec9yXn4D\/M6oDrPz0w0ZcS4YW\/j\/6nHinQll5P7vMgUwwddRmYi19bdrTiZw2f3o87Dzu\/Dvh\/cnsABWFsaWNlAIYFYWxpY2XGAMPwGV5HSVk7JNUy6C6qz0gTUTtK5aCzLI002ni+utBlukXw9KISGO7Z0vdwydzlkUCh7jU1Dj4Ljmv5fCT12mjeyflTCP4RNnDmcL9K1b5h4CUCl4JlUvXboBw6FA+2BE3JqNzzhCDR0zsrlQOJz\/zWRvQSqRpnVrC3BSuY+w=="
 ```
 
 ### `/dj/key/import` (**POST**)
@@ -334,12 +334,17 @@ Used to import a key bundle.
     <th align="left">Failure</th>
   </tr>
   <tr>
-    <td valign="top">&lt;BASE64 encoded key bundle&gt;</td>
+    <td valign="top"><pre lang="json">{
+  "key-bundle": "&lt;BASE64 encoded key bundle&gt",
+  "password": "&lt;string&gt;"
+}</pre></td>
     <td valign="top">204</td>
-    <td valign="top">400</td>
+    <td valign="top">400, 403</td>
   </tr>
 </table>
 
 Typical usage:
 
-`$ curl --user alice:hello --digest -v -X POST -H "Content-Type: text/plain" -d '=GA61Ga=="' http://127.0.0.1:8444/dj/key/import`
+```
+$ curl --user alice:hello --digest -X POST -H "Content-Type: application/json" -d '{"key-bundle": "AANwNDIAhQNwNDIBWFJ5mn2eIUFsRtRTC57QWkmetpWWwxQIl8yUZo5kc2oDUcPm7F6\/FsO6aQI9wzr3cL0xZJvuTQVZomAp4FYIun3CkncNPPec9yXn4D\/M6oDrPz0w0ZcS4YW\/j\/6nHinQll5P7vMgUwwddRmYi19bdrTiZw2f3o87Dzu\/Dvh\/cnsABWFsaWNlAIYFYWxpY2XGAMPwGV5HSVk7JNUy6C6qz0gTUTtK5aCzLI002ni+utBlukXw9KISGO7Z0vdwydzlkUCh7jU1Dj4Ljmv5fCT12mjeyflTCP4RNnDmcL9K1b5h4CUCl4JlUvXboBw6FA+2BE3JqNzzhCDR0zsrlQOJz\/zWRvQSqRpnVrC3BSuY+w==", "password": "baz"}' http://127.0.0.1:8444/dj/key/import
+```
