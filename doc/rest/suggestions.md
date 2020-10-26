@@ -308,7 +308,10 @@ Used to export a key bundle.
 
 Typical usage:
 
-`$ curl --user alice:hello --digest -v -X POST -H "Content-Type: application/json" -d '["alice, "bob"]' http://127.0.0.1:8444/dj/key/export`
+```
+$ curl --user alice:hello --digest -X POST -H "Content-Type: application/json" -d '["alice", "p42"]' http://127.0.0.1:8444/dj/key/export
+"AIUDcDQyAVhSeZp9niFBbEbUUwue0FpJnraVlsMUCJfMlGaOZHNqA1HD5uxevxbDumkCPcM693C9MWSb7k0FWaJgKeBWCLp9wpJ3DTz3nPcl5+A\/zOqA6z89MNGXEuGFv4\/+px4p0JZeT+7zIFMMHXUZmItfW3a04mcNn96POw87vw74f3J7AIYFYWxpY2XGAMPwGV5HSVk7JNUy6C6qz0gTUTtK5aCzLI002ni+utBlukXw9KISGO7Z0vdwydzlkUCh7jU1Dj4Ljmv5fCT12mjeyflTCP4RNnDmcL9K1b5h4CUCl4JlUvXboBw6FA+2BE3JqNzzhCDR0zsrlQOJz\/zWRvQSqRpnVrC3BSuY+w=="
+```
 
 ### `/dj/key/import` (**POST**)
 
