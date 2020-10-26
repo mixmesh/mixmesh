@@ -19,6 +19,7 @@
 ### Joakim
 
 * Document README.md pin-salt digest
+* The need for a password in the local PKI-server confuses everything. Split the global and local PKI code base?
 
 ### Both
 

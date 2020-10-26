@@ -18,13 +18,15 @@ Used to (re)create a player.
 <table>
   <tr>
     <th align="left">Request</th>
-    <th align="left">Response</th>
+    <th align="left">Success</th>
+    <th align="left">Failure</th>
   </tr>
   <tr>
     <td valign="top"><pre lang="json">{
   "nym": "&lt;string (<32 characters)&gt;"
 }</pre></td>
-    <td valign="top">Status Code: 204</td>
+    <td valign="top">204</td>
+    <td valign="top">400</td>
   </tr>
 </table>
 
@@ -41,19 +43,19 @@ Used to show all available information about the player.
 <table>
   <tr>
     <th align="left">Request</th>
-    <th align="left">Success Response</th>
-    <th align="left">Failure Response</th>
+    <th align="left">Success</th>
+    <th align="left">Failure</th>
   </tr>
   <tr>
     <td valign="top">-</td>
-    <td valign="top">Status Code: 200<pre lang="json">{
+    <td valign="top">200<pre lang="json">{
   "nym": "&lt;string (<32 characters)&gt;",
   "keys": {
     "public-key": "&lt;BASE64 binary&gt;",
     "secret-key": "&lt;BASE64 binary&gt;"
   }
 }</pre></td>
-    <td valign="top">Status Code: 404</td>
+    <td valign="top">400, 404</td>
   </tr>
 </table>
 
@@ -70,8 +72,8 @@ Used to show a filtered set of information about the player.
 <table>
   <tr>
     <th align="left">Request</th>
-    <th align="left">Success Response</th>
-    <th align="left">Failure Response</th>
+    <th align="left">Success</th>
+    <th align="left">Failure</th>
   </tr>
   <tr>
     <td valign="top"><pre lang="json">{
@@ -81,14 +83,14 @@ Used to show a filtered set of information about the player.
     "secret-key": "&lt;boolean&gt;"
   }
 }</pre></td>
-    <td valign="top">Status Code: 200<pre lang="json">{
+    <td valign="top">200<pre lang="json">{
   "nym": "&lt;string (<32 characters)&gt;",
   "keys": {
     "public-key": "&lt;BASE64 binary&gt;",
     "secret-key": "&lt;BASE64 binary&gt;"
   }
 }</pre></td>
-    <td valign="top">Status Code: 404</td>
+    <td valign="top">400, 404</td>
   </tr>
 </table>
 
@@ -105,8 +107,8 @@ Used to patch the player. One or several of the fields in the Request can be giv
 <table>
   <tr>
     <th align="left">Request</th>
-    <th align="left">Success Response</th>
-    <th align="left">Failure Response</th>
+    <th align="left">Success</th>
+    <th align="left">Failure</th>
   </tr>
   <tr>
     <td valign="top"><pre lang="json">{
@@ -117,8 +119,8 @@ Used to patch the player. One or several of the fields in the Request can be giv
     "password": "&lt;string&gt;"
   }
 }</pre></td>
-    <td valign="top">Status Code: 204</td>
-    <td valign="top">Status Code: 404</td>
+    <td valign="top">204</td>
+    <td valign="top">400, 404</td>
   </tr>
 </table>
 
@@ -135,14 +137,16 @@ Used to show all available keys. At most 100 keys will be returned.
 <table>
   <tr>
     <th align="left">Request</th>
-    <th align="left">Success Response</th>
+    <th align="left">Success</th>
+    <th align="left">Failure</th>
   </tr>
   <tr>
     <td valign="top">-</td>
-    <td valign="top">Status Code: 200<pre lang="json">[{
+    <td valign="top">200<pre lang="json">[{
   "nym": "&lt;string (<32 characters)&gt;",
   "public-key": "&lt;BASE64 binary&gt;"
  }]</pre></td>
+    <td valign="top">400</td>
   </tr>
 </table>
 
@@ -169,13 +173,13 @@ Used to show a key for a specific nym.
 <table>
   <tr>
     <th align="left">Request</th>
-    <th align="left">Success Response</th>
-    <th align="left">Failure Response</th>
+    <th align="left">Success</th>
+    <th align="left">Failure</th>
   </tr>
   <tr>
     <td valign="top">-</td>
-    <td valign="top">Status Code: 200<br>&lt;BASE64 binary&gt;</td>
-    <td valign="top">Status Codes: 404</td>
+    <td valign="top">200<br>&lt;BASE64 binary&gt;</td>
+    <td valign="top">400, 404</td>
 </tr>
 </table>
 
@@ -193,14 +197,16 @@ Used to show a filtered set of keys. At most 100 keys will be returned.
 <table>
   <tr>
     <th align="left">Request</th>
-    <th align="left">Response</th>
+    <th align="left">Success</th>
+    <th align="left">Failure</th>
   </tr>
   <tr>
     <td valign="top"><pre lang="json">["&lt;sub-string nym (<32 characters)&gt;"]</pre></td>
-    <td valign="top">Status Code: 200<pre lang="json">[{
+    <td valign="top">200<pre lang="json">[{
   "nym": "&lt;string (<32 characters)&gt;",
   "public-key": "&lt;BASE64 binary&gt;"
 }]</pre></td>
+    <td valign="top">400</td>
   </tr>
 </table>
 
@@ -226,21 +232,22 @@ $ curl --user alice:hello --digest -X POST -H "Content-Type: application/json" -
 
 ### `/dj/key` (**PUT**)
 
-Used to import a new key.
+Used to import new (or replace an existing) key.
 
 <table>
   <tr>
     <th align="left">Request</th>
-    <th align="left">Success Response</th>
-    <th align="left">Failure Response</th>
+    <th align="left">Success</th>
+    <th align="left">Failure</th>
   </tr>
   <tr>
     <td valign="top"><pre lang="json">{
   "nym": "&lt;string (<32 characters)&gt;",
-  "public-key": "&lt;BASE64 binary&gt;"
+  "public-key": "&lt;BASE64 binary&gt;",
+  "password": "&lt;string&gt;"
 }</pre></td>
-    <td valign="top">Status Code: 204</td>
-    <td valign="top">Status Code: 403</td>
+    <td valign="top">204</td>
+    <td valign="top">400, 403</td>
   </tr>
 </table>
 
@@ -250,48 +257,47 @@ Typical usage:
 $ curl --user alice:hello --digest -X PUT -H "Content-Type: application/json" -d '{"nym": "p50", "public-key": "BHAxMDABiS61z1AxsC2Kbx3GBrfb5pftV1\/piyCKOt\/\/DThArLGrxnnLTwz0flD8An33aoZmsAYBbJNE7k4HhL1F+cLvqZD\/d2oz2r0Lt4aBWCz2pDMas\/MIivQnbSJZWTse\/PxSuk95L0CfeKGgR61s5DAls652Rqsw4xsoIfibYJu26Pc=", "password": "baz"}' http://127.0.0.1:8444/dj/key
 ```
 
-### `/dj/key/<nym>` (**DELETE**)
-
-Used to delete a key for a specific nym.
-
-<table>
-  <tr>
-    <th align="left">Request</th>
-    <th align="left">Success Response</th>
-    <th align="left">Failure Response</th>
-  </tr>
-  <tr>
-    <td valign="top">-</td>
-    <td valign="top">Status Code: 204</td>
-    <td valign="top">Status Codes: 404, 403</td>
-  </tr>
-</table>
-
-Typical usage:
-
-`$ curl --user alice:hello --digest -v -X DELETE http://127.0.0.1:8444/dj/key/bob`
-
-### `/dj/key/filter` (**DELETE**)
+### `/dj/key/delete` (**POST**)
 
 Used to delete a filtered set of keys.
 
 <table>
   <tr>
     <th align="left">Request</th>
-    <th align="left">Response</th>
+    <th align="left">Success</th>
+    <th align="left">Failure</th>
   </tr>
   <tr>
-    <td valign="top"><pre lang="json">["&lt;nym (<32 characters)&gt;"]</pre></td>
-    <td valign="top">Status Code: 200<pre lang="json">{
+    <td valign="top"><pre lang="json">{
+  "nyms": ["&lt;nym (<32 characters)&gt;"],
+  "password": "&lt;string&gt;"
+}</pre></td>
+   <td valign="top">200<pre lang="json">{
   "failed": [{"nym": "&lt;string (<32 characters)&gt;",
               "reason": "&lt;string&gt;"}]
 }</pre></td>
+    <td valign="top">400</td>
   </tr>
 </table>
 
 Typical usage:
 
-`$ curl --user alice:hello --digest -v -X DELETE -H "Content-Type: application/json" -d '["bob"]' http://127.0.0.1:8444/dj/key/filter`
+```
+$ curl --user alice:hello --digest -X POST -H "Content-Type: application/json" -d '{"nyms": ["p41", "p65"], "password": "baz"}' http://127.0.0.1:8444/dj/key/delete`
+[]
+
+$ curl --user alice:hello --digest -X POST -H "Content-Type: application/json" -d '{"nyms": ["p41", "p65"], "password": "baz"}' http://127.0.0.1:8444/dj/key/delete`
+[
+  {
+    "nym": "p65",
+    "reason": "No such user"
+  },
+  {
+    "nym": "p41",
+    "reason": "No such user"
+  }
+]
+```
 
 ### `/dj/key/export` (**POST**)
 
@@ -300,17 +306,22 @@ Used to export a key bundle.
 <table>
   <tr>
     <th align="left">Request</th>
-    <th align="left">Response</th>
+    <th align="left">Success</th>
+    <th align="left">Failure</th>
   </tr>
   <tr>
     <td valign="top"><pre lang="json">["&lt;nym (<32 characters)&gt;"]</pre></td>
-    <td valign="top">Status Code: 200<br>&lt;BASE64 encoded key bundle&gt;</td>
+    <td valign="top">200<br>&lt;BASE64 encoded key bundle&gt;</td>
+    <td valign="top">400</td>
   </tr>
 </table>
 
 Typical usage:
 
-`$ curl --user alice:hello --digest -v -X DELETE -H "Content-Type: application/json" -d '["alice, "bob"]' http://127.0.0.1:8444/dj/key/export`
+```
+$ curl --user alice:hello --digest -X POST -H "Content-Type: application/json" -d '["alice", "p42"]' http://127.0.0.1:8444/dj/key/export
+"AANwNDIAhQNwNDIBWFJ5mn2eIUFsRtRTC57QWkmetpWWwxQIl8yUZo5kc2oDUcPm7F6\/FsO6aQI9wzr3cL0xZJvuTQVZomAp4FYIun3CkncNPPec9yXn4D\/M6oDrPz0w0ZcS4YW\/j\/6nHinQll5P7vMgUwwddRmYi19bdrTiZw2f3o87Dzu\/Dvh\/cnsABWFsaWNlAIYFYWxpY2XGAMPwGV5HSVk7JNUy6C6qz0gTUTtK5aCzLI002ni+utBlukXw9KISGO7Z0vdwydzlkUCh7jU1Dj4Ljmv5fCT12mjeyflTCP4RNnDmcL9K1b5h4CUCl4JlUvXboBw6FA+2BE3JqNzzhCDR0zsrlQOJz\/zWRvQSqRpnVrC3BSuY+w=="
+```
 
 ### `/dj/key/import` (**POST**)
 
@@ -319,14 +330,21 @@ Used to import a key bundle.
 <table>
   <tr>
     <th align="left">Request</th>
-    <th align="left">Response</th>
+    <th align="left">Success</th>
+    <th align="left">Failure</th>
   </tr>
   <tr>
-    <td valign="top">&lt;BASE64 encoded key bundle&gt;</td>
-    <td valign="top">Status Code: 204</td>
+    <td valign="top"><pre lang="json">{
+  "key-bundle": "&lt;BASE64 encoded key bundle&gt",
+  "password": "&lt;string&gt;"
+}</pre></td>
+    <td valign="top">204</td>
+    <td valign="top">400, 403</td>
   </tr>
 </table>
 
 Typical usage:
 
-`$ curl --user alice:hello --digest -v -X POST -H "Content-Type: text/plain" -d '=GA61Ga=="' http://127.0.0.1:8444/dj/key/import`
+```
+$ curl --user alice:hello --digest -X POST -H "Content-Type: application/json" -d '{"key-bundle": "AANwNDIAhQNwNDIBWFJ5mn2eIUFsRtRTC57QWkmetpWWwxQIl8yUZo5kc2oDUcPm7F6\/FsO6aQI9wzr3cL0xZJvuTQVZomAp4FYIun3CkncNPPec9yXn4D\/M6oDrPz0w0ZcS4YW\/j\/6nHinQll5P7vMgUwwddRmYi19bdrTiZw2f3o87Dzu\/Dvh\/cnsABWFsaWNlAIYFYWxpY2XGAMPwGV5HSVk7JNUy6C6qz0gTUTtK5aCzLI002ni+utBlukXw9KISGO7Z0vdwydzlkUCh7jU1Dj4Ljmv5fCT12mjeyflTCP4RNnDmcL9K1b5h4CUCl4JlUvXboBw6FA+2BE3JqNzzhCDR0zsrlQOJz\/zWRvQSqRpnVrC3BSuY+w==", "password": "baz"}' http://127.0.0.1:8444/dj/key/import
+```
