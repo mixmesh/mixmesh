@@ -226,7 +226,7 @@ $ curl --user alice:hello --digest -X POST -H "Content-Type: application/json" -
 
 ### `/dj/key` (**PUT**)
 
-Used to import a new key.
+Used to import new (or replace an existing) key.
 
 <table>
   <tr>
@@ -237,7 +237,8 @@ Used to import a new key.
   <tr>
     <td valign="top"><pre lang="json">{
   "nym": "&lt;string (<32 characters)&gt;",
-  "public-key": "&lt;BASE64 binary&gt;"
+  "public-key": "&lt;BASE64 binary&gt;",
+  "password": "&lt;string&gt;"
 }</pre></td>
     <td valign="top">Status Code: 204</td>
     <td valign="top">Status Code: 403</td>
@@ -250,28 +251,7 @@ Typical usage:
 $ curl --user alice:hello --digest -X PUT -H "Content-Type: application/json" -d '{"nym": "p50", "public-key": "BHAxMDABiS61z1AxsC2Kbx3GBrfb5pftV1\/piyCKOt\/\/DThArLGrxnnLTwz0flD8An33aoZmsAYBbJNE7k4HhL1F+cLvqZD\/d2oz2r0Lt4aBWCz2pDMas\/MIivQnbSJZWTse\/PxSuk95L0CfeKGgR61s5DAls652Rqsw4xsoIfibYJu26Pc=", "password": "baz"}' http://127.0.0.1:8444/dj/key
 ```
 
-### `/dj/key/<nym>` (**DELETE**)
-
-Used to delete a key for a specific nym.
-
-<table>
-  <tr>
-    <th align="left">Request</th>
-    <th align="left">Success Response</th>
-    <th align="left">Failure Response</th>
-  </tr>
-  <tr>
-    <td valign="top">-</td>
-    <td valign="top">Status Code: 204</td>
-    <td valign="top">Status Codes: 404, 403</td>
-  </tr>
-</table>
-
-Typical usage:
-
-`$ curl --user alice:hello --digest -v -X DELETE http://127.0.0.1:8444/dj/key/bob`
-
-### `/dj/key/filter` (**DELETE**)
+### `/dj/key/delete` (**POST**)
 
 Used to delete a filtered set of keys.
 
@@ -281,8 +261,11 @@ Used to delete a filtered set of keys.
     <th align="left">Response</th>
   </tr>
   <tr>
-    <td valign="top"><pre lang="json">["&lt;nym (<32 characters)&gt;"]</pre></td>
-    <td valign="top">Status Code: 200<pre lang="json">{
+    <td valign="top"><pre lang="json">{
+  "nyms": ["&lt;nym (<32 characters)&gt;"],
+  "password": "&lt;string&gt;"
+}</pre></td>
+   <td valign="top">Status Code: 200<pre lang="json">{
   "failed": [{"nym": "&lt;string (<32 characters)&gt;",
               "reason": "&lt;string&gt;"}]
 }</pre></td>
@@ -291,7 +274,22 @@ Used to delete a filtered set of keys.
 
 Typical usage:
 
-`$ curl --user alice:hello --digest -v -X DELETE -H "Content-Type: application/json" -d '["bob"]' http://127.0.0.1:8444/dj/key/filter`
+```
+$ curl --user alice:hello --digest -X POST -H "Content-Type: application/json" -d '{"nyms": ["p41", "p65"], "password": "baz"}' http://127.0.0.1:8444/dj/key/delete`
+[]
+
+$ curl --user alice:hello --digest -X POST -H "Content-Type: application/json" -d '{"nyms": ["p41", "p65"], "password": "baz"}' http://127.0.0.1:8444/dj/key/delete`
+[
+  {
+    "nym": "p65",
+    "reason": "No such user"
+  },
+  {
+    "nym": "p41",
+    "reason": "No such user"
+  }
+]
+```
 
 ### `/dj/key/export` (**POST**)
 
@@ -310,7 +308,7 @@ Used to export a key bundle.
 
 Typical usage:
 
-`$ curl --user alice:hello --digest -v -X DELETE -H "Content-Type: application/json" -d '["alice, "bob"]' http://127.0.0.1:8444/dj/key/export`
+`$ curl --user alice:hello --digest -v -X POST -H "Content-Type: application/json" -d '["alice, "bob"]' http://127.0.0.1:8444/dj/key/export`
 
 ### `/dj/key/import` (**POST**)
 
