@@ -18,13 +18,15 @@ Used to (re)create a player.
 <table>
   <tr>
     <th align="left">Request</th>
-    <th align="left">Response</th>
+    <th align="left">Success</th>
+    <th align="left">Failure</th>
   </tr>
   <tr>
     <td valign="top"><pre lang="json">{
   "nym": "&lt;string (<32 characters)&gt;"
 }</pre></td>
-    <td valign="top">Status Code: 204</td>
+    <td valign="top">204</td>
+    <td valign="top">400</td>
   </tr>
 </table>
 
@@ -41,19 +43,19 @@ Used to show all available information about the player.
 <table>
   <tr>
     <th align="left">Request</th>
-    <th align="left">Success Response</th>
-    <th align="left">Failure Response</th>
+    <th align="left">Success</th>
+    <th align="left">Failure</th>
   </tr>
   <tr>
     <td valign="top">-</td>
-    <td valign="top">Status Code: 200<pre lang="json">{
+    <td valign="top">200<pre lang="json">{
   "nym": "&lt;string (<32 characters)&gt;",
   "keys": {
     "public-key": "&lt;BASE64 binary&gt;",
     "secret-key": "&lt;BASE64 binary&gt;"
   }
 }</pre></td>
-    <td valign="top">Status Code: 404</td>
+    <td valign="top">404, 400</td>
   </tr>
 </table>
 
@@ -70,8 +72,8 @@ Used to show a filtered set of information about the player.
 <table>
   <tr>
     <th align="left">Request</th>
-    <th align="left">Success Response</th>
-    <th align="left">Failure Response</th>
+    <th align="left">Success</th>
+    <th align="left">Failure</th>
   </tr>
   <tr>
     <td valign="top"><pre lang="json">{
@@ -81,14 +83,14 @@ Used to show a filtered set of information about the player.
     "secret-key": "&lt;boolean&gt;"
   }
 }</pre></td>
-    <td valign="top">Status Code: 200<pre lang="json">{
+    <td valign="top">200<pre lang="json">{
   "nym": "&lt;string (<32 characters)&gt;",
   "keys": {
     "public-key": "&lt;BASE64 binary&gt;",
     "secret-key": "&lt;BASE64 binary&gt;"
   }
 }</pre></td>
-    <td valign="top">Status Code: 404</td>
+    <td valign="top">404, 400</td>
   </tr>
 </table>
 
@@ -105,8 +107,8 @@ Used to patch the player. One or several of the fields in the Request can be giv
 <table>
   <tr>
     <th align="left">Request</th>
-    <th align="left">Success Response</th>
-    <th align="left">Failure Response</th>
+    <th align="left">Success</th>
+    <th align="left">Failure</th>
   </tr>
   <tr>
     <td valign="top"><pre lang="json">{
@@ -117,8 +119,8 @@ Used to patch the player. One or several of the fields in the Request can be giv
     "password": "&lt;string&gt;"
   }
 }</pre></td>
-    <td valign="top">Status Code: 204</td>
-    <td valign="top">Status Code: 404</td>
+    <td valign="top">204</td>
+    <td valign="top">404, 400</td>
   </tr>
 </table>
 
@@ -135,14 +137,16 @@ Used to show all available keys. At most 100 keys will be returned.
 <table>
   <tr>
     <th align="left">Request</th>
-    <th align="left">Success Response</th>
+    <th align="left">Success</th>
+    <th align="left">Failure</th>
   </tr>
   <tr>
     <td valign="top">-</td>
-    <td valign="top">Status Code: 200<pre lang="json">[{
+    <td valign="top">200<pre lang="json">[{
   "nym": "&lt;string (<32 characters)&gt;",
   "public-key": "&lt;BASE64 binary&gt;"
  }]</pre></td>
+    <td valign="top">400</td>
   </tr>
 </table>
 
@@ -169,13 +173,13 @@ Used to show a key for a specific nym.
 <table>
   <tr>
     <th align="left">Request</th>
-    <th align="left">Success Response</th>
-    <th align="left">Failure Response</th>
+    <th align="left">Success</th>
+    <th align="left">Failure</th>
   </tr>
   <tr>
     <td valign="top">-</td>
-    <td valign="top">Status Code: 200<br>&lt;BASE64 binary&gt;</td>
-    <td valign="top">Status Codes: 404</td>
+    <td valign="top">200<br>&lt;BASE64 binary&gt;</td>
+    <td valign="top">404, 400</td>
 </tr>
 </table>
 
@@ -193,14 +197,16 @@ Used to show a filtered set of keys. At most 100 keys will be returned.
 <table>
   <tr>
     <th align="left">Request</th>
-    <th align="left">Response</th>
+    <th align="left">Success</th>
+    <th align="left">Failure</th>
   </tr>
   <tr>
     <td valign="top"><pre lang="json">["&lt;sub-string nym (<32 characters)&gt;"]</pre></td>
-    <td valign="top">Status Code: 200<pre lang="json">[{
+    <td valign="top">200<pre lang="json">[{
   "nym": "&lt;string (<32 characters)&gt;",
   "public-key": "&lt;BASE64 binary&gt;"
 }]</pre></td>
+    <td valign="top">400</td>
   </tr>
 </table>
 
@@ -231,8 +237,8 @@ Used to import new (or replace an existing) key.
 <table>
   <tr>
     <th align="left">Request</th>
-    <th align="left">Success Response</th>
-    <th align="left">Failure Response</th>
+    <th align="left">Success</th>
+    <th align="left">Failure</th>
   </tr>
   <tr>
     <td valign="top"><pre lang="json">{
@@ -240,8 +246,8 @@ Used to import new (or replace an existing) key.
   "public-key": "&lt;BASE64 binary&gt;",
   "password": "&lt;string&gt;"
 }</pre></td>
-    <td valign="top">Status Code: 204</td>
-    <td valign="top">Status Code: 403</td>
+    <td valign="top">204</td>
+    <td valign="top">400, 403</td>
   </tr>
 </table>
 
@@ -258,17 +264,19 @@ Used to delete a filtered set of keys.
 <table>
   <tr>
     <th align="left">Request</th>
-    <th align="left">Response</th>
+    <th align="left">Success</th>
+    <th align="left">Failure</th>
   </tr>
   <tr>
     <td valign="top"><pre lang="json">{
   "nyms": ["&lt;nym (<32 characters)&gt;"],
   "password": "&lt;string&gt;"
 }</pre></td>
-   <td valign="top">Status Code: 200<pre lang="json">{
+   <td valign="top">200<pre lang="json">{
   "failed": [{"nym": "&lt;string (<32 characters)&gt;",
               "reason": "&lt;string&gt;"}]
 }</pre></td>
+    <td valign="top">400</td>
   </tr>
 </table>
 
@@ -298,11 +306,13 @@ Used to export a key bundle.
 <table>
   <tr>
     <th align="left">Request</th>
-    <th align="left">Response</th>
+    <th align="left">Success</th>
+    <th align="left">Failure</th>
   </tr>
   <tr>
     <td valign="top"><pre lang="json">["&lt;nym (<32 characters)&gt;"]</pre></td>
-    <td valign="top">Status Code: 200<br>&lt;BASE64 encoded key bundle&gt;</td>
+    <td valign="top">200<br>&lt;BASE64 encoded key bundle&gt;</td>
+    <td valign="top">400</td>
   </tr>
 </table>
 
@@ -320,11 +330,13 @@ Used to import a key bundle.
 <table>
   <tr>
     <th align="left">Request</th>
-    <th align="left">Response</th>
+    <th align="left">Success</th>
+    <th align="left">Failure</th>
   </tr>
   <tr>
     <td valign="top">&lt;BASE64 encoded key bundle&gt;</td>
-    <td valign="top">Status Code: 204</td>
+    <td valign="top">204</td>
+    <td valign="top">400</td>
   </tr>
 </table>
 
