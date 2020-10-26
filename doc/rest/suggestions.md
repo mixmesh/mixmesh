@@ -246,7 +246,9 @@ Used to import a new key.
 
 Typical usage:
 
-`$ curl --user alice:hello --digest -v -X PUT -H "Content-Type: application/json" -d '{"nym": "bob", "public-key": "=GST61#8=="}' http://127.0.0.1:8444/dj/key`
+```
+$ curl --user alice:hello --digest -X PUT -H "Content-Type: application/json" -d '{"nym": "p50", "public-key": "BHAxMDABiS61z1AxsC2Kbx3GBrfb5pftV1\/piyCKOt\/\/DThArLGrxnnLTwz0flD8An33aoZmsAYBbJNE7k4HhL1F+cLvqZD\/d2oz2r0Lt4aBWCz2pDMas\/MIivQnbSJZWTse\/PxSuk95L0CfeKGgR61s5DAls652Rqsw4xsoIfibYJu26Pc=", "password": "baz"}' http://127.0.0.1:8444/dj/key
+```
 
 ### `/dj/key/<nym>` (**DELETE**)
 
