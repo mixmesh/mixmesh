@@ -11,9 +11,9 @@ I found some great advice here:
 
 ### `/dj/player` (**PUT**)
 
-Used to (re)create a player.
+Used to (re)name a player and refresh its encryption keys.
 
-**NOTE**: Must be called prior to any other resource method calls. The player's keys will be recreated!!
+**BEWARE**: The player's encryption keys will be re-created!! All encrypted files managed by the system will be re-encrypted with the new keys.
 
 <table>
   <tr>
@@ -23,16 +23,17 @@ Used to (re)create a player.
   </tr>
   <tr>
     <td valign="top"><pre lang="json">{
-  "nym": "&lt;string (<32 characters)&gt;"
+  "nym": "&lt;string (<32 characters)&gt;",
+  "pin": "&lt;six digits&gt;"
 }</pre></td>
     <td valign="top">204</td>
     <td valign="top">400</td>
   </tr>
 </table>
 
-After box initialization the player is disabled and its default nym is set to "admin". Do the following to enable the player and to rename it to "alice":
+Typical usage:
 
-`$ curl --user admin:hello --digest -v -X PUT -H "Content-Type: application/json" -d '{"nym": "alice"}' http://127.0.0.1:8444/dj/player`
+`$ curl --user admin:hello --digest -X PUT -H "Content-Type: application/json" -d '{"nym": "alice", pin: "123456"}' http://127.0.0.1:8444/dj/player`
 
 ### `/dj/player` (**GET**)
 
@@ -50,18 +51,23 @@ Used to show all available information about the player.
     <td valign="top">-</td>
     <td valign="top">200<pre lang="json">{
   "nym": "&lt;string (<32 characters)&gt;",
-  "keys": {
-    "public-key": "&lt;BASE64 binary&gt;",
-    "secret-key": "&lt;BASE64 binary&gt;"
-  }
+  "public-key": "&lt;BASE64 binary&gt;",
+  "secret-key": "&lt;BASE64 binary&gt;"
 }</pre></td>
-    <td valign="top">400, 404</td>
+    <td valign="top">400</td>
   </tr>
 </table>
 
 Typical usage:
 
-`$ curl --user admin:hello --digest -v http://127.0.0.1:8444/dj/player`
+```
+$ curl --user alice:hello --digest http://127.0.0.1:8444/dj/player
+{
+  "nym": "alice",
+  "public-key": "BWFsaWNlxgDD8BleR0lZOyTVMuguqs9IE1E7SuWgsyyNNNp4vrrQZbpF8PSiEhju2dL3cMnc5ZFAoe41NQ4+C45r+Xwk9dpo3sn5Uwj+ETZw5nC\/StW+YeAlApeCZVL126AcOhQPtgRNyajc84Qg0dM7K5UDic\/81kb0EqkaZ1awtwUrmPs=",
+  "secret-key": "JUitY4g+ezCu1VJ9G11RSnfvKqieoGb+C+Q+CH6f+6EWC\/lu+YAey2g9iTcpf\/xoa501SFfUTCG1cV16tU\/o\/VOd18\/zE98F7Jd6e\/2NeiM6yMrCQrbFnY\/cugQPwbKw6jf8lnxiO1+kBdqX5a5Fgs7eTsChd44lJY1QeFM7\/rNECWKmPonIY\/NwD3mcA3iBpUwmD0RYGdEB6IXFc30xgR2avOAWd0e+5PMnyvVw\/\/OC12vvkZAdtK4oL1gTfHoQ9B5YGILeFmZdScfrAMXaY7BkVqiCpIa+xK86dtqzf0Afa7G\/vg3Lj8wf2CXhq0e4+wqXSqBuIVhLn9TxIPe1jfA5r4IfOqCMRqZKmbQD3ltxp7Ojt79leAOl2PARJFOd+XMlISNtJ4WcYXyboeRAzw=="
+}
+```
 
 ### `/dj/player/filter` (**POST**)
 
@@ -78,27 +84,25 @@ Used to show a filtered set of information about the player.
   <tr>
     <td valign="top"><pre lang="json">{
   "nym": "&lt;boolean&gt;",
-  "keys": {
-    "public-key": "&lt;boolean&gt;",
-    "secret-key": "&lt;boolean&gt;"
-  }
+  "public-key": "&lt;boolean&gt;",
+  "secret-key": "&lt;boolean&gt;"
 }</pre></td>
     <td valign="top">200<pre lang="json">{
   "nym": "&lt;string (<32 characters)&gt;",
-  "keys": {
-    "public-key": "&lt;BASE64 binary&gt;",
-    "secret-key": "&lt;BASE64 binary&gt;"
-  }
+  "public-key": "&lt;BASE64 binary&gt;",
+  "secret-key": "&lt;BASE64 binary&gt;"
 }</pre></td>
     <td valign="top">400, 404</td>
   </tr>
 </table>
 
-Omitted filter request fields are excluded from response.
+Omitted filter request fields are excluded from the response.
 
 Typical usage:
 
-`$ curl --user alice:hello --digest -v -X POST -H "Content-Type: application/json" -d '{"keys": {"public-key": true}}' http://127.0.0.1:8444/dj/player/filter`
+```
+$ curl --user alice:hello --digest -X POST -H "Content-Type: application/json" -d '{"nym": true, "public-key": true}' http://127.0.0.1:8444/dj/player/filter
+```
 
 ### `/dj/player` (**PATCH**)
 
@@ -155,14 +159,10 @@ Typical usage:
 ```
 $ curl --user alice:hello --digest http://127.0.0.1:8444/dj/key
 [
-  {
-    "nym": "alice",
-    "public-key": "BWFsaWNlxgDD8BleR0lZOyTVMuguqs9IE1E7SuWgsyyNNNp4vrrQZbpF8PSiEhju2dL3cMnc5ZFAoe41NQ4+C45r+Xwk9dpo3sn5Uwj+ETZw5nC\/StW+YeAlApeCZVL126AcOhQPtgRNyajc84Qg0dM7K5UDic\/81kb0EqkaZ1awtwUrmPs="
-  },
-  {
-    "nym": "bob",
-    "public-key": "AnAxBNN4r35tVwRRktbu2N83GmvDvTBdmTNeMLP+u6lPSfM4\/Oby3tGF07qbtQdaZgteOAXj3pB7xNhJbARmril0avcbbXs\/HlfJlidui7JZM0T7Uu+qWmq7X3qAUnYA42rM6lEI7pnfuKn+X4SW\/HTbaW4kBBjq3f\/ERruD2W5c9KoI"
-  }
+  "BWFsaWNlxgDD8BleR0lZOyTVMuguqs9IE1E7SuWgsyyNNNp4vrrQZbpF8PSiEhju2dL3cMnc5ZFAoe41NQ4+C45r+Xwk9dpo3sn5Uwj+ETZw5nC\/StW+YeAlApeCZVL126AcOhQPtgRNyajc84Qg0dM7K5UDic\/81kb0EqkaZ1awtwUrmPs=",
+  "AnAxBNN4r35tVwRRktbu2N83GmvDvTBdmTNeMLP+u6lPSfM4\/Oby3tGF07qbtQdaZgteOAXj3pB7xNhJbARmril0avcbbXs\/HlfJlidui7JZM0T7Uu+qWmq7X3qAUnYA42rM6lEI7pnfuKn+X4SW\/HTbaW4kBBjq3f\/ERruD2W5c9KoI",
+  "A3AxMLDb4hxZt3mSZ8Qa+kSfa2K4R\/ayLKhQX+RMNFn7NlS9cxG\/QXdtJy1S28abJ5HTKw+9S8pHw3caXjGCWWS8BfD77yhzbMQgA3Y9c\/\/gaL+nGPRO+4PmgpTykotSVe1VUPWUJO5fQ+oVFROGBjQDnZjLO0S7XI0Ekd37hCGTyS6d",
+  "BHAxMDABiS61z1AxsC2Kbx3GBrfb5pftV1\/piyCKOt\/\/DThArLGrxnnLTwz0flD8An33aoZmsAYBbJNE7k4HhL1F+cLvqZD\/d2oz2r0Lt4aBWCz2pDMas\/MIivQnbSJZWTse\/PxSuk95L0CfeKGgR61s5DAls652Rqsw4xsoIfibYJu26Pc="
 ]
 ```
 
@@ -215,18 +215,10 @@ Typical usage:
 ```
 $ curl --user alice:hello --digest -X POST -H "Content-Type: application/json" -d '["p1"]' http://127.0.0.1:8444/dj/key/filter
 [
-  {
-    "nym": "p1",
-    "public-key": "AnAxBNN4r35tVwRRktbu2N83GmvDvTBdmTNeMLP+u6lPSfM4\/Oby3tGF07qbtQdaZgteOAXj3pB7xNhJbARmril0avcbbXs\/HlfJlidui7JZM0T7Uu+qWmq7X3qAUnYA42rM6lEI7pnfuKn+X4SW\/HTbaW4kBBjq3f\/ERruD2W5c9KoI"
-  },
-  {
-    "nym": "p10",
-    "public-key": "A3AxMLDb4hxZt3mSZ8Qa+kSfa2K4R\/ayLKhQX+RMNFn7NlS9cxG\/QXdtJy1S28abJ5HTKw+9S8pHw3caXjGCWWS8BfD77yhzbMQgA3Y9c\/\/gaL+nGPRO+4PmgpTykotSVe1VUPWUJO5fQ+oVFROGBjQDnZjLO0S7XI0Ekd37hCGTyS6d"
-  },
-  {
-    "nym": "p100",
-    "public-key": "BHAxMDABiS61z1AxsC2Kbx3GBrfb5pftV1\/piyCKOt\/\/DThArLGrxnnLTwz0flD8An33aoZmsAYBbJNE7k4HhL1F+cLvqZD\/d2oz2r0Lt4aBWCz2pDMas\/MIivQnbSJZWTse\/PxSuk95L0CfeKGgR61s5DAls652Rqsw4xsoIfibYJu26Pc="
-  }
+  "AnAxBNN4r35tVwRRktbu2N83GmvDvTBdmTNeMLP+u6lPSfM4\/Oby3tGF07qbtQdaZgteOAXj3pB7xNhJbARmril0avcbbXs\/HlfJlidui7JZM0T7Uu+qWmq7X3qAUnYA42rM6lEI7pnfuKn+X4SW\/HTbaW4kBBjq3f\/ERruD2W5c9KoI",
+  "A3AxMLDb4hxZt3mSZ8Qa+kSfa2K4R\/ayLKhQX+RMNFn7NlS9cxG\/QXdtJy1S28abJ5HTKw+9S8pHw3caXjGCWWS8BfD77yhzbMQgA3Y9c\/\/gaL+nGPRO+4PmgpTykotSVe1VUPWUJO5fQ+oVFROGBjQDnZjLO0S7XI0Ekd37hCGTyS6d",
+  "BHAxMDABiS61z1AxsC2Kbx3GBrfb5pftV1\/piyCKOt\/\/DThArLGrxnnLTwz0flD8An33aoZmsAYBbJNE7k4HhL1F+cLvqZD\/d2oz2r0Lt4aBWCz2pDMas\/MIivQnbSJZWTse\/PxSuk95L0CfeKGgR61s5DAls652Rqsw4xsoIfibYJu26Pc=",
+  "A3AxMQTWAy7GdARTANZcvNfgW++zCfe+3ziaMp8+FW513nxRLiV8OspD\/BI9RAJuPhT8xi1uLRKH9lhBuJNakHHBJCmW44obJ\/lc4Bg7riv\/It09ka6uKOCbTZISogHPQFl9VTa3DQKEmttmk5OIqitsGU8tjp7hH4fbH\/0R4JzrCoBGSw=="
 ]
 ```
 
@@ -241,11 +233,7 @@ Used to import new (or replace an existing) key.
     <th align="left">Failure</th>
   </tr>
   <tr>
-    <td valign="top"><pre lang="json">{
-  "nym": "&lt;string (<32 characters)&gt;",
-  "public-key": "&lt;BASE64 binary&gt;",
-  "password": "&lt;string&gt;"
-}</pre></td>
+    <td valign="top"><pre lang="json">"&lt;BASE64 binary&gt;"</pre></td>
     <td valign="top">204</td>
     <td valign="top">400, 403</td>
   </tr>
@@ -254,7 +242,7 @@ Used to import new (or replace an existing) key.
 Typical usage:
 
 ```
-$ curl --user alice:hello --digest -X PUT -H "Content-Type: application/json" -d '{"nym": "p50", "public-key": "BHAxMDABiS61z1AxsC2Kbx3GBrfb5pftV1\/piyCKOt\/\/DThArLGrxnnLTwz0flD8An33aoZmsAYBbJNE7k4HhL1F+cLvqZD\/d2oz2r0Lt4aBWCz2pDMas\/MIivQnbSJZWTse\/PxSuk95L0CfeKGgR61s5DAls652Rqsw4xsoIfibYJu26Pc=", "password": "baz"}' http://127.0.0.1:8444/dj/key
+$ curl --user alice:hello --digest -X PUT -H "Content-Type: application/json" -d '"A3AxMQTWAy7GdARTANZcvNfgW++zCfe+3ziaMp8+FW513nxRLiV8OspD\/BI9RAJuPhT8xi1uLRKH9lhBuJNakHHBJCmW44obJ\/lc4Bg7riv\/It09ka6uKOCbTZISogHPQFl9VTa3DQKEmttmk5OIqitsGU8tjp7hH4fbH\/0R4JzrCoBGSw=="' http://127.0.0.1:8444/dj/key
 ```
 
 ### `/dj/key/delete` (**POST**)
@@ -268,10 +256,7 @@ Used to delete a filtered set of keys.
     <th align="left">Failure</th>
   </tr>
   <tr>
-    <td valign="top"><pre lang="json">{
-  "nyms": ["&lt;nym (<32 characters)&gt;"],
-  "password": "&lt;string&gt;"
-}</pre></td>
+    <td valign="top"><pre lang="json">["&lt;nym (<32 characters)&gt;"]</pre></td>
    <td valign="top">200<pre lang="json">{
   "failed": [{"nym": "&lt;string (<32 characters)&gt;",
               "reason": "&lt;string&gt;"}]
@@ -283,18 +268,18 @@ Used to delete a filtered set of keys.
 Typical usage:
 
 ```
-$ curl --user alice:hello --digest -X POST -H "Content-Type: application/json" -d '{"nyms": ["p41", "p65"], "password": "baz"}' http://127.0.0.1:8444/dj/key/delete`
+$ curl --user alice:hello --digest -X POST -H "Content-Type: application/json" -d '["p41", "p65"]}' http://127.0.0.1:8444/dj/key/delete
 []
 
-$ curl --user alice:hello --digest -X POST -H "Content-Type: application/json" -d '{"nyms": ["p41", "p65"], "password": "baz"}' http://127.0.0.1:8444/dj/key/delete`
+$ curl --user alice:hello --digest -X POST -H "Content-Type: application/json" -d '["p41", "p65"]' http://127.0.0.1:8444/dj/key/delete
 [
   {
     "nym": "p65",
-    "reason": "No such user"
+    "reason": "No such key"
   },
   {
     "nym": "p41",
-    "reason": "No such user"
+    "reason": "No such key"
   }
 ]
 ```
@@ -320,7 +305,7 @@ Typical usage:
 
 ```
 $ curl --user alice:hello --digest -X POST -H "Content-Type: application/json" -d '["alice", "p42"]' http://127.0.0.1:8444/dj/key/export
-"AANwNDIAhQNwNDIBWFJ5mn2eIUFsRtRTC57QWkmetpWWwxQIl8yUZo5kc2oDUcPm7F6\/FsO6aQI9wzr3cL0xZJvuTQVZomAp4FYIun3CkncNPPec9yXn4D\/M6oDrPz0w0ZcS4YW\/j\/6nHinQll5P7vMgUwwddRmYi19bdrTiZw2f3o87Dzu\/Dvh\/cnsABWFsaWNlAIYFYWxpY2XGAMPwGV5HSVk7JNUy6C6qz0gTUTtK5aCzLI002ni+utBlukXw9KISGO7Z0vdwydzlkUCh7jU1Dj4Ljmv5fCT12mjeyflTCP4RNnDmcL9K1b5h4CUCl4JlUvXboBw6FA+2BE3JqNzzhCDR0zsrlQOJz\/zWRvQSqRpnVrC3BSuY+w=="
+"AIUDcDQyAVhSeZp9niFBbEbUUwue0FpJnraVlsMUCJfMlGaOZHNqA1HD5uxevxbDumkCPcM693C9MWSb7k0FWaJgKeBWCLp9wpJ3DTz3nPcl5+A\/zOqA6z89MNGXEuGFv4\/+px4p0JZeT+7zIFMMHXUZmItfW3a04mcNn96POw87vw74f3J7AIYFYWxpY2XGAMPwGV5HSVk7JNUy6C6qz0gTUTtK5aCzLI002ni+utBlukXw9KISGO7Z0vdwydzlkUCh7jU1Dj4Ljmv5fCT12mjeyflTCP4RNnDmcL9K1b5h4CUCl4JlUvXboBw6FA+2BE3JqNzzhCDR0zsrlQOJz\/zWRvQSqRpnVrC3BSuY+w=="
 ```
 
 ### `/dj/key/import` (**POST**)
@@ -334,10 +319,7 @@ Used to import a key bundle.
     <th align="left">Failure</th>
   </tr>
   <tr>
-    <td valign="top"><pre lang="json">{
-  "key-bundle": "&lt;BASE64 encoded key bundle&gt",
-  "password": "&lt;string&gt;"
-}</pre></td>
+    <td valign="top"><pre lang="json">"&lt;BASE64 encoded key bundle&gt"&gt;"</pre></td>
     <td valign="top">204</td>
     <td valign="top">400, 403</td>
   </tr>
@@ -346,5 +328,5 @@ Used to import a key bundle.
 Typical usage:
 
 ```
-$ curl --user alice:hello --digest -X POST -H "Content-Type: application/json" -d '{"key-bundle": "AANwNDIAhQNwNDIBWFJ5mn2eIUFsRtRTC57QWkmetpWWwxQIl8yUZo5kc2oDUcPm7F6\/FsO6aQI9wzr3cL0xZJvuTQVZomAp4FYIun3CkncNPPec9yXn4D\/M6oDrPz0w0ZcS4YW\/j\/6nHinQll5P7vMgUwwddRmYi19bdrTiZw2f3o87Dzu\/Dvh\/cnsABWFsaWNlAIYFYWxpY2XGAMPwGV5HSVk7JNUy6C6qz0gTUTtK5aCzLI002ni+utBlukXw9KISGO7Z0vdwydzlkUCh7jU1Dj4Ljmv5fCT12mjeyflTCP4RNnDmcL9K1b5h4CUCl4JlUvXboBw6FA+2BE3JqNzzhCDR0zsrlQOJz\/zWRvQSqRpnVrC3BSuY+w==", "password": "baz"}' http://127.0.0.1:8444/dj/key/import
+$ curl --user alice:hello --digest -X POST -H "Content-Type: application/json" -d '"AIUDcDQyAVhSeZp9niFBbEbUUwue0FpJnraVlsMUCJfMlGaOZHNqA1HD5uxevxbDumkCPcM693C9MWSb7k0FWaJgKeBWCLp9wpJ3DTz3nPcl5+A\/zOqA6z89MNGXEuGFv4\/+px4p0JZeT+7zIFMMHXUZmItfW3a04mcNn96POw87vw74f3J7AIYFYWxpY2XGAMPwGV5HSVk7JNUy6C6qz0gTUTtK5aCzLI002ni+utBlukXw9KISGO7Z0vdwydzlkUCh7jU1Dj4Ljmv5fCT12mjeyflTCP4RNnDmcL9K1b5h4CUCl4JlUvXboBw6FA+2BE3JqNzzhCDR0zsrlQOJz\/zWRvQSqRpnVrC3BSuY+w=="' http://127.0.0.1:8444/dj/key/import
 ```
