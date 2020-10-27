@@ -26,6 +26,10 @@
 * Write REST commands.
 * Talk about buffer management.
 * Prata om en möjlig avnästlad lagring av config i app env.
+* remove MessageID from player\_sync\_serv
+* exchanging messages may be good a strategy when is comes to clients
+  that receive messages by never send (buggy or strange) or sending
+  messages but never receives.
 
 ## Demo hardware
 * Raspberry pi zero W/H
