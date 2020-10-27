@@ -84,27 +84,25 @@ Used to show a filtered set of information about the player.
   <tr>
     <td valign="top"><pre lang="json">{
   "nym": "&lt;boolean&gt;",
-  "keys": {
-    "public-key": "&lt;boolean&gt;",
-    "secret-key": "&lt;boolean&gt;"
-  }
+  "public-key": "&lt;boolean&gt;",
+  "secret-key": "&lt;boolean&gt;"
 }</pre></td>
     <td valign="top">200<pre lang="json">{
   "nym": "&lt;string (<32 characters)&gt;",
-  "keys": {
-    "public-key": "&lt;BASE64 binary&gt;",
-    "secret-key": "&lt;BASE64 binary&gt;"
-  }
+  "public-key": "&lt;BASE64 binary&gt;",
+  "secret-key": "&lt;BASE64 binary&gt;"
 }</pre></td>
     <td valign="top">400, 404</td>
   </tr>
 </table>
 
-Omitted filter request fields are excluded from response.
+Omitted filter request fields are excluded from the response.
 
 Typical usage:
 
-`$ curl --user alice:hello --digest -v -X POST -H "Content-Type: application/json" -d '{"keys": {"public-key": true}}' http://127.0.0.1:8444/dj/player/filter`
+```
+$ curl --user alice:hello --digest -X POST -H "Content-Type: application/json" -d '{"nym": true, "public-key": true}' http://127.0.0.1:8444/dj/player/filter
+```
 
 ### `/dj/player` (**PATCH**)
 
