@@ -11,9 +11,9 @@ I found some great advice here:
 
 ### `/dj/player` (**PUT**)
 
-Used to (re)create a player.
+Used to (re)name a player and refresh its encryption keys.
 
-**NOTE**: Must be called prior to any other resource method calls. The player's keys will be recreated!!
+**BEWARE**: The player's encryption keys will be re-created!! All encrypted files managed by the system will be re-encrypted with the new keys.
 
 <table>
   <tr>
@@ -23,16 +23,17 @@ Used to (re)create a player.
   </tr>
   <tr>
     <td valign="top"><pre lang="json">{
-  "nym": "&lt;string (<32 characters)&gt;"
+  "nym": "&lt;string (<32 characters)&gt;",
+  "pin": "&lt;six digits&gt;"
 }</pre></td>
     <td valign="top">204</td>
     <td valign="top">400</td>
   </tr>
 </table>
 
-After box initialization the player is disabled and its default nym is set to "admin". Do the following to enable the player and to rename it to "alice":
+Typical usage:
 
-`$ curl --user admin:hello --digest -v -X PUT -H "Content-Type: application/json" -d '{"nym": "alice"}' http://127.0.0.1:8444/dj/player`
+`$ curl --user admin:hello --digest -X PUT -H "Content-Type: application/json" -d '{"nym": "alice", pin: "123456"}' http://127.0.0.1:8444/dj/player`
 
 ### `/dj/player` (**GET**)
 
@@ -50,18 +51,23 @@ Used to show all available information about the player.
     <td valign="top">-</td>
     <td valign="top">200<pre lang="json">{
   "nym": "&lt;string (<32 characters)&gt;",
-  "keys": {
-    "public-key": "&lt;BASE64 binary&gt;",
-    "secret-key": "&lt;BASE64 binary&gt;"
-  }
+  "public-key": "&lt;BASE64 binary&gt;",
+  "secret-key": "&lt;BASE64 binary&gt;"
 }</pre></td>
-    <td valign="top">400, 404</td>
+    <td valign="top">400</td>
   </tr>
 </table>
 
 Typical usage:
 
-`$ curl --user admin:hello --digest -v http://127.0.0.1:8444/dj/player`
+```
+$ curl --user alice:hello --digest http://127.0.0.1:8444/dj/player
+{
+  "nym": "alice",
+  "public-key": "BWFsaWNlxgDD8BleR0lZOyTVMuguqs9IE1E7SuWgsyyNNNp4vrrQZbpF8PSiEhju2dL3cMnc5ZFAoe41NQ4+C45r+Xwk9dpo3sn5Uwj+ETZw5nC\/StW+YeAlApeCZVL126AcOhQPtgRNyajc84Qg0dM7K5UDic\/81kb0EqkaZ1awtwUrmPs=",
+  "secret-key": "JUitY4g+ezCu1VJ9G11RSnfvKqieoGb+C+Q+CH6f+6EWC\/lu+YAey2g9iTcpf\/xoa501SFfUTCG1cV16tU\/o\/VOd18\/zE98F7Jd6e\/2NeiM6yMrCQrbFnY\/cugQPwbKw6jf8lnxiO1+kBdqX5a5Fgs7eTsChd44lJY1QeFM7\/rNECWKmPonIY\/NwD3mcA3iBpUwmD0RYGdEB6IXFc30xgR2avOAWd0e+5PMnyvVw\/\/OC12vvkZAdtK4oL1gTfHoQ9B5YGILeFmZdScfrAMXaY7BkVqiCpIa+xK86dtqzf0Afa7G\/vg3Lj8wf2CXhq0e4+wqXSqBuIVhLn9TxIPe1jfA5r4IfOqCMRqZKmbQD3ltxp7Ojt79leAOl2PARJFOd+XMlISNtJ4WcYXyboeRAzw=="
+}
+```
 
 ### `/dj/player/filter` (**POST**)
 
