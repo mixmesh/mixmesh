@@ -104,8 +104,8 @@ Now download Erlang, unpack, configure, make and install
 
 	mkdir src
 	cd src
-	wget http://erlang.org/download/otp_src_23.0.tar.gz
-	tar xf otp_src_23.0.tar.gz
+	wget http://erlang.org/download/otp_src_23.1.tar.gz
+	tar xf otp_src_23.1.tar.gz
 	./configure
 	make
 	make install
@@ -137,3 +137,16 @@ Now we can clone other applications need and build everything
 	make clone
 	make
 
+### setup configuration
+
+    cd obscrete
+	sudo mkdir -p /etc/erlang/obscrete
+	sudo chown pi:pi /etc/erlang/obscrete
+	./bin/obscrete --self-signed-ssl-cert > cert.pem
+	./bin/mkconfig /etc/erlang/obscrete cert.pem alice
+
+### start application
+
+	./bin/obscrete --config ./etc/obscrete.conf
+	
+	

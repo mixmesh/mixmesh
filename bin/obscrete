@@ -4,6 +4,8 @@ usage()
 {
     >&2 echo "obscrete --help | -h"
     >&2 echo "    Display available options"
+    >&2 echo "  --sname name"
+    >&2 echo "    Set alternate node name"
     >&2 echo "obscrete [--simulator] [--config <CONFIG-FILE>] [--]"
     >&2 echo "    Start Obscrete (put erl options after --)"
     >&2 echo "obscrete --reload [--control-address <IP-ADDRESS>] [--control-port <PORT>]"
@@ -117,6 +119,13 @@ while :; do
             ;;
 	--simulator)
 	    simulator=1
+            ;;
+	--sname)
+            if [ $# -lt 2 ]; then
+                usage
+            fi
+	    sname="-sname $2"
+            shift
             ;;
         --)
             shift

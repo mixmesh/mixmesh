@@ -6,22 +6,49 @@
 
 ### Tony
 
-* raspberry-pi-z installation guide (script?)
 * servator release guide
 * build a disk image to simplify everything, with a factor of 1000000
-* Test bluetooth connection, various clients
-* Rest command resize image or auto resize at start (at pin code entry)
+* sync-address in obscrete.conf MUST be set to interface address inorder
+  for the select algorithm to work. 0.0.0.0 is not a good way to compare
+  in reality or in simulator... maybe use interface name?
+* set same nodis udp/src port as the sync port!
+* select ip from ping interface, convert (0,0,0,0) => (A,B,C,D)
+* depending on nodis ip.
+* retry state?
+* nodis neighbour state as ets? pening queue 
+* FAST decrypt
+* simulator fix grid demo!
 
 ### Joakim
 
 * Document README.md pin-salt digest
-* The need for a password in the local PKI-server confuses everything. Split the global and local PKI code base?
+* Configure buffer fill mode (default)
+* Buffer management, send/recv messages
+* Minimize? overwrite of own messages
+* Make code reload more resilant
+* Boot strap HTML/Rest server
+* Export keys / password
+* Wipe to Boot strap
+* Import Keys with or without password
+* Rest command resize image or auto resize at start (at pin code entry)
+* serv reload code.
+* DEMO! First REST api protocol.
+* Randomize at reception and each of local message copies
+* When receiving message replace with random (allways full).
+* Duplicate filter store, use digest to filter already received messages.
+  Dets store / log or something...
 
 ### Both
 
 * Write REST commands.
-* Talk about buffer management.
 * Prata om en möjlig avnästlad lagring av config i app env.
+* remove MessageID from player\_sync\_serv
+* exchanging messages may be good a strategy when is comes to clients
+  that receive messages by never send (buggy or strange) or sending
+  messages but never receives.
+* Test bluetooth connection, various clients
+* Factory reset, Initiate box!
+
 
 ## Demo hardware
 * Raspberry pi zero W/H
