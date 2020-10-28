@@ -7,13 +7,45 @@ I found some great advice here:
 * https://restfulapi.net/
 * https://restfulapi.net/http-status-codes/
 
-## Resource: Player
+## Bootstrapping
 
-### `/dj/player` (**PUT**)
+### `/dj/reinstall` (**POST**)
 
-Used to (re)name a player and refresh its encryption keys.
+Used to reinstall the box using pre-existing keys. Nice cousin to `dj/wipe`.
 
-**BEWARE**: The player's encryption keys will be re-created!! All encrypted files managed by the system will be re-encrypted with the new keys.
+Implementation note: On success priv/obscrete/priv/obscrete.conf is generated and the following parameters are injected: "nym", "pin", "pin-salt", "public-key", "secret-key", "smtp-password", "pop3-password" and "http-password". priv/obscrete/priv/obscrete.conf.src is used as a template.
+
+<table>
+  <tr>
+    <th align="left">Request</th>
+    <th align="left">Success</th>
+    <th align="left">Failure</th>
+  </tr>
+  <tr>
+    <td valign="top"><pre lang="json">{
+  "public-key": "&lt;Base64 encoded public key&gt;"
+  "secret-key": "&lt;Base64 encoded secret key&gt;"
+  "key-bundle": "&lt;Base64 encoded key bundle&gt; (optional)",
+  "smtp-password": "&lt;string&gt;",
+  "pop3-password": "&lt;string&gt;",
+  "http-password": "&lt;string&gt;"
+}</pre></td>
+    <td valign="top">204</td>
+    <td valign="top">400<br>&lt;A failure reason&gt;</td>
+  </tr>
+</table>
+
+Typical usage:
+
+```
+$ curl -X POST -H "Content-Type: application/json" -d '{"public-key": "BWFsaWNlxgDD8BleR0lZOyTVMuguqs9IE1E7SuWgsyyNNNp4vrrQZbpF8PSiEhju2dL3cMnc5ZFAoe41NQ4+C45r+Xwk9dpo3sn5Uwj+ETZw5nC/StW+YeAlApeCZVL126AcOhQPtgRNyajc84Qg0dM7K5UDic/81kb0EqkaZ1awtwUrmPs=", "secret-key": "JUitY4g+ezCu1VJ9G11RSnfvKqieoGb+C+Q+CH6f+6EWC/lu+YAey2g9iTcpf/xoa501SFfUTCG1cV16tU/o/VOd18/zE98F7Jd6e/2NeiM6yMrCQrbFnY/cugQPwbKw6jf8lnxiO1+kBdqX5a5Fgs7eTsChd44lJY1QeFM7/rNECWKmPonIY/NwD3mcA3iBpUwmD0RYGdEB6IXFc30xgR2avOAWd0e+5PMnyvVw//OC12vvkZAdtK4oL1gTfHoQ9B5YGILeFmZdScfrAMXaY7BkVqiCpIa+xK86dtqzf0Afa7G/vg3Lj8wf2CXhq0e4+wqXSqBuIVhLn9TxIPe1jfA5r4IfOqCMRqZKmbQD3ltxp7Ojt79leAOl2PARJFOd+XMlISNtJ4WcYXyboeRAzw==", "smtp-password": "baz", "pop3-password": "baz", "http-password": "hello"}' http://127.0.0.1:8444/dj/reinstall
+```
+
+### `/dj/wipe` (**POST**)
+
+Used to wipe the box configuration. A harsh cousin to `dj/reinstall`.
+
+Implementation note: On success priv/obscrete/priv/obscrete.conf is generated and the following parameters are injected: "nym", "pin", "pin-salt", "public-key", "secret-key", "smtp-password", "pop3-password" and "http-password". priv/obscrete/priv/obscrete.conf.src is used as a template.
 
 <table>
   <tr>
@@ -24,16 +56,46 @@ Used to (re)name a player and refresh its encryption keys.
   <tr>
     <td valign="top"><pre lang="json">{
   "nym": "&lt;string (<32 characters)&gt;",
-  "pin": "&lt;six digits&gt;"
+  "smtp-password": "&lt;string&gt;",
+  "pop3-password": "&lt;string&gt;",
+  "http-password": "&lt;string&gt;"
 }</pre></td>
     <td valign="top">204</td>
-    <td valign="top">400</td>
+    <td valign="top">400<br>&lt;A failure reason&gt;</td>
   </tr>
 </table>
 
 Typical usage:
 
-`$ curl --user admin:hello --digest -X PUT -H "Content-Type: application/json" -d '{"nym": "alice", pin: "123456"}' http://127.0.0.1:8444/dj/player`
+```
+$ curl -X POST -H "Content-Type: application/json" -d '{"nym": "alice", "smtp-password": "baz", "pop3-password": "baz", "http-password": "hello"}' http://127.0.0.1:8444/dj/wipe
+```
+
+### `/dj/restart` (**POST**)
+
+Used to restart and enter normal operation.
+
+<table>
+  <tr>
+    <th align="left">Request</th>
+    <th align="left">Success</th>
+    <th align="left">Failure</th>
+  </tr>
+  <tr>
+    <td valign="top"><pre lang="json">"&lt;time in seconds&gt;"</td>
+}</pre></td>
+    <td valign="top">204</td>
+    <td valign="top">400<br>&lt;A failure reason&gt;</td>
+  </tr>
+</table>
+
+Typical usage:
+
+```
+$ curl -X POST -H "Content-Type: application/json" -d '5' http://127.0.0.1:8444/dj/restart
+```
+
+## Normal operation
 
 ### `/dj/player` (**GET**)
 
@@ -51,8 +113,8 @@ Used to show all available information about the player.
     <td valign="top">-</td>
     <td valign="top">200<pre lang="json">{
   "nym": "&lt;string (<32 characters)&gt;",
-  "public-key": "&lt;BASE64 binary&gt;",
-  "secret-key": "&lt;BASE64 binary&gt;"
+  "public-key": "&lt;Base64 encoded public key&gt;",
+  "secret-key": "&lt;Base64 encoded secret key&gt;"
 }</pre></td>
     <td valign="top">400</td>
   </tr>
@@ -89,8 +151,8 @@ Used to show a filtered set of information about the player.
 }</pre></td>
     <td valign="top">200<pre lang="json">{
   "nym": "&lt;string (<32 characters)&gt;",
-  "public-key": "&lt;BASE64 binary&gt;",
-  "secret-key": "&lt;BASE64 binary&gt;"
+  "public-key": "&lt;Base64 encoded public key&gt;",
+  "secret-key": "&lt;Base64 encoded secret key&gt;"
 }</pre></td>
     <td valign="top">400, 404</td>
   </tr>
@@ -132,8 +194,6 @@ Typical usage:
 
 `$ curl --user alice:hello --digest -v -X PATCH -H "Content-Type: application/json" -d '{"smtp-server:": {"password": "foobar"}}' http://127.0.0.1:8444/dj/player`
 
-## Resource: Key
-
 ### `/dj/key` (**GET**)
 
 Used to show all available keys. At most 100 keys will be returned.
@@ -148,7 +208,7 @@ Used to show all available keys. At most 100 keys will be returned.
     <td valign="top">-</td>
     <td valign="top">200<pre lang="json">[{
   "nym": "&lt;string (<32 characters)&gt;",
-  "public-key": "&lt;BASE64 binary&gt;"
+  "public-key": "&lt;Base64 encoded public key&gt;"
  }]</pre></td>
     <td valign="top">400</td>
   </tr>
@@ -178,7 +238,7 @@ Used to show a key for a specific nym.
   </tr>
   <tr>
     <td valign="top">-</td>
-    <td valign="top">200<br>&lt;BASE64 binary&gt;</td>
+    <td valign="top">200<br>&lt;Base64 encoded public key&gt;</td>
     <td valign="top">400, 404</td>
 </tr>
 </table>
@@ -204,7 +264,7 @@ Used to show a filtered set of keys. At most 100 keys will be returned.
     <td valign="top"><pre lang="json">["&lt;sub-string nym (<32 characters)&gt;"]</pre></td>
     <td valign="top">200<pre lang="json">[{
   "nym": "&lt;string (<32 characters)&gt;",
-  "public-key": "&lt;BASE64 binary&gt;"
+  "public-key": "&lt;Base64 encoded public key&gt;"
 }]</pre></td>
     <td valign="top">400</td>
   </tr>
@@ -233,7 +293,7 @@ Used to import new (or replace an existing) key.
     <th align="left">Failure</th>
   </tr>
   <tr>
-    <td valign="top"><pre lang="json">"&lt;BASE64 binary&gt;"</pre></td>
+    <td valign="top"><pre lang="json">"&lt;Base64 encoded public key&gt;"</pre></td>
     <td valign="top">204</td>
     <td valign="top">400, 403</td>
   </tr>
@@ -296,7 +356,7 @@ Used to export a key bundle.
   </tr>
   <tr>
     <td valign="top"><pre lang="json">["&lt;nym (<32 characters)&gt;"]</pre></td>
-    <td valign="top">200<br>&lt;BASE64 encoded key bundle&gt;</td>
+    <td valign="top">200<br>&lt;Base64 encoded key bundle&gt;</td>
     <td valign="top">400</td>
   </tr>
 </table>
@@ -319,7 +379,7 @@ Used to import a key bundle.
     <th align="left">Failure</th>
   </tr>
   <tr>
-    <td valign="top"><pre lang="json">"&lt;BASE64 encoded key bundle&gt"&gt;"</pre></td>
+    <td valign="top"><pre lang="json">"&lt;Base64 encoded key bundle&gt"&gt;"</pre></td>
     <td valign="top">204</td>
     <td valign="top">400, 403</td>
   </tr>
