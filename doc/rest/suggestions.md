@@ -13,7 +13,7 @@ I found some great advice here:
 
 Used to wipe the box configuration. A harsh cousin to `dj/reinstall`.
 
-Implementation note: On success $OBSCRETE_DIR/&lt;nym&gt;/obscrete.conf is generated and the following parameters are injected: "nym", "pin", "pin-salt", "public-key", "secret-key", "smtp-password", "pop3-password" and "http-password". obscrete/priv/obscrete.conf.src is used as a template.
+Implementation note: On success &lt;obscrete-dir&gt;/&lt;nym&gt;/obscrete.conf is generated and the following parameters are injected: "nym", "pin", "pin-salt", "public-key", "secret-key", "smtp-password", "pop3-password" and "http-password". obscrete/priv/obscrete.conf.src is used as a template.
 
 <table>
   <tr>
