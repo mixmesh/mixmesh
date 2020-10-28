@@ -1,5 +1,6 @@
 -module(obscrete_config_serv).
 -export([start_link/0, stop/0, reload/0]).
+-export([get_schemas/0]).
 
 -include_lib("apptools/include/log.hrl").
 -include_lib("apptools/include/shorthand.hrl").

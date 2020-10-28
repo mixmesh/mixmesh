@@ -9,7 +9,7 @@ I found some great advice here:
 
 ## Bootstrapping
 
-### `/dj/wipe` (**POST**)
+### `/dj/system/wipe` (**POST**)
 
 Used to wipe the box configuration. A harsh cousin to `dj/reinstall`.
 
@@ -52,7 +52,7 @@ Implementation note: On success &lt;obscrete-dir&gt;/&lt;nym&gt;/obscrete.conf i
 Typical usage:
 
 ```
-$ curl -X POST -H "Content-Type: application/json" -d '{"nym": "alice", "smtp-password": "baz", "pop3-password": "baz", "http-password": "hello"}' http://127.0.0.1:8444/dj/wipe
+$ curl -X POST -H "Content-Type: application/json" -d '{"nym": "alice", "smtp-password": "baz", "pop3-password": "baz", "http-password": "hello"}' http://127.0.0.1:8444/dj/system/wipe
 {
   "public-key": "BWFsaWNlxgDD8BleR0lZOyTVMuguqs9IE1E7SuWgsyyNNNp4vrrQZbpF8PSiEhju2dL3cMnc5ZFAoe41NQ4+C45r+Xwk9dpo3sn5Uwj+ETZw5nC/StW+YeAlApeCZVL126AcOhQPtgRNyajc84Qg0dM7K5UDic/81kb0EqkaZ1awtwUrmPs=",
   "secret-key": "JUitY4g+ezCu1VJ9G11RSnfvKqieoGb+C+Q+CH6f+6EWC/lu+YAey2g9iTcpf/xoa501SFfUTCG1cV16tU/o/VOd18/zE98F7Jd6e/2NeiM6yMrCQrbFnY/cugQPwbKw6jf8lnxiO1+kBdqX5a5Fgs7eTsChd44lJY1QeFM7/rNECWKmPonIY/NwD3mcA3iBpUwmD0RYGdEB6IXFc30xgR2avOAWd0e+5PMnyvVw//OC12vvkZAdtK4oL1gTfHoQ9B5YGILeFmZdScfrAMXaY7BkVqiCpIa+xK86dtqzf0Afa7G/vg3Lj8wf2CXhq0e4+wqXSqBuIVhLn9TxIPe1jfA5r4IfOqCMRqZKmbQD3ltxp7Ojt79leAOl2PARJFOd+XMlISNtJ4WcYXyboeRAzw==",
@@ -66,7 +66,7 @@ $ curl -X POST -H "Content-Type: application/json" -d '{"nym": "alice", "smtp-pa
 }
 ```
 
-### `/dj/reinstall` (**POST**)
+### `/dj/system/reinstall` (**POST**)
 
 Used to reinstall the box using pre-existing keys. Nice cousin to `dj/wipe`.
 
@@ -110,7 +110,7 @@ Implementation note: On success &lt;obscrete-dir&gt;/&lt;nym&gt;/obscrete.conf i
 Typical usage:
 
 ```
-$ curl -X POST -H "Content-Type: application/json" -d '{"public-key": "BWFsaWNlxgDD8BleR0lZOyTVMuguqs9IE1E7SuWgsyyNNNp4vrrQZbpF8PSiEhju2dL3cMnc5ZFAoe41NQ4+C45r+Xwk9dpo3sn5Uwj+ETZw5nC/StW+YeAlApeCZVL126AcOhQPtgRNyajc84Qg0dM7K5UDic/81kb0EqkaZ1awtwUrmPs=", "secret-key": "JUitY4g+ezCu1VJ9G11RSnfvKqieoGb+C+Q+CH6f+6EWC/lu+YAey2g9iTcpf/xoa501SFfUTCG1cV16tU/o/VOd18/zE98F7Jd6e/2NeiM6yMrCQrbFnY/cugQPwbKw6jf8lnxiO1+kBdqX5a5Fgs7eTsChd44lJY1QeFM7/rNECWKmPonIY/NwD3mcA3iBpUwmD0RYGdEB6IXFc30xgR2avOAWd0e+5PMnyvVw//OC12vvkZAdtK4oL1gTfHoQ9B5YGILeFmZdScfrAMXaY7BkVqiCpIa+xK86dtqzf0Afa7G/vg3Lj8wf2CXhq0e4+wqXSqBuIVhLn9TxIPe1jfA5r4IfOqCMRqZKmbQD3ltxp7Ojt79leAOl2PARJFOd+XMlISNtJ4WcYXyboeRAzw==", "smtp-password": "baz", "pop3-password": "baz", "http-password": "hello"}' http://127.0.0.1:8444/dj/reinstall
+$ curl -X POST -H "Content-Type: application/json" -d '{"public-key": "BWFsaWNlxgDD8BleR0lZOyTVMuguqs9IE1E7SuWgsyyNNNp4vrrQZbpF8PSiEhju2dL3cMnc5ZFAoe41NQ4+C45r+Xwk9dpo3sn5Uwj+ETZw5nC/StW+YeAlApeCZVL126AcOhQPtgRNyajc84Qg0dM7K5UDic/81kb0EqkaZ1awtwUrmPs=", "secret-key": "JUitY4g+ezCu1VJ9G11RSnfvKqieoGb+C+Q+CH6f+6EWC/lu+YAey2g9iTcpf/xoa501SFfUTCG1cV16tU/o/VOd18/zE98F7Jd6e/2NeiM6yMrCQrbFnY/cugQPwbKw6jf8lnxiO1+kBdqX5a5Fgs7eTsChd44lJY1QeFM7/rNECWKmPonIY/NwD3mcA3iBpUwmD0RYGdEB6IXFc30xgR2avOAWd0e+5PMnyvVw//OC12vvkZAdtK4oL1gTfHoQ9B5YGILeFmZdScfrAMXaY7BkVqiCpIa+xK86dtqzf0Afa7G/vg3Lj8wf2CXhq0e4+wqXSqBuIVhLn9TxIPe1jfA5r4IfOqCMRqZKmbQD3ltxp7Ojt79leAOl2PARJFOd+XMlISNtJ4WcYXyboeRAzw==", "smtp-password": "baz", "pop3-password": "baz", "http-password": "hello"}' http://127.0.0.1:8444/dj/system/reinstall
 {
   "nym": "alice",
   "sync-address": "191.34.2.11:2364",
@@ -123,7 +123,7 @@ $ curl -X POST -H "Content-Type: application/json" -d '{"public-key": "BWFsaWNlx
 }
 ```
 
-### `/dj/restart` (**POST**)
+### `/dj/system/restart` (**POST**)
 
 Used to restart and enter normal operation.
 
@@ -143,48 +143,14 @@ Used to restart and enter normal operation.
 Typical usage:
 
 ```
-$ curl -X POST -H "Content-Type: application/json" -d '5' http://127.0.0.1:8444/dj/restart
+$ curl -X POST -H "Content-Type: application/json" -d '5' http://127.0.0.1:8444/dj/system/restart
 ```
 
 ## Normal operation
 
-### `/dj/player` (**GET**)
+### `/dj/get-config` (**POST**)
 
-Used to show all *available* information about the player.
-
-**NOTE**: The "secret-key" is only available for one hour after box initialization.
-
-<table>
-  <tr>
-    <th align="left">Request</th>
-    <th align="left">Success</th>
-    <th align="left">Failure</th>
-  </tr>
-  <tr>
-    <td valign="top">-</td>
-    <td valign="top">200<pre lang="json">{
-  "nym": "&lt;string (<32 characters)&gt;",
-  "public-key": "&lt;Base64 encoded public key&gt;",
-  "secret-key": "&lt;Base64 encoded secret key&gt;"
-}</pre></td>
-    <td valign="top">400</td>
-  </tr>
-</table>
-
-Typical usage:
-
-```
-$ curl --user alice:hello --digest http://127.0.0.1:8444/dj/player
-{
-  "nym": "alice",
-  "public-key": "BWFsaWNlxgDD8BleR0lZOyTVMuguqs9IE1E7SuWgsyyNNNp4vrrQZbpF8PSiEhju2dL3cMnc5ZFAoe41NQ4+C45r+Xwk9dpo3sn5Uwj+ETZw5nC\/StW+YeAlApeCZVL126AcOhQPtgRNyajc84Qg0dM7K5UDic\/81kb0EqkaZ1awtwUrmPs=",
-  "secret-key": "JUitY4g+ezCu1VJ9G11RSnfvKqieoGb+C+Q+CH6f+6EWC\/lu+YAey2g9iTcpf\/xoa501SFfUTCG1cV16tU\/o\/VOd18\/zE98F7Jd6e\/2NeiM6yMrCQrbFnY\/cugQPwbKw6jf8lnxiO1+kBdqX5a5Fgs7eTsChd44lJY1QeFM7\/rNECWKmPonIY\/NwD3mcA3iBpUwmD0RYGdEB6IXFc30xgR2avOAWd0e+5PMnyvVw\/\/OC12vvkZAdtK4oL1gTfHoQ9B5YGILeFmZdScfrAMXaY7BkVqiCpIa+xK86dtqzf0Afa7G\/vg3Lj8wf2CXhq0e4+wqXSqBuIVhLn9TxIPe1jfA5r4IfOqCMRqZKmbQD3ltxp7Ojt79leAOl2PARJFOd+XMlISNtJ4WcYXyboeRAzw=="
-}
-```
-
-### `/dj/player/filter` (**POST**)
-
-Used to show a filtered set of information about the player.
+Used to extract a filtered set of configuration values.
 
 **NOTE**: The "secret-key" is only available for one hour after box initialization.
 
@@ -195,26 +161,24 @@ Used to show a filtered set of information about the player.
     <th align="left">Failure</th>
   </tr>
   <tr>
-    <td valign="top"><pre lang="json">{
-  "nym": "&lt;boolean&gt;",
-  "public-key": "&lt;boolean&gt;",
-  "secret-key": "&lt;boolean&gt;"
-}</pre></td>
-    <td valign="top">200<pre lang="json">{
-  "nym": "&lt;string (<32 characters)&gt;",
-  "public-key": "&lt;Base64 encoded public key&gt;",
-  "secret-key": "&lt;Base64 encoded secret key&gt;"
-}</pre></td>
+    <td valign="top">A configuration filter</td>
+    <td valign="top">A filtered configuration</td>
     <td valign="top">400, 404</td>
   </tr>
 </table>
 
-Omitted filter request fields are excluded from the response.
-
 Typical usage:
 
 ```
-$ curl --user alice:hello --digest -X POST -H "Content-Type: application/json" -d '{"nym": true, "public-key": true}' http://127.0.0.1:8444/dj/player/filter
+$  curl--user alice:hello --digest -X POST -H "Content-Type: application/json" -d '{"player": {"nym": true, "spiridon": {"public-key": true}}}' http://127.0.0.1:8444/dj/get-config
+{
+  "player": {
+    "nym": "alice",
+    "spiridon": {
+      "public-key": "BWFsaWNlxgDD8BleR0lZOyTVMuguqs9IE1E7SuWgsyyNNNp4vrrQZbpF8PSiEhju2dL3cMnc5ZFAoe41NQ4+C45r+Xwk9dpo3sn5Uwj+ETZw5nC\/StW+YeAlApeCZVL126AcOhQPtgRNyajc84Qg0dM7K5UDic\/81kb0EqkaZ1awtwUrmPs="
+    }
+  }
+}
 ```
 
 ### `/dj/player` (**PATCH**)
