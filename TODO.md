@@ -8,15 +8,10 @@
 
 * servator release guide
 * build a disk image to simplify everything, with a factor of 1000000
-* sync-address in obscrete.conf MUST be set to interface address inorder
-  for the select algorithm to work. 0.0.0.0 is not a good way to compare
-  in reality or in simulator... maybe use interface name?
-* set same nodis udp/src port as the sync port!
 * select ip from ping interface, convert (0,0,0,0) => (A,B,C,D)
-* depending on nodis ip.
+  depending on nodis ip.
 * retry state?
 * nodis neighbour state as ets? pening queue 
-* FAST decrypt
 * simulator fix grid demo!
 
 ### Joakim
