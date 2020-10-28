@@ -13,7 +13,7 @@ I found some great advice here:
 
 Used to wipe the box configuration. A harsh cousin to `dj/reinstall`.
 
-Implementation note: On success &lt;obscrete-dir&gt;/&lt;nym&gt;/obscrete.conf is generated with the following parameters injected: "obscrete-dir", "pin", "pin-salt", "nym", "sync-address", "smtp-address", "smtp-password", "pop3-address", "pop3-password", "http-address", "public-key" and "secret-key". obscrete/priv/obscrete.conf.src is used as a template.
+Implementation note: On success &lt;obscrete-dir&gt;/&lt;nym&gt;/obscrete.conf is generated with the following parameters injected: "obscrete-dir", "pin", "pin-salt", "nym", "sync-address", "smtp-address", "smtp-password", "pop3-address", "pop3-password", "http-address", "http-password", "public-key" and "secret-key". obscrete/priv/obscrete.conf.src is used as a template.
 
 <table>
   <tr>
@@ -23,23 +23,27 @@ Implementation note: On success &lt;obscrete-dir&gt;/&lt;nym&gt;/obscrete.conf i
   </tr>
   <tr>
     <td valign="top"><pre lang="json">{
-  "obscrete-dir": "&lt;path&gt; (optional)",
-  "pin": "&lt;path&gt; (optional)"
   "nym": "&lt;string (<32 characters)&gt;",
+  "smtp-password": "&lt;string&gt;",
+  "pop3-password": "&lt;string&gt;",
+  "http-password": "&lt;string&gt;",
   "sync-address": "&lt;ip:port&gt; (optional)",
   "smtp-address": "&lt;ip:port&gt; (optional)",
-  "smtp-password": "&lt;string&gt;",
   "pop3-address": "&lt;ip:port&gt; (optional)",
-  "pop3-password": "&lt;string&gt;",
   "http-address": "&lt;ip:port&gt; (optional)",
-  "http-password": "&lt;string&gt;"
+  "obscrete-dir": "&lt;path&gt; (optional)",
+  "pin": "&lt;six digits&gt; (optional)"
 }</pre></td>
     <td valign="top">200<pre lang="json">{
   "public-key": "&lt;Base64 encoded public key&gt;",
   "secret-key": "&lt;Base64 encoded secret key&gt;",
+  "sync-address": "&lt;ip:port&gt;",
   "smtp-address": "&lt;ip:port&gt;",
-  "pop3-address": "&lt;ip:port&gt;"
-  "http-address": "&lt;ip:port&gt;"
+  "pop3-address": "&lt;ip:port&gt;",
+  "http-address": "&lt;ip:port&gt;",
+  "obscrete-dir": "&lt;path&gt;",
+  "pin": "&lt;six digits&gt;",
+  "pin-salt": "&lt;Base64 encoded pin salt&gt;"
 }</pre></td>
     <td valign="top">400</td>
   </tr>
@@ -54,8 +58,11 @@ $ curl -X POST -H "Content-Type: application/json" -d '{"nym": "alice", "smtp-pa
   "secret-key": "JUitY4g+ezCu1VJ9G11RSnfvKqieoGb+C+Q+CH6f+6EWC/lu+YAey2g9iTcpf/xoa501SFfUTCG1cV16tU/o/VOd18/zE98F7Jd6e/2NeiM6yMrCQrbFnY/cugQPwbKw6jf8lnxiO1+kBdqX5a5Fgs7eTsChd44lJY1QeFM7/rNECWKmPonIY/NwD3mcA3iBpUwmD0RYGdEB6IXFc30xgR2avOAWd0e+5PMnyvVw//OC12vvkZAdtK4oL1gTfHoQ9B5YGILeFmZdScfrAMXaY7BkVqiCpIa+xK86dtqzf0Afa7G/vg3Lj8wf2CXhq0e4+wqXSqBuIVhLn9TxIPe1jfA5r4IfOqCMRqZKmbQD3ltxp7Ojt79leAOl2PARJFOd+XMlISNtJ4WcYXyboeRAzw==",
   "sync-address": "191.34.2.11:2364",
   "smtp-address": "191.34.2.11:2364",
-  "pop3-address": "191.34.2.11:3001"
-  "http-address": "191.34.2.11:3006"
+  "pop3-address": "191.34.2.11:3001",
+  "http-address": "191.34.2.11:3006",
+  "obscrete-dir": "/tmp/obscrete",
+  "pin": "123456",
+  "pin-salt": "xFxxsWkBHF9SWcEQA4pvzg=="
 }
 ```
 
@@ -63,7 +70,7 @@ $ curl -X POST -H "Content-Type: application/json" -d '{"nym": "alice", "smtp-pa
 
 Used to reinstall the box using pre-existing keys. Nice cousin to `dj/wipe`.
 
-Implementation note: On success &lt;obscrete-dir&gt;/&lt;nym&gt;/obscrete.conf is generated with the following parameters injected: "obscrete-dir", "pin", "pin-salt", "nym", "sync-address", "smtp-address", "smtp-password", "pop3-address", "pop3-password", "http-address", "public-key" and "secret-key". obscrete/priv/obscrete.conf.src is used as a template.
+Implementation note: On success &lt;obscrete-dir&gt;/&lt;nym&gt;/obscrete.conf is generated with the following parameters injected: "obscrete-dir", "pin", "pin-salt", "nym", "sync-address", "smtp-address", "smtp-password", "pop3-address", "pop3-password", "http-address", "http-password", "public-key" and "secret-key". obscrete/priv/obscrete.conf.src is used as a template.
 
 <table>
   <tr>
@@ -76,20 +83,25 @@ Implementation note: On success &lt;obscrete-dir&gt;/&lt;nym&gt;/obscrete.conf i
   "public-key": "&lt;Base64 encoded public key&gt;",
   "secret-key": "&lt;Base64 encoded secret key&gt;",
   "key-bundle": "&lt;Base64 encoded key bundle&gt; (optional)",
-  "smtp-password": "&lt;string&gt;",
   "pop3-password": "&lt;string&gt;",
-  "http-password": "&lt;string&gt;"
-  "obscrete-dir": "&lt;path&gt; (optional)",
-  "pin": "&lt;six digits&gt; (optional)"
+  "smtp-password": "&lt;string&gt;",
+  "http-password": "&lt;string&gt;",
+  "sync-address": "&lt;ip:port&gt; (optional)",
   "smtp-address": "&lt;ip:port&gt; (optional)",
   "pop3-address": "&lt;ip:port&gt; (optional)",
-  "smtp-address": "&lt;ip:port&gt; (optional)",
-  "http-dir": "&lt;path&gt; (optional)"
+  "http-address": "&lt;ip:port&gt; (optional)",
+  "obscrete-dir": "&lt;path&gt; (optional)",
+  "pin": "&lt;six digits&gt; (optional)"
 }</pre></td>
     <td valign="top">200<pre lang="json">{
-  "smtp-server": "&lt;ip:port&gt;",
-  "pop3-server": "&lt;ip:port&gt;"
-  "pop3-server": "&lt;ip:port&gt;"
+  "nym": "&lt;string (<32 characters)&gt;",
+  "sync-address": "&lt;ip:port&gt;",
+  "smtp-address": "&lt;ip:port&gt;",
+  "pop3-address": "&lt;ip:port&gt;",
+  "http-address": "&lt;ip:port&gt;",
+  "obscrete-dir": "&lt;path&gt;",
+  "pin": "&lt;six digits&gt;",
+  "pin-salt": "&lt;Base64 encoded pin salt&gt;"
 }</pre></td>
     <td valign="top">400</td>
   </tr>
@@ -100,8 +112,14 @@ Typical usage:
 ```
 $ curl -X POST -H "Content-Type: application/json" -d '{"public-key": "BWFsaWNlxgDD8BleR0lZOyTVMuguqs9IE1E7SuWgsyyNNNp4vrrQZbpF8PSiEhju2dL3cMnc5ZFAoe41NQ4+C45r+Xwk9dpo3sn5Uwj+ETZw5nC/StW+YeAlApeCZVL126AcOhQPtgRNyajc84Qg0dM7K5UDic/81kb0EqkaZ1awtwUrmPs=", "secret-key": "JUitY4g+ezCu1VJ9G11RSnfvKqieoGb+C+Q+CH6f+6EWC/lu+YAey2g9iTcpf/xoa501SFfUTCG1cV16tU/o/VOd18/zE98F7Jd6e/2NeiM6yMrCQrbFnY/cugQPwbKw6jf8lnxiO1+kBdqX5a5Fgs7eTsChd44lJY1QeFM7/rNECWKmPonIY/NwD3mcA3iBpUwmD0RYGdEB6IXFc30xgR2avOAWd0e+5PMnyvVw//OC12vvkZAdtK4oL1gTfHoQ9B5YGILeFmZdScfrAMXaY7BkVqiCpIa+xK86dtqzf0Afa7G/vg3Lj8wf2CXhq0e4+wqXSqBuIVhLn9TxIPe1jfA5r4IfOqCMRqZKmbQD3ltxp7Ojt79leAOl2PARJFOd+XMlISNtJ4WcYXyboeRAzw==", "smtp-password": "baz", "pop3-password": "baz", "http-password": "hello"}' http://127.0.0.1:8444/dj/reinstall
 {
-  "smtp-server": "191.34.2.11:2364",
-  "pop3-server": "191.34.2.11:3001"
+  "nym": "alice",
+  "sync-address": "191.34.2.11:2364",
+  "smtp-address": "191.34.2.11:2364",
+  "pop3-address": "191.34.2.11:3001",
+  "http-address": "191.34.2.11:3006",
+  "obscrete-dir": "/tmp/obscrete",
+  "pin": "123456",
+  "pin-salt": "xFxxsWkBHF9SWcEQA4pvzg=="
 }
 ```
 
