@@ -267,7 +267,7 @@ Used to show a key for a specific nym.
   </tr>
   <tr>
     <td valign="top">-</td>
-    <td valign="top">200<pre lang="json">&lt;Base64 encoded public key&gt;</pre></td>
+    <td valign="top">200<pre lang="json">"&lt;Base64 encoded public key&gt;"</pre></td>
     <td valign="top">400, 404</td>
 </tr>
 </table>
