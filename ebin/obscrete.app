@@ -7,6 +7,6 @@
              obscrete_log_serv,
              obscrete_sup]},
   {registered, [obscrete_app, obscrete_sup]},
-  {env, []},
+  {env, [{mode, normal}, {app_schemas, []}]},
   {mod, {obscrete_app, []}},
   {applications, [kernel, stdlib, apptools]}]}.

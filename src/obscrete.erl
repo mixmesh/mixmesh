@@ -1,5 +1,5 @@
 -module(obscrete).
--export([start/0]).
+-export([start/0, start_bootstrap/0]).
 -export([export_public_key/0]).
 -export([import_public_key/1, import_public_key/2]).
 -export([list_public_keys/0]).
@@ -36,7 +36,6 @@ start() ->
             skip
     end.
 
-
 %% load applications needed for config schemas
 ensure_all_loaded() ->
     ok = application:load(apptools),
@@ -50,20 +49,21 @@ ensure_all_loaded() ->
 status() ->
     io:format("running\n", []).
 
-%% utility
+%% Exported: start_bootstrap
 
-%% NOTENOTENOTENOTE
-%% emit_key_pair/0 should not be used. Use the following obscrete
-%% commands instead:
-%% $ ./obscrete/bin/obscrete --pin-salt
-%% followed by:
-%% $ ./obscrete/bin/obscrete --elgamal-keys 123456 <PIN-salt from above> alice
-%% NOTENOTENOTENOTE
-%% Convenience function - print new keypair in config format
-%emit_key_pair() ->
-%    {Pk,Sk} = belgamal:generate_key_pair(),
-%    io:format("\"public-key\": \"~s\",\n", [Pk]),
-%    io:format("\"secret-key\": \"~s\",\n", [Sk]).
+start_bootstrap() ->
+    ok = application:start(sasl),
+    ok = application:start(apptools),
+    {ok, _} = application:ensure_all_started(ssl),
+    ok = application:start(rester),
+    ok = application:start(elgamal),
+    ok = application:set_env(
+           obscrete, mode, bootstrap, [{persistent, true}]),
+    ok = application:start(obscrete).
+
+%% Utilities
+
+%% FIXME: Remove the utilities below and put them out of the way
 
 %% Exported: list_public_keys
 
