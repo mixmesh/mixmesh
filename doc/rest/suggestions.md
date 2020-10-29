@@ -210,8 +210,6 @@ $ curl --user alice:hello --digest -X POST -H "Content-Type: application/json" -
   }
 }
 
-$ url --user alice:hello --digest -X POST -H "Content-Type: application/json" -d '{"player": {spiridon": {"f": 0.3}, "http-server": {"password":"zooooop"}}}' http://127.0.0.1:8444/dj/edit-config
-
 $ curl --user alice:hello --digest -X POST -H "Content-Type: application/json" -d '{"player": {spiridon": {"f": 0.3}, "http-server": {"password":"zooooop"}}}' http://127.0.0.1:8444/dj/edit-config
 Config has been updated
 
