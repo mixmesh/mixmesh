@@ -150,7 +150,7 @@ $ curl -X POST -H "Content-Type: application/json" -d '5' http://127.0.0.1:8444/
 
 ### `/dj/get-config` (**POST**)
 
-Used to extract a filtered set of configuration values.
+Used to get a filtered set of configuration values.
 
 **NOTE**: The "secret-key" is only available for one hour after box initialization.
 
@@ -170,7 +170,7 @@ Used to extract a filtered set of configuration values.
 Typical usage:
 
 ```
-$  curl--user alice:hello --digest -X POST -H "Content-Type: application/json" -d '{"player": {"nym": true, "spiridon": {"public-key": true}}}' http://127.0.0.1:8444/dj/get-config
+$ curl --user alice:hello --digest -X POST -H "Content-Type: application/json" -d '{"player": {"nym": true, "spiridon": {"public-key": true}}}' http://127.0.0.1:8444/dj/get-config
 {
   "player": {
     "nym": "alice",
@@ -181,9 +181,9 @@ $  curl--user alice:hello --digest -X POST -H "Content-Type: application/json" -
 }
 ```
 
-### `/dj/player` (**PATCH**)
+### `/dj/edit-config` (**POST**)
 
-Used to patch the player. One or several of the fields in the Request can be given.
+Used to edit a partial set of configuration values.
 
 <table>
   <tr>
@@ -192,14 +192,7 @@ Used to patch the player. One or several of the fields in the Request can be giv
     <th align="left">Failure</th>
   </tr>
   <tr>
-    <td valign="top"><pre lang="json">{
-  "smtp-server": {
-    "password": "&lt;string&gt;"
-  },
-  "pop3-server": {
-    "password": "&lt;string&gt;"
-  }
-}</pre></td>
+    <td valign="top">A partial configuration</td>
     <td valign="top">204</td>
     <td valign="top">400, 404</td>
   </tr>
@@ -207,11 +200,33 @@ Used to patch the player. One or several of the fields in the Request can be giv
 
 Typical usage:
 
-`$ curl --user alice:hello --digest -v -X PATCH -H "Content-Type: application/json" -d '{"smtp-server:": {"password": "foobar"}}' http://127.0.0.1:8444/dj/player`
+```
+$ curl --user alice:hello --digest -X POST -H "Content-Type: application/json" -d '{"player": {spiridon": {"f": 0.3}, "http-server": {"password":"hello"}}}' http://127.0.0.1:8444/dj/edit-config
+"ok"jocke@eve:~/src/github/obscrete/obscrete$ curl --user alice:hello --digest -X POST -H "Content-Type: application/json" -d '{"player": {"http-server": {"password": true}}}' http://127.0.0.1:8444/dj/get-config
+{
+  "player": {
+    "http-server": {
+      "password": "hello"
+    }
+  }
+}
+
+$ url --user alice:hello --digest -X POST -H "Content-Type: application/json" -d '{"player": {spiridon": {"f": 0.3}, "http-server": {"password":"zooooop"}}}' http://127.0.0.1:8444/dj/edit-config
+
+$ curl --user alice:hello --digest -X POST -H "Content-Type: application/json" -d '{"player": {spiridon": {"f": 0.3}, "http-server": {"password":"zooooop"}}}' http://127.0.0.1:8444/dj/edit-config
+"ok"jocke@eve:~/src/github/obscrete/obscrete$ curl --user alice:hello --digest -X POST -H "Content-Type: application/json" -d '{"player": {"http-server": {"password": true}}}' http://127.0.0.1:8444/dj/get-config
+{
+  "player": {
+    "http-server": {
+      "password": "zooooop"
+    }
+  }
+}
+```
 
 ### `/dj/key` (**GET**)
 
-Used to show all available keys. At most 100 keys will be returned.
+Used to show all available keys. At most 100 keys will be shown.
 
 <table>
   <tr>
@@ -267,7 +282,7 @@ $ curl --user alice:hello --digest http://127.0.0.1:8444/dj/key/alice
 
 ### `/dj/key/filter` (**POST**)
 
-Used to show a filtered set of keys. At most 100 keys will be returned.
+Used to show a filtered set of keys. At most 100 keys will be shown.
 
 <table>
   <tr>
@@ -309,7 +324,7 @@ Used to import new (or replace an existing) key.
   </tr>
   <tr>
     <td valign="top"><pre lang="json">"&lt;Base64 encoded public key&gt;"</pre></td>
-    <td valign="top">204</td>
+    <td valign="top">200</td>
     <td valign="top">400, 403</td>
   </tr>
 </table>
@@ -317,7 +332,25 @@ Used to import new (or replace an existing) key.
 Typical usage:
 
 ```
-$ curl --user alice:hello --digest -X PUT -H "Content-Type: application/json" -d '"A3AxMQTWAy7GdARTANZcvNfgW++zCfe+3ziaMp8+FW513nxRLiV8OspD\/BI9RAJuPhT8xi1uLRKH9lhBuJNakHHBJCmW44obJ\/lc4Bg7riv\/It09ka6uKOCbTZISogHPQFl9VTa3DQKEmttmk5OIqitsGU8tjp7hH4fbH\/0R4JzrCoBGSw=="' http://127.0.0.1:8444/dj/key
+$ curl --user alice:hello --digest http://127.0.0.1:8444/dj/key/alice
+"BWFsaWNlxgDD8BleR0lZOyTVMuguqs9IE1E7SuWgsyyNNNp4vrrQZbpF8PSiEhju2dL3cMnc5ZFAoe41NQ4+C45r+Xwk9dpo3sn5Uwj+ETZw5nC\/StW+YeAlApeCZVL126AcOhQPtgRNyajc84Qg0dM7K5UDic\/81kb0EqkaZ1awtwUrmPs="
+
+$ ./bin/obscrete --pin-salt
+DSzE7cTR+eBfqKtI694kAA==
+
+$ ./bin/obscrete --elgamal-keys 123456 DSzE7cTR+eBfqKtI694kAA== alice
+-----BEGIN SECRET KEY-----
+pqrvo9PEVoAUuEI9B6g5zxjaqqPcHSTEmNn5+qVv/lsgrgOlEygGmoUowPxP0LIqyVSOysAe33bPckGOlhYyX7bG2hR4H2U+Gb0zocfW0wuFCIbLPaN+q3+2OLOSqd0eEz9rDAtTA0x8cwxrAeHElbR0iVx+pOEhm/P9TotkAzYnoSXGhOO6e4wTqQ2MPAD+Zjf9pL0yjpQeykH+ZuttxAWJW/RVmXeKRHrbqzUMvk64DHzKBKt5cPeWevJSp3BkSWh+UiRZjl+ktxwdF92VH5gdo4YcOyetXIaOwQym8XIE/nGiosJEFHVpCo5lvlcRvd4IXkw5u1Q1bf3fN91pHEH+ArZL75QjD/hASNU3l6OHn/NCudGngBk5ZOlnLFHucz6F9bjuLEMnRtX+uZkJTzg=
+-----END SECRET KEY-----
+-----BEGIN PUBLIC KEY-----
+BWFsaWNlBJNUFPQyNBgndEf8QJLBY/kngZbjbCgWtpZhRUWtbDaEPxxmIrdWOZcpUa2yDauWNCZ/cZ4r7hSUXOW8TlJaqz2yJjG1OZ9nesloWrkrxDIU8xXjkZ7A6O2Trwf1xmYwMe17sp4BwR87lR8K3LBBYEwB1f3BFtle4zRCupxbAwGy
+-----END PUBLIC KEY-----
+
+$ curl --user alice:hello --digest -X PUT -H "Content-Type: application/json" -d '"BWFsaWNlBJNUFPQyNBgndEf8QJLBY/kngZbjbCgWtpZhRUWtbDaEPxxmIrdWOZcpUa2yDauWNCZ/cZ4r7hSUXOW8TlJaqz2yJjG1OZ9nesloWrkrxDIU8xXjkZ7A6O2Trwf1xmYwMe17sp4BwR87lR8K3LBBYEwB1f3BFtle4zRCupxbAwGy"' http://127.0.0.1:8444/dj/key
+Key has been updated
+
+$ curl --user alice:hello --digest http://127.0.0.1:8444/dj/key/alice
+"BWFsaWNlBJNUFPQyNBgndEf8QJLBY\/kngZbjbCgWtpZhRUWtbDaEPxxmIrdWOZcpUa2yDauWNCZ\/cZ4r7hSUXOW8TlJaqz2yJjG1OZ9nesloWrkrxDIU8xXjkZ7A6O2Trwf1xmYwMe17sp4BwR87lR8K3LBBYEwB1f3BFtle4zRCupxbAwGy"jocke@eve:~/src/github/obscrete/obscrete$ 
 ```
 
 ### `/dj/key/delete` (**POST**)

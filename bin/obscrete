@@ -78,6 +78,7 @@ while :; do
             if [ $# -ne 2 ]; then
                 usage
             fi
+            sname=""
             shell="-noinput"
             perform="-run obscrete_command digest_password $2"
             shift
@@ -88,6 +89,7 @@ while :; do
             if [ $# -ne 4 ]; then
                 usage
             fi
+            sname=""
             shell="-noinput"
             perform="-run obscrete_command elgamal_keys $2 $3 $4"
             shift
@@ -97,9 +99,9 @@ while :; do
             if [ $# -ne 1 ]; then
                 usage
             fi
+            sname=""
             shell="-noinput"
             perform="-run obscrete_command pin_salt"
-            sname=""
             shift
             break
             ;;
