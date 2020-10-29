@@ -201,8 +201,7 @@ Used to edit a partial set of configuration values.
 Typical usage:
 
 ```
-$ curl --user alice:hello --digest -X POST -H "Content-Type: application/json" -d '{"player": {spiridon": {"f": 0.3}, "http-server": {"password":"hello"}}}' http://127.0.0.1:8444/dj/edit-config
-"ok"jocke@eve:~/src/github/obscrete/obscrete$ curl --user alice:hello --digest -X POST -H "Content-Type: application/json" -d '{"player": {"http-server": {"password": true}}}' http://127.0.0.1:8444/dj/get-config
+$ curl --user alice:hello --digest -X POST -H "Content-Type: application/json" -d '{"player": {"http-server": {"password": true}}}' http://127.0.0.1:8444/dj/get-config
 {
   "player": {
     "http-server": {
@@ -214,7 +213,9 @@ $ curl --user alice:hello --digest -X POST -H "Content-Type: application/json" -
 $ url --user alice:hello --digest -X POST -H "Content-Type: application/json" -d '{"player": {spiridon": {"f": 0.3}, "http-server": {"password":"zooooop"}}}' http://127.0.0.1:8444/dj/edit-config
 
 $ curl --user alice:hello --digest -X POST -H "Content-Type: application/json" -d '{"player": {spiridon": {"f": 0.3}, "http-server": {"password":"zooooop"}}}' http://127.0.0.1:8444/dj/edit-config
-"ok"jocke@eve:~/src/github/obscrete/obscrete$ curl --user alice:hello --digest -X POST -H "Content-Type: application/json" -d '{"player": {"http-server": {"password": true}}}' http://127.0.0.1:8444/dj/get-config
+Config has been updated
+
+$ curl --user alice:hello --digest -X POST -H "Content-Type: application/json" -d '{"player": {"http-server": {"password": true}}}' http://127.0.0.1:8444/dj/get-config
 {
   "player": {
     "http-server": {
