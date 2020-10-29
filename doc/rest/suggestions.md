@@ -267,7 +267,7 @@ Used to show a key for a specific nym.
   </tr>
   <tr>
     <td valign="top">-</td>
-    <td valign="top">200<br>&lt;Base64 encoded public key&gt;</td>
+    <td valign="top">200<pre lang="json">&lt;Base64 encoded public key&gt;</pre></td>
     <td valign="top">400, 404</td>
 </tr>
 </table>
@@ -403,7 +403,7 @@ Used to export a key bundle.
   </tr>
   <tr>
     <td valign="top"><pre lang="json">["&lt;nym (<32 characters)&gt;"]</pre></td>
-    <td valign="top">200<br>&lt;Base64 encoded key bundle&gt;</td>
+    <td valign="top">200<pre lang="json">&lt;Base64 encoded key bundle&gt</pre></td>
     <td valign="top">400</td>
   </tr>
 </table>
