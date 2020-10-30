@@ -49,6 +49,7 @@ while :; do
             shift
             ;;
         --bootstrap)
+            #shell="-noinput"
             perform="-run obscrete start_bootstrap"
             sname=""
             break

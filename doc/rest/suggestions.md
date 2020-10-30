@@ -52,18 +52,46 @@ Implementation note: On success &lt;obscrete-dir&gt;/&lt;nym&gt;/obscrete.conf i
 Typical usage:
 
 ```
-$ curl -X POST -H "Content-Type: application/json" -d '{"nym": "alice", "smtp-password": "baz", "pop3-password": "baz", "http-password": "hello"}' http://127.0.0.1:8444/dj/system/wipe
+$ ./bin/obscrete --bootstrap
+
+curl -X POST -H "Content-Type: application/json" -d '{"nym": "alice", "smtp-password": "baz", "pop3-password": "baz", "http-password": "hello"}' http://127.0.0.1:8889/dj/system/wipe
 {
-  "public-key": "BWFsaWNlxgDD8BleR0lZOyTVMuguqs9IE1E7SuWgsyyNNNp4vrrQZbpF8PSiEhju2dL3cMnc5ZFAoe41NQ4+C45r+Xwk9dpo3sn5Uwj+ETZw5nC/StW+YeAlApeCZVL126AcOhQPtgRNyajc84Qg0dM7K5UDic/81kb0EqkaZ1awtwUrmPs=",
-  "secret-key": "JUitY4g+ezCu1VJ9G11RSnfvKqieoGb+C+Q+CH6f+6EWC/lu+YAey2g9iTcpf/xoa501SFfUTCG1cV16tU/o/VOd18/zE98F7Jd6e/2NeiM6yMrCQrbFnY/cugQPwbKw6jf8lnxiO1+kBdqX5a5Fgs7eTsChd44lJY1QeFM7/rNECWKmPonIY/NwD3mcA3iBpUwmD0RYGdEB6IXFc30xgR2avOAWd0e+5PMnyvVw//OC12vvkZAdtK4oL1gTfHoQ9B5YGILeFmZdScfrAMXaY7BkVqiCpIa+xK86dtqzf0Afa7G/vg3Lj8wf2CXhq0e4+wqXSqBuIVhLn9TxIPe1jfA5r4IfOqCMRqZKmbQD3ltxp7Ojt79leAOl2PARJFOd+XMlISNtJ4WcYXyboeRAzw==",
-  "sync-address": "191.34.2.11:2364",
-  "smtp-address": "191.34.2.11:2364",
-  "pop3-address": "191.34.2.11:3001",
-  "http-address": "191.34.2.11:3006",
-  "obscrete-dir": "/tmp/obscrete",
+  "public-key": "BWFsaWNlt8GZL4n7Tbyqbr5JD6IUKbEO0TZeQ6JQOnFuj9ggayRm\/JhRs1\/QPF1UNzkRIPakugXCMjELYnuz8V+hEHWq4hOa5IzNp\/MSomKJamK4608bMgMwRQ4RKx5KbfD+V2NL3KictMM5QKFh+AWgjZN0SyN8VinhT4K7ye\/FRh3zl\/E=",
+  "secret-key": "BWFsaWNlgNRUP8jfeJHgQH4CwDAkD1VvucDSqNxvdnbcu6mBmtNsfzHWeLxYKAcut\/+doKt+D5xZ\/dZ2RyG2AyxGJrb3atZvpBug1q71GqEFYHlAEk2E0qJDKHnxQs7R3I5z7c237hctQjc79tJI\/FqT\/9FAtmtKJd8OUWPDEN+WoUGr4lk2t8GZL4n7Tbyqbr5JD6IUKbEO0TZeQ6JQOnFuj9ggayRm\/JhRs1\/QPF1UNzkRIPakugXCMjELYnuz8V+hEHWq4hOa5IzNp\/MSomKJamK4608bMgMwRQ4RKx5KbfD+V2NL3KictMM5QKFh+AWgjZN0SyN8VinhT4K7ye\/FRh3zl\/E=",
+  "sync-address": "0.0.0.0:9900",
+  "smtp-address": "0.0.0.0:19900",
+  "pop3-address": "0.0.0.0:29900",
+  "http-address": "0.0.0.0:8444",
+  "obscrete-dir": "\/tmp\/obscrete",
   "pin": "123456",
-  "pin-salt": "xFxxsWkBHF9SWcEQA4pvzg=="
+  "pin-salt": "B70E3LMi8O+IZxUDyPY8ug=="
 }
+```
+
+Above a number of optional parameters were ommited, i.e. these optional parameters will not be in the final version anyway, but here all possible optional parameters are provided (with their current default values):
+
+```
+$curl -X POST -H "Content-Type: application/json" -d '{"nym": "alice", "smtp-password": "baz", "pop3-password": "baz", "http-password": "hello", "sync-address": "0.0.0.0:9900", "smtp-address": "0.0.0.0:19900", "pop3-address": "0.0.0.0:29900", "http-address": "0.0.0.0:8444", "obscrete-dir": "/tmp/obscrete", "pin": "123456"}' http://127.0.0.1:8889/dj/system/wipe
+{
+  "public-key": "BWFsaWNlAb580nSD7dm2ltsNxz\/yO7nAikKko4FMxKzL8rF0EUY+lF0YX5J9ljlZuemxhh3QrQuKY2KnMJ0ATMfdSleyUUBsOEC2YzDFMpqR7Dx0iiQ6ZUZdfPoYlL9oC2mjOIOXmEtgBtTeeOeVPgk\/\/P5xrCaPjf8BC0fh\/90oU9YWLIV4",
+  "secret-key": "BWFsaWNlgQK3RdpgKoErxfuNjH1dH0T1Zf27DT6T+BO0gJrTdHF8pb+lkkT19epLk7ofGlgh6HErwbvPfGIZzXlYpzdnmqRvLjOFg5s5aUqnimuIgfYm9fRGu6hRNZBgQRakulbm2zLYqsrYaR8fhpbXKpm5HH8sBkSfRuECTh+PPE5xZO49EwG+fNJ0g+3ZtpbbDcc\/8ju5wIpCpKOBTMSsy\/KxdBFGPpRdGF+SfZY5WbnpsYYd0K0LimNipzCdAEzH3UpXslFAbDhAtmMwxTKakew8dIokOmVGXXz6GJS\/aAtpoziDl5hLYAbU3njnlT4JP\/z+cawmj43\/AQtH4f\/dKFPWFiyFeA==",
+  "sync-address": "0.0.0.0:9900",
+  "smtp-address": "0.0.0.0:19900",
+  "pop3-address": "0.0.0.0:29900",
+  "http-address": "0.0.0.0:8444",
+  "obscrete-dir": "\/tmp\/obscrete",
+  "pin": "123456",
+  "pin-salt": "vkEGjmGfrs5vmlExAVbZBA=="
+}
+```
+
+Upon completion a new &lt;obscrete-dir&gt;/obscrete.conf is generated, i.e.  /tmp/obscrete/obscrete.conf. Bootstrap is now ready and Obscrete can be restarted in normal operation:
+
+```
+$ curl -X POST -H "Content-Type: application/json" -d '5' http://127.0.0.1:8889/dj/system/restart
+Yes, sir!
+
+$ ./bin/obscrete --config /tmp/obscrete/obscrete.conf
 ```
 
 ### `/dj/system/reinstall` (**POST**)
@@ -110,20 +138,28 @@ Implementation note: On success &lt;obscrete-dir&gt;/&lt;nym&gt;/obscrete.conf i
 Typical usage:
 
 ```
-$ curl --user alice:hello --digest -X POST -H "Content-Type: application/json" -d '{"player": {"spiridon": {"public-key": true, "secret-key": true}}}' http://127.0.0.1:8444/dj/get-config
-{
-  "player": {
-    "spiridon": {
-      "public-key": "BWFsaWNlxgDD8BleR0lZOyTVMuguqs9IE1E7SuWgsyyNNNp4vrrQZbpF8PSiEhju2dL3cMnc5ZFAoe41NQ4+C45r+Xwk9dpo3sn5Uwj+ETZw5nC\/StW+YeAlApeCZVL126AcOhQPtgRNyajc84Qg0dM7K5UDic\/81kb0EqkaZ1awtwUrmPs=",
-      "secret-key": "BWFsaWNlgQJq3BALPYg17LHTf2\/2HQ9V1bwZMITjrQdX+\/uCY\/ayA\/JXQp0fb7SvT4hu7C6Vfk2k7uN5KMVEQkZ6gX58pD\/PVamIYB8kg8apKKBZYYWwFb6Pbb7T9\/m4SkjaYvY4HqRDDBgAoheQCAo5ouKDDS96vuJ1R5DglAeF+rQfK0gxbMYAw\/AZXkdJWTsk1TLoLqrPSBNRO0rloLMsjTTaeL660GW6RfD0ohIY7tnS93DJ3OWRQKHuNTUOPguOa\/l8JPXaaN7J+VMI\/hE2cOZwv0rVvmHgJQKXgmVS9dugHDoUD7YETcmo3POEINHTOyuVA4nP\/NZG9BKpGmdWsLcFK5j7"
-    }
-  }
-
-$ ./bin/obscrete --stop
-
 $ ./bin/obscrete --bootstrap
 
-$ curl -X POST -H "Content-Type: application/json" -d '{"public-key": "BWFsaWNlxgDD8BleR0lZOyTVMuguqs9IE1E7SuWgsyyNNNp4vrrQZbpF8PSiEhju2dL3cMnc5ZFAoe41NQ4+C45r+Xwk9dpo3sn5Uwj+ETZw5nC\/StW+YeAlApeCZVL126AcOhQPtgRNyajc84Qg0dM7K5UDic\/81kb0EqkaZ1awtwUrmPs=","secret-key": "BWFsaWNlgQJq3BALPYg17LHTf2\/2HQ9V1bwZMITjrQdX+\/uCY\/ayA\/JXQp0fb7SvT4hu7C6Vfk2k7uN5KMVEQkZ6gX58pD\/PVamIYB8kg8apKKBZYYWwFb6Pbb7T9\/m4SkjaYvY4HqRDDBgAoheQCAo5ouKDDS96vuJ1R5DglAeF+rQfK0gxbMYAw\/AZXkdJWTsk1TLoLqrPSBNRO0rloLMsjTTaeL660GW6RfD0ohIY7tnS93DJ3OWRQKHuNTUOPguOa\/l8JPXaaN7J+VMI\/hE2cOZwv0rVvmHgJQKXgmVS9dugHDoUD7YETcmo3POEINHTOyuVA4nP\/NZG9BKpGmdWsLcFK5j7", "smtp-password": "baz", "pop3-password": "baz", "http-password": "hello"}' http://127.0.0.1:8889/dj/system/reinstall
+$ curl -X POST -H "Content-Type: application/json" -d '{"public-key": "BWFsaWNlBbqW75jjJ0aPtaq1zGPObUc7ZQ2WIwIRbX2bkVyOkeIkAC9Hg0oc+J7BD\/RG04TDvd1fETcpmJpyvV8QyeKJ3B3BMHi+LPWSRY60yX1XoA\/1A1iuIxTnt22Q68iXyMMlZvA+ivmNxJlsqN3PB2KOch45KkNzi9Hez9u7KTZBhp3d","secret-key": "BWFsaWNlgMwhWxEO5Ovn0OpNnN62Mu9nvL7Zn1mzlgSBkfC2zZQII\/otb+1jPqLMCDQlFKqNEXGy\/N1PUhotV3w7JBitwsZSUeGfVi2gLJFEkrZ6tGjrUoN3eB65JIzpfQirlLX6oCO5Ab1t4rOmD4BsHvA+lYBbYw3QihArIGqcTyNrbiC1BbqW75jjJ0aPtaq1zGPObUc7ZQ2WIwIRbX2bkVyOkeIkAC9Hg0oc+J7BD\/RG04TDvd1fETcpmJpyvV8QyeKJ3B3BMHi+LPWSRY60yX1XoA\/1A1iuIxTnt22Q68iXyMMlZvA+ivmNxJlsqN3PB2KOch45KkNzi9Hez9u7KTZBhp3d", "smtp-password": "baz", "pop3-password": "baz", "http-password": "hello"}' http://127.0.0.1:8889/dj/system/reinstall
+{
+  "nym": "alice",
+  "sync-address": "0.0.0.0:9900",
+  "smtp-address": "0.0.0.0:19900",
+  "pop3-address": "0.0.0.0:29900",
+  "http-address": "0.0.0.0:8444",
+  "obscrete-dir": "\/tmp\/obscrete",
+  "pin": "123456",
+  "pin-salt": "carYm55t3hqcmUNiAd+zkA=="
+}
+```
+
+The reinstall method also have optional parameters but they are not examplified here.
+
+The key bundle above was typically extracted during normal operation:
+
+```
+$ curl --user alice:hello --digest -X POST -H "Content-Type: application/json" -d '["alice", "p42"]' http://127.0.0.1:8444/dj/key/export
+"AIcFYWxpY2UFupbvmOMnRo+1qrXMY85tRztlDZYjAhFtfZuRXI6R4iQAL0eDShz4nsEP9EbThMO93V8RNymYmnK9XxDJ4oncHcEweL4s9ZJFjrTJfVegD\/UDWK4jFOe3bZDryJfIwyVm8D6K+Y3EmWyo3c8HYo5yHjkqQ3OL0d7P27spNkGGnd0="jocke@seven:~/src/github/obscrete/obscrete$
 ```
 
 ### `/dj/system/restart` (**POST**)
@@ -214,7 +250,7 @@ $ curl --user alice:hello --digest -X POST -H "Content-Type: application/json" -
   }
 }
 
-$ curl --user alice:hello --digest -X POST -H "Content-Type: application/json" -d '{"player": {spiridon": {"f": 0.3}, "http-server": {"password":"zooooop"}}}' http://127.0.0.1:8444/dj/edit-config
+$ curl --user alice:hello --digest -X POST -H "Content-Type: application/json" -d '{"player": {"spiridon": {"f": 0.3}, "http-server": {"password":"zooooop"}}}' http://127.0.0.1:8444/dj/edit-config
 Config has been updated
 
 $ curl --user alice:hello --digest -X POST -H "Content-Type: application/json" -d '{"player": {"http-server": {"password": true}}}' http://127.0.0.1:8444/dj/get-config
@@ -353,7 +389,7 @@ $ curl --user alice:hello --digest -X PUT -H "Content-Type: application/json" -d
 Key has been updated
 
 $ curl --user alice:hello --digest http://127.0.0.1:8444/dj/key/alice
-"BWFsaWNlBJNUFPQyNBgndEf8QJLBY\/kngZbjbCgWtpZhRUWtbDaEPxxmIrdWOZcpUa2yDauWNCZ\/cZ4r7hSUXOW8TlJaqz2yJjG1OZ9nesloWrkrxDIU8xXjkZ7A6O2Trwf1xmYwMe17sp4BwR87lR8K3LBBYEwB1f3BFtle4zRCupxbAwGy"jocke@eve:~/src/github/obscrete/obscrete$ 
+"BWFsaWNlBJNUFPQyNBgndEf8QJLBY\/kngZbjbCgWtpZhRUWtbDaEPxxmIrdWOZcpUa2yDauWNCZ\/cZ4r7hSUXOW8TlJaqz2yJjG1OZ9nesloWrkrxDIU8xXjkZ7A6O2Trwf1xmYwMe17sp4BwR87lR8K3LBBYEwB1f3BFtle4zRCupxbAwGy"jocke@eve:~/src/github/obscrete/obscrete$
 ```
 
 ### `/dj/key/delete` (**POST**)

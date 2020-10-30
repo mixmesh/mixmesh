@@ -27,7 +27,7 @@ elgamal_keys([Pin, PinSalt, Nym]) ->
             erlang:halt(100);
         _ ->
             case player_crypto:make_key_pair(Pin, DecodedPinSalt, Nym) of
-                {ok, PublicKey, EncryptedSecretKey} ->
+                {ok, PublicKey, _SecretKey, EncryptedSecretKey} ->
                     io:format("-----BEGIN SECRET KEY-----\n"),
                     io:format("~s\n", [base64:encode(EncryptedSecretKey)]),
                     io:format("-----END SECRET KEY-----\n"),

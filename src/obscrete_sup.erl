@@ -28,13 +28,13 @@ init([]) ->
                         {#daemon_log_info{
                             enabled = true,
                             tty = true,
-                            show_filters = [<<"system">>, <<"rest_bootstrap_server">>],
+                            show_filters = [system, rest_bootstrap_server],
                             hide_filters = [],
                             file = {true, <<"/tmp/bootstrap_daemon.log">>}},
                          #dbg_log_info{
                             enabled = true,
                             tty = true,
-                            show_filters = [<<"system">>, <<"rest_bootstrap_server">>],
+                            show_filters = [],
                             hide_filters = [],
                             file = {true, <<"/tmp/bootstrap_dbg.log">>}},
                          #error_log_info{
