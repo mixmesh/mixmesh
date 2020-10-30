@@ -83,8 +83,8 @@ Implementation note: On success &lt;obscrete-dir&gt;/&lt;nym&gt;/obscrete.conf i
   "public-key": "&lt;Base64 encoded public key&gt;",
   "secret-key": "&lt;Base64 encoded secret key&gt;",
   "key-bundle": "&lt;Base64 encoded key bundle&gt; (optional)",
-  "pop3-password": "&lt;string&gt;",
   "smtp-password": "&lt;string&gt;",
+  "pop3-password": "&lt;string&gt;",
   "http-password": "&lt;string&gt;",
   "sync-address": "&lt;ip:port&gt; (optional)",
   "smtp-address": "&lt;ip:port&gt; (optional)",
@@ -110,17 +110,20 @@ Implementation note: On success &lt;obscrete-dir&gt;/&lt;nym&gt;/obscrete.conf i
 Typical usage:
 
 ```
-$ curl -X POST -H "Content-Type: application/json" -d '{"public-key": "BWFsaWNlxgDD8BleR0lZOyTVMuguqs9IE1E7SuWgsyyNNNp4vrrQZbpF8PSiEhju2dL3cMnc5ZFAoe41NQ4+C45r+Xwk9dpo3sn5Uwj+ETZw5nC/StW+YeAlApeCZVL126AcOhQPtgRNyajc84Qg0dM7K5UDic/81kb0EqkaZ1awtwUrmPs=", "secret-key": "JUitY4g+ezCu1VJ9G11RSnfvKqieoGb+C+Q+CH6f+6EWC/lu+YAey2g9iTcpf/xoa501SFfUTCG1cV16tU/o/VOd18/zE98F7Jd6e/2NeiM6yMrCQrbFnY/cugQPwbKw6jf8lnxiO1+kBdqX5a5Fgs7eTsChd44lJY1QeFM7/rNECWKmPonIY/NwD3mcA3iBpUwmD0RYGdEB6IXFc30xgR2avOAWd0e+5PMnyvVw//OC12vvkZAdtK4oL1gTfHoQ9B5YGILeFmZdScfrAMXaY7BkVqiCpIa+xK86dtqzf0Afa7G/vg3Lj8wf2CXhq0e4+wqXSqBuIVhLn9TxIPe1jfA5r4IfOqCMRqZKmbQD3ltxp7Ojt79leAOl2PARJFOd+XMlISNtJ4WcYXyboeRAzw==", "smtp-password": "baz", "pop3-password": "baz", "http-password": "hello"}' http://127.0.0.1:8444/dj/system/reinstall
+$ curl --user alice:hello --digest -X POST -H "Content-Type: application/json" -d '{"player": {"spiridon": {"public-key": true, "secret-key": true}}}' http://127.0.0.1:8444/dj/get-config
 {
-  "nym": "alice",
-  "sync-address": "191.34.2.11:2364",
-  "smtp-address": "191.34.2.11:2364",
-  "pop3-address": "191.34.2.11:3001",
-  "http-address": "191.34.2.11:3006",
-  "obscrete-dir": "/tmp/obscrete",
-  "pin": "123456",
-  "pin-salt": "xFxxsWkBHF9SWcEQA4pvzg=="
-}
+  "player": {
+    "spiridon": {
+      "public-key": "BWFsaWNlxgDD8BleR0lZOyTVMuguqs9IE1E7SuWgsyyNNNp4vrrQZbpF8PSiEhju2dL3cMnc5ZFAoe41NQ4+C45r+Xwk9dpo3sn5Uwj+ETZw5nC\/StW+YeAlApeCZVL126AcOhQPtgRNyajc84Qg0dM7K5UDic\/81kb0EqkaZ1awtwUrmPs=",
+      "secret-key": "BWFsaWNlgQJq3BALPYg17LHTf2\/2HQ9V1bwZMITjrQdX+\/uCY\/ayA\/JXQp0fb7SvT4hu7C6Vfk2k7uN5KMVEQkZ6gX58pD\/PVamIYB8kg8apKKBZYYWwFb6Pbb7T9\/m4SkjaYvY4HqRDDBgAoheQCAo5ouKDDS96vuJ1R5DglAeF+rQfK0gxbMYAw\/AZXkdJWTsk1TLoLqrPSBNRO0rloLMsjTTaeL660GW6RfD0ohIY7tnS93DJ3OWRQKHuNTUOPguOa\/l8JPXaaN7J+VMI\/hE2cOZwv0rVvmHgJQKXgmVS9dugHDoUD7YETcmo3POEINHTOyuVA4nP\/NZG9BKpGmdWsLcFK5j7"
+    }
+  }
+
+$ ./bin/obscrete --stop
+
+$ ./bin/obscrete --bootstrap
+
+$ curl -X POST -H "Content-Type: application/json" -d '{"public-key": "BWFsaWNlxgDD8BleR0lZOyTVMuguqs9IE1E7SuWgsyyNNNp4vrrQZbpF8PSiEhju2dL3cMnc5ZFAoe41NQ4+C45r+Xwk9dpo3sn5Uwj+ETZw5nC\/StW+YeAlApeCZVL126AcOhQPtgRNyajc84Qg0dM7K5UDic\/81kb0EqkaZ1awtwUrmPs=","secret-key": "BWFsaWNlgQJq3BALPYg17LHTf2\/2HQ9V1bwZMITjrQdX+\/uCY\/ayA\/JXQp0fb7SvT4hu7C6Vfk2k7uN5KMVEQkZ6gX58pD\/PVamIYB8kg8apKKBZYYWwFb6Pbb7T9\/m4SkjaYvY4HqRDDBgAoheQCAo5ouKDDS96vuJ1R5DglAeF+rQfK0gxbMYAw\/AZXkdJWTsk1TLoLqrPSBNRO0rloLMsjTTaeL660GW6RfD0ohIY7tnS93DJ3OWRQKHuNTUOPguOa\/l8JPXaaN7J+VMI\/hE2cOZwv0rVvmHgJQKXgmVS9dugHDoUD7YETcmo3POEINHTOyuVA4nP\/NZG9BKpGmdWsLcFK5j7", "smtp-password": "baz", "pop3-password": "baz", "http-password": "hello"}' http://127.0.0.1:8889/dj/system/reinstall
 ```
 
 ### `/dj/system/restart` (**POST**)
@@ -144,6 +147,7 @@ Typical usage:
 
 ```
 $ curl -X POST -H "Content-Type: application/json" -d '5' http://127.0.0.1:8444/dj/system/restart
+Yes, sir!
 ```
 
 ## Normal operation

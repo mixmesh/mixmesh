@@ -6,7 +6,12 @@
 
 get() ->
     [{system,
-      [{pin,
+      [{'obscrete-dir',
+        #json_type{
+           name = writable_directory,
+           typical = <<"/var/obscrete">>,
+           reloadable = false}},
+       {pin,
         #json_type{
            name = string,
            typical = <<"000000">>,
