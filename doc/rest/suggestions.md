@@ -321,7 +321,7 @@ $ curl --user alice:hello --digest http://127.0.0.1:8444/dj/key/alice
 
 ### `/dj/key/filter` (**POST**)
 
-Used to show a filtered set of keys. At most 100 keys will be shown.
+Used to show a *sub-string* filtered set of keys. At most 100 keys will be shown.
 
 <table>
   <tr>
