@@ -362,7 +362,7 @@ Used to import new (or replace an existing) key.
     <th align="left">Failure</th>
   </tr>
   <tr>
-    <td valign="top"><code>&lt;Base64 encoded public key&gt;"</code></td>
+    <td valign="top"><code>&lt;Base64 encoded public key&gt;</code></td>
     <td valign="top">200</td>
     <td valign="top">400, 403</td>
   </tr>
