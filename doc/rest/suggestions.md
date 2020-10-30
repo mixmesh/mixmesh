@@ -159,7 +159,7 @@ The key bundle above was typically extracted during normal operation:
 
 ```
 $ curl --user alice:hello --digest -X POST -H "Content-Type: application/json" -d '["alice", "p42"]' http://127.0.0.1:8444/dj/key/export
-"AIcFYWxpY2UFupbvmOMnRo+1qrXMY85tRztlDZYjAhFtfZuRXI6R4iQAL0eDShz4nsEP9EbThMO93V8RNymYmnK9XxDJ4oncHcEweL4s9ZJFjrTJfVegD\/UDWK4jFOe3bZDryJfIwyVm8D6K+Y3EmWyo3c8HYo5yHjkqQ3OL0d7P27spNkGGnd0="jocke@seven:~/src/github/obscrete/obscrete$
+"AIcFYWxpY2UFupbvmOMnRo+1qrXMY85tRztlDZYjAhFtfZuRXI6R4iQAL0eDShz4nsEP9EbThMO93V8RNymYmnK9XxDJ4oncHcEweL4s9ZJFjrTJfVegD\/UDWK4jFOe3bZDryJfIwyVm8D6K+Y3EmWyo3c8HYo5yHjkqQ3OL0d7P27spNkGGnd0="
 ```
 
 ### `/dj/system/restart` (**POST**)
@@ -173,7 +173,7 @@ Used to restart and enter normal operation.
     <th align="left">Failure</th>
   </tr>
   <tr>
-    <td valign="top"><pre lang="json">"&lt;time in seconds&gt;"</td>
+    <td valign="top"><code>&lt;time in seconds&gt;</code></td>
     <td valign="top">204</td>
     <td valign="top">400</td>
   </tr>
@@ -307,7 +307,7 @@ Used to show a key for a specific nym.
   </tr>
   <tr>
     <td valign="top">-</td>
-    <td valign="top">200<pre lang="json">"&lt;Base64 encoded public key&gt;"</pre></td>
+    <td valign="top">200<br><code>&lt;Base64 encoded public key&gt;</code></td>
     <td valign="top">400, 404</td>
 </tr>
 </table>
@@ -362,7 +362,7 @@ Used to import new (or replace an existing) key.
     <th align="left">Failure</th>
   </tr>
   <tr>
-    <td valign="top"><pre lang="json">"&lt;Base64 encoded public key&gt;"</pre></td>
+    <td valign="top"><code>&lt;Base64 encoded public key&gt;"</code></td>
     <td valign="top">200</td>
     <td valign="top">400, 403</td>
   </tr>
@@ -443,7 +443,7 @@ Used to export a key bundle.
   </tr>
   <tr>
     <td valign="top"><pre lang="json">["&lt;nym (<32 characters)&gt;"]</pre></td>
-    <td valign="top">200<pre lang="json">&lt;Base64 encoded key bundle&gt</pre></td>
+    <td valign="top">200<br><code>&lt;Base64 encoded key bundle&gt;</code></td>
     <td valign="top">400</td>
   </tr>
 </table>
@@ -466,7 +466,7 @@ Used to import a key bundle.
     <th align="left">Failure</th>
   </tr>
   <tr>
-    <td valign="top"><pre lang="json">"&lt;Base64 encoded key bundle&gt"&gt;"</pre></td>
+    <td valign="top"><code>&lt;Base64 encoded key bundle&gt;</code></td>
     <td valign="top">204</td>
     <td valign="top">400, 403</td>
   </tr>
