@@ -20,6 +20,8 @@
 * Elgamal-randomize messages **before* they are put into the message buffer
 * Use stored message digest to detect duplicate messages (not the clear text message_id!!). Store at most X nyumber of digests (dets? disk-log?)
 * Remove messages from the message buffer when K new are added. Do not remove *own* messages from the buffer! In some way.
+* When we receive a message aimed at us we replace it inn the message buffer with a randomized message
+
 * Write HTML pages as described in https://github.com/obscrete/obscrete/blob/master/doc/webui/suggestions.md. It should be fairly little work now that I have https://github.com/obscrete/obscrete/blob/master/doc/rest/suggestions.md implemented.
 * Make code reload more resiliant
 * Fill buffer with max number of messages, not just 100. Wait for the new message swap algorithm to be in place.
