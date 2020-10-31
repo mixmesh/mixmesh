@@ -15,7 +15,6 @@
 * simulator fix grid demo!
 * Buffer management, send/recv messages
 
-
 ### Joakim
 
 * Elgamal-randomize messages **before* they are put into the message buffer
