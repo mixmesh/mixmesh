@@ -54,7 +54,7 @@ Typical usage:
 ```
 $ ./bin/obscrete --bootstrap
 
-curl -X POST -H "Content-Type: application/json" -d '{"nym": "alice", "smtp-password": "baz", "pop3-password": "baz", "http-password": "hello"}' http://127.0.0.1:8889/dj/system/wipe
+$ curl -X POST -H "Content-Type: application/json" -d '{"nym": "alice", "smtp-password": "baz", "pop3-password": "baz", "http-password": "hello"}' http://127.0.0.1:8889/dj/system/wipe
 {
   "public-key": "BWFsaWNlt8GZL4n7Tbyqbr5JD6IUKbEO0TZeQ6JQOnFuj9ggayRm\/JhRs1\/QPF1UNzkRIPakugXCMjELYnuz8V+hEHWq4hOa5IzNp\/MSomKJamK4608bMgMwRQ4RKx5KbfD+V2NL3KictMM5QKFh+AWgjZN0SyN8VinhT4K7ye\/FRh3zl\/E=",
   "secret-key": "BWFsaWNlgNRUP8jfeJHgQH4CwDAkD1VvucDSqNxvdnbcu6mBmtNsfzHWeLxYKAcut\/+doKt+D5xZ\/dZ2RyG2AyxGJrb3atZvpBug1q71GqEFYHlAEk2E0qJDKHnxQs7R3I5z7c237hctQjc79tJI\/FqT\/9FAtmtKJd8OUWPDEN+WoUGr4lk2t8GZL4n7Tbyqbr5JD6IUKbEO0TZeQ6JQOnFuj9ggayRm\/JhRs1\/QPF1UNzkRIPakugXCMjELYnuz8V+hEHWq4hOa5IzNp\/MSomKJamK4608bMgMwRQ4RKx5KbfD+V2NL3KictMM5QKFh+AWgjZN0SyN8VinhT4K7ye\/FRh3zl\/E=",
@@ -71,7 +71,7 @@ curl -X POST -H "Content-Type: application/json" -d '{"nym": "alice", "smtp-pass
 Above a number of optional parameters were ommited, i.e. these optional parameters will not be in the final version anyway, but here all possible optional parameters are provided (with their current default values):
 
 ```
-$curl -X POST -H "Content-Type: application/json" -d '{"nym": "alice", "smtp-password": "baz", "pop3-password": "baz", "http-password": "hello", "sync-address": "0.0.0.0:9900", "smtp-address": "0.0.0.0:19900", "pop3-address": "0.0.0.0:29900", "http-address": "0.0.0.0:8444", "obscrete-dir": "/tmp/obscrete", "pin": "123456"}' http://127.0.0.1:8889/dj/system/wipe
+$ curl -X POST -H "Content-Type: application/json" -d '{"nym": "alice", "smtp-password": "baz", "pop3-password": "baz", "http-password": "hello", "sync-address": "0.0.0.0:9900", "smtp-address": "0.0.0.0:19900", "pop3-address": "0.0.0.0:29900", "http-address": "0.0.0.0:8444", "obscrete-dir": "/tmp/obscrete", "pin": "123456"}' http://127.0.0.1:8889/dj/system/wipe
 {
   "public-key": "BWFsaWNlAb580nSD7dm2ltsNxz\/yO7nAikKko4FMxKzL8rF0EUY+lF0YX5J9ljlZuemxhh3QrQuKY2KnMJ0ATMfdSleyUUBsOEC2YzDFMpqR7Dx0iiQ6ZUZdfPoYlL9oC2mjOIOXmEtgBtTeeOeVPgk\/\/P5xrCaPjf8BC0fh\/90oU9YWLIV4",
   "secret-key": "BWFsaWNlgQK3RdpgKoErxfuNjH1dH0T1Zf27DT6T+BO0gJrTdHF8pb+lkkT19epLk7ofGlgh6HErwbvPfGIZzXlYpzdnmqRvLjOFg5s5aUqnimuIgfYm9fRGu6hRNZBgQRakulbm2zLYqsrYaR8fhpbXKpm5HH8sBkSfRuECTh+PPE5xZO49EwG+fNJ0g+3ZtpbbDcc\/8ju5wIpCpKOBTMSsy\/KxdBFGPpRdGF+SfZY5WbnpsYYd0K0LimNipzCdAEzH3UpXslFAbDhAtmMwxTKakew8dIokOmVGXXz6GJS\/aAtpoziDl5hLYAbU3njnlT4JP\/z+cawmj43\/AQtH4f\/dKFPWFiyFeA==",
@@ -159,7 +159,7 @@ The key bundle above was typically extracted during normal operation:
 
 ```
 $ curl --user alice:hello --digest -X POST -H "Content-Type: application/json" -d '["alice", "p42"]' http://127.0.0.1:8444/dj/key/export
-"AIcFYWxpY2UFupbvmOMnRo+1qrXMY85tRztlDZYjAhFtfZuRXI6R4iQAL0eDShz4nsEP9EbThMO93V8RNymYmnK9XxDJ4oncHcEweL4s9ZJFjrTJfVegD\/UDWK4jFOe3bZDryJfIwyVm8D6K+Y3EmWyo3c8HYo5yHjkqQ3OL0d7P27spNkGGnd0="jocke@seven:~/src/github/obscrete/obscrete$
+"AIcFYWxpY2UFupbvmOMnRo+1qrXMY85tRztlDZYjAhFtfZuRXI6R4iQAL0eDShz4nsEP9EbThMO93V8RNymYmnK9XxDJ4oncHcEweL4s9ZJFjrTJfVegD\/UDWK4jFOe3bZDryJfIwyVm8D6K+Y3EmWyo3c8HYo5yHjkqQ3OL0d7P27spNkGGnd0="
 ```
 
 ### `/dj/system/restart` (**POST**)
@@ -173,7 +173,7 @@ Used to restart and enter normal operation.
     <th align="left">Failure</th>
   </tr>
   <tr>
-    <td valign="top"><pre lang="json">"&lt;time in seconds&gt;"</td>
+    <td valign="top"><code>&lt;time in seconds&gt;</code></td>
     <td valign="top">204</td>
     <td valign="top">400</td>
   </tr>
@@ -307,7 +307,7 @@ Used to show a key for a specific nym.
   </tr>
   <tr>
     <td valign="top">-</td>
-    <td valign="top">200<pre lang="json">"&lt;Base64 encoded public key&gt;"</pre></td>
+    <td valign="top">200<br><code>&lt;Base64 encoded public key&gt;</code></td>
     <td valign="top">400, 404</td>
 </tr>
 </table>
@@ -321,7 +321,7 @@ $ curl --user alice:hello --digest http://127.0.0.1:8444/dj/key/alice
 
 ### `/dj/key/filter` (**POST**)
 
-Used to show a filtered set of keys. At most 100 keys will be shown.
+Used to show a *sub-string* filtered set of keys. At most 100 keys will be shown.
 
 <table>
   <tr>
@@ -362,7 +362,7 @@ Used to import new (or replace an existing) key.
     <th align="left">Failure</th>
   </tr>
   <tr>
-    <td valign="top"><pre lang="json">"&lt;Base64 encoded public key&gt;"</pre></td>
+    <td valign="top"><code>&lt;Base64 encoded public key&gt;</code></td>
     <td valign="top">200</td>
     <td valign="top">400, 403</td>
   </tr>
@@ -443,7 +443,7 @@ Used to export a key bundle.
   </tr>
   <tr>
     <td valign="top"><pre lang="json">["&lt;nym (<32 characters)&gt;"]</pre></td>
-    <td valign="top">200<pre lang="json">&lt;Base64 encoded key bundle&gt</pre></td>
+    <td valign="top">200<br><code>&lt;Base64 encoded key bundle&gt;</code></td>
     <td valign="top">400</td>
   </tr>
 </table>
@@ -466,7 +466,7 @@ Used to import a key bundle.
     <th align="left">Failure</th>
   </tr>
   <tr>
-    <td valign="top"><pre lang="json">"&lt;Base64 encoded key bundle&gt"&gt;"</pre></td>
+    <td valign="top"><code>&lt;Base64 encoded key bundle&gt;</code></td>
     <td valign="top">204</td>
     <td valign="top">400, 403</td>
   </tr>
