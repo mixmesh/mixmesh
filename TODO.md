@@ -17,7 +17,6 @@
 
 ### Joakim
 
-* Remove messages from the message buffer when K new are added. Do not remove *own* messages from the buffer! In some way.
 * When we receive a message aimed at us we replace it inn the message buffer with a randomized message
 * Fill buffer with max number of messages, not just 100. Wait for the new message swap algorithm to be in place.
 
