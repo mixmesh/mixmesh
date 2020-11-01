@@ -14,47 +14,30 @@ digest_password([Password]) ->
 %% Exported: elgamal_keys
 
 elgamal_keys([Pin, PinSalt, Nym]) ->
-    case {length(Pin), lists:all(fun(C) -> C >= $0 andalso C =< $9 end, Pin)} of
-        _ when length(Nym) > ?MAX_NYM_SIZE ->
-            io:format(standard_error,
-                      "Error: A NYM must at most contain ~w characters\n", 
-		      [?MAX_NYM_SIZE]),
-            erlang:halt(100);
-        {PinLen, _} when PinLen /= 6 ->
-            io:format(standard_error,
-                      "Error: A PIN must contain six digits\n", []),
-            erlang:halt(100);
-        {_PinLen, false} ->
-            io:format(standard_error,
-                      "Error: A PIN must only contain digits\n", []),
+    DecodedPinSalt =
+        try
+            base64:decode(PinSalt)
+        catch
+            _:_ ->
+                not_base64
+        end,
+    case DecodedPinSalt of
+        not_base64 ->
+            io:format(standard_error, "Invalid pin salt", []),
             erlang:halt(100);
         _ ->
-            DecodedPinSalt =
-                try
-                    base64:decode(PinSalt)
-                catch
-                    _:_ ->
-                        not_base64
-                end,
-            case DecodedPinSalt of
-                not_base64 ->
-                    io:format(standard_error,
-                              "Error: PIN salt is not BASE64 encoded\n", []),
-                    erlang:halt(100);
-                _ ->
-                    SharedKey =
-                        enacl:pwhash(?l2b(Pin), DecodedPinSalt,
-                                     enacl:secretbox_KEYBYTES()),
-                    {PublicKey, EncryptedSecretKey} =
-                        player_crypto:encrypt_new_key_pair(
-                          SharedKey, ?l2b(Nym)),
+            case player_crypto:make_key_pair(Pin, DecodedPinSalt, Nym) of
+                {ok, PublicKey, _SecretKey, EncryptedSecretKey} ->
                     io:format("-----BEGIN SECRET KEY-----\n"),
                     io:format("~s\n", [base64:encode(EncryptedSecretKey)]),
                     io:format("-----END SECRET KEY-----\n"),
                     io:format("-----BEGIN PUBLIC KEY-----\n"),
                     io:format("~s\n", [base64:encode(PublicKey)]),
                     io:format("-----END PUBLIC KEY-----\n"),
-                    erlang:halt(0)
+                    erlang:halt(0);
+                {error, Reason} ->
+                    io:format(standard_error, Reason ++ "\n", []),
+                    erlang:halt(100)
             end
     end.
 

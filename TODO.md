@@ -11,26 +11,19 @@
 * select ip from ping interface, convert (0,0,0,0) => (A,B,C,D)
   depending on nodis ip.
 * retry state?
-* nodis neighbour state as ets? pening queue 
+* nodis neighbour state as ets? pening queue
+* simulator fix grid demo!
+* Buffer management, send/recv messages
+
 
 ### Joakim
 
+* When we receive a message aimed at us we replace it inn the message buffer with a randomized message
+* Fill buffer with max number of messages, not just 100. Wait for the new message swap algorithm to be in place.
+
+* Write HTML pages as described in https://github.com/obscrete/obscrete/blob/master/doc/webui/suggestions.md. It should be fairly little work now that I have https://github.com/obscrete/obscrete/blob/master/doc/rest/suggestions.md implemented.
+* Make code reload more resiliant. I tried!!
 * Document README.md pin-salt digest
-* Configure buffer fill mode (default)
-* Buffer management, send/recv messages
-* Minimize? overwrite of own messages
-* Make code reload more resilant
-* Boot strap HTML/Rest server
-* Export keys / password
-* Wipe to Boot strap
-* Import Keys with or without password
-* Rest command resize image or auto resize at start (at pin code entry)
-* serv reload code.
-* DEMO! First REST api protocol.
-* Randomize at reception and each of local message copies
-* When receiving message replace with random (allways full).
-* Duplicate filter store, use digest to filter already received messages.
-  Dets store / log or something...
 
 ### Both
 
