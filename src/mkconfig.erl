@@ -1,5 +1,5 @@
 -module(mkconfig).
--export([start/1, start/3]).
+-export([start/1, start/3, create_player/4]).
 -export([ensure_libs/3, return/2]).
 
 %% This script creates the appropriate file structure needed to start
@@ -7,54 +7,57 @@
 %% name of a player as input, e.g. "./mkconfigdir /tmp/obscrete alice".
 %% If you do this the following will be created:
 %%
-%% /tmp/obscrete/pki/data
+%% /tmp/obscrete/global-pki
 %% /tmp/obscrete/alice/player/temp/
 %% /tmp/obscrete/alice/player/buffer/
-%% /tmp/obscrete/alice/player/pki/data/
-%% /tmp/obscrete/alice/player/maildrop/spooler/
+%% /tmp/obscrete/alice/player/local-pki/
+%% /tmp/obscrete/alice/player/spooler/
+%% /tmp/obscrete/alice/player/received-messages/
 %% /tmp/obscrete/alice/player/ssl/
-%%
-%% As it happens this is the file structure used by the configuration
-%% files under ./obscrete/etc/*.conf.
 
 -include_lib("apptools/include/log.hrl").
 -include_lib("apptools/include/shorthand.hrl").
 
--type mode() :: command | api.
+-type return_mode() :: command | api.
 
 %% Exported: start
 
 -spec start([string()]) -> no_return().
 
-start([ObscreteDir, SourceCertFilename, PlayerName]) ->
-    start([ObscreteDir, SourceCertFilename, PlayerName], command).
+start([ObscreteDir, SourceCertFilename, Nym]) ->
+    GlobalPkiDir = filename:join([ObscreteDir, <<"global-pki">>]),
+    true = ensure_libs(command, [GlobalPkiDir], true),
+    create_player(ObscreteDir, SourceCertFilename, Nym, command),
+    return(command, 0).
 
 -spec start(binary(), binary(), binary()) -> boolean().
 
-start(ObscreteDir, SourceCertFilename, PlayerName) ->
-    start([?b2l(ObscreteDir), ?b2l(SourceCertFilename), ?b2l(PlayerName)], api).
+start(ObscreteDir, SourceCertFilename, Nym) ->
+    GlobalPkiDir = filename:join([ObscreteDir, <<"global-pki">>]),
+    true = ensure_libs(api, [GlobalPkiDir], true),
+    create_player(?b2l(ObscreteDir), ?b2l(SourceCertFilename), ?b2l(Nym), api).
 
-start([ObscreteDir, SourceCertFilename, PlayerName], Mode) ->
-    PkiDataDir = filename:join([ObscreteDir, <<"pki">>, <<"data">>]),
-    true = ensure_libs(Mode, [PkiDataDir], true),
-    PlayerDir = filename:join([ObscreteDir, PlayerName, <<"player">>]),
-    PlayerTempDir = filename:join([PlayerDir, "temp"]),
-    PlayerBufferDir = filename:join([PlayerDir, "buffer"]),
-    PlayerPkiDataDir = filename:join([PlayerDir, "pki", "data"]),
-    PlayerMaildropSpoolerDir =
-        filename:join([PlayerDir, "maildrop", "spooler"]),
-    PlayerSSLDir = filename:join([PlayerDir, "ssl"]),
-    true = ensure_libs(Mode, [PlayerTempDir,
-                              PlayerBufferDir,
-                              PlayerPkiDataDir,
-                              PlayerMaildropSpoolerDir,
-                              PlayerSSLDir],
+%% Exported: start
+
+-spec create_player(string(), string(), string(), return_mode()) ->
+          no_return() | boolean().
+
+create_player(ObscreteDir, SourceCertFilename, Nym, Mode) ->
+    PlayerDir = filename:join([ObscreteDir, Nym, <<"player">>]),
+    TempDir = filename:join([PlayerDir, <<"temp">>]),
+    BufferDir = filename:join([PlayerDir, <<"buffer">>]),
+    LocalPkiDir = filename:join([PlayerDir, <<"local-pki">>]),
+    SpoolerDir = filename:join([PlayerDir, <<"spooler">>]),
+    ReceivedMessagesDir = filename:join([PlayerDir, <<"received-messages">>]),
+    SSLDir = filename:join([PlayerDir, "ssl"]),
+    true = ensure_libs(Mode, [TempDir, BufferDir, LocalPkiDir, SpoolerDir,
+                              ReceivedMessagesDir, SSLDir],
                        true),
-    TargetCertFilename = filename:join([PlayerDir, "ssl", "cert.pem"]),
+    TargetCertFilename = filename:join([SSLDir, <<"cert.pem">>]),
     format(Mode, "Copies ~s to ~s\n", [SourceCertFilename, TargetCertFilename]),
     case file:copy(SourceCertFilename, TargetCertFilename) of
         {ok, _} ->
-            return(Mode, 0);
+            true;
         {error, Reason} ->
             format(Mode, standard_error, "~s: ~s\n",
                    [SourceCertFilename, file:format_error(Reason)]),
@@ -63,7 +66,7 @@ start([ObscreteDir, SourceCertFilename, PlayerName], Mode) ->
 
 %% Exported: ensure_libs
 
--spec ensure_libs(mode(), [binary()], boolean()) -> no_return() | boolean().
+-spec ensure_libs(return_mode(), [binary()], boolean()) -> no_return() | boolean().
 
 ensure_libs(_Mode, [], _Erase) ->
     true;
@@ -116,7 +119,7 @@ format(command, Device, Format, Args) ->
 
 %% Exported: return
 
--spec return(mode(), integer()) -> no_return() | boolean().
+-spec return(return_mode(), integer()) -> no_return() | boolean().
 
 return(api, 0) ->
     true;
