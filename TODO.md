@@ -12,7 +12,6 @@
   depending on nodis ip.
 * retry state?
 * nodis neighbour state as ets? pening queue 
-* simulator fix grid demo!
 
 ### Joakim
 
