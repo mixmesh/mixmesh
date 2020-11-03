@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Mixmesh</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="css/uikit.min.css" />
+    <script src="js/uikit.min.js"></script>
+    <script src="js/uikit-icons.min.js"></script>
+    <script src="js/jml.js"></script>
+    <script src="js/mixmesh.js"></script>
+    <script src="js/list_keys.js"></script>
+  </head>
+  <body>
+    <div class="uk-container uk-padding-remove uk-container-xsmall">
+      <div id="content" class="uk-padding-small"
+           uk-height-viewport="expand: true">
+        <!-- Content start -->
+        <h2>Public keys</h2>
+        <div class="uk-inline uk-width-1-1">
+          <span class="uk-form-icon" uk-icon="search"></span>
+          <input id="input-search" class="uk-input"
+                 placeholder="Search for pseudonyms...">
+        </div>
+        <table class="uk-table uk-table-striped uk-table-hover uk-table-small">
+          <thead>
+            <tr>
+              <th><input class="uk-checkbox" type="checkbox"></th>
+              <th>Pseudonym</th>
+              <th>Public key</input>
+              </th>
+            </tr>
+          </thead>
+          <tr>
+            <td><input class="uk-checkbox" type="checkbox"></td>
+            <td>Alice</td>
+            <td class="uk-table-link">
+              <a class="uk-link-reset"
+                 href="#0">BWFsaWNlt8GZL4n...7Tbyqbr5JD6IUKb=</a>
+            </td>
+            <td><span uk-icon="trash"></span></td>
+          </tr>
+          <tr>
+            <td><input class="uk-checkbox" type="checkbox"></td>
+            <td>Bob</td>
+            <td class="uk-table-link">
+              <a class="uk-link-reset"
+                 href="#0">BWFsaWNlt8GZL4n...7Tbyqbr5JD6IUKb=</a>
+            </td>
+            <td><span uk-icon="trash"></span></td>
+          </tr>
+          <tr>
+            <td><input class="uk-checkbox" type="checkbox"></td>
+            <td>Fred</td>
+            <td class="uk-table-link">
+              <a class="uk-link-reset"
+                 href="#0">BWFsaWNlt8GZL4n...7Tbyqbr5JD6IUKb=</a>
+            </td>
+            <td><span uk-icon="trash"></span></td>
+          </tr>
+        </table>
+        <div align="right">
+          <button id="delete-button" class="uk-button uk-button-default">
+            Delete selected
+          </button>
+          <button id="import-button" class="uk-button uk-button-default">
+            Import selected...
+          </button>
+        </div>
+        <!-- Content stop -->
+      </div>
+      <nav class="uk-navbar-container" uk-navbar>
+        <ul class="uk-navbar-nav">
+          <li>
+            <a href="#0"><span uk-icon="user"></span>&nbsp;My Key</a>
+          </li>
+          <li>
+            <a href="#0"><span uk-icon="camera"></span>&nbsp;Import Key</a>
+          </li>
+          <li class="uk-active">
+            <a href="#0"><span uk-icon="list"></span>&nbsp;List Keys</a>
+          </li>
+          <li>
+            <a href="#0"><span uk-icon="download"></span>&nbsp;Import Bundle</a>
+          </li>
+          <li>
+            <a href="#0"><span uk-icon="settings"></span>&nbsp;Settings</a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </body>
+</html>
