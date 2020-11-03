@@ -1,6 +1,5 @@
 -module(mkconfig).
--export([start/1, start/3, create_player/4]).
--export([ensure_libs/3, return/2]).
+-export([start/1, start/3, create_player/4, ensure_libs/3]).
 
 %% This script creates the appropriate file structure needed to start
 %% Obscrete. You call this command with an obscrete directory and the
@@ -18,7 +17,7 @@
 -include_lib("apptools/include/log.hrl").
 -include_lib("apptools/include/shorthand.hrl").
 
--type return_mode() :: command | api.
+-type trace_mode() :: stdout | log.
 
 %% Exported: start
 
@@ -26,23 +25,33 @@
 
 start([ObscreteDir, SourceCertFilename, Nym]) ->
     GlobalPkiDir = filename:join([ObscreteDir, <<"global-pki">>]),
-    true = ensure_libs(command, [GlobalPkiDir], true),
-    create_player(ObscreteDir, SourceCertFilename, Nym, command),
-    return(command, 0).
+    try
+        true = ensure_libs(stdout, [GlobalPkiDir], true),
+        true = create_player(stdout, ObscreteDir, SourceCertFilename, Nym),
+        erlang:halt(0)
+    catch
+        throw:{status, Status} ->
+            erlang:halt(Status)
+    end.
 
 -spec start(binary(), binary(), binary()) -> boolean().
 
 start(ObscreteDir, SourceCertFilename, Nym) ->
     GlobalPkiDir = filename:join([ObscreteDir, <<"global-pki">>]),
-    true = ensure_libs(api, [GlobalPkiDir], true),
-    create_player(?b2l(ObscreteDir), ?b2l(SourceCertFilename), ?b2l(Nym), api).
+    try
+        true = ensure_libs(log, [GlobalPkiDir], true),
+        create_player(log, ?b2l(ObscreteDir), ?b2l(SourceCertFilename),
+                      ?b2l(Nym))
+    catch
+        throw:{status, _Status} ->
+            false
+    end.
 
-%% Exported: start
+%% Exported: create_player
 
--spec create_player(string(), string(), string(), return_mode()) ->
-          no_return() | boolean().
+-spec create_player(trace_mode(), string(), string(), string()) -> true.
 
-create_player(ObscreteDir, SourceCertFilename, Nym, Mode) ->
+create_player(TraceMode, ObscreteDir, SourceCertFilename, Nym) ->
     PlayerDir = filename:join([ObscreteDir, Nym, <<"player">>]),
     TempDir = filename:join([PlayerDir, <<"temp">>]),
     BufferDir = filename:join([PlayerDir, <<"buffer">>]),
@@ -50,54 +59,57 @@ create_player(ObscreteDir, SourceCertFilename, Nym, Mode) ->
     SpoolerDir = filename:join([PlayerDir, <<"spooler">>]),
     ReceivedMessagesDir = filename:join([PlayerDir, <<"received-messages">>]),
     SSLDir = filename:join([PlayerDir, "ssl"]),
-    true = ensure_libs(Mode, [TempDir, BufferDir, LocalPkiDir, SpoolerDir,
-                              ReceivedMessagesDir, SSLDir],
+    true = ensure_libs(TraceMode,
+                       [TempDir, BufferDir, LocalPkiDir, SpoolerDir,
+                        ReceivedMessagesDir, SSLDir],
                        true),
     TargetCertFilename = filename:join([SSLDir, <<"cert.pem">>]),
-    format(Mode, "Copies ~s to ~s\n", [SourceCertFilename, TargetCertFilename]),
+    format(TraceMode, "Copies ~s to ~s\n",
+           [SourceCertFilename, TargetCertFilename]),
     case file:copy(SourceCertFilename, TargetCertFilename) of
         {ok, _} ->
             true;
         {error, Reason} ->
-            format(Mode, standard_error, "~s: ~s\n",
+            format(TraceMode, standard_error, "~s: ~s\n",
                    [SourceCertFilename, file:format_error(Reason)]),
-            return(Mode, 100)
+            throw({status, 100})
     end.
 
 %% Exported: ensure_libs
 
--spec ensure_libs(return_mode(), [binary()], boolean()) -> no_return() | boolean().
+-spec ensure_libs(trace_mode(), [binary()], boolean()) -> true.
 
-ensure_libs(_Mode, [], _Erase) ->
+ensure_libs(_TraceMode, [], _Erase) ->
     true;
-ensure_libs(Mode, [Dir|Rest], Erase) ->
-    format(Mode, "Ensures ~s\n", [Dir]),
+ensure_libs(TraceMode, [Dir|Rest], Erase) ->
+    format(TraceMode, "Ensures ~s\n", [Dir]),
     case filelib:ensure_dir(Dir) of
         ok ->
             case file:make_dir(Dir) of
                 ok ->
-                    ensure_libs(Mode, Rest, Erase);
+                    ensure_libs(TraceMode, Rest, Erase);
                 {error, eexist} when Erase ->
-                    ok = erase_dir(Mode, Dir),
-                    ensure_libs(Mode, Rest, Erase);
+                    ok = erase_dir(TraceMode, Dir),
+                    ensure_libs(TraceMode, Rest, Erase);
                 {error, eexist} ->
-                    ensure_libs(Mode, Rest, Erase);
+                    ensure_libs(TraceMode, Rest, Erase);
                 {error, Reason} ->
-                    format(Mode, standard_error, "~s: ~s\n",
+                    format(TraceMode, standard_error, "~s: ~s\n",
                            [Dir, file:format_error(Reason)]),
-                    return(Mode, 100)
+                    throw({status, 100})
             end;
         {error, Reason} ->
-            format(Mode, standard_error, "~s: ~s\n",
+            format(TraceMode, standard_error, "~s: ~s\n",
                    [Dir, file:format_error(Reason)]),
-            return(Mode, 200)
+            throw({status, 200})
     end.
 
-erase_dir(Mode, Dir) ->
+erase_dir(TraceMode, Dir) ->
     {ok, Filenames} = file:list_dir(Dir),
     lists:foreach(
       fun(Filename) ->
-              format(Mode, "Deletes ~s\n", [filename:join([Dir, Filename])]),
+              format(TraceMode,
+                     "Deletes ~s\n", [filename:join([Dir, Filename])]),
               case filename:join([Dir, Filename]) of
                   <<"/tmp/obscrete", _/binary>> = AbsoluteFilename ->
                       file:delete(AbsoluteFilename);
@@ -107,23 +119,12 @@ erase_dir(Mode, Dir) ->
       end, Filenames),
     ok.
 
-format(api, Format, Args) ->
+format(log, Format, Args) ->
     ?daemon_log_tag_fmt(system, Format, Args);
-format(command, Format, Args) ->
+format(stdout, Format, Args) ->
     io:format(Format, Args).
 
-format(api, _Device, Format, Args) ->
+format(log, _Device, Format, Args) ->
     ?daemon_log_tag_fmt(system, Format, Args);
-format(command, Device, Format, Args) ->
+format(stdout, Device, Format, Args) ->
     io:format(Device, Format, Args).
-
-%% Exported: return
-
--spec return(return_mode(), integer()) -> no_return() | boolean().
-
-return(api, 0) ->
-    true;
-return(api, _Status) ->
-    false;
-return(command, Status) ->
-    erlang:halt(Status).
