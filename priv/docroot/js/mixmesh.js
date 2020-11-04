@@ -6,7 +6,7 @@ var Mixmesh = (function() {
     }
 
     return { // public interface
-        truncateString: = function(fullStr, strLen, separator) {
+        truncateString: function(fullStr, strLen, separator) {
             if (fullStr.length <= strLen) return fullStr;
 
             separator = separator || '...';

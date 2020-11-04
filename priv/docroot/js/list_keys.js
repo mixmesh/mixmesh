@@ -1,12 +1,12 @@
-var Mixmesh = (function() {
+var ListKeys = (function() {
     var privateVar = '';
-
+    
     function privateMethod () {
         // ...
     }
 
-    return { // public interface
-        truncateString: = function(fullStr, strLen, separator) {
+    return {
+        truncate: function(fullStr, strLen, separator) {
             if (fullStr.length <= strLen) return fullStr;
 
             separator = separator || '...';
@@ -22,21 +22,28 @@ var Mixmesh = (function() {
     };
 })();
 
-/*
-$(document).ready(function(){
-    $("button").click(function(){
-        $(this).hide();
-    });
-
-    var overlay =
-        ml("table", {},
-           [ml("tr", {valign: "top"},
-               [ml("th", {}, "bajs"),
-                ml("th", {}, "bajs2")]),
-            ml("tr", {valign: "top"},
-               [ml("td", {}, "foo"),
-                ml("td", {}, "bar")])]);
-
-    $("#aa").append(overlay);
+$(document).ready(function() {
+    $.get("/dj/key",
+          function(keys, status) {
+              if (status == "success") {
+                  $.each(keys, function(_index, key) {
+                      var row =
+                          ml("tr", {},
+                             [ml("td", {},
+                                 ml("input", {class: "uk-checkbox",
+                                              type: "checkbox"})),
+                              ml("td", {}, key.nym),
+                              ml("td", {class: "uk-table-link"},
+                                 ml("a", {class: "uk-link-reset", href: "#0"},
+                                    ListKeys.truncate(
+                                        key["public-key"], 32, "..."))),,
+                              ml("td", {},
+                                 ml("span", {"uk-icon": "trash"}))]);
+                      console.log(key);
+                      $("#tbody-keys").append(row);
+                  });
+              } else {
+                  console.log("/dj/key (GET) failed");
+              }
+          });
 });
-*/
