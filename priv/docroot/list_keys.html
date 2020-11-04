@@ -13,7 +13,7 @@
     <script src="js/jquery.min.js"></script>
     <script src="js/uikit.min.js"></script>
     <script src="js/uikit-icons.min.js"></script>
-    <script src="js/jml_v2.js"></script>
+    <script src="js/jml.js"></script>
     <script src="js/mixmesh.js"></script>
     <script src="js/list_keys.js"></script>
   </head>
@@ -24,19 +24,19 @@
         <div class="uk-navbar-center">
           <ul class="uk-navbar-nav">
             <li>
-              <a href="#0"><span uk-icon="user"></span>&nbsp;My Key</a>
+              <a href="my_key.html"><span uk-icon="user"></span>&nbsp;My Key</a>
             </li>
             <li>
-              <a href="#0"><span uk-icon="camera"></span>&nbsp;Import Key</a>
+              <a href="import_key.html"><span uk-icon="camera"></span>&nbsp;Import Key</a>
             </li>
             <li class="uk-active">
-              <a href="#0"><span uk-icon="list"></span>&nbsp;List Keys</a>
+              <a href="list_keys.html"><span uk-icon="list"></span>&nbsp;List Keys</a>
             </li>
             <li>
-              <a href="#0"><span uk-icon="download"></span>&nbsp;Import Bundle</a>
+              <a href="import_bundle.html"><span uk-icon="download"></span>&nbsp;Import Bundle</a>
             </li>
             <li>
-              <a href="#0"><span uk-icon="settings"></span>&nbsp;Settings</a>
+              <a href="settings.html"><span uk-icon="settings"></span>&nbsp;Settings</a>
             </li>
           </ul>
         </div>
@@ -64,8 +64,7 @@
                   BWFsaWNlt8GZL4n...7Tbyqbr5JD6IUKb=
                 </a>
               </td>
-              <td><a class="uk-icon-button" href="#0" uk-icon="trash",
-                     onclick="ListKeys.deleteKey(this, 'Bob')"></a></td>
+              <td><span class="clickable" uk-icon="trash"></span></td>
             </tr>
             <tr>
               <td><input class="uk-checkbox" type="checkbox"></td>
@@ -75,8 +74,7 @@
                   BWFsaWNlt8GZL4n...7Tbyqbr5JD6IUKb=
                 </a>
               </td>
-              <td><a class="uk-icon-button" href="#0" uk-icon="trash"
-                     onclick="ListKeys.deleteKey(this, 'Fred')"></a></td>
+              <td><span class="clickable" uk-icon="trash"></span></td>
             </tr>
           </tbody>
         </table>

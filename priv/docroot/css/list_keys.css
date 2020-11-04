@@ -5,3 +5,7 @@ th {
     z-index: 2;
     background-color: #fff;
 }
+
+.clickable {
+    cursor: pointer
+}

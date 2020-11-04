@@ -12,11 +12,7 @@ var ListKeys = (function() {
                 function(data, textStatus, _jqXHR) {
                     console.log("/dj/key/delete (POST) succeeded");
                     console.log(nym + " has been deleted");
-                    console.log("data: " + data);
-                    console.log("textStatus: " + textStatus);
-                    console.log(event.parentElement);
-                    console.log($(event.parentElement));
-                    $(event.parentElement).closest("tr").remove();
+                    $(event.target).closest("tr").remove();
                 },
                 function(_jqXHR, textStatus, errorThrown) {
                     console.log("/dj/key/delete (POST) failed");
@@ -60,13 +56,10 @@ $(document).ready(function() {
                                   ListKeys.truncate(
                                       key["public-key"], 32, "..."))),,
                             ml("td", {},
-                               ml("a", {
-                                   class: "uk-icon-button",
-                                   href: "#0",
-                                   "uk-icon": "trash",
-                                   onCreate: (event) => {
-                                       ListKeys.deleteKey(event, key.nym);
-	                           }}))]);
+                               ml("span", {class: "clickable", "uk-icon": "trash",
+                                           onclick: function(event) {
+                                               ListKeys.deleteKey(event, key.nym);
+	                                   }}))]);
                     render($("#key-table-body")[0], row);
                 });
             } else {
