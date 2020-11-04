@@ -13,7 +13,7 @@
     <script src="js/jquery.min.js"></script>
     <script src="js/uikit.min.js"></script>
     <script src="js/uikit-icons.min.js"></script>
-    <script src="js/jml.js"></script>
+    <script src="js/jml_v2.js"></script>
     <script src="js/mixmesh.js"></script>
     <script src="js/list_keys.js"></script>
   </head>
@@ -51,8 +51,7 @@
             <tr>
               <th><input class="uk-checkbox" type="checkbox"></th>
               <th>Pseudonym</th>
-              <th>Public key</input>
-              </th>
+              <th colspan="2">Public key</th>
             </tr>
           </thead>
           <tbody id="key-table-body">
@@ -63,7 +62,8 @@
                 <a class="uk-link-reset"
                    href="#0">BWFsaWNlt8GZL4n...7Tbyqbr5JD6IUKb=</a>
               </td>
-              <td><span uk-icon="trash"></span></td>
+              <td><a href="#0" class="uk-icon-button" uk-icon="trash",
+                     onclick="ListKeys.deleteKey(this, 'Bob')"></a></td>
             </tr>
             <tr>
               <td><input class="uk-checkbox" type="checkbox"></td>
@@ -72,7 +72,8 @@
                 <a class="uk-link-reset"
                    href="#0">BWFsaWNlt8GZL4n...7Tbyqbr5JD6IUKb=</a>
               </td>
-              <td><span uk-icon="trash"></span></td>
+              <td><a href="#0" class="uk-icon-button" uk-icon="trash"
+                     onclick="ListKeys.deleteKey(this, 'Fred')"></a></td>
             </tr>
           </tbody>
         </table>
