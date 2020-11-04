@@ -6,7 +6,7 @@ var ListKeys = (function() {
     }
     
     return {
-        deleteKey: function(deleteKeyButton, nym) {
+        deleteKey: function(event, nym) {
             Mixmesh.post(
                 "/dj/key/delete", [nym],
                 function(data, textStatus, _jqXHR) {
@@ -14,7 +14,9 @@ var ListKeys = (function() {
                     console.log(nym + " has been deleted");
                     console.log("data: " + data);
                     console.log("textStatus: " + textStatus);
-                    $(deleteKeyButton).closest("tr").remove();
+                    console.log(event.parentElement);
+                    console.log($(event.parentElement));
+                    $(event.parentElement).closest("tr").remove();
                 },
                 function(_jqXHR, textStatus, errorThrown) {
                     console.log("/dj/key/delete (POST) failed");
@@ -48,25 +50,24 @@ $(document).ready(function() {
                     var row =
                         ml("tr", {},
                            [ml("td", {},
-                               ml("input", {class: "uk-checkbox",
-                                            type: "checkbox"})),
+                               ml("input", {
+                                   class: "uk-checkbox",
+                                   type: "checkbox"})),
                             ml("td", {}, key.nym),
                             ml("td", {class: "uk-table-link"},
-                               ml("a", {class: "uk-link-reset", href: "#0"},
+                               ml("a", {class: "uk-link-reset",
+                                        href: "#0"},
                                   ListKeys.truncate(
                                       key["public-key"], 32, "..."))),,
                             ml("td", {},
                                ml("a", {
-                                   href: "#0", class: "uk-icon-button",
+                                   class: "uk-icon-button",
+                                   href: "#0",
                                    "uk-icon": "trash",
-                                   onclick: function() {
-                                       ListKeys.deleteKey(this, key.nym);
-                                   }}))]);
-
-                    jml.render($("#key-table-body"), row);
-
-
-                    //$("#key-table-body").append(row);
+                                   onCreate: (event) => {
+                                       ListKeys.deleteKey(event, key.nym);
+	                           }}))]);
+                    render($("#key-table-body")[0], row);
                 });
             } else {
                 console.log("/dj/key (GET) failed");

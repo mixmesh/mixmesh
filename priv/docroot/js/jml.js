@@ -1,34 +1,59 @@
 // https://idiallo.com/javascript/create-dom-elements-faster
 
-function ml(tagName, props, nest) {
-    var el = document.createElement(tagName);
-    if(props) {
-	for(var name in props) {
+function ml(name, props, nest) {
+    return {
+	name: name,
+	props: props,
+	children: nest,
+    }
+}
+
+function render(root, jml) {
+    var el = document.createElement(jml.name);
+    if (jml.props) {
+	for(var name in jml.props) {
+	    var value = jml.props[name];
 	    if(name.indexOf("on") === 0) {
-		el.addEventListener(
-                    name.substr(2).toLowerCase(), props[name], false)
+		el.addEventListener(name.substr(2).toLowerCase(), value, false)
 	    } else {
-		el.setAttribute(name, props[name]);
+		el.setAttribute(name, value);
 	    }
 	}
     }
-    if (!nest) {
+    root.appendChild(el);
+    var event = new Event("create");
+    el.dispatchEvent(event);
+    if (!jml.children) {
 	return el;
     }
-    if (typeof nest === "string") {
-	var t = document.createTextNode(nest);
+    return nester(el, jml.children);
+}
+
+function nester(el, n) {
+    if (typeof n === "string") {
+	var t = document.createTextNode(n);
 	el.appendChild(t);
-    } else if (nest instanceof Array) {
-	for(var i = 0; i < nest.length; i++) {
-	    if (typeof nest[i] === "string") {
-		var t = document.createTextNode(nest[i]);
+    } else if (n instanceof Array) {
+	for(var i = 0; i < n.length; i++) {
+            if (typeof n[i] === "string") {
+		var t = document.createTextNode(n[i]);
 		el.appendChild(t);
-	    } else if (nest[i] instanceof Node) {
-		el.appendChild(nest[i]);
+	    } else if (isJML(n[i])){
+		render(el, n[i]);
 	    }
 	}
-    } else if (nest instanceof Node) {
-	el.appendChild(nest)
+    } else if (isJML(n)) {
+	render(el, n)
     }
     return el;
+}
+
+function isJML(j) {
+    if (j == undefined) {
+        return false;
+    } else {
+	return j.hasOwnProperty("name") &&
+            j.hasOwnProperty("props") &&
+            j.hasOwnProperty("children");
+    }
 }

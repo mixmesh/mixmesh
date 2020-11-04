@@ -8,8 +8,8 @@
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
     <link rel="manifest" href="/site.webmanifest">
-    <link rel="stylesheet" href="css/uikit.min.css" />
-    <link rel="stylesheet" href="css/list_keys.css" />
+    <link rel="stylesheet" href="css/uikit.min.css">
+    <link rel="stylesheet" href="css/list_keys.css">
     <script src="js/jquery.min.js"></script>
     <script src="js/uikit.min.js"></script>
     <script src="js/uikit-icons.min.js"></script>
@@ -43,7 +43,8 @@
       </nav>
       <div id="search" class="uk-inline uk-width-1-1 uk-margin-small">
         <span class="uk-form-icon" uk-icon="search"></span>
-        <input id="search" class="uk-input" placeholder="Search for pseudonyms...">
+        <input id="search" class="uk-input"
+               placeholder="Search for pseudonyms..."></input>
       </div>
       <div id="key-table" class="uk-overflow-auto">
         <table class="uk-table uk-table-striped uk-table-hover uk-table-small">
@@ -59,26 +60,29 @@
               <td><input class="uk-checkbox" type="checkbox"></td>
               <td>Bob</td>
               <td class="uk-table-link">
-                <a class="uk-link-reset"
-                   href="#0">BWFsaWNlt8GZL4n...7Tbyqbr5JD6IUKb=</a>
+                <a class="uk-link-reset" href="#0" value="BWF...">
+                  BWFsaWNlt8GZL4n...7Tbyqbr5JD6IUKb=
+                </a>
               </td>
-              <td><a href="#0" class="uk-icon-button" uk-icon="trash",
+              <td><a class="uk-icon-button" href="#0" uk-icon="trash",
                      onclick="ListKeys.deleteKey(this, 'Bob')"></a></td>
             </tr>
             <tr>
               <td><input class="uk-checkbox" type="checkbox"></td>
               <td>Fred</td>
               <td class="uk-table-link">
-                <a class="uk-link-reset"
-                   href="#0">BWFsaWNlt8GZL4n...7Tbyqbr5JD6IUKb=</a>
+                <a class="uk-link-reset" href="#0" value="BWF...">
+                  BWFsaWNlt8GZL4n...7Tbyqbr5JD6IUKb=
+                </a>
               </td>
-              <td><a href="#0" class="uk-icon-button" uk-icon="trash"
+              <td><a class="uk-icon-button" href="#0" uk-icon="trash"
                      onclick="ListKeys.deleteKey(this, 'Fred')"></a></td>
             </tr>
           </tbody>
         </table>
       </div>
-      <div id="key-table-buttons" class="uk-margin-small-top uk-margin-small-bottom"
+      <div id="key-table-buttons"
+           class="uk-margin-small-top uk-margin-small-bottom"
            align="right">
         <button id="delete-key" class="uk-button uk-button-default">
           Delete selected
