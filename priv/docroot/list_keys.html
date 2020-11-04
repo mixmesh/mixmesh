@@ -5,6 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="css/uikit.min.css" />
+    <link rel="stylesheet" href="css/list_keys.css" />
     <script src="js/jquery.min.js"></script>
     <script src="js/uikit.min.js"></script>
     <script src="js/uikit-icons.min.js"></script>
@@ -14,15 +15,33 @@
   </head>
   <body>
     <div class="uk-container uk-padding-remove uk-container-xsmall">
-      <div id="div-content" class="uk-padding-small"
-           uk-height-viewport="expand: true">
-        <!-- Content start -->
-        <h2>Public keys</h2>
-        <div class="uk-inline uk-width-1-1">
-          <span class="uk-form-icon" uk-icon="search"></span>
-          <input id="input-search" class="uk-input"
-                 placeholder="Search for pseudonyms...">
+      <nav id="navigation"
+           class="uk-navbar-container uk-container-expand" uk-navbar>
+        <div class="uk-navbar-center">
+          <ul class="uk-navbar-nav">
+            <li>
+              <a href="#0"><span uk-icon="user"></span>&nbsp;My Key</a>
+            </li>
+            <li>
+              <a href="#0"><span uk-icon="camera"></span>&nbsp;Import Key</a>
+            </li>
+            <li class="uk-active">
+              <a href="#0"><span uk-icon="list"></span>&nbsp;List Keys</a>
+            </li>
+            <li>
+              <a href="#0"><span uk-icon="download"></span>&nbsp;Import Bundle</a>
+            </li>
+            <li>
+              <a href="#0"><span uk-icon="settings"></span>&nbsp;Settings</a>
+            </li>
+          </ul>
         </div>
+      </nav>
+      <div id="search" class="uk-inline uk-width-1-1 uk-margin-small">
+        <span class="uk-form-icon" uk-icon="search"></span>
+        <input id="search" class="uk-input" placeholder="Search for pseudonyms...">
+      </div>
+      <div id="key-table" class="uk-overflow-auto">
         <table class="uk-table uk-table-striped uk-table-hover uk-table-small">
           <thead>
             <tr>
@@ -32,7 +51,7 @@
               </th>
             </tr>
           </thead>
-          <tbody id="tbody-keys">
+          <tbody id="key-table-body">
             <tr>
               <td><input class="uk-checkbox" type="checkbox"></td>
               <td>Bob</td>
@@ -53,35 +72,16 @@
             </tr>
           </tbody>
         </table>
-        <div align="right">
-          <button id="button-delete" class="uk-button uk-button-default">
-            Delete selected
-          </button>
-          <button id="button-import" class="uk-button uk-button-default">
-            Import selected...
-          </button>
-        </div>
-        <!-- Content stop -->
       </div>
-      <nav class="uk-navbar-container" uk-navbar>
-        <ul class="uk-navbar-nav">
-          <li>
-            <a href="#0"><span uk-icon="user"></span>&nbsp;My Key</a>
-          </li>
-          <li>
-            <a href="#0"><span uk-icon="camera"></span>&nbsp;Import Key</a>
-          </li>
-          <li class="uk-active">
-            <a href="#0"><span uk-icon="list"></span>&nbsp;List Keys</a>
-          </li>
-          <li>
-            <a href="#0"><span uk-icon="download"></span>&nbsp;Import Bundle</a>
-          </li>
-          <li>
-            <a href="#0"><span uk-icon="settings"></span>&nbsp;Settings</a>
-          </li>
-        </ul>
-      </nav>
+      <div id="key-table-buttons" class="uk-margin-small-top uk-margin-small-bottom"
+           align="right">
+        <button id="delete-key" class="uk-button uk-button-default">
+          Delete selected
+        </button>
+        <button id="import-bundle" class="uk-button uk-button-default">
+          Import selected...
+        </button>
+      </div>
     </div>
   </body>
 </html>
