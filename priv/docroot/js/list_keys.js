@@ -20,6 +20,9 @@ var ListKeys = (function() {
                     console.log("errorThrown: " + errorThrown);
                 });
         },
+        showKey: function(event) {
+            alert($(event.target).attr("data-public-key"));
+        },
         truncate: function(fullStr, strLen, separator) {
             if (fullStr.length <= strLen) {
                 return fullStr;
@@ -52,14 +55,20 @@ $(document).ready(function() {
                             ml("td", {}, key.nym),
                             ml("td", {class: "uk-table-link"},
                                ml("a", {class: "uk-link-reset",
-                                        href: "#0"},
+                                        href: "javascript:void(0)",
+                                        "data-public-key": key["public-key"],
+                                        onclick: function(event) {
+                                            ListKeys.showKey(event);
+	                                }},
                                   ListKeys.truncate(
                                       key["public-key"], 32, "..."))),,
                             ml("td", {},
-                               ml("span", {class: "clickable", "uk-icon": "trash",
-                                           onclick: function(event) {
-                                               ListKeys.deleteKey(event, key.nym);
-	                                   }}))]);
+                               ml("span", {
+                                   class: "clickable",
+                                   "uk-icon": "trash",
+                                   onclick: function(event) {
+                                       ListKeys.deleteKey(event, key.nym);
+	                           }}))]);
                     render($("#key-table-body")[0], row);
                 });
             } else {
