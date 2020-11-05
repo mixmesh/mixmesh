@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Mixmesh</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <link rel="stylesheet" href="css/uikit.min.css">
+    <link rel="stylesheet" href="css/keys.css">
+    <script src="js/jquery.min.js"></script>
+    <script src="js/uikit.min.js"></script>
+    <script src="js/uikit-icons.min.js"></script>
+    <script src="js/jml.js"></script>
+    <script src="js/qrcode.min.js"></script>
+    <script src="js/mixmesh.js"></script>
+    <script src="js/keys.js"></script>
+  </head>
+  <body>
+    <div class="uk-container uk-padding-remove uk-container-xsmall">
+      <nav id="navigation"
+           class="uk-navbar-container uk-container-expand" uk-navbar>
+        <div class="uk-navbar-center">
+          <ul class="uk-navbar-nav">
+            <li>
+              <a href="your_key.html"><span uk-icon="user"></span>&nbsp;Your Key</a>
+            </li>
+            <li>
+              <a href="add_key.html"><span uk-icon="camera"></span>&nbsp;Add Key</a>
+            </li>
+            <li class="uk-active">
+              <a href="keys.html"><span uk-icon="list"></span>&nbsp;Keys</a>
+            </li>
+            <li>
+              <a href="import.html"><span uk-icon="download"></span>&nbsp;Import</a>
+            </li>
+            <li>
+              <a href="settings.html"><span uk-icon="settings"></span>&nbsp;Settings</a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+      <div id="search" class="uk-inline uk-width-1-1 uk-margin-small">
+        <span class="uk-form-icon" uk-icon="search"></span>
+        <input id="filter" class="uk-input"
+               placeholder="Filter pseudonyms..."></input>
+      </div>
+      <div id="key-table" class="uk-overflow-auto">
+        <table class="uk-table uk-table-striped uk-table-hover uk-table-small">
+          <thead>
+            <tr>
+              <th class="uk-table-shrink">
+                <input id="select-all" class="uk-checkbox" type="checkbox">
+              </th>
+              <th class="uk-table-shrink">
+                Pseudonym
+              </th>
+              <th class="uk-table-shrink" colspan="2">
+                Public key
+              </th>
+            </tr>
+          </thead>
+          <tbody id="key-table-body">
+            <tr>
+<!--              
+              <td class="uk-table-shrink">
+                <input class="uk-checkbox" type="checkbox">
+              </td>
+              <td class="uk-table-shrink">Bob</td>
+              <td class="uk-table-shrink" class="uk-table-link">
+                <a href="#show-key" uk-toggle class="uk-link-reset"
+                   data-nym="Bob" data-public-key="BHA">
+                  BWFIJAAHT...UAAHSTb=
+                </a>
+              </td>
+              <td class="uk-table-shrink">
+                <span class="clickable uk-align-right" uk-icon="trash"></span>
+              </td>
+            </tr>
+            <tr>
+              <td class="uk-table-shrink">
+                <input class="uk-checkbox" type="checkbox">
+              </td>
+              <td class="uk-table-shrink">Fred</td>
+              <td class="uk-table-shrink" class="uk-table-link">
+                <a href="#show-key" uk-toggle class="uk-link-reset"
+                   data-nym="Fred" data-public-key="BHA">
+                  ZL4n*UAJ...7TbyOAJT
+                </a>
+              </td>
+              <td class="uk-table-shrink">
+                <span class="clickable uk-align-right" uk-icon="trash"></span>
+              </td>
+            </tr>
+-->
+          </tbody>
+        </table>
+      </div>
+      <div id="key-table-buttons"
+           class="uk-margin-small-top uk-margin-small-bottom uk-margin-small-right"
+           align="right">
+        <button id="delete-selected-button"
+                class="uk-button uk-button-default" disabled>
+          Delete
+        </button>
+        <button id="export-selected-button"
+                class="uk-button uk-button-default" disabled>
+          Export
+        </button>
+        <button id="export-all-button"
+                class="uk-button uk-button-default" disabled>
+          Export All
+        </button>
+
+      </div>
+    </div>
+    <div id="show-key" uk-modal>
+      <div class="uk-modal-dialog uk-modal-body">
+        <button class="uk-modal-close-default" type="button" uk-close></button>
+        <h2 id="qrcode-title" class="uk-modal-title"></h2>
+        <div id="qrcode"></div>
+      </div>
+    </div>
+  </body>
+</html>

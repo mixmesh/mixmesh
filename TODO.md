@@ -18,9 +18,6 @@
 
 ### Joakim
 
-* When we receive a message aimed at us we replace it inn the message buffer with a randomized message
-* Fill buffer with max number of messages, not just 100. Wait for the new message swap algorithm to be in place.
-
 * Write HTML pages as described in https://github.com/obscrete/obscrete/blob/master/doc/webui/suggestions.md. It should be fairly little work now that I have https://github.com/obscrete/obscrete/blob/master/doc/rest/suggestions.md implemented.
 * Make code reload more resiliant. I tried!!
 * Document README.md pin-salt digest
