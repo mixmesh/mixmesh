@@ -51,6 +51,7 @@ $(document).ready(function() {
     Mixmesh.setHeight("#key-table",
                       ["#navigation", "#search", "#key-table-buttons"]);
 
+    // Select-all checkbox
     $("#select-all").click(function() {
         var checkedStatus = this.checked;
         $("#delete-selected-button").prop('disabled', !checkedStatus);
@@ -59,7 +60,38 @@ $(document).ready(function() {
             $(this).prop("checked", checkedStatus);
         });
     });
+
+    // Add handler to delete button
+    $("#delete-selected-button").click(function() {
+        var selectedRows = [];
+        var selectedNyms = [];
+        $("#key-table-body tr").each(function() {
+            if ($(this).find("td input:checked").length == 1) {
+                selectedRows.push(this);
+                selectedNyms.push($(this).find("td a").data("nym"));
+            }
+        });
+        $("#delete-selected-button").prop('disabled', true);
+        $("#export-bundle-button").prop('disabled', true);
+        Mixmesh.post(
+            "/dj/key/delete", selectedNyms,
+            function(data, textStatus, _jqXHR) {
+                console.log("/dj/key/delete (POST) succeeded");
+                console.log(selectedNyms + " has been deleted");
+                for (i = 0; i < selectedRows.length; i++) {
+                    $(selectedRows[i]).remove();
+                }
+            },
+            function(_jqXHR, textStatus, errorThrown) {
+                console.log("/dj/key/delete (POST) failed");
+                console.log("textStatus: " + textStatus);
+                console.log("errorThrown: " + errorThrown);
+                $("#delete-selected-button").prop('disabled', false);
+                $("#export-bundle-button").prop('disabled', false);
+            });
+    });
     
+    // Populate key table
     Mixmesh.get(
         "/dj/key",
         function(data, status) {
@@ -92,6 +124,8 @@ $(document).ready(function() {
 	                           }}))]);
                     render($("#key-table-body")[0], row);
                 });
+
+                // Add event handlers to all checkboxes
                 $("#key-table-body tr td :checkbox").click(function() {
                     if ($(this).prop("checked")) {
                         $("#delete-selected-button").prop('disabled', false);
