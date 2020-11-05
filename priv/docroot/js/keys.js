@@ -1,4 +1,4 @@
-var ListKeys = (function() {
+var Keys = (function() {
     var privateVar = '';
     
     function privateMethod () {
@@ -50,6 +50,16 @@ var ListKeys = (function() {
 $(document).ready(function() {
     Mixmesh.setHeight("#key-table",
                       ["#navigation", "#search", "#key-table-buttons"]);
+
+    $("#select-all").click(function() {
+        var checkedStatus = this.checked;
+        $("#delete-selected-button").prop('disabled', !checkedStatus);
+        $("#export-bundle-button").prop('disabled', !checkedStatus);
+        $("#key-table-body tr").find("td:first :checkbox").each(function() {
+            $(this).prop("checked", checkedStatus);
+        });
+    });
+    
     Mixmesh.get(
         "/dj/key",
         function(data, status) {
@@ -69,18 +79,30 @@ $(document).ready(function() {
                                         "data-nym": key.nym,
                                         "data-public-key": key["public-key"],
                                         onclick: function(event) {
-                                            ListKeys.showKey(event);
+                                            Keys.showKey(event);
 	                                }},
-                                  ListKeys.truncate(
+                                  Keys.truncate(
                                       key["public-key"], 16, "..."))),,
                             ml("td", {},
                                ml("span", {
                                    class: "clickable uk-align-right",
                                    "uk-icon": "trash",
                                    onclick: function(event) {
-                                       ListKeys.deleteKey(event, key.nym);
+                                       Keys.deleteKey(event, key.nym);
 	                           }}))]);
                     render($("#key-table-body")[0], row);
+                });
+                $("#key-table-body tr td :checkbox").click(function() {
+                    if ($(this).prop("checked")) {
+                        $("#delete-selected-button").prop('disabled', false);
+                        $("#export-bundle-button").prop('disabled', false);
+                    } else {
+                        if ($("#key-table-body tr td :checkbox:checked")
+                            .length == 0) {
+                            $("#delete-selected-button").prop('disabled', true);
+                            $("#export-bundle-button").prop('disabled', true);
+                        }
+                    }
                 });
             } else {
                 console.log("/dj/key (GET) failed");

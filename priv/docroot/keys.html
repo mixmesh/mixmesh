@@ -51,7 +51,7 @@
           <thead>
             <tr>
               <th class="uk-table-shrink">
-                <input class="uk-checkbox" type="checkbox">
+                <input id="select-all" class="uk-checkbox" type="checkbox">
               </th>
               <th class="uk-table-shrink">
                 Pseudonym
@@ -98,11 +98,13 @@
       <div id="key-table-buttons"
            class="uk-margin-small-top uk-margin-small-bottom uk-margin-small-right"
            align="right">
-        <button id="delete-key" class="uk-button uk-button-default">
-          Delete selected
+        <button id="delete-selected-button"
+                class="uk-button uk-button-default" disabled>
+          Delete
         </button>
-        <button id="import-bundle" class="uk-button uk-button-default">
-          Import selected
+        <button id="export-bundle-button"
+                class="uk-button uk-button-default" disabled>
+          Export bundle
         </button>
       </div>
     </div>
