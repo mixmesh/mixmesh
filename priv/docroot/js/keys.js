@@ -21,7 +21,16 @@ var ListKeys = (function() {
                 });
         },
         showKey: function(event) {
-            alert($(event.target).attr("data-public-key"));
+            $("#qrcode").empty();
+            $("#qrcode-title").text($(event.target).attr("data-nym"));
+            new QRCode($("#qrcode").get(0), {
+	        text: $(event.target).attr("data-public-key"),
+	        width: 600,
+	        height: 600,
+	        colorDark : "#000000",
+	        colorLight : "#ffffff",
+	        correctLevel : QRCode.CorrectLevel.H
+            });
         },
         truncate: function(fullStr, strLen, separator) {
             if (fullStr.length <= strLen) {
@@ -54,8 +63,10 @@ $(document).ready(function() {
                                    type: "checkbox"})),
                             ml("td", {}, key.nym),
                             ml("td", {class: "uk-table-link"},
-                               ml("a", {class: "uk-link-reset",
-                                        href: "javascript:void(0)",
+                               ml("a", {href: "#show-key",
+                                        "uk-toggle": "",
+                                        class: "uk-link-reset",
+                                        "data-nym": key.nym,
                                         "data-public-key": key["public-key"],
                                         onclick: function(event) {
                                             ListKeys.showKey(event);
@@ -64,7 +75,7 @@ $(document).ready(function() {
                                       key["public-key"], 16, "..."))),,
                             ml("td", {},
                                ml("span", {
-                                   class: "clickable",
+                                   class: "clickable uk-align-right",
                                    "uk-icon": "trash",
                                    onclick: function(event) {
                                        ListKeys.deleteKey(event, key.nym);
