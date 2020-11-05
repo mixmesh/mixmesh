@@ -1,14 +1,54 @@
 var Keys = (function() {
-    var privateVar = '';
-    
-    function privateMethod () {
-        // ...
-    }
+    var adornRows = function() {
+        // Add event handlers to all checkboxes
+        $("#key-table-body tr td :checkbox").click(function() {
+            if ($(this).prop("checked")) {
+                $("#delete-selected-button").prop('disabled', false);
+                $("#export-selected-button").prop('disabled', false);
+            } else {
+                if ($("#key-table-body tr td :checkbox:checked")
+                    .length == 0) {
+                    $("#delete-selected-button")
+                        .prop('disabled', true);
+                    $("#export-selected-button")
+                        .prop('disabled', true);
+                }
+            }
+        });
+    };
+
+    var createRow = function(key) {
+        var row =
+            ml("tr", {},
+               [ml("td", {},
+                   ml("input", {class: "uk-checkbox", type: "checkbox"})),
+                ml("td", {}, key.nym),
+                ml("td", {class: "uk-table-link"},
+                   ml("a", {href: "#show-key",
+                            "uk-toggle": "",
+                            class: "uk-link-reset",
+                            "data-nym": key.nym,
+                            "data-public-key": key["public-key"],
+                            onclick: function(event) {
+                                Keys.showKey(event);
+	                    }},
+                      Keys.truncate(
+                          key["public-key"], 16, "..."))),,
+                ml("td", {},
+                   ml("span", {
+                       class: "clickable uk-align-right",
+                       "uk-icon": "trash",
+                       onclick: function(event) {
+                           Keys.deleteKey(event, key.nym);
+	               }}))]);
+        return row;
+    };
     
     return {
         deleteKey: function(event, nym) {
             Mixmesh.post(
-                "/dj/key/delete", [nym],
+                "/dj/key/delete",
+                [nym],
                 function(data, textStatus, _jqXHR) {
                     console.log("/dj/key/delete (POST) succeeded");
                     console.log(nym + " has been deleted");
@@ -31,6 +71,46 @@ var Keys = (function() {
 	        colorLight : "#ffffff",
 	        correctLevel : QRCode.CorrectLevel.H
             });
+        },
+        refreshRows: function() {
+            Mixmesh.get(
+                "/dj/key",
+                function(data, status) {
+                    if (status == "success") {
+                        $("#delete-selected-button").prop('disabled', true);
+                        $("#export-selected-button").prop('disabled', true);
+                        $.each(data, function(_index, key) {
+                            var row = createRow(key);
+                            render($("#key-table-body")[0], row);
+                        });
+                        adornRows();
+                    } else {
+                        console.log("/dj/key (GET) failed");
+                        console.log(data);
+                    }
+                });
+        },
+        filterRows: function(subStringNym) {
+            Mixmesh.post(
+                "/dj/key/filter",
+                [subStringNym],
+                function(data, textStatus, _jqXHR) {
+                    console.log("/dj/key/filter (POST) succeeded");
+                    console.log(data + " keys was found");
+                    $("#delete-selected-button").prop('disabled', true);
+                    $("#export-selected-button").prop('disabled', true);
+                    $("#key-table-body").empty();
+                    $.each(data, function(_index, key) {
+                        var row = createRow(key);
+                        render($("#key-table-body")[0], row);
+                    });
+                    adornRows();
+                },
+                function(_jqXHR, textStatus, errorThrown) {
+                    console.log("/dj/key/filter (POST) failed");
+                    console.log("textStatus: " + textStatus);
+                    console.log("errorThrown: " + errorThrown);
+                });
         },
         truncate: function(fullStr, strLen, separator) {
             if (fullStr.length <= strLen) {
@@ -55,7 +135,7 @@ $(document).ready(function() {
     $("#select-all").click(function() {
         var checkedStatus = this.checked;
         $("#delete-selected-button").prop('disabled', !checkedStatus);
-        $("#export-bundle-button").prop('disabled', !checkedStatus);
+        $("#export-selected-button").prop('disabled', !checkedStatus);
         $("#key-table-body tr").find("td:first :checkbox").each(function() {
             $(this).prop("checked", checkedStatus);
         });
@@ -72,9 +152,10 @@ $(document).ready(function() {
             }
         });
         $("#delete-selected-button").prop('disabled', true);
-        $("#export-bundle-button").prop('disabled', true);
+        $("#export-selected-button").prop('disabled', true);
         Mixmesh.post(
-            "/dj/key/delete", selectedNyms,
+            "/dj/key/delete",
+            selectedNyms,
             function(data, textStatus, _jqXHR) {
                 console.log("/dj/key/delete (POST) succeeded");
                 console.log(selectedNyms + " has been deleted");
@@ -87,60 +168,18 @@ $(document).ready(function() {
                 console.log("textStatus: " + textStatus);
                 console.log("errorThrown: " + errorThrown);
                 $("#delete-selected-button").prop('disabled', false);
-                $("#export-bundle-button").prop('disabled', false);
+                $("#export-selected-button").prop('disabled', false);
             });
     });
-    
-    // Populate key table
-    Mixmesh.get(
-        "/dj/key",
-        function(data, status) {
-            if (status == "success") {
-                $.each(data, function(_index, key) {
-                    var row =
-                        ml("tr", {},
-                           [ml("td", {},
-                               ml("input", {
-                                   class: "uk-checkbox",
-                                   type: "checkbox"})),
-                            ml("td", {}, key.nym),
-                            ml("td", {class: "uk-table-link"},
-                               ml("a", {href: "#show-key",
-                                        "uk-toggle": "",
-                                        class: "uk-link-reset",
-                                        "data-nym": key.nym,
-                                        "data-public-key": key["public-key"],
-                                        onclick: function(event) {
-                                            Keys.showKey(event);
-	                                }},
-                                  Keys.truncate(
-                                      key["public-key"], 16, "..."))),,
-                            ml("td", {},
-                               ml("span", {
-                                   class: "clickable uk-align-right",
-                                   "uk-icon": "trash",
-                                   onclick: function(event) {
-                                       Keys.deleteKey(event, key.nym);
-	                           }}))]);
-                    render($("#key-table-body")[0], row);
-                });
 
-                // Add event handlers to all checkboxes
-                $("#key-table-body tr td :checkbox").click(function() {
-                    if ($(this).prop("checked")) {
-                        $("#delete-selected-button").prop('disabled', false);
-                        $("#export-bundle-button").prop('disabled', false);
-                    } else {
-                        if ($("#key-table-body tr td :checkbox:checked")
-                            .length == 0) {
-                            $("#delete-selected-button").prop('disabled', true);
-                            $("#export-bundle-button").prop('disabled', true);
-                        }
-                    }
-                });
-            } else {
-                console.log("/dj/key (GET) failed");
-                console.log(data);
-            }
-        });
+    // Add handler to filter input
+    $("#filter").keyup(function() {
+        if ($(this).val().length == 0) {
+            Keys.refreshRows();
+        } else {
+            Keys.filterRows($(this).val());
+        }
+    });
+
+    Keys.refreshRows();
 });
