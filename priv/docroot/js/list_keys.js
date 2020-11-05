@@ -61,7 +61,7 @@ $(document).ready(function() {
                                             ListKeys.showKey(event);
 	                                }},
                                   ListKeys.truncate(
-                                      key["public-key"], 32, "..."))),,
+                                      key["public-key"], 16, "..."))),,
                             ml("td", {},
                                ml("span", {
                                    class: "clickable",

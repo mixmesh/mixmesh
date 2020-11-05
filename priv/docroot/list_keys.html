@@ -24,16 +24,16 @@
         <div class="uk-navbar-center">
           <ul class="uk-navbar-nav">
             <li>
-              <a href="my_key.html"><span uk-icon="user"></span>&nbsp;My Key</a>
+              <a href="your_key.html"><span uk-icon="user"></span>&nbsp;Your Key</a>
             </li>
             <li>
-              <a href="import_key.html"><span uk-icon="camera"></span>&nbsp;Import Key</a>
+              <a href="import.html"><span uk-icon="camera"></span>&nbsp;Import</a>
             </li>
             <li class="uk-active">
-              <a href="list_keys.html"><span uk-icon="list"></span>&nbsp;List Keys</a>
+              <a href="keys.html"><span uk-icon="list"></span>&nbsp;Keys</a>
             </li>
             <li>
-              <a href="import_bundle.html"><span uk-icon="download"></span>&nbsp;Import Bundle</a>
+              <a href="bundle.html"><span uk-icon="download"></span>&nbsp;Bundle</a>
             </li>
             <li>
               <a href="settings.html"><span uk-icon="settings"></span>&nbsp;Settings</a>
@@ -43,52 +43,65 @@
       </nav>
       <div id="search" class="uk-inline uk-width-1-1 uk-margin-small">
         <span class="uk-form-icon" uk-icon="search"></span>
-        <input id="search" class="uk-input"
-               placeholder="Search for pseudonyms..."></input>
+        <input id="search" class="uk-input placeholder="Filter pseudonyms..."></input>
       </div>
       <div id="key-table" class="uk-overflow-auto">
         <table class="uk-table uk-table-striped uk-table-hover uk-table-small">
           <thead>
             <tr>
-              <th><input class="uk-checkbox" type="checkbox"></th>
-              <th>Pseudonym</th>
-              <th colspan="2">Public key</th>
+              <th class="uk-table-shrink">
+                <input class="uk-checkbox" type="checkbox">
+              </th>
+              <th class="uk-table-shrink">
+                Pseudonym
+              </th>
+              <th class="uk-table-shrink" colspan="2">
+                Public key
+              </th>
             </tr>
           </thead>
           <tbody id="key-table-body">
             <tr>
-              <td><input class="uk-checkbox" type="checkbox"></td>
-              <td>Bob</td>
-              <td class="uk-table-link">
+              <td class="uk-table-shrink">
+                <input class="uk-checkbox" type="checkbox">
+              </td>
+              <td class="uk-table-shrink">Bob</td>
+              <td class="uk-table-shrink" class="uk-table-link">
                 <a class="uk-link-reset" href="javascript:void(0)"
                    data-public-key="BHA">
-                  BWFsaWNlt8GZL4n...7Tbyqbr5JD6IUKb=
+                  BWFIJAAHT...UAAHSTb=
                 </a>
               </td>
-              <td><span class="clickable" uk-icon="trash"></span></td>
+              <td class="uk-table-shrink">
+                <span class="clickable uk-align-right" uk-icon="trash"></span>
+              </td>
             </tr>
             <tr>
-              <td><input class="uk-checkbox" type="checkbox"></td>
-              <td>Fred</td>
-              <td class="uk-table-link">
+              <td class="uk-table-shrink">
+                <input class="uk-checkbox" type="checkbox">
+              </td>
+              <td class="uk-table-shrink">Fred</td>
+              <td class="uk-table-shrink" class="uk-table-link">
                 <a class="uk-link-reset" href="javascript:void(0)"
                    data-public-key="BHA">
-                  BWFsaWNlt8GZL4n...7Tbyqbr5JD6IUKb=
+                  ZL4n*UAJ...7TbyOAJT
                 </a>
               </td>
-              <td><span class="clickable" uk-icon="trash"></span></td>
+              <td class="uk-table-shrink">
+                <span class="clickable uk-align-right" uk-icon="trash"></span>
+              </td>
             </tr>
           </tbody>
         </table>
       </div>
       <div id="key-table-buttons"
-           class="uk-margin-small-top uk-margin-small-bottom"
+           class="uk-margin-small-top uk-margin-small-bottom uk-margin-small-right"
            align="right">
         <button id="delete-key" class="uk-button uk-button-default">
           Delete selected
         </button>
         <button id="import-bundle" class="uk-button uk-button-default">
-          Import selected...
+          Import selected
         </button>
       </div>
     </div>
