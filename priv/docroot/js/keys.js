@@ -79,6 +79,7 @@ var Keys = (function() {
                     if (status == "success") {
                         $("#delete-selected-button").prop('disabled', true);
                         $("#export-selected-button").prop('disabled', true);
+                        $("#export-all-button").prop('disabled', data.length == 0);
                         $.each(data, function(_index, key) {
                             var row = createRow(key);
                             render($("#key-table-body")[0], row);
@@ -99,6 +100,7 @@ var Keys = (function() {
                     console.log(data + " keys was found");
                     $("#delete-selected-button").prop('disabled', true);
                     $("#export-selected-button").prop('disabled', true);
+                    $("#export-all-button").prop('disabled', data.length == 0);
                     $("#key-table-body").empty();
                     $.each(data, function(_index, key) {
                         var row = createRow(key);
@@ -131,6 +133,15 @@ $(document).ready(function() {
     Mixmesh.setHeight("#key-table",
                       ["#navigation", "#search", "#key-table-buttons"]);
 
+    // Add handler to filter input
+    $("#filter").keyup(function() {
+        if ($(this).val().length == 0) {
+            Keys.refreshRows();
+        } else {
+            Keys.filterRows($(this).val());
+        }
+    });
+
     // Select-all checkbox
     $("#select-all").click(function() {
         var checkedStatus = this.checked;
@@ -141,7 +152,7 @@ $(document).ready(function() {
         });
     });
 
-    // Add handler to delete button
+    // Add handler to delete-selected button
     $("#delete-selected-button").click(function() {
         var selectedRows = [];
         var selectedNyms = [];
@@ -172,14 +183,54 @@ $(document).ready(function() {
             });
     });
 
-    // Add handler to filter input
-    $("#filter").keyup(function() {
-        if ($(this).val().length == 0) {
-            Keys.refreshRows();
-        } else {
-            Keys.filterRows($(this).val());
-        }
+    // Add handler to export-selected button
+    $("#export-selected-button").click(function() {
+        var selectedCheckboxes = [];
+        var selectedNyms = [];
+        $("#key-table-body tr").each(function() {
+            var checkboxes = $(this).find("td input:checked");
+            if (checkboxes.length == 1) {
+                selectedCheckboxes.push(checkboxes[0]);
+                selectedNyms.push($(this).find("td a").data("nym"));
+            }
+        });
+        $("#delete-selected-button").prop('disabled', true);
+        $("#export-selected-button").prop('disabled', true);
+        Mixmesh.post(
+            "/dj/key/export",
+            selectedNyms,
+            function(data, textStatus, _jqXHR) {
+                console.log("/dj/key/export (POST) succeeded");
+                console.log(selectedNyms + " has been exported into " + data);
+                for (i = 0; i < selectedCheckboxes.length; i++) {
+                    $(selectedCheckboxes[i]).prop("checked", false);
+                }
+                $("#select-all").prop("checked", false);
+            },
+            function(_jqXHR, textStatus, errorThrown) {
+                console.log("/dj/key/export (POST) failed");
+                console.log("textStatus: " + textStatus);
+                console.log("errorThrown: " + errorThrown);
+                $("#delete-selected-button").prop('disabled', false);
+                $("#export-selected-button").prop('disabled', false);
+            });
     });
 
+    // Add handler to export-all button
+    $("#export-all-button").click(function() {
+        Mixmesh.post(
+            "/dj/key/export",
+            "all",
+            function(data, textStatus, _jqXHR) {
+                console.log("/dj/key/export (POST) succeeded");
+                console.log("All keys have been exported into " + data);
+            },
+            function(_jqXHR, textStatus, errorThrown) {
+                console.log("/dj/key/export (POST) failed");
+                console.log("textStatus: " + textStatus);
+                console.log("errorThrown: " + errorThrown);
+            });
+    });
+    
     Keys.refreshRows();
 });
