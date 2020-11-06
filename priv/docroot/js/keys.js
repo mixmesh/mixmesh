@@ -65,8 +65,8 @@ var Keys = (function() {
             $("#qrcode-title").text($(event.target).attr("data-nym"));
             new QRCode($("#qrcode").get(0), {
 	        text: $(event.target).attr("data-public-key"),
-	        width: 600,
-	        height: 600,
+	        width: 800,
+	        height: 800,
 	        colorDark : "#000000",
 	        colorLight : "#ffffff",
 	        correctLevel : QRCode.CorrectLevel.H
@@ -77,8 +77,12 @@ var Keys = (function() {
                 "/dj/key",
                 function(data, status) {
                     if (status == "success") {
+                        // Toggle buttons
                         $("#delete-selected-button").prop('disabled', true);
                         $("#export-selected-button").prop('disabled', true);
+                        $("#export-all-button").prop('disabled', data.length == 0);
+
+                        // Create key rows
                         $.each(data, function(_index, key) {
                             var row = createRow(key);
                             render($("#key-table-body")[0], row);
@@ -97,9 +101,16 @@ var Keys = (function() {
                 function(data, textStatus, _jqXHR) {
                     console.log("/dj/key/filter (POST) succeeded");
                     console.log(data + " keys was found");
+
+                    // Toggle buttons
                     $("#delete-selected-button").prop('disabled', true);
                     $("#export-selected-button").prop('disabled', true);
+                    $("#export-all-button").prop('disabled', data.length == 0);
+
+                    // Remove all key rows
                     $("#key-table-body").empty();
+
+                    // Create key rows
                     $.each(data, function(_index, key) {
                         var row = createRow(key);
                         render($("#key-table-body")[0], row);
@@ -131,6 +142,15 @@ $(document).ready(function() {
     Mixmesh.setHeight("#key-table",
                       ["#navigation", "#search", "#key-table-buttons"]);
 
+    // Add handler to filter input
+    $("#filter").keyup(function() {
+        if ($(this).val().length == 0) {
+            Keys.refreshRows();
+        } else {
+            Keys.filterRows($(this).val());
+        }
+    });
+
     // Select-all checkbox
     $("#select-all").click(function() {
         var checkedStatus = this.checked;
@@ -141,24 +161,31 @@ $(document).ready(function() {
         });
     });
 
-    // Add handler to delete button
+    // Add handler to delete-selected button
     $("#delete-selected-button").click(function() {
         var selectedRows = [];
         var selectedNyms = [];
+
+        // Collect selected keys
         $("#key-table-body tr").each(function() {
             if ($(this).find("td input:checked").length == 1) {
                 selectedRows.push(this);
                 selectedNyms.push($(this).find("td a").data("nym"));
             }
         });
+
+        // Disable buttons
         $("#delete-selected-button").prop('disabled', true);
         $("#export-selected-button").prop('disabled', true);
+
         Mixmesh.post(
             "/dj/key/delete",
             selectedNyms,
             function(data, textStatus, _jqXHR) {
                 console.log("/dj/key/delete (POST) succeeded");
                 console.log(selectedNyms + " has been deleted");
+
+                // Remove deleted keys
                 for (i = 0; i < selectedRows.length; i++) {
                     $(selectedRows[i]).remove();
                 }
@@ -167,19 +194,128 @@ $(document).ready(function() {
                 console.log("/dj/key/delete (POST) failed");
                 console.log("textStatus: " + textStatus);
                 console.log("errorThrown: " + errorThrown);
+
+                // Enable buttons again
                 $("#delete-selected-button").prop('disabled', false);
                 $("#export-selected-button").prop('disabled', false);
             });
     });
 
-    // Add handler to filter input
-    $("#filter").keyup(function() {
-        if ($(this).val().length == 0) {
-            Keys.refreshRows();
-        } else {
-            Keys.filterRows($(this).val());
-        }
+    // Add handler to export-selected button
+    $("#export-selected-button").click(function() {
+        var selectedCheckboxes = [];
+        var selectedNyms = [];
+
+        // Collect selected keys
+        $("#key-table-body tr").each(function() {
+            var checkboxes = $(this).find("td input:checked");
+            if (checkboxes.length == 1) {
+                selectedCheckboxes.push(checkboxes[0]);
+                selectedNyms.push($(this).find("td a").data("nym"));
+            }
+        });
+
+        // Disable buttons
+        $("#delete-selected-button").prop('disabled', true);
+        $("#export-selected-button").prop('disabled', true);
+
+        Mixmesh.post(
+            "/dj/key/export",
+            selectedNyms,
+            function(data, textStatus, _jqXHR) {
+                console.log("/dj/key/export (POST) succeeded");
+                console.log(selectedNyms + " has been exported into " + data);
+
+                // Clear checkboxes
+                for (i = 0; i < selectedCheckboxes.length; i++) {
+                    $(selectedCheckboxes[i]).prop("checked", false);
+                }
+                $("#select-all").prop("checked", false);
+
+                // Trigger generic dialog
+                $("#generic-modal-dialog-close").hide();
+                $("#generic-modal-dialog-title").text("Export succeeded").show();
+                $("#generic-modal-dialog-content")
+                    .empty()
+                    .html(
+                        "<p>The keys can be found in <a href=\"" + data + "\">" + data + "</a>. Do with them as you please, for example, save them for a reinstall and/or give them to a friend.</p>");
+                
+                $("#generic-modal-dialog-cancel").hide();
+                $("#generic-modal-dialog-ok")
+                    .click(function() {
+                        UIkit.modal("#generic-modal-dialog").hide();
+                    }).show();
+                UIkit.modal("#generic-modal-dialog").show();
+            },
+            function(_jqXHR, textStatus, errorThrown) {
+                console.log("/dj/key/export (POST) failed");
+                console.log("textStatus: " + textStatus);
+                console.log("errorThrown: " + errorThrown);
+
+                // Enable buttons again
+                $("#delete-selected-button").prop('disabled', false);
+                $("#export-selected-button").prop('disabled', false);
+
+                // Trigger generic dialog
+                $("#generic-modal-dialog-close").hide();
+                $("#generic-modal-dialog-title").text("Export failed").show();
+                $("#generic-modal-dialog-content")
+                    .empty()
+                    .html(
+                        "<p>The keys could not be exported ("+ textStatus + ") [" + errorThrown + "]</p>");
+                $("#generic-modal-dialog-cancel").hide();
+                $("#generic-modal-dialog-ok")
+                    .click(function() {
+                        UIkit.modal("#generic-modal-dialog").hide();
+                    }).show();
+                UIkit.modal("#generic-modal-dialog").show();
+            });
     });
 
+    // Add handler to export-all button
+    $("#export-all-button").click(function() {
+        Mixmesh.post(
+            "/dj/key/export",
+            "all",
+            function(data, textStatus, _jqXHR) {
+                console.log("/dj/key/export (POST) succeeded");
+                console.log("All keys have been exported into " + data);
+
+                // Trigger generic dialog
+                $("#generic-modal-dialog-close").hide();
+                $("#generic-modal-dialog-title").text("Export succeeded").show();
+                $("#generic-modal-dialog-content")
+                    .empty()
+                    .html(
+                        "<p>The keys can be found in <a href=\"" + data + "\">" + data + "</a>. Do with them as you please, for example, save them for a reinstall and/or give them to a friend.</p>");
+                
+                $("#generic-modal-dialog-cancel").hide();
+                $("#generic-modal-dialog-ok")
+                    .click(function() {
+                        UIkit.modal("#generic-modal-dialog").hide();
+                    }).show();
+                UIkit.modal("#generic-modal-dialog").show();
+            },
+            function(_jqXHR, textStatus, errorThrown) {
+                console.log("/dj/key/export (POST) failed");
+                console.log("textStatus: " + textStatus);
+                console.log("errorThrown: " + errorThrown);
+
+                // Trigger generic dialog
+                $("#generic-modal-dialog-close").hide();
+                $("#generic-modal-dialog-title").text("Export failed").show();
+                $("#generic-modal-dialog-content")
+                    .empty()
+                    .html(
+                        "<p>The keys could not be exported ("+ textStatus + ") [" + errorThrown + "]</p>");
+                $("#generic-modal-dialog-cancel").hide();
+                $("#generic-modal-dialog-ok")
+                    .click(function() {
+                        UIkit.modal("#generic-modal-dialog").hide();
+                    }).show();
+                UIkit.modal("#generic-modal-dialog").show();
+            });
+    });
+    
     Keys.refreshRows();
 });
