@@ -23,7 +23,7 @@ $(document).ready(function() {
             $("#generic-dialog-title").text("Import succeeded").show();
             $("#generic-dialog-content")
                 .empty()
-                .html("<p>You have " + xhr.responseText +
+                .html("<p>You have imported " + xhr.responseText +
                       " public keys.</p>");
             UIkit.modal("#generic-dialog").show();
         }
