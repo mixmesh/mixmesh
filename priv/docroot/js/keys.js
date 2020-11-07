@@ -233,19 +233,18 @@ $(document).ready(function() {
                 $("#select-all").prop("checked", false);
 
                 // Trigger generic dialog
-                $("#generic-modal-dialog-close").hide();
-                $("#generic-modal-dialog-title").text("Export succeeded").show();
-                $("#generic-modal-dialog-content")
+                $("#generic-dialog-close").hide();
+                $("#generic-dialog-title").text("Export succeeded").show();
+                $("#generic-dialog-content")
                     .empty()
                     .html(
-                        "<p>The keys can be found in <a href=\"" + data + "\">" + data + "</a>. Do with them as you please, for example, save them for a reinstall and/or give them to a friend.</p>");
-                
-                $("#generic-modal-dialog-cancel").hide();
-                $("#generic-modal-dialog-ok")
+                        "<p>You have exported " + data.size + " public key(s) into <a href=\"" + data["uri-path"] + "\">" + data["uri-path"] + "</a>. Do with them as you please, e.g. use them in a wipe/reinstall and/or give them to a friend.</p>");
+                $("#generic-dialog-cancel").hide();
+                $("#generic-dialog-ok")
                     .click(function() {
-                        UIkit.modal("#generic-modal-dialog").hide();
+                        UIkit.modal("#generic-dialog").hide();
                     }).show();
-                UIkit.modal("#generic-modal-dialog").show();
+                UIkit.modal("#generic-dialog").show();
             },
             function(_jqXHR, textStatus, errorThrown) {
                 console.log("/dj/key/export (POST) failed");
@@ -257,18 +256,18 @@ $(document).ready(function() {
                 $("#export-selected-button").prop('disabled', false);
 
                 // Trigger generic dialog
-                $("#generic-modal-dialog-close").hide();
-                $("#generic-modal-dialog-title").text("Export failed").show();
-                $("#generic-modal-dialog-content")
+                $("#generic-dialog-close").hide();
+                $("#generic-dialog-title").text("Export failed").show();
+                $("#generic-dialog-content")
                     .empty()
                     .html(
                         "<p>The keys could not be exported ("+ textStatus + ") [" + errorThrown + "]</p>");
-                $("#generic-modal-dialog-cancel").hide();
-                $("#generic-modal-dialog-ok")
+                $("#generic-dialog-cancel").hide();
+                $("#generic-dialog-ok")
                     .click(function() {
-                        UIkit.modal("#generic-modal-dialog").hide();
+                        UIkit.modal("#generic-dialog").hide();
                     }).show();
-                UIkit.modal("#generic-modal-dialog").show();
+                UIkit.modal("#generic-dialog").show();
             });
     });
 
@@ -282,19 +281,18 @@ $(document).ready(function() {
                 console.log("All keys have been exported into " + data);
 
                 // Trigger generic dialog
-                $("#generic-modal-dialog-close").hide();
-                $("#generic-modal-dialog-title").text("Export succeeded").show();
-                $("#generic-modal-dialog-content")
+                $("#generic-dialog-close").hide();
+                $("#generic-dialog-title").text("Export succeeded").show();
+                $("#generic-dialog-content")
                     .empty()
                     .html(
-                        "<p>The keys can be found in <a href=\"" + data + "\">" + data + "</a>. Do with them as you please, for example, save them for a reinstall and/or give them to a friend.</p>");
-                
-                $("#generic-modal-dialog-cancel").hide();
-                $("#generic-modal-dialog-ok")
+                        "<p>You have exported " + data.size + " public key(s) into <a href=\"" + data["uri-path"] + "\">" + data["uri-path"] + "</a>. Do with them as you please, e.g. use them in a wipe/reinstall and/or give them to a friend.</p>");
+                $("#generic-dialog-cancel").hide();
+                $("#generic-dialog-ok")
                     .click(function() {
-                        UIkit.modal("#generic-modal-dialog").hide();
+                        UIkit.modal("#generic-dialog").hide();
                     }).show();
-                UIkit.modal("#generic-modal-dialog").show();
+                UIkit.modal("#generic-dialog").show();
             },
             function(_jqXHR, textStatus, errorThrown) {
                 console.log("/dj/key/export (POST) failed");
@@ -302,18 +300,18 @@ $(document).ready(function() {
                 console.log("errorThrown: " + errorThrown);
 
                 // Trigger generic dialog
-                $("#generic-modal-dialog-close").hide();
-                $("#generic-modal-dialog-title").text("Export failed").show();
-                $("#generic-modal-dialog-content")
+                $("#generic-dialog-close").hide();
+                $("#generic-dialog-title").text("Export failed").show();
+                $("#generic-dialog-content")
                     .empty()
                     .html(
                         "<p>The keys could not be exported ("+ textStatus + ") [" + errorThrown + "]</p>");
-                $("#generic-modal-dialog-cancel").hide();
-                $("#generic-modal-dialog-ok")
+                $("#generic-dialog-cancel").hide();
+                $("#generic-dialog-ok")
                     .click(function() {
-                        UIkit.modal("#generic-modal-dialog").hide();
+                        UIkit.modal("#generic-dialog").hide();
                     }).show();
-                UIkit.modal("#generic-modal-dialog").show();
+                UIkit.modal("#generic-dialog").show();
             });
     });
     

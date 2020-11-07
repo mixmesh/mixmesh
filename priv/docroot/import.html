@@ -42,26 +42,25 @@
       <div id="content" class="uk-padding-small">
         <h2>Import keys</h2>
         <p>
-          Select previously exported keys. These keys were either
-          exported by you or wers downloaded from a trusted source,
-          i.e. a friend or trusted site.
+          Select previously exported public keys to import. These keys
+          were either exported by you or wers downloaded from a
+          trusted source, i.e. a friend or trusted site.
         </p>
         <div class="js-upload uk-align-right" uk-form-custom>
           <input type="file" multiple>
-          <button class="uk-button uk-button-default" type="button" tabindex="-1">Select</button>
+          <button class="uk-button uk-button-default" type="button"
+                  tabindex="-1">Select</button>
         </div>
       </div>
     </div>
-    <div id="import-success-dialog" uk-modal>
+    <div id="generic-dialog" uk-modal>
       <div class="uk-modal-dialog uk-modal-body">
-        <h2 class="uk-modal-title">Import succeeded</h2>
-        <p>
-          You have imported set of public keys to your list of known keys. You are now ready for anonymous communication.
-        </p>
+        <h2 id="generic-dialog-title" class="uk-modal-title"></h2>
+        <div id="generic-dialog-content"></div>
         <p class="uk-text-right">
           <button class="uk-button uk-button-primary"
                   type="button"
-                  onclick = "UIkit.modal('#key-added-dialog').hide()">OK</button>
+                  onclick = "UIkit.modal('#generic-dialog').hide()">OK</button>
         </p>
       </div>
     </div>
