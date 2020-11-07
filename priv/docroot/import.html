@@ -13,7 +13,7 @@
     <script src="js/uikit.min.js"></script>
     <script src="js/uikit-icons.min.js"></script>
     <script src="js/mixmesh.js"></script>
-    <script src="js/add_key.js"></script>
+    <script src="js/import.js"></script>
   </head>
   <body>
     <div class="uk-container uk-padding-remove uk-container-xsmall">
@@ -21,7 +21,7 @@
            class="uk-navbar-container uk-container-expand" uk-navbar>
         <div class="uk-navbar-center">
           <ul class="uk-navbar-nav">
-            <li class="uk-active">
+            <li>
               <a href="your_key.html"><span uk-icon="user"></span>&nbsp;Your Key</a>
             </li>
             <li>
@@ -30,7 +30,7 @@
             <li>
               <a href="keys.html"><span uk-icon="list"></span>&nbsp;Keys</a>
             </li>
-            <li>
+            <li class="uk-active">
               <a href="import.html"><span uk-icon="download"></span>&nbsp;Import</a>
             </li>
             <li>
@@ -40,14 +40,23 @@
         </div>
       </nav>
       <div id="content" class="uk-padding-small">
-        <img src="/pics/camera-snapshot.png"></img>
+        <h2>Import keys</h2>
+        <p>
+          Select previously exported keys. These keys were either
+          exported by you or wers downloaded from a trusted source,
+          i.e. a friend or trusted site.
+        </p>
+        <div class="js-upload uk-align-right" uk-form-custom>
+          <input type="file" multiple>
+          <button class="uk-button uk-button-default" type="button" tabindex="-1">Select</button>
+        </div>
       </div>
     </div>
-    <div id="key-added-dialog" uk-modal>
+    <div id="import-success-dialog" uk-modal>
       <div class="uk-modal-dialog uk-modal-body">
-        <h2 class="uk-modal-title">Key recognized</h2>
+        <h2 class="uk-modal-title">Import succeeded</h2>
         <p>
-          You have added a new public key to your list of known keys. You are now ready for anonymous communication.
+          You have imported set of public keys to your list of known keys. You are now ready for anonymous communication.
         </p>
         <p class="uk-text-right">
           <button class="uk-button uk-button-primary"
