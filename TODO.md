@@ -15,6 +15,7 @@
 * simulator fix grid demo!
 * Buffer management, send/recv messages
 
+
 ### Joakim
 
 * Write HTML pages as described in https://github.com/obscrete/obscrete/blob/master/doc/webui/suggestions.md. It should be fairly little work now that I have https://github.com/obscrete/obscrete/blob/master/doc/rest/suggestions.md implemented.
