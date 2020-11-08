@@ -1,6 +1,4 @@
-$(document).ready(function() {
-    Mixmesh.setHeight("#content", ["#navigation"]);
-    
+var System = (function() {
     var validPassword =
         function(id) {
             $(id).removeClass("uk-form-danger")
@@ -15,24 +13,23 @@ $(document).ready(function() {
             }
         };
 
-    var passwordKeyupHandler = function(id, passwordChanged) {
-        var handler =
-            function() {
-                if ($(id).val().length < 6) {
-                    invalidPassword(id);
-                } else {
-                    if ($(id).val() == $(id + "-again").val()) {
-                        passwordChanged($(id).val());
-                    } else {
+    return {
+        passwordKeyupHandler: function(id, passwordChanged) {
+            var handler =
+                function() {
+                    if ($(id).val().length < 6) {
                         invalidPassword(id);
+                    } else {
+                        if ($(id).val() == $(id + "-again").val()) {
+                            passwordChanged($(id).val());
+                        } else {
+                            invalidPassword(id);
+                        }
                     }
-                }
-            };
-        return handler;
-    };
-
-    var mailPasswordChanged =
-        function(password) {
+                };
+            return handler;
+        },
+        mailPasswordChanged: function(password) {
             Mixmesh.post(
                 "/dj/edit-config",
                 {
@@ -55,59 +52,66 @@ $(document).ready(function() {
                     console.log("textStatus: " + textStatus);
                     console.log("errorThrown: " + errorThrown);
                 });
-        };
-    
-    $("#mail-password").keyup(
-        passwordKeyupHandler("#mail-password", mailPasswordChanged));
-    $("#mail-password-again").keyup(
-        passwordKeyupHandler("#mail-password", mailPasswordChanged));
-
-    var httpPasswordChanged = function(password) {
-        Mixmesh.post(
-            "/dj/edit-config",
-            {
-                "player": {
-                    "http-server": {
-                        "password": password
+        },
+        httpPasswordChanged: function(password) {
+            Mixmesh.post(
+                "/dj/edit-config",
+                {
+                    "player": {
+                        "http-server": {
+                            "password": password
+                        }
+                    }
+                },
+                function(data, textStatus, _jqXHR) {
+                    console.log("/dj/edit-config (POST) succeeded");
+                    console.log(data);
+                    validPassword("#http-password");
+                    validPassword("#http-password");
+                },
+                function(_jqXHR, textStatus, errorThrown) {
+                    console.log("/dj/edit-config (POST) failed");
+                    console.log("textStatus: " + textStatus);
+                    console.log("errorThrown: " + errorThrown);
+                });
+        },
+        passwordLockHandler: function(id) {
+            var handler =
+                function() {
+                    if ($(id).attr("type") == "password") {
+                        $(id).attr("type", "text");
+                        $(id + "-again").attr("type", "text");
+                        $(this).attr("uk-icon", "icon: unlock");
+                    } else {
+                        $(id).attr("type", "password");
+                        $(id + "-again").attr("type", "password");
+                        $(this).attr("uk-icon", "icon: lock");
                     }
                 }
-            },
-            function(data, textStatus, _jqXHR) {
-                console.log("/dj/edit-config (POST) succeeded");
-                console.log(data);
-                validPassword("#http-password");
-                validPassword("#http-password");
-            },
-            function(_jqXHR, textStatus, errorThrown) {
-                console.log("/dj/edit-config (POST) failed");
-                console.log("textStatus: " + textStatus);
-                console.log("errorThrown: " + errorThrown);
-            });
+            return handler;
+        }
     };
+})();
 
-    $("#http-password").keyup(
-        passwordKeyupHandler("#http-password", httpPasswordChanged));
-    $("#http-password-again").keyup(
-        passwordKeyupHandler("#http-password", httpPasswordChanged));
+$(document).ready(function() {
+    Mixmesh.setHeight("#content", ["#navigation"]);
     
-    var passwordLockHandler = function(id) {
-        var handler =
-            function() {
-                if ($(id).attr("type") == "password") {
-                    $(id).attr("type", "text");
-                    $(id + "-again").attr("type", "text");
-                    $(this).attr("uk-icon", "icon: unlock");
-                } else {
-                    $(id).attr("type", "password");
-                    $(id + "-again").attr("type", "password");
-                    $(this).attr("uk-icon", "icon: lock");
-                }
-            }
-        return handler;
-    };
-
-    $("#mail-password-lock").click(passwordLockHandler("#mail-password"));
-    $("#http-password-lock").click(passwordLockHandler("#http-password"));
+    $("#mail-password").keyup(
+        System.passwordKeyupHandler(
+            "#mail-password", System.mailPasswordChanged));
+    $("#mail-password-again").keyup(
+        System.passwordKeyupHandler(
+            "#mail-password", System.mailPasswordChanged));
+    $("#http-password").keyup(
+        System.passwordKeyupHandler(
+            "#http-password", System.httpPasswordChanged));
+    $("#http-password-again").keyup(
+        System.passwordKeyupHandler(
+            "#http-password", System.httpPasswordChanged));
+    $("#mail-password-lock").click(
+        System.passwordLockHandler("#mail-password"));
+    $("#http-password-lock").click(
+        System.passwordLockHandler("#http-password"));
     
     Mixmesh.post(
         "/dj/get-config",

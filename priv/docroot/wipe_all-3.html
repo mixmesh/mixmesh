@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Mixmesh</title>
+    <title>Mixmesh (bootstrap)</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
@@ -12,9 +12,10 @@
     <script src="js/jquery.min.js"></script>
     <script src="js/uikit.min.js"></script>
     <script src="js/uikit-icons.min.js"></script>
+    <script src="js/qrcode.min.js"></script>
     <script src="js/jml.js"></script>
     <script src="js/mixmesh.js"></script>
-    <script src="js/system.js"></script>
+    <script src="js/template.js"></script>
   </head>
   <body>
     <div class="uk-container uk-padding-remove uk-container-xsmall">
@@ -22,27 +23,28 @@
            class="uk-navbar-container uk-container-expand" uk-navbar>
         <div class="uk-navbar-center">
           <ul class="uk-navbar-nav">
-            <li>
-              <a href="your_key.html"><span uk-icon="user"></span>&nbsp;Your Key</a>
-            </li>
-            <li>
-              <a href="add_key.html"><span uk-icon="camera"></span>&nbsp;Add Key</a>
-            </li>
-            <li>
-              <a href="keys.html"><span uk-icon="list"></span>&nbsp;Keys</a>
-            </li>
-            <li>
-              <a href="import.html"><span uk-icon="download"></span>&nbsp;Import</a>
-            </li>
             <li class="uk-active">
-              <a href="system.html"><span uk-icon="settings"></span>&nbsp;System</a>
+              <a href="wipe.html"><span uk-icon="bolt"></span>&nbsp;Wipe all</a>
+            </li>
+            <li>
+              <a href="reinstall.html"><span uk-icon="lifesaver"></span>&nbsp;Reinstall from backup</a>
             </li>
           </ul>
         </div>
       </nav>
       <div id="content" class="uk-padding-small">
-        <h3>Settings</h3>
+        <h3>Your email settings</h3>
+        <p>Create an email account with the following parameters. Make sure to enable SSL encryption (not STARTTLS).</p>
         <form class="uk-grid-small" uk-grid>
+          <!-- Email adddress -->
+          <div class="uk-width-1-1">
+            <label class="uk-form-label"
+                   for="email-address">Email address</label>
+            <div class="uk-form-controls">
+              <input class="uk-input" id="email-address" type="text" disabled>
+            </div>
+          </div>
+
           <!-- SMTP server -->
           <div class="uk-width-2-3">
             <label class="uk-form-label"
@@ -77,45 +79,24 @@
           <!-- Mail password -->
           <div class="uk-width-1-2">
             <label class="uk-form-label"
-                   for="mail-password">Mail password (>= 6 characters)</label>
+                   for="mail-password">Mail password</label>
             <div class="uk-form-controls">
               <div class="uk-position-relative">
                 <a class="uk-form-icon uk-form-icon-flip"
                    id="mail-password-lock"
                    href="javascript:void(0)" uk-icon="icon: lock"></a>
-                <input class="uk-input" id="mail-password" type="password">
+                <input class="uk-input" id="mail-password" type="password" disabled>
               </div>
-            </div>
-          </div>
-          <div class="uk-width-1-2">
-            <label class="uk-form-label"
-                   for="mail-password-again">Mail password (again)</label>
-            <div class="uk-form-controls">
-              <input class="uk-input" id="mail-password-again" type="password">
-            </div>
-          </div>
-          
-          <!-- HTTP password -->
-          <div class="uk-width-1-2">
-            <label class="uk-form-label"
-                   for="http-password">HTTP password (>= 6 characters)</label>
-            <div class="uk-form-controls">
-              <div class="uk-position-relative">
-                <a class="uk-form-icon uk-form-icon-flip"
-                   id="http-password-lock"
-                   href="javascript:void(0)" uk-icon="icon: lock"></a>
-                <input class="uk-input" id="http-password" type="password">
-              </div>
-            </div>
-          </div>
-          <div class="uk-width-1-2">
-            <label class="uk-form-label"
-                   for="http-password-again">HTTP password (again)</label>
-            <div class="uk-form-controls">
-              <input class="uk-input" id="http-password-again" type="password">
             </div>
           </div>
         </form>
+        <div uk-alert>
+          <b>Notice:</b> It is a good idea to a take screenshot of these parameters as well. It will ease your pain.</div>
+        <div class="uk-text-right">
+          <button class="uk-button uk-button-default"
+                  type="button">Finish</button>
+        </div>
       </div>
+    </div>
   </body>
 </html>

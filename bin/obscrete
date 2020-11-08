@@ -7,7 +7,7 @@ usage()
     >&2 echo "obscrete [--sname <NODE-NAME>] [--simulator] [--config <CONFIG-FILE>] [--]"
     >&2 echo "    Start Obscrete (put erl options after --)"
     >&2 echo "obscrete --bootstrap"
-    >&2 echo "    Start Obscrete the bootstrap process. Opens an HTTP server on port 8889 (on all interfaces)."
+    >&2 echo "    Start Obscrete the bootstrap process. Opens an HTTP server on port 8444 (on all interfaces)."
     >&2 echo "obscrete --reload [--control-address <IP-ADDRESS>] [--control-port <PORT>]"
     >&2 echo "    Reload Obscrete"
     >&2 echo "obscrete --stop [--control-address <IP-ADDRESS>] [--control-port <PORT>]"
