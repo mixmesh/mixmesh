@@ -92,13 +92,27 @@ $(document).ready(function() {
                     nym: $("#pseudonym").val(),
                     "smtp-password": $("#mail-password").val(),
                     "pop3-password": $("#mail-password").val(),
-                    "pop3-password": $("#mail-password").val(),
                     "http-password": $("#http-password").val()
                 },
                 function(data, textStatus, _jqXHR) {
                     console.log("/dj/wipe (POST) succeeded");
                     console.log(data);
-                    loadStep2(data);
+                    $("#meta-content").load(
+                        "/wipe_all-2.html #content",
+                        function() {
+                            new QRCode($("#qrcode").get(0), {
+	                        text: data["public-key"] + data["secret-key"],
+	                        width: 800,
+	                        height: 800,
+	                        colorDark : "#000000",
+	                        colorLight : "#ffffff",
+	                        correctLevel : QRCode.CorrectLevel.H
+                            });
+                            $("#next-button").click(function() {
+                                alert(3);
+                            });
+                            Mixmesh.setHeight("#meta-content", ["#navigation"]);
+                        });
                 },
                 function(_jqXHR, textStatus, errorThrown) {
                     console.log("/dj/wipe (POST) failed");

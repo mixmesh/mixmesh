@@ -34,15 +34,15 @@
       </nav>
       <div id="content" class="uk-padding-small">
         <h3>Your private key</h3>
-        <p>This is your newly created private key. Take a screenshot and put it in a secure place, i.e. ideally put a printout in a safe. If not your identity can not be salvaged if the box is lost.</p>
+        <p>This is your private key. Take a screenshot of it and put it in a secure place, i.e. ideally put a printout in a safe. If not your identity can not be salvaged if the box is lost (or stolen).</p>
         <div id="qrcode" class="uk-flex uk-flex-center"></div>
         <script type="text/javascript">
 new QRCode(document.getElementById("qrcode"), "http://jindo.dev.naver.com/collie");
         </script>
         <div uk-alert>
-          <b>Notice:</b> Have you taken a screenshot yet? The key will only be available one hour after the wipe.</div>
+          <b>Notice:</b> Have you taken a screenshot of the key yet? The key will only be available for one hour after the wipe.</div>
         <div class="uk-text-right">
-          <button class="uk-button uk-button-default"
+          <button class="uk-button uk-button-default" id="next-button"
                   type="button">Next</button>
         </div>
       </div>

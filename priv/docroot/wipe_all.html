@@ -12,7 +12,7 @@
     <script src="js/jquery.min.js"></script>
     <script src="js/uikit.min.js"></script>
     <script src="js/uikit-icons.min.js"></script>
-    <script src="js/jml.js"></script>
+    <script src="js/qrcode.min.js"></script>
     <script src="js/mixmesh.js"></script>
     <script src="js/wipe_all.js"></script>
   </head>
@@ -31,66 +31,73 @@
           </ul>
         </div>
       </nav>
-      <div id="content" class="uk-padding-small">
-        <h3>Wipe all</h3>
-        <form class="uk-grid-small" uk-grid>
-          <!-- Pseudonym -->
-          <div class="uk-width-1-1">
-            <label class="uk-form-label"
-                   for="pseudonym">Pseudonym (at most 31 characters)</label>
-            <div class="uk-form-controls">
-              <input class="uk-input uk-form-danger" id="pseudonym" type="text" maxlength="31">
-            </div>
-          </div>
-
-          <!-- Mail password -->
-          <div class="uk-width-1-2">
-            <label class="uk-form-label"
-                   for="mail-password">Mail password (>= 6 characters) </label>
-            <div class="uk-form-controls">
-              <div class="uk-position-relative">
-                <a class="uk-form-icon uk-form-icon-flip"
-                   id="mail-password-lock"
-                   href="javascript:void(0)" uk-icon="icon: lock"></a>
-                <input class="uk-input uk-form-danger" id="mail-password" type="password">
+      <div id="meta-content">
+        <div id="content" class="uk-padding-small">
+          <h3>Wipe all</h3>
+          <form class="uk-grid-small" uk-grid>
+            <!-- Pseudonym -->
+            <div class="uk-width-1-1">
+              <label class="uk-form-label"
+                     for="pseudonym">Pseudonym (at most 31 characters)</label>
+              <div class="uk-form-controls">
+                <input class="uk-input uk-form-danger" id="pseudonym"
+                       type="text" maxlength="31" tabindex="1">
               </div>
             </div>
-          </div>
-          <div class="uk-width-1-2">
-            <label class="uk-form-label"
-                   for="mail-password-again">Mail password (again)</label>
-            <div class="uk-form-controls">
-              <input class="uk-input uk-form-danger" id="mail-password-again" type="password">
-            </div>
-          </div>
-          
-          <!-- HTTP password -->
-          <div class="uk-width-1-2">
-            <label class="uk-form-label"
-                   for="http-password">HTTP password (>= 6 characters)</label>
-            <div class="uk-form-controls">
-              <div class="uk-position-relative">
-                <a class="uk-form-icon uk-form-icon-flip"
-                   id="http-password-lock"
-                   href="javascript:void(0)" uk-icon="icon: lock"></a>
-                <input class="uk-input uk-form-danger" id="http-password" type="password">
+            
+            <!-- Mail password -->
+            <div class="uk-width-1-2">
+              <label class="uk-form-label"
+                     for="mail-password">Mail password (>= 6 characters) </label>
+              <div class="uk-form-controls">
+                <div class="uk-position-relative">
+                  <a class="uk-form-icon uk-form-icon-flip"
+                     id="mail-password-lock"
+                     href="javascript:void(0)" uk-icon="icon: lock"></a>
+                  <input class="uk-input uk-form-danger" id="mail-password"
+                         type="password" tabindex="2">
+                </div>
               </div>
             </div>
-          </div>
-          <div class="uk-width-1-2">
-            <label class="uk-form-label"
-                   for="http-password-again">HTTP password (again)</label>
-            <div class="uk-form-controls">
-              <input class="uk-input uk-form-danger" id="http-password-again" type="password">
+            <div class="uk-width-1-2">
+              <label class="uk-form-label"
+                     for="mail-password-again">Mail password (again)</label>
+              <div class="uk-form-controls">
+                <input class="uk-input uk-form-danger" id="mail-password-again"
+                       type="password" tabindex="3">
+              </div>
             </div>
+            
+            <!-- HTTP password -->
+            <div class="uk-width-1-2">
+              <label class="uk-form-label"
+                     for="http-password">HTTP password (>= 6 characters)</label>
+              <div class="uk-form-controls">
+                <div class="uk-position-relative">
+                  <a class="uk-form-icon uk-form-icon-flip"
+                     id="http-password-lock"
+                     href="javascript:void(0)" uk-icon="icon: lock"></a>
+                  <input class="uk-input uk-form-danger" id="http-password"
+                         type="password" tabindex="4">
+                </div>
+              </div>
+            </div>
+            <div class="uk-width-1-2">
+              <label class="uk-form-label"
+                     for="http-password-again">HTTP password (again)</label>
+              <div class="uk-form-controls">
+                <input class="uk-input uk-form-danger" id="http-password-again"
+                       type="password" tabindex="5">
+              </div>
+            </div>
+          </form>
+          <div uk-alert>
+            <b>Notice:</b> Remember these parameters or you will be sorry.
           </div>
-        </form>
-        <div uk-alert>
-          <b>Notice:</b> Remember these parameters or you will be sorry.
-        </div>
-        <div class="uk-text-right">
-          <button class="uk-button uk-button-default" id="wipe-button"
-                  type="button" disabled>Wipe now!</button>
+          <div class="uk-text-right">
+            <button class="uk-button uk-button-default" id="wipe-button"
+                    type="button" disabled tabindex="6">Wipe now!</button>
+          </div>
         </div>
       </div>
   </body>

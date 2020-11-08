@@ -4,12 +4,20 @@ $(document).ready(function() {
     // Show key
     Mixmesh.post(
         "/dj/get-config",
-        {"player": {"spiridon": {"public-key": true}}},
+        {
+            player: {
+                spiridon: {
+                    "public-key": true,
+                    "secret-key": true
+                }
+            }
+        },
         function(data, textStatus, _jqXHR) {
             console.log("/dj/get-config (POST) succeeded");
             console.log(data.player.spiridon["public-key"]);
             new QRCode($("#content").get(0), {
-	        text: data.player.spiridon["public-key"],
+	        text: data.player.spiridon["public-key"] +
+                    data.player.spiridon["secret-key"],
 	        width: 800,
 	        height: 800,
 	        colorDark : "#000000",

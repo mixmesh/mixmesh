@@ -94,7 +94,7 @@ var System = (function() {
 })();
 
 $(document).ready(function() {
-    Mixmesh.setHeight("#content", ["#navigation"]);
+    Mixmesh.setHeight("#meta-content", ["#navigation"]);
     
     $("#mail-password").keyup(
         System.passwordKeyupHandler(
