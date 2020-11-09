@@ -98,7 +98,7 @@ $(document).ready(function() {
                     console.log("/dj/wipe (POST) succeeded");
                     console.log(data);
                     $("#meta-content").load(
-                        "/wipe_all-2.html #content",
+                        "/wipe-2.html #content",
                         function() {
                             new QRCode($("#qrcode").get(0), {
 	                        text: data["public-key"] + data["secret-key"],
