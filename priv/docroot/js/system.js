@@ -130,14 +130,14 @@ $(document).ready(function() {
             console.log(data);
             
             // SMTP server
-            var ip_address_port = data.player["smtp-server"].address.split(":");
-            $("#smtp-ip-address").val(ip_address_port[0]);
-            $("#smtp-port").val(ip_address_port[1]);
+            var ip_port = data.player["smtp-server"].address.split(":");
+            $("#smtp-ip-address").val(ip_port[0]);
+            $("#smtp-port").val(ip_port[1]);
 
             // POP3 server
-            ip_address_port = data.player["pop3-server"].address.split(":");
-            $("#pop3-ip-address").val(ip_address_port[0]);
-            $("#pop3-port").val(ip_address_port[1]);
+            ip_port = data.player["pop3-server"].address.split(":");
+            $("#pop3-ip-address").val(ip_port[0]);
+            $("#pop3-port").val(ip_port[1]);
         },
         function(_jqXHR, textStatus, errorThrown) {
             console.log("/dj/get-config (POST) failed");

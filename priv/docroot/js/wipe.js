@@ -1,14 +1,14 @@
-var WipeAll = (function() {
+var Wipe = (function() {
     var validPassword =
         function(id) {
-            WipeAll.setClass(id, "uk-form-success", "uk-form-danger");
-            WipeAll.setClass(id + "-again", "uk-form-success", "uk-form-danger");
+            Wipe.setClass(id, "uk-form-success", "uk-form-danger");
+            Wipe.setClass(id + "-again", "uk-form-success", "uk-form-danger");
         };
     
     var invalidPassword =
         function(id) {
-            WipeAll.setClass(id, "uk-form-danger", "uk-form-success");
-            WipeAll.setClass(id + "-again",  "uk-form-danger", "uk-form-success");
+            Wipe.setClass(id, "uk-form-danger", "uk-form-success");
+            Wipe.setClass(id + "-again",  "uk-form-danger", "uk-form-success");
         };
     
     return {
@@ -43,7 +43,7 @@ var WipeAll = (function() {
                             invalidPassword(id);
                         }
                     }
-                    WipeAll.toggleWipeButton();
+                    Wipe.toggleWipeButton();
                 };
             return handler;
         },
@@ -71,21 +71,28 @@ $(document).ready(function() {
     $("#pseudonym").keyup(
         function() {
             if ($(this).val().length < 6) {
-                WipeAll.setClass(this, "uk-form-danger", "uk-form-success");
+                Wipe.setClass(this, "uk-form-danger", "uk-form-success");
             } else {
-                WipeAll.setClass(this, "uk-form-success", "uk-form-danger");
+                Wipe.setClass(this, "uk-form-success", "uk-form-danger");
             }
-            WipeAll.toggleWipeButton();
+            Wipe.toggleWipeButton();
         });    
-    $("#mail-password").keyup(WipeAll.passwordKeyupHandler("#mail-password"));
-    $("#mail-password-again").keyup(WipeAll.passwordKeyupHandler("#mail-password"));
-    $("#http-password").keyup(WipeAll.passwordKeyupHandler("#http-password"));
-    $("#http-password-again").keyup(WipeAll.passwordKeyupHandler("#http-password"));    
-    $("#mail-password-lock").click(WipeAll.passwordLockHandler("#mail-password"));
-    $("#http-password-lock").click(WipeAll.passwordLockHandler("#http-password"));
+    $("#mail-password").keyup(Wipe.passwordKeyupHandler("#mail-password"));
+    $("#mail-password-again").keyup(
+        Wipe.passwordKeyupHandler("#mail-password"));
+    $("#http-password").keyup(Wipe.passwordKeyupHandler("#http-password"));
+    $("#http-password-again").keyup(
+        Wipe.passwordKeyupHandler("#http-password"));    
+    $("#mail-password-lock").click(Wipe.passwordLockHandler("#mail-password"));
+    $("#http-password-lock").click(Wipe.passwordLockHandler("#http-password"));
     $("#wipe-button").click(
         function() {
-            $("#wipe-button").prop('disabled', true);            
+            $("#wipe-button").prop('disabled', true);
+
+            // Remember these
+            Wipe.pseudonym = $("#pseudonym").val();
+            Wipe.mailPassword = $("#mail-password").val();
+
             Mixmesh.post(
                 "/dj/system/wipe",
                 {
@@ -97,6 +104,13 @@ $(document).ready(function() {
                 function(data, textStatus, _jqXHR) {
                     console.log("/dj/wipe (POST) succeeded");
                     console.log(data);
+
+                    // Disable top-level navigation bar
+                    $("#navbar-wipe a").removeAttr("href");    
+                    $("#navbar-wipe").removeClass("uk-active");
+                    $("#navbar-reinstall a").removeAttr("href");    
+                    
+                    // Load step 2
                     $("#meta-content").load(
                         "/wipe-2.html #content",
                         function() {
@@ -109,9 +123,26 @@ $(document).ready(function() {
 	                        correctLevel : QRCode.CorrectLevel.H
                             });
                             $("#next-button").click(function() {
-                                alert(3);
+                                // Load step 3
+                                $("#meta-content").load(
+                                    "/wipe-3.html #content",
+                                    function() {
+                                        $("#email-address")
+                                            .val(Wipe.pseudonym +
+                                                 "@mixmesh.net");
+                                        var ip_port = data["smtp-address"]
+                                            .split(":");
+                                        $("#smtp-ip-address")
+                                            .val(ip_port[0]);
+                                        $("#smtp-port").val(ip_port[1]);
+                                        ip_port = data["pop3-address"]
+                                            .split(":");
+                                        $("#pop3-ip-address").val(ip_port[0]);
+                                        $("#pop3-port").val(ip_port[1]);
+                                        $("#mail-password")
+                                            .val(Wipe.mailPassword);
+                                    });
                             });
-                            Mixmesh.setHeight("#meta-content", ["#navigation"]);
                         });
                 },
                 function(_jqXHR, textStatus, errorThrown) {

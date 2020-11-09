@@ -33,13 +33,16 @@
         </div>
       </nav>
       <div id="content" class="uk-padding-small">
-        <h3>Your email settings</h3>
-        <p>Create an email account with the following parameters. Make sure to enable SSL encryption (not STARTTLS).</p>
+        <h3>Your mail configuration (3/3)</h3>
+        <p>
+          Create a mail account with the following parameters. Make
+          sure to enable SSL encryption (not STARTTLS).
+        </p>  
         <form class="uk-grid-small" uk-grid>
           <!-- Email adddress -->
           <div class="uk-width-1-1">
             <label class="uk-form-label"
-                   for="email-address">Email address</label>
+                   for="email-address">Mail address</label>
             <div class="uk-form-controls">
               <input class="uk-input" id="email-address" type="text" disabled>
             </div>
@@ -81,20 +84,16 @@
             <label class="uk-form-label"
                    for="mail-password">Mail password</label>
             <div class="uk-form-controls">
-              <div class="uk-position-relative">
-                <a class="uk-form-icon uk-form-icon-flip"
-                   id="mail-password-lock"
-                   href="javascript:void(0)" uk-icon="icon: lock"></a>
-                <input class="uk-input" id="mail-password" type="password" disabled>
-              </div>
+              <input class="uk-input" id="mail-password" type="text" disabled>
             </div>
           </div>
         </form>
         <div uk-alert>
-          <b>Notice:</b> It is a good idea to a take screenshot of these parameters as well. It will ease your pain.</div>
+          <b>Notice:</b> It is a good idea to a take screenshot of
+          these parameters as well. It will ease your pain.
+        </div>
         <div class="uk-text-right">
-          <button class="uk-button uk-button-default"
-                  type="button">Finish</button>
+          <a class="uk-button uk-button-default" href="/wipe-4.html">Finish</a>
         </div>
       </div>
     </div>

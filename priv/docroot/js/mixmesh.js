@@ -4,7 +4,6 @@ var Mixmesh = (function() {
     function privateMethod () {
         // ...
     }
-    
     return {
         setHeight: function(targetId, siblingIds) {
             var targetHeight = window.innerHeight;
