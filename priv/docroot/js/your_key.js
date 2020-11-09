@@ -12,8 +12,8 @@ $(document).ready(function() {
         function(data, textStatus, _jqXHR) {
             console.log("/dj/get-config (POST) succeeded");
             console.log(data.player.spiridon["public-key"]);
-            $("#content").hide(); // To avoid flicker (see below)
-            new QRCode($("#content").get(0), {
+            $("#qrcode").hide(); // To avoid flicker (see below)
+            new QRCode($("#qrcode").get(0), {
 	        text: data.player.spiridon["public-key"] +
                     data.player.spiridon["secret-key"],
 	        width: 800,
@@ -24,7 +24,7 @@ $(document).ready(function() {
             });
             // To avoid flicker (see above)
             setTimeout(function() {
-                $("#content").show();
+                $("#qrcode").show();
             }, 10);
         },
         function(_jqXHR, textStatus, errorThrown) {
