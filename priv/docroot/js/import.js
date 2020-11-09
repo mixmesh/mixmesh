@@ -1,8 +1,7 @@
 $(document).ready(function() {
-    Mixmesh.setHeight("#content", ["#navigation"]);
-
     UIkit.upload(".js-upload", {
         url: "/dj/key/import",
+        name: "key-file",
         multiple: false,
         allow : "*.bin",
         fail: function(reason) {
@@ -16,10 +15,6 @@ $(document).ready(function() {
             UIkit.modal("#generic-dialog").show();
         },
         completeAll: function(xhr) {
-
-            console.log('completeAll');
-
-            
             $("#generic-dialog-title").text("Import succeeded").show();
             $("#generic-dialog-content")
                 .empty()

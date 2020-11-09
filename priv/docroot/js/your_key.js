@@ -1,7 +1,4 @@
-$(document).ready(function() {
-    Mixmesh.setHeight("#content", ["#navigation"]);
-    
-    // Show key
+$(document).ready(function() {    
     Mixmesh.post(
         "/dj/get-config",
         {
@@ -15,6 +12,7 @@ $(document).ready(function() {
         function(data, textStatus, _jqXHR) {
             console.log("/dj/get-config (POST) succeeded");
             console.log(data.player.spiridon["public-key"]);
+            $("#content").hide(); // To avoid flicker (see below)
             new QRCode($("#content").get(0), {
 	        text: data.player.spiridon["public-key"] +
                     data.player.spiridon["secret-key"],
@@ -24,6 +22,10 @@ $(document).ready(function() {
 	        colorLight : "#ffffff",
 	        correctLevel : QRCode.CorrectLevel.H
             });
+            // To avoid flicker (see above)
+            setTimeout(function() {
+                $("#content").show();
+            }, 10);
         },
         function(_jqXHR, textStatus, errorThrown) {
             console.log("/dj/get-config (POST) failed");

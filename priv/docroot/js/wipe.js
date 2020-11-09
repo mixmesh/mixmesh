@@ -66,8 +66,6 @@ var Wipe = (function() {
 })();
 
 $(document).ready(function() {
-    Mixmesh.setHeight("#content", ["#navigation"]);
-    
     $("#pseudonym").keyup(
         function() {
             if ($(this).val().length < 6) {
@@ -114,6 +112,7 @@ $(document).ready(function() {
                     $("#meta-content").load(
                         "/wipe-2.html #content",
                         function() {
+                            $("#meta-content").hide(); // To avoid flicker (see below)
                             new QRCode($("#qrcode").get(0), {
 	                        text: data["public-key"] + data["secret-key"],
 	                        width: 800,
@@ -122,6 +121,10 @@ $(document).ready(function() {
 	                        colorLight : "#ffffff",
 	                        correctLevel : QRCode.CorrectLevel.H
                             });
+                            // To avoid flicker (see above)
+                            setTimeout(function() {
+                                $("#meta-content").show();
+                            }, 10);
                             $("#next-button").click(function() {
                                 // Load step 3
                                 $("#meta-content").load(
