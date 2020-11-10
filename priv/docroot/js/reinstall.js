@@ -10,19 +10,19 @@ var Reinstall = (function() {
     var validPassword =
         function(id) {
             setClass(id, "uk-form-success", "uk-form-danger");
-            setClass(id + "-again", "uk-form-success", "uk-form-danger");
         };
     
     var invalidPassword =
         function(id) {
             setClass(id, "uk-form-danger", "uk-form-success");
-            setClass(id + "-again",  "uk-form-danger", "uk-form-success");
         };
 
     var toggleReinstallButton =
         function() {
             if ($("#mail-password").hasClass("uk-form-success") &&
-                $("#http-password").hasClass("uk-form-success")) {
+                $("#mail-password-again").hasClass("uk-form-success") &&
+                $("#http-password").hasClass("uk-form-success") &&
+                $("#http-password-again").hasClass("uk-form-success")) {
                 if ($("#reinstall-button").prop('disabled')) {
                     $("#reinstall-button").prop('disabled', false);
                 }
@@ -33,7 +33,7 @@ var Reinstall = (function() {
             }
         };
 
-    var passwordKeyupHandler:
+    var passwordKeyupHandler =
         function(id) {
             var handler =
                 function() {
@@ -51,16 +51,17 @@ var Reinstall = (function() {
         function(id) {
             var handler =
                 function() {
-                    if ($(id).val() == $(id + "-again").val()) {
-                        validPassword(id);
+                    if ($(id).val() == $(id + "-again").val() &&
+                        $(id).val().length >= 6) {
+                        validPassword(id + "-again");
                     } else {
-                        invalidPassword(id);
+                        invalidPassword(id + "-again");
                     }
                     toggleReinstallButton();
                 };
             return handler;
         };
-
+    
     var passwordLockHandler = function(id) {
         var handler =
             function() {
