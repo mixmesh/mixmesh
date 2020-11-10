@@ -2,13 +2,15 @@ var Reinstall = (function() {
     var validPassword =
         function(id) {
             Reinstall.setClass(id, "uk-form-success", "uk-form-danger");
-            Reinstall.setClass(id + "-again", "uk-form-success", "uk-form-danger");
+            Reinstall.setClass(id + "-again", "uk-form-success",
+                               "uk-form-danger");
         };
     
     var invalidPassword =
         function(id) {
             Reinstall.setClass(id, "uk-form-danger", "uk-form-success");
-            Reinstall.setClass(id + "-again",  "uk-form-danger", "uk-form-success");
+            Reinstall.setClass(id + "-again",  "uk-form-danger",
+                               "uk-form-success");
         };
     
     return {
@@ -78,9 +80,11 @@ var Reinstall = (function() {
                         .keyup(Reinstall
                                .passwordKeyupHandler("#http-password"));    
                     $("#mail-password-lock")
-                        .click(Reinstall.passwordLockHandler("#mail-password"));
+                        .click(Reinstall
+                               .passwordLockHandler("#mail-password"));
                     $("#http-password-lock")
-                        .click(Reinstall.passwordLockHandler("#http-password"));
+                        .click(Reinstall
+                               .passwordLockHandler("#http-password"));
                     $("#reinstall-button").click(
                         function() {
                             $("#reinstall-button").prop('disabled', true);
@@ -106,7 +110,8 @@ var Reinstall = (function() {
                                     $("#navbar-wipe a").removeAttr("href");    
                                     
                                     Reinstall.step3(
-                                        data.dym,
+                                        $("#mail-password").val(),
+                                        data.nym,
                                         data["smtp-address"],
                                         data["pop3-address"],
                                         data["http-address"],
@@ -132,11 +137,19 @@ var Reinstall = (function() {
                         });
                 })
         },
-        step3: function(nym, smtpAddress, pop3Address, httpAddress, obscreteDir,
-                        pin, pinSalt) {
+        step3: function(mailPassword, nym, smtpAddress, pop3Address,
+                        httpAddress, obscreteDir, pin, pinSalt) {
             $("#meta-content").load(
                 "/reinstall-3.html #content",
                 function() {
+                    // Next button
+                    $("#next-button").click(function() {
+                        Reinstall
+                            .step4(mailPassword, nym, smtpAddress, pop3Address,
+                                   httpAddress);
+                    });
+
+                    // Select button
                     UIkit.upload("#select-contacts", {
                         url: "/dj/key/import",
                         name: "key-file",
@@ -173,6 +186,21 @@ var Reinstall = (function() {
                             UIkit.modal("#generic-dialog").show();
                         }
                     });
+                });
+        },
+        step4: function(mailPassword, nym, smtpAddress, pop3Address,
+                        httpAddress) {
+            $("#meta-content").load(
+                "/reinstall-4.html #content",
+                function() {
+                    $("#email-address").val(nym + "@mixmesh.net");
+                    var ip_port = smtpAddress.split(":");
+                    $("#smtp-ip-address").val(ip_port[0]);
+                    $("#smtp-port").val(ip_port[1]);
+                    ip_port = pop3Address.split(":");
+                    $("#pop3-ip-address").val(ip_port[0]);
+                    $("#pop3-port").val(ip_port[1]);
+                    $("#mail-password").val(mailPassword);
                 });
         }
     }
@@ -215,7 +243,8 @@ $("bajs").ready(function() {
                     $("#meta-content").load(
                         "/reinstall-2.html #content",
                         function() {
-                            $("#meta-content").hide(); // To avoid flicker (see below)
+                            // To avoid flicker (see below)
+                            $("#meta-content").hide();
                             new QRCode($("#qrcode").get(0), {
 	                        text: data["public-key"] + data["secret-key"],
 	                        width: 800,
@@ -228,27 +257,6 @@ $("bajs").ready(function() {
                             setTimeout(function() {
                                 $("#meta-content").show();
                             }, 10);
-                            $("#next-button").click(function() {
-                                // Load step 3
-                                $("#meta-content").load(
-                                    "/reinstall-3.html #content",
-                                    function() {
-                                        $("#email-address")
-                                            .val(Reinstall.pseudonym +
-                                                 "@mixmesh.net");
-                                        var ip_port = data["smtp-address"]
-                                            .split(":");
-                                        $("#smtp-ip-address")
-                                            .val(ip_port[0]);
-                                        $("#smtp-port").val(ip_port[1]);
-                                        ip_port = data["pop3-address"]
-                                            .split(":");
-                                        $("#pop3-ip-address").val(ip_port[0]);
-                                        $("#pop3-port").val(ip_port[1]);
-                                        $("#mail-password")
-                                            .val(Reinstall.mailPassword);
-                                    });
-                            });
                         });
                 },
                 function(_jqXHR, textStatus, errorThrown) {
