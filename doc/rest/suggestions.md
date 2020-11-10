@@ -110,7 +110,6 @@ Implementation note: On success &lt;obscrete-dir&gt;/&lt;nym&gt;/obscrete.conf i
     <td valign="top"><pre lang="json">{
   "public-key": "&lt;Base64 encoded public key&gt;",
   "secret-key": "&lt;Base64 encoded secret key&gt;",
-  "key-bundle": "&lt;Base64 encoded key bundle&gt; (optional)",
   "smtp-password": "&lt;string&gt;",
   "pop3-password": "&lt;string&gt;",
   "http-password": "&lt;string&gt;",
@@ -140,7 +139,7 @@ Typical usage:
 ```
 $ ./bin/obscrete --bootstrap
 
-$ curl -X POST -H "Content-Type: application/json" -d '{"public-key": "BWFsaWNlBbqW75jjJ0aPtaq1zGPObUc7ZQ2WIwIRbX2bkVyOkeIkAC9Hg0oc+J7BD\/RG04TDvd1fETcpmJpyvV8QyeKJ3B3BMHi+LPWSRY60yX1XoA\/1A1iuIxTnt22Q68iXyMMlZvA+ivmNxJlsqN3PB2KOch45KkNzi9Hez9u7KTZBhp3d","secret-key": "BWFsaWNlgMwhWxEO5Ovn0OpNnN62Mu9nvL7Zn1mzlgSBkfC2zZQII\/otb+1jPqLMCDQlFKqNEXGy\/N1PUhotV3w7JBitwsZSUeGfVi2gLJFEkrZ6tGjrUoN3eB65JIzpfQirlLX6oCO5Ab1t4rOmD4BsHvA+lYBbYw3QihArIGqcTyNrbiC1BbqW75jjJ0aPtaq1zGPObUc7ZQ2WIwIRbX2bkVyOkeIkAC9Hg0oc+J7BD\/RG04TDvd1fETcpmJpyvV8QyeKJ3B3BMHi+LPWSRY60yX1XoA\/1A1iuIxTnt22Q68iXyMMlZvA+ivmNxJlsqN3PB2KOch45KkNzi9Hez9u7KTZBhp3d", "smtp-password": "baz", "pop3-password": "baz", "http-password": "hello", "key-bundle": "AIcFYWxpY2UFupbvmOMnRo+1qrXMY85tRztlDZYjAhFtfZuRXI6R4iQAL0eDShz4nsEP9EbThMO93V8RNymYmnK9XxDJ4oncHcEweL4s9ZJFjrTJfVegD\/UDWK4jFOe3bZDryJfIwyVm8D6K+Y3EmWyo3c8HYo5yHjkqQ3OL0d7P27spNkGGnd0="}' http://127.0.0.1:8444/dj/system/reinstall
+$ curl -X POST -H "Content-Type: application/json" -d '{"public-key": "BWFsaWNlBbqW75jjJ0aPtaq1zGPObUc7ZQ2WIwIRbX2bkVyOkeIkAC9Hg0oc+J7BD\/RG04TDvd1fETcpmJpyvV8QyeKJ3B3BMHi+LPWSRY60yX1XoA\/1A1iuIxTnt22Q68iXyMMlZvA+ivmNxJlsqN3PB2KOch45KkNzi9Hez9u7KTZBhp3d", "secret-key": "BWFsaWNlgMwhWxEO5Ovn0OpNnN62Mu9nvL7Zn1mzlgSBkfC2zZQII\/otb+1jPqLMCDQlFKqNEXGy\/N1PUhotV3w7JBitwsZSUeGfVi2gLJFEkrZ6tGjrUoN3eB65JIzpfQirlLX6oCO5Ab1t4rOmD4BsHvA+lYBbYw3QihArIGqcTyNrbiC1BbqW75jjJ0aPtaq1zGPObUc7ZQ2WIwIRbX2bkVyOkeIkAC9Hg0oc+J7BD\/RG04TDvd1fETcpmJpyvV8QyeKJ3B3BMHi+LPWSRY60yX1XoA\/1A1iuIxTnt22Q68iXyMMlZvA+ivmNxJlsqN3PB2KOch45KkNzi9Hez9u7KTZBhp3d", "smtp-password": "baz", "pop3-password": "baz", "http-password": "hello"}' http://127.0.0.1:8444/dj/system/reinstall
 {
   "nym": "alice",
   "sync-address": "0.0.0.0:9900",
@@ -154,13 +153,6 @@ $ curl -X POST -H "Content-Type: application/json" -d '{"public-key": "BWFsaWNlB
 ```
 
 The reinstall method also have optional parameters but they are not examplified here.
-
-The key bundle above was typically extracted during normal operation:
-
-```
-$ curl --user alice:hello --digest -X POST -H "Content-Type: application/json" -d '["alice", "p42"]' http://127.0.0.1:8444/dj/key/export
-"AIcFYWxpY2UFupbvmOMnRo+1qrXMY85tRztlDZYjAhFtfZuRXI6R4iQAL0eDShz4nsEP9EbThMO93V8RNymYmnK9XxDJ4oncHcEweL4s9ZJFjrTJfVegD\/UDWK4jFOe3bZDryJfIwyVm8D6K+Y3EmWyo3c8HYo5yHjkqQ3OL0d7P27spNkGGnd0="
-```
 
 ### `/dj/system/restart` (**POST**)
 
@@ -449,7 +441,7 @@ $ curl --user alice:hello --digest -X POST -H "Content-Type: application/json" -
 
 ### `/dj/key/export` (**POST**)
 
-Used to export a key bundle.
+Used to export contacts/public keys.
 
 <table>
   <tr>

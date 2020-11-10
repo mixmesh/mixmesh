@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Mixmesh (bootstrap)</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <link rel="stylesheet" href="css/uikit.min.css">
+    <script src="js/jquery.min.js"></script>
+    <script src="js/uikit.min.js"></script>
+    <script src="js/uikit-icons.min.js"></script>
+    <script src="js/qrcode.min.js"></script>
+    <script src="js/mixmesh.js"></script>
+    <script src="js/reinstall.js"></script>
+  </head>
+  <body>
+    <div class="uk-container uk-padding-remove uk-container-xsmall">
+      <nav id="navigation"
+           class="uk-navbar-container uk-container-expand" uk-navbar>
+        <div class="uk-navbar-center">
+          <ul class="uk-navbar-nav">
+            <li id="navbar-wipe">
+              <a href="wipe.html"><span uk-icon="bolt"></span>&nbsp;Wipe all</a>
+            </li>
+            <li class="uk-active" id="navbar-reinstall">
+              <a href="reinstall.html"><span uk-icon="lifesaver"></span>&nbsp;Reinstall from backup</a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+      <div id="meta-content">
+        <div id="content" class="uk-padding-small">
+          <h3>Import contacts (3/4) [optional]</h3>
+          <p>
+            If you did a backup of your contacts you can salvage
+            them. If so, select them now. 
+          </p>
+          <div class="uk-text-right">
+            <button class="uk-button uk-button-primary" id="skip-contacts-button"
+                    type="button">Skip</button>
+            <div id="select-contacts" uk-form-custom>
+              <input type="file">
+              <button class="uk-button uk-button-default" type="button"
+                      tabindex="-1">Select</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

@@ -10,6 +10,8 @@ I found some great advice here:
 
 * https://www.w3.org/TR/mobile-bp/
 * https://developer.android.com/guide/webapps/best-practices
+* https://www.html5rocks.com/en/tutorials/getusermedia/intro/
+* https://developer.aliyun.com/mirror/npm/package/html5-qrcode/v/1.0.3
 
 # Overall layout
 

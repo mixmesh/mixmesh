@@ -1,5 +1,5 @@
 $(document).ready(function() {
-    UIkit.upload(".js-upload", {
+    UIkit.upload("#select-contacts", {
         url: "/dj/key/import",
         name: "key-file",
         multiple: false,
@@ -17,7 +17,6 @@ $(document).ready(function() {
         completeAll: function(xhr) {
             $("#generic-dialog-title").text("Import succeeded").show();
             $("#generic-dialog-content")
-                .empty()
                 .html("<p>You have imported " + xhr.responseText +
                       " public keys.</p>");
             UIkit.modal("#generic-dialog").show();

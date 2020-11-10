@@ -76,18 +76,17 @@ $(document).ready(function() {
             Wipe.toggleWipeButton();
         });    
     $("#mail-password").keyup(Wipe.passwordKeyupHandler("#mail-password"));
-    $("#mail-password-again").keyup(
-        Wipe.passwordKeyupHandler("#mail-password"));
+    $("#mail-password-again")
+        .keyup(Wipe.passwordKeyupHandler("#mail-password"));
     $("#http-password").keyup(Wipe.passwordKeyupHandler("#http-password"));
-    $("#http-password-again").keyup(
-        Wipe.passwordKeyupHandler("#http-password"));    
+    $("#http-password-again")
+        .keyup(Wipe.passwordKeyupHandler("#http-password"));    
     $("#mail-password-lock").click(Wipe.passwordLockHandler("#mail-password"));
     $("#http-password-lock").click(Wipe.passwordLockHandler("#http-password"));
     $("#wipe-button").click(
         function() {
             $("#wipe-button").prop('disabled', true);
 
-            // Remember these
             Wipe.pseudonym = $("#pseudonym").val();
             Wipe.mailPassword = $("#mail-password").val();
 

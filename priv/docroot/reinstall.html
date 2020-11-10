@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Mixmesh</title>
+    <title>Mixmesh (bootstrap)</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
@@ -12,8 +12,9 @@
     <script src="js/jquery.min.js"></script>
     <script src="js/uikit.min.js"></script>
     <script src="js/uikit-icons.min.js"></script>
+    <script src="js/qrcode.min.js"></script>
     <script src="js/mixmesh.js"></script>
-    <script src="js/import.js"></script>
+    <script src="js/reinstall.js"></script>
   </head>
   <body>
     <div class="uk-container uk-padding-remove uk-container-xsmall">
@@ -21,35 +22,25 @@
            class="uk-navbar-container uk-container-expand" uk-navbar>
         <div class="uk-navbar-center">
           <ul class="uk-navbar-nav">
-            <li>
-              <a href="your_key.html"><span uk-icon="user"></span>&nbsp;Your Key</a>
+            <li id="navbar-wipe">
+              <a href="wipe.html"><span uk-icon="bolt"></span>&nbsp;Wipe all</a>
             </li>
-            <li>
-              <a href="add_key.html"><span uk-icon="camera"></span>&nbsp;Add Key</a>
-            </li>
-            <li>
-              <a href="keys.html"><span uk-icon="list"></span>&nbsp;Keys</a>
-            </li>
-            <li class="uk-active">
-              <a href="import.html"><span uk-icon="download"></span>&nbsp;Import</a>
-            </li>
-            <li>
-              <a href="system.html"><span uk-icon="settings"></span>&nbsp;System</a>
+            <li class="uk-active" id="navbar-reinstall">
+              <a href="reinstall.html"><span uk-icon="lifesaver"></span>&nbsp;Reinstall from backup</a>
             </li>
           </ul>
         </div>
       </nav>
-      <div id="content" class="uk-padding-small">
-        <h3>Import</h3>
-        <p>
-          Select previously exported contacts and import them. These
-          contacts were either exported by you or downloaded from
-          a safe source, i.e. a friend or a trusted site.
-        </p>
-        <div class="uk-align-right" id="select-contacts" uk-form-custom>
-          <input type="file" multiple>
-          <button class="uk-button uk-button-default" type="button"
-                  tabindex="-1">Select</button>
+      <div id="meta-content">
+        <div id="content" class="uk-padding-small">
+          <h3>Reinstall from backup (1/4)</h3>
+          <p>
+            If you did a backup of your secret key you can salvage
+            your identity and perform a reinstall. If so, scan it now.
+          </p>
+          <div>
+            <img src="/pics/camera-snapshot.png"></img>
+          </div>
         </div>
       </div>
     </div>
