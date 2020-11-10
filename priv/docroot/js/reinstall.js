@@ -62,21 +62,22 @@ var Reinstall = (function() {
             return handler;
         };
     
-    var passwordLockHandler = function(id) {
-        var handler =
-            function() {
-                if ($(id).attr("type") == "password") {
-                    $(id).attr("type", "text");
-                    $(id + "-again").attr("type", "text");
-                    $(this).attr("uk-icon", "icon: unlock");
-                } else {
-                    $(id).attr("type", "password");
-                    $(id + "-again").attr("type", "password");
-                    $(this).attr("uk-icon", "icon: lock");
+    var passwordLockHandler =
+        function(id) {
+            var handler =
+                function() {
+                    if ($(id).attr("type") == "password") {
+                        $(id).attr("type", "text");
+                        $(id + "-again").attr("type", "text");
+                        $(this).attr("uk-icon", "icon: unlock");
+                    } else {
+                        $(id).attr("type", "password");
+                        $(id + "-again").attr("type", "password");
+                        $(this).attr("uk-icon", "icon: lock");
+                    }
                 }
-            }
-        return handler;
-    };
+            return handler;
+        };
 
     var step4 =
         function(mailPassword, nym, smtpAddress, pop3Address, httpAddress) {
@@ -187,15 +188,14 @@ var Reinstall = (function() {
                                         .removeClass("uk-active");
                                     $("#navbar-wipe a").removeAttr("href");    
                                     
-                                    step3(
-                                        $("#mail-password").val(),
-                                        data.nym,
-                                        data["smtp-address"],
-                                        data["pop3-address"],
-                                        data["http-address"],
-                                        data["obscrete-dir"],
-                                        data.pin,
-                                        data["pin-salt"]);
+                                    step3($("#mail-password").val(),
+                                          data.nym,
+                                          data["smtp-address"],
+                                          data["pop3-address"],
+                                          data["http-address"],
+                                          data["obscrete-dir"],
+                                          data.pin,
+                                          data["pin-salt"]);
                                 },
                                 function(jqXHR, textStatus, errorThrown) {
                                     console.log("/dj/reinstall (POST) failed");
@@ -215,12 +215,12 @@ var Reinstall = (function() {
                         });
                 })
         };
-
+    
     var step1 =
         function() {
             setTimeout(function() {
                 // Hardwired for now
-                Reinstall.step2("BWFsaWNlBbqW75jjJ0aPtaq1zGPObUc7ZQ2WIwIRbX2bkVyOkeIkAC9Hg0oc+J7BD\/RG04TDvd1fETcpmJpyvV8QyeKJ3B3BMHi+LPWSRY60yX1XoA\/1A1iuIxTnt22Q68iXyMMlZvA+ivmNxJlsqN3PB2KOch45KkNzi9Hez9u7KTZBhp3d", "BWFsaWNlgMwhWxEO5Ovn0OpNnN62Mu9nvL7Zn1mzlgSBkfC2zZQII\/otb+1jPqLMCDQlFKqNEXGy\/N1PUhotV3w7JBitwsZSUeGfVi2gLJFEkrZ6tGjrUoN3eB65JIzpfQirlLX6oCO5Ab1t4rOmD4BsHvA+lYBbYw3QihArIGqcTyNrbiC1BbqW75jjJ0aPtaq1zGPObUc7ZQ2WIwIRbX2bkVyOkeIkAC9Hg0oc+J7BD\/RG04TDvd1fETcpmJpyvV8QyeKJ3B3BMHi+LPWSRY60yX1XoA\/1A1iuIxTnt22Q68iXyMMlZvA+ivmNxJlsqN3PB2KOch45KkNzi9Hez9u7KTZBhp3d");
+                step2("BWFsaWNlBbqW75jjJ0aPtaq1zGPObUc7ZQ2WIwIRbX2bkVyOkeIkAC9Hg0oc+J7BD\/RG04TDvd1fETcpmJpyvV8QyeKJ3B3BMHi+LPWSRY60yX1XoA\/1A1iuIxTnt22Q68iXyMMlZvA+ivmNxJlsqN3PB2KOch45KkNzi9Hez9u7KTZBhp3d", "BWFsaWNlgMwhWxEO5Ovn0OpNnN62Mu9nvL7Zn1mzlgSBkfC2zZQII\/otb+1jPqLMCDQlFKqNEXGy\/N1PUhotV3w7JBitwsZSUeGfVi2gLJFEkrZ6tGjrUoN3eB65JIzpfQirlLX6oCO5Ab1t4rOmD4BsHvA+lYBbYw3QihArIGqcTyNrbiC1BbqW75jjJ0aPtaq1zGPObUc7ZQ2WIwIRbX2bkVyOkeIkAC9Hg0oc+J7BD\/RG04TDvd1fETcpmJpyvV8QyeKJ3B3BMHi+LPWSRY60yX1XoA\/1A1iuIxTnt22Q68iXyMMlZvA+ivmNxJlsqN3PB2KOch45KkNzi9Hez9u7KTZBhp3d");
             }, 8000);
         };
     
