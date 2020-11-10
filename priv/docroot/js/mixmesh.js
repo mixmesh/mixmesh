@@ -66,6 +66,17 @@ var Mixmesh = (function() {
         },
         hideGenericDialog: function(params) {
             UIkit.modal("#generic-dialog").hide();
+        },
+        formatXHRError: function(xhr) {
+            if (xhr.response && xhr.response.length > 0) {
+                return xhr.response;
+            } else {
+                if (xhr.readyState == 4 && xhr.status == 0) {
+                    return "Network error";
+                } else {
+                    return "Internal error";
+                }
+            }
         }
     };
 })();

@@ -13,7 +13,7 @@
     <script src="js/uikit.min.js"></script>
     <script src="js/uikit-icons.min.js"></script>
     <script src="js/mixmesh.js"></script>
-    <script src="js/import.js"></script>
+    <script src="js/import_contacts.js"></script>
   </head>
   <body>
     <div class="uk-container uk-padding-remove uk-container-xsmall">
@@ -31,7 +31,7 @@
               <a href="keys.html"><span uk-icon="list"></span>&nbsp;Keys</a>
             </li>
             <li class="uk-active">
-              <a href="import.html"><span uk-icon="download"></span>&nbsp;Import</a>
+              <a href="import_contacts.html"><span uk-icon="download"></span>&nbsp;Import contacts</a>
             </li>
             <li>
               <a href="system.html"><span uk-icon="settings"></span>&nbsp;System</a>
@@ -40,11 +40,12 @@
         </div>
       </nav>
       <div id="content" class="uk-padding-small">
-        <h3>Import</h3>
+        <h3>Import contacts</h3>
         <p>
-          Select previously exported contacts and import them. These
-          contacts were either exported by you or downloaded from
-          a safe source, i.e. a friend or a trusted site.
+          Import a previously exported contacts file. This file was
+          either exported by you or downloaded from a safe source,
+          i.e. from a friend or a trusted site. Select a contacts file
+          now.
         </p>
         <div class="uk-align-right" id="select-contacts" uk-form-custom>
           <input type="file" multiple>
@@ -55,12 +56,15 @@
     </div>
     <div id="generic-dialog" uk-modal>
       <div class="uk-modal-dialog uk-modal-body">
-        <h3 id="generic-dialog-title" class="uk-modal-title"></h3>
+        <h3 id="generic-dialog-title"
+            class="uk-modal-title"></h3>
         <div id="generic-dialog-content"></div>
-        <div class="uk-text-right">
-          <button class="uk-button uk-button-default"
-                  type="button"
-                  onclick = "UIkit.modal('#generic-dialog').hide()">OK</button>          
+        <div id="generic-dialog-buttons" class="uk-text-right">
+          <button id="generic-dialog-cancel"
+                  class="uk-button uk-button-default uk-modal-close"
+                  type="button">Cancel</button>
+          <button id="generic-dialog-ok" class="uk-button uk-button-default"
+                  type="button">OK</button>
         </div>
       </div>
     </div>
