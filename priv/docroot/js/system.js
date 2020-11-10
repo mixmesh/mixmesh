@@ -26,6 +26,22 @@ var System = (function() {
             };
             return handler;
         },
+        passwordAgainKeyupHandler: function(id, passwordChanged) {
+            var handler = function() {
+                if ($(id).val().length < 6) {
+                    invalidPassword(id);
+                } else {
+                    if ($(id).val() == $(id + "-again").val()) {
+                        passwordChanged($(id).val());
+                    } else {
+                        invalidPassword(id);
+                    }
+                }
+            };
+            return handler;
+        },
+
+        
         mailPasswordChanged: function(password) {
             Mixmesh.post(
                 "/dj/edit-config",

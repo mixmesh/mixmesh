@@ -1,4 +1,12 @@
 var Mixmesh = (function() {
+    var validPassword = function(id) {
+        Mixmesh.setClass(id, "uk-form-success", "uk-form-danger");
+    };
+    
+    var invalidPassword = function(id) {
+        Mixmesh.setClass(id, "uk-form-danger", "uk-form-success");
+    };
+    
     return {
         setHeight: function(targetId, siblingIds) {
             var targetHeight = window.innerHeight;
@@ -24,6 +32,43 @@ var Mixmesh = (function() {
                 $(id).removeClass(oldClass);
                 $(id).addClass(newClass);
             }
+        },
+        passwordKeyupHandler: function(id, callback) {
+            var handler = function() {
+                if ($(id).val().length >= 6) {
+                    validPassword(id);
+                } else {
+                    invalidPassword(id);
+                }
+                callback();
+            };
+            return handler;
+        },
+        passwordAgainKeyupHandler: function(id, callback) {
+            var handler = function() {
+                if ($(id).val() == $(id + "-again").val() &&
+                    $(id).val().length >= 6) {
+                    validPassword(id + "-again");
+                } else {
+                    invalidPassword(id + "-again");
+                }
+                callback();
+            };
+            return handler;
+        },
+        passwordLockHandler: function(id) {
+            var handler = function() {
+                if ($(id).attr("type") == "password") {
+                    $(id).attr("type", "text");
+                    $(id + "-again").attr("type", "text");
+                    $(this).attr("uk-icon", "icon: unlock");
+                } else {
+                    $(id).attr("type", "password");
+                    $(id + "-again").attr("type", "password");
+                    $(this).attr("uk-icon", "icon: lock");
+                }
+            }
+            return handler;
         },
         showGenericDialog: function(params) {
             if (params.title) {

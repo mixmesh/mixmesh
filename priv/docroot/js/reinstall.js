@@ -1,12 +1,4 @@
 var Reinstall = (function() {
-    var validPassword = function(id) {
-        Mixmesh.setClass(id, "uk-form-success", "uk-form-danger");
-    };
-    
-    var invalidPassword = function(id) {
-        Mixmesh.setClass(id, "uk-form-danger", "uk-form-success");
-    };
-    
     var toggleReinstallButton = function() {
         if ($("#mail-password").hasClass("uk-form-success") &&
             $("#mail-password-again").hasClass("uk-form-success") &&
@@ -20,46 +12,6 @@ var Reinstall = (function() {
                 $("#reinstall-button").prop('disabled', true);
             }
         }
-    };
-    
-    var passwordKeyupHandler = function(id) {
-        var handler = function() {
-            if ($(id).val().length >= 6) {
-                validPassword(id);
-            } else {
-                invalidPassword(id);
-            }
-            toggleReinstallButton();
-        };
-        return handler;
-    };
-    
-    var passwordAgainKeyupHandler = function(id) {
-        var handler = function() {
-            if ($(id).val() == $(id + "-again").val() &&
-                $(id).val().length >= 6) {
-                validPassword(id + "-again");
-            } else {
-                invalidPassword(id + "-again");
-            }
-            toggleReinstallButton();
-        };
-        return handler;
-    };
-    
-    var passwordLockHandler = function(id) {
-        var handler = function() {
-            if ($(id).attr("type") == "password") {
-                $(id).attr("type", "text");
-                $(id + "-again").attr("type", "text");
-                $(this).attr("uk-icon", "icon: unlock");
-            } else {
-                $(id).attr("type", "password");
-                $(id + "-again").attr("type", "password");
-                $(this).attr("uk-icon", "icon: lock");
-            }
-        }
-        return handler;
     };
     
     var step4 = function(mailPassword, nym, smtpAddress, pop3Address,
@@ -132,17 +84,24 @@ var Reinstall = (function() {
             "/reinstall-2.html #content",
             function() {
                 $("#mail-password")
-                    .keyup(passwordKeyupHandler("#mail-password"));
+                    .keyup(Mixmesh
+                           .passwordKeyupHandler(
+                               "#mail-password", toggleReinstallButton));
                 $("#mail-password-again")
-                    .keyup(passwordAgainKeyupHandler("#mail-password"));
+                    .keyup(Mixmesh
+                           .passwordAgainKeyupHandler(
+                               "#mail-password", toggleReinstallButton));
                 $("#http-password")
-                    .keyup(passwordKeyupHandler("#http-password"));
+                    .keyup(Mixmesh.passwordKeyupHandler(
+                        "#http-password", toggleReinstallButton));
                 $("#http-password-again")
-                    .keyup(passwordAgainKeyupHandler("#http-password"));    
+                    .keyup(Mixmesh
+                           .passwordAgainKeyupHandler(
+                               "#http-password", toggleReinstallButton));
                 $("#mail-password-lock")
-                    .click(passwordLockHandler("#mail-password"));
+                    .click(Mixmesh.passwordLockHandler("#mail-password"));
                 $("#http-password-lock")
-                    .click(passwordLockHandler("#http-password"));
+                    .click(Mixmesh.passwordLockHandler("#http-password"));
                 $("#reinstall-button").click(function() {
                     $("#reinstall-button").prop('disabled', true);
                     Mixmesh.post(
