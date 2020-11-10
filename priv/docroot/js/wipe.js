@@ -1,187 +1,162 @@
 var Wipe = (function() {
-    var setClass =
-        function(id, newClass, oldClass) {
-            if (!$(id).hasClass(newClass)) {
-                $(id).removeClass(oldClass);
-                $(id).addClass(newClass);
+    var validPassword = function(id) {
+        Mixmesh.setClass(id, "uk-form-success", "uk-form-danger");
+    };
+    
+    var invalidPassword = function(id) {
+        Mixmesh.setClass(id, "uk-form-danger", "uk-form-success");
+    };
+    
+    var toggleWipeButton = function() {
+        if ($("#pseudonym").hasClass("uk-form-success") &&
+            $("#mail-password").hasClass("uk-form-success") &&
+            $("#mail-password-again").hasClass("uk-form-success") &&
+            $("#http-password").hasClass("uk-form-success") &&
+            $("#http-password-again").hasClass("uk-form-success")) {
+            if ($("#wipe-button").prop('disabled')) {
+                $("#wipe-button").prop('disabled', false);
             }
-        };
+        } else {
+            if (!$("#wipe-button").prop('disabled')) {
+                $("#wipe-button").prop('disabled', true);
+            }
+        }
+    };
     
-    var validPassword =
-        function(id) {
-            setClass(id, "uk-form-success", "uk-form-danger");
-        };
-    
-    var invalidPassword =
-        function(id) {
-            setClass(id, "uk-form-danger", "uk-form-success");
-        };
-    
-    var toggleWipeButton =
-        function() {
-            if ($("#pseudonym").hasClass("uk-form-success") &&
-                $("#mail-password").hasClass("uk-form-success") &&
-                $("#mail-password-again").hasClass("uk-form-success") &&
-                $("#http-password").hasClass("uk-form-success") &&
-                $("#http-password-again").hasClass("uk-form-success")) {
-                if ($("#wipe-button").prop('disabled')) {
-                    $("#wipe-button").prop('disabled', false);
-                }
+    var passwordKeyupHandler = function(id) {
+        var handler = function() {
+            if ($(id).val().length >= 6) {
+                validPassword(id);
             } else {
-                if (!$("#wipe-button").prop('disabled')) {
-                    $("#wipe-button").prop('disabled', true);
-                }
+                invalidPassword(id);
             }
+            toggleWipeButton();
         };
+        return handler;
+    };
     
-    var passwordKeyupHandler =
-        function(id) {
-            var handler =
-                function() {
-                    if ($(id).val().length >= 6) {
-                        validPassword(id);
-                    } else {
-                        invalidPassword(id);
-                    }
-                    toggleWipeButton();
-                };
-            return handler;
+    var passwordAgainKeyupHandler = function(id) {
+        var handler = function() {
+            if ($(id).val() == $(id + "-again").val() &&
+                $(id).val().length >= 6) {
+                validPassword(id + "-again");
+            } else {
+                invalidPassword(id + "-again");
+            }
+            toggleWipeButton();
         };
+        return handler;
+    };
     
-    var passwordAgainKeyupHandler =
-        function(id) {
-            var handler =
-                function() {
-                    if ($(id).val() == $(id + "-again").val() &&
-                        $(id).val().length >= 6) {
-                        validPassword(id + "-again");
-                    } else {
-                        invalidPassword(id + "-again");
-                    }
-                    toggleWipeButton();
-                };
-            return handler;
-        };
+    var passwordLockHandler = function(id) {
+        var handler = function() {
+            if ($(id).attr("type") == "password") {
+                $(id).attr("type", "text");
+                $(id + "-again").attr("type", "text");
+                $(this).attr("uk-icon", "icon: unlock");
+            } else {
+                $(id).attr("type", "password");
+                $(id + "-again").attr("type", "password");
+                $(this).attr("uk-icon", "icon: lock");
+            }
+        }
+        return handler;
+    };
     
-    var passwordLockHandler =
-        function(id) {
-            var handler =
-                function() {
-                    if ($(id).attr("type") == "password") {
-                        $(id).attr("type", "text");
-                        $(id + "-again").attr("type", "text");
-                        $(this).attr("uk-icon", "icon: unlock");
-                    } else {
-                        $(id).attr("type", "password");
-                        $(id + "-again").attr("type", "password");
-                        $(this).attr("uk-icon", "icon: lock");
-                    }
-                }
-            return handler;
-        };
-
-    var step3 =
-        function(nym, mailPassword, smtpAddress, pop3Address, httpAddress) {
-            $("#meta-content").load(
-                "/wipe-3.html #content",
-                function() {
-                    $("#email-address").val(nym + "@mixmesh.net");
-                    var ip_port = smtpAddress.split(":");
-                    $("#smtp-ip-address").val(ip_port[0]);
-                    $("#smtp-port").val(ip_port[1]);
-                    ip_port = pop3Address.split(":");
-                    $("#pop3-ip-address").val(ip_port[0]);
-                    $("#pop3-port").val(ip_port[1]);
-                    $("#mail-password").val(mailPassword);
+    var step3 = function(nym, mailPassword, smtpAddress, pop3Address,
+                         httpAddress) {
+        $("#meta-content").load(
+            "/wipe-3.html #content",
+            function() {
+                $("#email-address").val(nym + "@mixmesh.net");
+                var ip_port = smtpAddress.split(":");
+                $("#smtp-ip-address").val(ip_port[0]);
+                $("#smtp-port").val(ip_port[1]);
+                ip_port = pop3Address.split(":");
+                $("#pop3-ip-address").val(ip_port[0]);
+                $("#pop3-port").val(ip_port[1]);
+                $("#mail-password").val(mailPassword);
+            });
+    };
+    
+    var step2 = function(nym, mailPassword, httpPassword, smtpAddress,
+                         pop3Address, httpAddress, publicKey, secretKey) {
+        $("#meta-content").load(
+            "/wipe-2.html #content",
+            function() {
+                // To avoid flicker (see below)
+                $("#meta-content").hide();
+                new QRCode($("#qrcode").get(0), {
+	            text: publicKey + secretKey,
+	            width: 800,
+	            height: 800,
+	            colorDark : "#000000",
+	            colorLight : "#ffffff",
+	            correctLevel : QRCode.CorrectLevel.H
                 });
-        };
+                // To avoid flicker (see above)
+                setTimeout(function() {
+                    $("#meta-content").show();
+                }, 10);
+                $("#next-button").click(function() {
+                    step3(nym, mailPassword, smtpAddress, pop3Address,
+                          httpAddress);
+                });
+            })
+    };
     
-    var step2 =
-        function(nym, mailPassword, httpPassword, smtpAddress, pop3Address,
-                 httpAddress, publicKey, secretKey) {
-            $("#meta-content").load(
-                "/wipe-2.html #content",
-                function() {
-                    // To avoid flicker (see below)
-                    $("#meta-content").hide();
-                    new QRCode($("#qrcode").get(0), {
-	                text: publicKey + secretKey,
-	                width: 800,
-	                height: 800,
-	                colorDark : "#000000",
-	                colorLight : "#ffffff",
-	                correctLevel : QRCode.CorrectLevel.H
-                    });
-                    // To avoid flicker (see above)
-                    setTimeout(function() {
-                        $("#meta-content").show();
-                    }, 10);
-                    $("#next-button").click(function() {
-                        step3(nym, mailPassword, smtpAddress, pop3Address,
-                              httpAddress);
-                    });
+    var step1 = function() {
+        $("#pseudonym").keyup(function() {
+            if ($(this).val().length < 6) {
+                Mixmesh.setClass(this, "uk-form-danger", "uk-form-success");
+            } else {
+                Mixmesh.setClass(this, "uk-form-success", "uk-form-danger");
+            }
+            toggleWipeButton();
+        });    
+        $("#mail-password").keyup(passwordKeyupHandler("#mail-password"));
+        $("#mail-password-again")
+            .keyup(passwordAgainKeyupHandler("#mail-password"));
+        $("#http-password").keyup(passwordKeyupHandler("#http-password"));
+        $("#http-password-again")
+            .keyup(passwordAgainKeyupHandler("#http-password"));    
+        $("#mail-password-lock").click(passwordLockHandler("#mail-password"));
+        $("#http-password-lock").click(passwordLockHandler("#http-password"));
+        $("#wipe-button").click(function() {
+            $("#wipe-button").prop('disabled', true);
+            Mixmesh.post(
+                "/dj/system/wipe",
+                {
+                    nym: $("#pseudonym").val(),
+                    "smtp-password": $("#mail-password").val(),
+                    "pop3-password": $("#mail-password").val(),
+                    "http-password": $("#http-password").val()
+                },
+                function(data, textStatus, _jqXHR) {
+                    console.log("/dj/wipe (POST) succeeded");
+                    console.log(data);
+                    
+                    // Disable top-level navigation bar
+                    $("#navbar-wipe a").removeAttr("href");    
+                    $("#navbar-wipe").removeClass("uk-active");
+                    $("#navbar-reinstall a").removeAttr("href");    
+                    
+                    step2($("#pseudonym").val(),
+                          $("#mail-password").val(),
+                          $("#http-password").val(),
+                          data["smtp-address"],
+                          data["pop3-address"],
+                          data["http-address"],
+                          data["public-key"],
+                          data["secret-key"]);
+                },
+                function(_jqXHR, textStatus, errorThrown) {
+                    console.log("/dj/wipe (POST) failed");
+                    console.log("textStatus: " + textStatus);
+                    console.log("errorThrown: " + errorThrown);
                 })
-        };
-    
-    var step1 =
-        function() {
-            $("#pseudonym").keyup(
-                function() {
-                    if ($(this).val().length < 6) {
-                        setClass(this, "uk-form-danger", "uk-form-success");
-                    } else {
-                        setClass(this, "uk-form-success", "uk-form-danger");
-                    }
-                    toggleWipeButton();
-                });    
-            $("#mail-password")
-                .keyup(passwordKeyupHandler("#mail-password"));
-            $("#mail-password-again")
-                .keyup(passwordAgainKeyupHandler("#mail-password"));
-            $("#http-password")
-                .keyup(passwordKeyupHandler("#http-password"));
-            $("#http-password-again")
-                .keyup(passwordAgainKeyupHandler("#http-password"));    
-            $("#mail-password-lock")
-                .click(passwordLockHandler("#mail-password"));
-            $("#http-password-lock")
-                .click(passwordLockHandler("#http-password"));
-            $("#wipe-button").click(
-                function() {
-                    $("#wipe-button").prop('disabled', true);
-                    Mixmesh.post(
-                        "/dj/system/wipe",
-                        {
-                            nym: $("#pseudonym").val(),
-                            "smtp-password": $("#mail-password").val(),
-                            "pop3-password": $("#mail-password").val(),
-                            "http-password": $("#http-password").val()
-                        },
-                        function(data, textStatus, _jqXHR) {
-                            console.log("/dj/wipe (POST) succeeded");
-                            console.log(data);
-                            
-                            // Disable top-level navigation bar
-                            $("#navbar-wipe a").removeAttr("href");    
-                            $("#navbar-wipe").removeClass("uk-active");
-                            $("#navbar-reinstall a").removeAttr("href");    
-
-                            step2($("#pseudonym").val(),
-                                  $("#mail-password").val(),
-                                  $("#http-password").val(),
-                                  data["smtp-address"],
-                                  data["pop3-address"],
-                                  data["http-address"],
-                                  data["public-key"],
-                                  data["secret-key"]);
-                        },
-                        function(_jqXHR, textStatus, errorThrown) {
-                            console.log("/dj/wipe (POST) failed");
-                            console.log("textStatus: " + textStatus);
-                            console.log("errorThrown: " + errorThrown);
-                        })
-                })
-        };
+        })
+    };
     
     return {
         step1: step1

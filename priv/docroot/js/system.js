@@ -1,32 +1,29 @@
 var System = (function() {
-    var validPassword =
-        function(id) {
-            $(id).removeClass("uk-form-danger")
-            $(id + "-again").removeClass("uk-form-danger")
-        };
+    var validPassword = function(id) {
+        $(id).removeClass("uk-form-danger")
+        $(id + "-again").removeClass("uk-form-danger")
+    };
     
-    var invalidPassword =
-        function(id) {
-            if (!$(id).hasClass("uk-form-danger")) {
-                $(id).addClass("uk-form-danger");
-                $(id + "-again").addClass("uk-form-danger");
-            }
-        };
-
+    var invalidPassword = function(id) {
+        if (!$(id).hasClass("uk-form-danger")) {
+            $(id).addClass("uk-form-danger");
+            $(id + "-again").addClass("uk-form-danger");
+        }
+    };
+    
     return {
         passwordKeyupHandler: function(id, passwordChanged) {
-            var handler =
-                function() {
-                    if ($(id).val().length < 6) {
-                        invalidPassword(id);
+            var handler = function() {
+                if ($(id).val().length < 6) {
+                    invalidPassword(id);
+                } else {
+                    if ($(id).val() == $(id + "-again").val()) {
+                        passwordChanged($(id).val());
                     } else {
-                        if ($(id).val() == $(id + "-again").val()) {
-                            passwordChanged($(id).val());
-                        } else {
-                            invalidPassword(id);
-                        }
+                        invalidPassword(id);
                     }
-                };
+                }
+            };
             return handler;
         },
         mailPasswordChanged: function(password) {

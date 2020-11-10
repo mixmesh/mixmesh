@@ -16,7 +16,7 @@ var Keys = (function() {
             }
         });
     };
-
+    
     var createRow = function(key) {
         var row =
             ml("tr", {},
@@ -232,19 +232,13 @@ $(document).ready(function() {
                 }
                 $("#select-all").prop("checked", false);
 
-                // Trigger generic dialog
-                $("#generic-dialog-close").hide();
-                $("#generic-dialog-title").text("Export succeeded").show();
-                $("#generic-dialog-content")
-                    .empty()
-                    .html(
-                        "<p>You have exported " + data.size + " public key(s) into <a href=\"" + data["uri-path"] + "\">" + data["uri-path"] + "</a>. Do with them as you please, e.g. use them in a wipe/reinstall and/or give them to a friend.</p>");
-                $("#generic-dialog-cancel").hide();
-                $("#generic-dialog-ok")
-                    .click(function() {
-                        UIkit.modal("#generic-dialog").hide();
-                    }).show();
-                UIkit.modal("#generic-dialog").show();
+                Mixmesh.showGenericDialog({
+                    title: "Export succeeded",
+                    content: "<p>You have exported " + data.size + " public key(s) into <a href=\"" + data["uri-path"] + "\">" + data["uri-path"] + "</a>. Do with them as you please, e.g. use them in a wipe/reinstall and/or give them to a friend.</p>",
+                    onok: function() {
+                        Mixmesh.hideGenericDialog();
+                    }
+                });
             },
             function(_jqXHR, textStatus, errorThrown) {
                 console.log("/dj/key/export (POST) failed");
@@ -255,22 +249,17 @@ $(document).ready(function() {
                 $("#delete-selected-button").prop('disabled', false);
                 $("#export-selected-button").prop('disabled', false);
 
-                // Trigger generic dialog
-                $("#generic-dialog-close").hide();
-                $("#generic-dialog-title").text("Export failed").show();
-                $("#generic-dialog-content")
-                    .empty()
-                    .html(
-                        "<p>The keys could not be exported ("+ textStatus + ") [" + errorThrown + "]</p>");
-                $("#generic-dialog-cancel").hide();
-                $("#generic-dialog-ok")
-                    .click(function() {
+                Mixmesh.showGenericDialog({
+                    title: "Export failed",
+                    content: "<p>The keys could not be exported ("+ textStatus + ") [" + errorThrown + "]</p>",
+                    onok: function() {
+                        Mixmesh.hideGenericDialog();
                         UIkit.modal("#generic-dialog").hide();
-                    }).show();
-                UIkit.modal("#generic-dialog").show();
+                    }
+                });
             });
     });
-
+    
     // Add handler to export-all button
     $("#export-all-button").click(function() {
         Mixmesh.post(
@@ -280,19 +269,13 @@ $(document).ready(function() {
                 console.log("/dj/key/export (POST) succeeded");
                 console.log("All keys have been exported into " + data);
 
-                // Trigger generic dialog
-                $("#generic-dialog-close").hide();
-                $("#generic-dialog-title").text("Export succeeded").show();
-                $("#generic-dialog-content")
-                    .empty()
-                    .html(
-                        "<p>You have exported " + data.size + " public key(s) into <a href=\"" + data["uri-path"] + "\">" + data["uri-path"] + "</a>. Do with them as you please, e.g. use them in a wipe/reinstall and/or give them to a friend.</p>");
-                $("#generic-dialog-cancel").hide();
-                $("#generic-dialog-ok")
-                    .click(function() {
-                        UIkit.modal("#generic-dialog").hide();
-                    }).show();
-                UIkit.modal("#generic-dialog").show();
+                Mixmesh.showGenericDialog({
+                    title: "Export succeeded",
+                    content: "<p>You have exported " + data.size + " public key(s) into <a href=\"" + data["uri-path"] + "\">" + data["uri-path"] + "</a>. Do with them as you please, e.g. use them in a wipe/reinstall and/or give them to a friend.</p>",
+                    onok: function() {
+                        Mixmesh.hideGenericDialog();
+                    }
+                });
             },
             function(_jqXHR, textStatus, errorThrown) {
                 console.log("/dj/key/export (POST) failed");
