@@ -44,17 +44,18 @@
         <img src="/pics/camera-snapshot.png"></img>
       </div>
     </div>
-    <div id="key-added-dialog" uk-modal>
+    <div id="generic-dialog" uk-modal>
       <div class="uk-modal-dialog uk-modal-body">
-        <h3 class="uk-modal-title">Contact recognized</h3>
-        <p>
-          You have added a new contact to your list of contacts.
-        </p>
-        <p class="uk-text-right">
-          <button class="uk-button uk-button-default"
-                  type="button"
-                  onclick = "UIkit.modal('#key-added-dialog').hide()">OK</button>
-        </p>
+        <h3 id="generic-dialog-title"
+            class="uk-modal-title"></h3>
+        <div id="generic-dialog-content"></div>
+        <div id="generic-dialog-buttons" class="uk-text-right">
+          <button id="generic-dialog-cancel"
+                  class="uk-button uk-button-default uk-modal-close"
+                  type="button">Cancel</button>
+          <button id="generic-dialog-ok" class="uk-button uk-button-default"
+                  type="button">OK</button>
+        </div>
       </div>
     </div>
   </body>
