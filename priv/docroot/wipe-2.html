@@ -12,7 +12,7 @@
     <script src="js/jquery.min.js"></script>
     <script src="js/uikit.min.js"></script>
     <script src="js/uikit-icons.min.js"></script>
-    <script src="js/qrcode.min.js"></script>
+    <script src="js/qrious.min.js"></script>
     <script src="js/jml.js"></script>
     <script src="js/mixmesh.js"></script>
     <script src="js/template.js"></script>
@@ -35,7 +35,7 @@
       <div id="content" class="uk-padding-small">
         <h3>Your secret key (2/3)</h3>
         <p>This is your secret key. Take a screenshot of it and put it in a secure place, i.e. ideally put a printout in a safe. If not your identity can not be salvaged if the box is lost (or stolen).</p>
-        <div id="qrcode" class="uk-flex uk-flex-center"></div>
+        <canvas id="qrcode" class="uk-flex uk-flex-center"></canvas>
         <script type="text/javascript">
 new QRCode(document.getElementById("qrcode"), "http://jindo.dev.naver.com/collie");
         </script>

@@ -68,15 +68,10 @@ var YourContacts = (function() {
                 });
         },
         showKey: function(event) {
-            $("#qrcode").empty();
-            $("#qrcode-title").text($(event.target).attr("data-nym"));
-            new QRCode($("#qrcode").get(0), {
-	        text: $(event.target).attr("data-public-key"),
-	        width: 800,
-	        height: 800,
-	        colorDark : "#000000",
-	        colorLight : "#ffffff",
-	        correctLevel : QRCode.CorrectLevel.H
+            var qr = new QRious({
+                element: $("#qrcode")[0],
+                size: 800,
+                value: $(event.target).attr("data-public-key")
             });
         },
         refreshRows: function() {

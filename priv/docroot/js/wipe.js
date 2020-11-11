@@ -36,20 +36,11 @@ var Wipe = (function() {
         $("#meta-content").load(
             "/wipe-2.html #content",
             function() {
-                // To avoid flicker (see below)
-                $("#meta-content").hide();
-                new QRCode($("#qrcode").get(0), {
-	            text: publicKey + secretKey,
-	            width: 800,
-	            height: 800,
-	            colorDark : "#000000",
-	            colorLight : "#ffffff",
-	            correctLevel : QRCode.CorrectLevel.H
+                var qr = new QRious({
+                    element: $("#qrcode")[0],
+                    size: 800,
+                    value: publicKey + secretKey
                 });
-                // To avoid flicker (see above)
-                setTimeout(function() {
-                    $("#meta-content").show();
-                }, 10);
                 $("#next-button").click(function() {
                     step3(nym, mailPassword, smtpAddress, pop3Address,
                           httpAddress);
