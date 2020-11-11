@@ -1,4 +1,4 @@
-var Keys = (function() {
+var YourContacts = (function() {
     var adornRows = function() {
         // Add event handlers to all checkboxes
         $("#key-table-body tr td :checkbox").click(function() {
@@ -30,16 +30,16 @@ var Keys = (function() {
                             "data-nym": key.nym,
                             "data-public-key": key["public-key"],
                             onclick: function(event) {
-                                Keys.showKey(event);
+                                YourContacts.showKey(event);
 	                    }},
-                      Keys.truncate(
+                      YourContacts.truncate(
                           key["public-key"], 16, "..."))),,
                 ml("td", {},
                    ml("span", {
                        class: "clickable uk-align-right",
                        "uk-icon": "trash",
                        onclick: function(event) {
-                           Keys.deleteKey(event, key.nym);
+                           YourContacts.deleteKey(event, key.nym);
 	               }}))]);
         return row;
     };
@@ -54,10 +54,17 @@ var Keys = (function() {
                     console.log(nym + " has been deleted");
                     $(event.target).closest("tr").remove();
                 },
-                function(_jqXHR, textStatus, errorThrown) {
+                function(jqXHR, textStatus, errorThrown) {
                     console.log("/dj/key/delete (POST) failed");
                     console.log("textStatus: " + textStatus);
                     console.log("errorThrown: " + errorThrown);
+                    Mixmesh.showGenericDialog({
+                        title: "Contact could not be deleted",
+                        content: "<p>" + Mixmesh.formatXHRError(jqXHR) + "</p>",
+                        onok: function() {
+                            Mixmesh.hideGenericDialog();
+                        }
+                    });                    
                 });
         },
         showKey: function(event) {
@@ -100,7 +107,7 @@ var Keys = (function() {
                 [subStringNym],
                 function(data, textStatus, _jqXHR) {
                     console.log("/dj/key/filter (POST) succeeded");
-                    console.log(data + " keys was found");
+                    console.log(data + " keys were found");
 
                     // Toggle buttons
                     $("#delete-selected-button").prop('disabled', true);
@@ -117,10 +124,17 @@ var Keys = (function() {
                     });
                     adornRows();
                 },
-                function(_jqXHR, textStatus, errorThrown) {
+                function(jqXHR, textStatus, errorThrown) {
                     console.log("/dj/key/filter (POST) failed");
                     console.log("textStatus: " + textStatus);
                     console.log("errorThrown: " + errorThrown);
+                    Mixmesh.showGenericDialog({
+                        title: "Filter not working",
+                        content: "<p>" + Mixmesh.formatXHRError(jqXHR) + "</p>",
+                        onok: function() {
+                            Mixmesh.hideGenericDialog();
+                        }
+                    });                    
                 });
         },
         truncate: function(fullStr, strLen, separator) {
@@ -145,9 +159,9 @@ $(document).ready(function() {
     // Add handler to filter input
     $("#filter").keyup(function() {
         if ($(this).val().length == 0) {
-            Keys.refreshRows();
+            YourContacts.refreshRows();
         } else {
-            Keys.filterRows($(this).val());
+            YourContacts.filterRows($(this).val());
         }
     });
 
@@ -190,11 +204,19 @@ $(document).ready(function() {
                     $(selectedRows[i]).remove();
                 }
             },
-            function(_jqXHR, textStatus, errorThrown) {
+            function(jqXHR, textStatus, errorThrown) {
                 console.log("/dj/key/delete (POST) failed");
                 console.log("textStatus: " + textStatus);
                 console.log("errorThrown: " + errorThrown);
 
+                Mixmesh.showGenericDialog({
+                    title: "Could not delete contacts",
+                    content: "<p>" + Mixmesh.formatXHRError(jqXHR) + "</p>",
+                    onok: function() {
+                        Mixmesh.hideGenericDialog();
+                    }
+                });                    
+                
                 // Enable buttons again
                 $("#delete-selected-button").prop('disabled', false);
                 $("#export-selected-button").prop('disabled', false);
@@ -224,7 +246,7 @@ $(document).ready(function() {
             selectedNyms,
             function(data, textStatus, _jqXHR) {
                 console.log("/dj/key/export (POST) succeeded");
-                console.log(selectedNyms + " has been exported into " + data);
+                console.log(selectedNyms + " has been exported to " + data);
 
                 // Clear checkboxes
                 for (i = 0; i < selectedCheckboxes.length; i++) {
@@ -234,13 +256,13 @@ $(document).ready(function() {
 
                 Mixmesh.showGenericDialog({
                     title: "Export succeeded",
-                    content: "<p>You have exported " + data.size + " public key(s) into <a href=\"" + data["uri-path"] + "\">" + data["uri-path"] + "</a>. Do with them as you please, e.g. use them in a wipe/reinstall and/or give them to a friend.</p>",
+                    content: "<p>You have exported " + data.size + " contacts(s) to a file named <a href=\"" + data["uri-path"] + "\">" + data["uri-path"] + "</a>. Download it and use it to perform a reinstall of a box and/or give them to a friend.</p>",
                     onok: function() {
                         Mixmesh.hideGenericDialog();
                     }
                 });
             },
-            function(_jqXHR, textStatus, errorThrown) {
+            function(jqXHR, textStatus, errorThrown) {
                 console.log("/dj/key/export (POST) failed");
                 console.log("textStatus: " + textStatus);
                 console.log("errorThrown: " + errorThrown);
@@ -248,10 +270,9 @@ $(document).ready(function() {
                 // Enable buttons again
                 $("#delete-selected-button").prop('disabled', false);
                 $("#export-selected-button").prop('disabled', false);
-
                 Mixmesh.showGenericDialog({
                     title: "Export failed",
-                    content: "<p>The keys could not be exported ("+ textStatus + ") [" + errorThrown + "]</p>",
+                    content: "<p>" + Mixmesh.formatXHRError(jqXHR) + "</p>",
                     onok: function() {
                         Mixmesh.hideGenericDialog();
                         UIkit.modal("#generic-dialog").hide();
@@ -267,11 +288,11 @@ $(document).ready(function() {
             "all",
             function(data, textStatus, _jqXHR) {
                 console.log("/dj/key/export (POST) succeeded");
-                console.log("All keys have been exported into " + data);
+                console.log("All contacts have been exported to " + data);
 
                 Mixmesh.showGenericDialog({
                     title: "Export succeeded",
-                    content: "<p>You have exported " + data.size + " public key(s) into <a href=\"" + data["uri-path"] + "\">" + data["uri-path"] + "</a>. Do with them as you please, e.g. use them in a wipe/reinstall and/or give them to a friend.</p>",
+                    content: "<p>You have exported " + data.size + " contacts(s) to a file named <a href=\"" + data["uri-path"] + "\">" + data["uri-path"] + "</a>. Download it and use it to perform a reinstall of a box and/or give them to a friend.</p>",
                     onok: function() {
                         Mixmesh.hideGenericDialog();
                     }
@@ -281,22 +302,16 @@ $(document).ready(function() {
                 console.log("/dj/key/export (POST) failed");
                 console.log("textStatus: " + textStatus);
                 console.log("errorThrown: " + errorThrown);
-
-                // Trigger generic dialog
-                $("#generic-dialog-close").hide();
-                $("#generic-dialog-title").text("Export failed").show();
-                $("#generic-dialog-content")
-                    .empty()
-                    .html(
-                        "<p>The keys could not be exported ("+ textStatus + ") [" + errorThrown + "]</p>");
-                $("#generic-dialog-cancel").hide();
-                $("#generic-dialog-ok")
-                    .click(function() {
+                Mixmesh.showGenericDialog({
+                    title: "Export failed",
+                    content: "<p>" + Mixmesh.formatXHRError(jqXHR) + "</p>",
+                    onok: function() {
+                        Mixmesh.hideGenericDialog();
                         UIkit.modal("#generic-dialog").hide();
-                    }).show();
-                UIkit.modal("#generic-dialog").show();
+                    }
+                });
             });
     });
     
-    Keys.refreshRows();
+    YourContacts.refreshRows();
 });
