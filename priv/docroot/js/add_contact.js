@@ -7,6 +7,7 @@ $(document).ready(function() {
 	"reader", { fps: 10, qrbox: 500 }, /* verbose= */ true);
     
     var onScanSuccess = function(qrMessage) {
+        console.log(qrMessage);
         html5QrcodeScanner.clear();
         Mixmesh.put(
             "/dj/key",

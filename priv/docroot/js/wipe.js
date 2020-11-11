@@ -91,7 +91,7 @@ var Wipe = (function() {
                     $("#navbar-wipe a").removeAttr("href");    
                     $("#navbar-wipe").removeClass("uk-active");
                     $("#navbar-reinstall a").removeAttr("href");    
-                    
+
                     step2($("#pseudonym").val(),
                           $("#mail-password").val(),
                           $("#http-password").val(),

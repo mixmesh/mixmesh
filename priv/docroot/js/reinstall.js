@@ -157,10 +157,22 @@ var Reinstall = (function() {
     };
     
     var step1 = function() {
-        setTimeout(function() {
-            // Hardwired for now
-            step2("BWFsaWNlBbqW75jjJ0aPtaq1zGPObUc7ZQ2WIwIRbX2bkVyOkeIkAC9Hg0oc+J7BD\/RG04TDvd1fETcpmJpyvV8QyeKJ3B3BMHi+LPWSRY60yX1XoA\/1A1iuIxTnt22Q68iXyMMlZvA+ivmNxJlsqN3PB2KOch45KkNzi9Hez9u7KTZBhp3d", "BWFsaWNlgMwhWxEO5Ovn0OpNnN62Mu9nvL7Zn1mzlgSBkfC2zZQII\/otb+1jPqLMCDQlFKqNEXGy\/N1PUhotV3w7JBitwsZSUeGfVi2gLJFEkrZ6tGjrUoN3eB65JIzpfQirlLX6oCO5Ab1t4rOmD4BsHvA+lYBbYw3QihArIGqcTyNrbiC1BbqW75jjJ0aPtaq1zGPObUc7ZQ2WIwIRbX2bkVyOkeIkAC9Hg0oc+J7BD\/RG04TDvd1fETcpmJpyvV8QyeKJ3B3BMHi+LPWSRY60yX1XoA\/1A1iuIxTnt22Q68iXyMMlZvA+ivmNxJlsqN3PB2KOch45KkNzi9Hez9u7KTZBhp3d");
-        }, 8000);
+        var onScanFailure = function(error) {
+	    console.warn(`QR error = ${error}`);
+        }
+        
+        var html5QrcodeScanner = new Html5QrcodeScanner(
+	    "reader", { fps: 10, qrbox: 500 }, /* verbose= */ true);
+        
+        var onScanSuccess = function(qrMessage) {
+            html5QrcodeScanner.clear();
+            console.log(qrMessage);
+            var publicKey = qrMessage.substring(0, 180);
+            var secretKey = qrMessage.substring(180);
+            step2(publicKey, secretKey);            
+        };
+        
+        html5QrcodeScanner.render(onScanSuccess, onScanFailure);
     };
     
     return {
