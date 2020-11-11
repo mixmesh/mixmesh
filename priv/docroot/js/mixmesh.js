@@ -19,6 +19,15 @@ var Mixmesh = (function() {
                 error: error
             });
         },
+        put: function(url, data, success, error) {
+            $.ajax(url, {
+                data: JSON.stringify(data),
+                contentType: "application/json",
+                type: "PUT",
+                success: success,
+                error: error
+            });
+        },
         setClass: function(id, newClass, oldClass) {
             if (!$(id).hasClass(newClass)) {
                 $(id).removeClass(oldClass);
