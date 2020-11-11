@@ -1,12 +1,4 @@
 var Mixmesh = (function() {
-    var validPassword = function(id) {
-        Mixmesh.setClass(id, "uk-form-success", "uk-form-danger");
-    };
-    
-    var invalidPassword = function(id) {
-        Mixmesh.setClass(id, "uk-form-danger", "uk-form-success");
-    };
-    
     return {
         setHeight: function(targetId, siblingIds) {
             var targetHeight = window.innerHeight;
@@ -33,12 +25,18 @@ var Mixmesh = (function() {
                 $(id).addClass(newClass);
             }
         },
+        validPassword: function(id) {
+            Mixmesh.setClass(id, "uk-form-success", "uk-form-danger");
+        },
+        invalidPassword: function(id) {
+            Mixmesh.setClass(id, "uk-form-danger", "uk-form-success");
+        },
         passwordKeyupHandler: function(id, callback) {
             var handler = function() {
                 if ($(id).val().length >= 6) {
-                    validPassword(id);
+                    Mixmesh.validPassword(id);
                 } else {
-                    invalidPassword(id);
+                    Mixmesh.invalidPassword(id);
                 }
                 callback();
             };
@@ -48,9 +46,9 @@ var Mixmesh = (function() {
             var handler = function() {
                 if ($(id).val() == $(id + "-again").val() &&
                     $(id).val().length >= 6) {
-                    validPassword(id + "-again");
+                    Mixmesh.validPassword(id + "-again");
                 } else {
-                    invalidPassword(id + "-again");
+                    Mixmesh.invalidPassword(id + "-again");
                 }
                 callback();
             };

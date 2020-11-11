@@ -59,7 +59,7 @@ var Wipe = (function() {
     
     var step1 = function() {
         $("#pseudonym").keyup(function() {
-            if ($(this).val().length < 6) {
+            if ($(this).val().length == 0) {
                 Mixmesh.setClass(this, "uk-form-danger", "uk-form-success");
             } else {
                 Mixmesh.setClass(this, "uk-form-success", "uk-form-danger");

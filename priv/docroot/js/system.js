@@ -1,48 +1,34 @@
 var System = (function() {
-    var validPassword = function(id) {
-        $(id).removeClass("uk-form-danger")
-        $(id + "-again").removeClass("uk-form-danger")
-    };
-    
-    var invalidPassword = function(id) {
-        if (!$(id).hasClass("uk-form-danger")) {
-            $(id).addClass("uk-form-danger");
-            $(id + "-again").addClass("uk-form-danger");
-        }
+    var notChangedPassword = function(id) {
+        $(id).removeClass("uk-form-danger").removeClass("uk-form-success")
     };
     
     return {
-        passwordKeyupHandler: function(id, passwordChanged) {
+        passwordKeyupHandler: function(id, updatePassword) {
+            var idAgain = id + "-again";
             var handler = function() {
-                if ($(id).val().length < 6) {
-                    invalidPassword(id);
+                if ($(id).val().length == 0 && $(idAgain).val().length == 0) {
+                    notChangedPassword(id);
+                    notChangedPassword(idAgain);
                 } else {
-                    if ($(id).val() == $(id + "-again").val()) {
-                        passwordChanged($(id).val());
+                    if ($(id).val().length < 6) {
+                        Mixmesh.invalidPassword(id);
+                        Mixmesh.invalidPassword(idAgain);
                     } else {
-                        invalidPassword(id);
+                        if ($(id).val() == $(idAgain).val()) {
+                            $(id).prop("disabled", true);
+                            $(idAgain).prop("disabled", true);
+                            updatePassword($(id).val());
+                        } else {
+                            Mixmesh.invalidPassword(id);
+                            Mixmesh.invalidPassword(idAgain);
+                        }
                     }
                 }
-            };
+            }
             return handler;
         },
-        passwordAgainKeyupHandler: function(id, passwordChanged) {
-            var handler = function() {
-                if ($(id).val().length < 6) {
-                    invalidPassword(id);
-                } else {
-                    if ($(id).val() == $(id + "-again").val()) {
-                        passwordChanged($(id).val());
-                    } else {
-                        invalidPassword(id);
-                    }
-                }
-            };
-            return handler;
-        },
-
-        
-        mailPasswordChanged: function(password) {
+        updateMailPassword: function(password) {
             Mixmesh.post(
                 "/dj/edit-config",
                 {
@@ -58,15 +44,38 @@ var System = (function() {
                 function(data, textStatus, _jqXHR) {
                     console.log("/dj/edit-config (POST) succeeded");
                     console.log(data);
-                    validPassword("#mail-password");
+                    notChangedPassword("#mail-password");
+                    notChangedPassword("#mail-password-again");
+                    Mixmesh.showGenericDialog({
+                        title: "Success",
+                        content: "<p>Mail password has been updated</p>",
+                        onok: function() {
+                            Mixmesh.hideGenericDialog();
+                        }
+                    });
+                    setTimeout(function() {
+                        $("#mail-password").prop("disabled", false);
+                        $("#mail-password-again").prop("disabled", false);
+                    }, 2000);
                 },
-                function(_jqXHR, textStatus, errorThrown) {
+                function(jqXHR, textStatus, errorThrown) {
                     console.log("/dj/edit-config (POST) failed");
                     console.log("textStatus: " + textStatus);
                     console.log("errorThrown: " + errorThrown);
+                    Mixmesh.showGenericDialog({
+                        title: "System not available",
+                        content: "<p>" + Mixmesh.formatXHRError(jqXHR) + "</p>",
+                        onok: function() {
+                            Mixmesh.hideGenericDialog();
+                        }
+                    });
+                    setTimeout(function() {
+                        $("#mail-password").prop("disabled", false);
+                        $("#mail-password-again").prop("disabled", false);
+                    }, 2000);
                 });
         },
-        httpPasswordChanged: function(password) {
+        updateHTTPPassword: function(password) {
             Mixmesh.post(
                 "/dj/edit-config",
                 {
@@ -79,29 +88,36 @@ var System = (function() {
                 function(data, textStatus, _jqXHR) {
                     console.log("/dj/edit-config (POST) succeeded");
                     console.log(data);
-                    validPassword("#http-password");
-                    validPassword("#http-password");
+                    notChangedPassword("#http-password");
+                    notChangedPassword("#http-password-again");
+                    Mixmesh.showGenericDialog({
+                        title: "Success",
+                        content: "<p>HTTP password has been updated</p>",
+                        onok: function() {
+                            Mixmesh.hideGenericDialog();
+                        }
+                    });
+                    setTimeout(function() {
+                        $("#http-password").prop("disabled", false);
+                        $("#http-password-again").prop("disabled", false);
+                    }, 2000);
                 },
-                function(_jqXHR, textStatus, errorThrown) {
+                function(jqXHR, textStatus, errorThrown) {
                     console.log("/dj/edit-config (POST) failed");
                     console.log("textStatus: " + textStatus);
                     console.log("errorThrown: " + errorThrown);
+                    Mixmesh.showGenericDialog({
+                        "title": "System not available",
+                        content: "<p>" + Mixmesh.formatXHRError(jqXHR) + "</p>",
+                        onok: function() {
+                            Mixmesh.hideGenericDialog();
+                        }
+                    });
+                    setTimeout(function() {
+                        $("#http-password").prop("disabled", false);
+                        $("#http-password-again").prop("disabled", false);
+                    }, 2000);
                 });
-        },
-        passwordLockHandler: function(id) {
-            var handler =
-                function() {
-                    if ($(id).attr("type") == "password") {
-                        $(id).attr("type", "text");
-                        $(id + "-again").attr("type", "text");
-                        $(this).attr("uk-icon", "icon: unlock");
-                    } else {
-                        $(id).attr("type", "password");
-                        $(id + "-again").attr("type", "password");
-                        $(this).attr("uk-icon", "icon: lock");
-                    }
-                }
-            return handler;
         }
     };
 })();
@@ -109,21 +125,21 @@ var System = (function() {
 $(document).ready(function() {
     $("#mail-password").keyup(
         System.passwordKeyupHandler(
-            "#mail-password", System.mailPasswordChanged));
+            "#mail-password", System.updateMailPassword));
     $("#mail-password-again").keyup(
         System.passwordKeyupHandler(
-            "#mail-password", System.mailPasswordChanged));
+            "#mail-password", System.updateMailPassword));
     $("#http-password").keyup(
         System.passwordKeyupHandler(
-            "#http-password", System.httpPasswordChanged));
+            "#http-password", System.updateHTTPPassword));
     $("#http-password-again").keyup(
         System.passwordKeyupHandler(
-            "#http-password", System.httpPasswordChanged));
+            "#http-password", System.updateHTTPPassword));
     $("#mail-password-lock").click(
-        System.passwordLockHandler("#mail-password"));
+        Mixmesh.passwordLockHandler("#mail-password"));
     $("#http-password-lock").click(
-        System.passwordLockHandler("#http-password"));
-    
+        Mixmesh.passwordLockHandler("#http-password"));
+
     Mixmesh.post(
         "/dj/get-config",
         {
@@ -144,15 +160,23 @@ $(document).ready(function() {
             var ip_port = data.player["smtp-server"].address.split(":");
             $("#smtp-ip-address").val(ip_port[0]);
             $("#smtp-port").val(ip_port[1]);
-
+            
             // POP3 server
             ip_port = data.player["pop3-server"].address.split(":");
             $("#pop3-ip-address").val(ip_port[0]);
             $("#pop3-port").val(ip_port[1]);
         },
-        function(_jqXHR, textStatus, errorThrown) {
+        function(jqXHR, textStatus, errorThrown) {
             console.log("/dj/get-config (POST) failed");
             console.log("textStatus: " + textStatus);
             console.log("errorThrown: " + errorThrown);
+
+            Mixmesh.showGenericDialog({
+                "title": "System not available",
+                content: "<p>" + Mixmesh.formatXHRError(jqXHR) + "</p>",
+                onok: function() {
+                    Mixmesh.hideGenericDialog();
+                }
+            });
         });
 });
