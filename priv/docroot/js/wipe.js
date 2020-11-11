@@ -111,7 +111,8 @@ var Wipe = (function() {
                         onok: function() {
                             Mixmesh.hideGenericDialog();
                         }
-                    });                    
+                    });
+                    $("#wipe-button").prop('disabled', false);
                 })
         })
     };

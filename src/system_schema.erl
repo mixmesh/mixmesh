@@ -6,7 +6,11 @@
 
 get() ->
     [{system,
-      [{'obscrete-dir',
+      [{'initialization-time',
+        #json_type{
+           name = {integer, 0,  unbounded},
+           reloadable = false}},
+       {'obscrete-dir',
         #json_type{
            name = writable_directory,
            typical = <<"/var/obscrete">>,
