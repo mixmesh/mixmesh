@@ -21,16 +21,21 @@ $(document).ready(function() {
                         if (secondsSinceInitialization < 3600) {
                             $("#title").text("Your secret key");
                             $("#description").html("This is your secret key. Take a screenshot of the key now before it is too late. The key will go away in " + Math.round((3600 - secondsSinceInitialization) / 60) + " minutes.</p>");
+                            var qr = new QRious({
+                                element: $("#qrcode")[0],
+                                size: 800,
+                                value: data.player.spiridon["public-key"] + data.player.spiridon["secret-key"]
+                            });
                         } else {
                             $("#title").text("Your public key");
                             $("#description").html("This is your public key. Show this key to anyone you want to communicate with and ask them to add it to their list of contacts.");
+                            var qr = new QRious({
+                                element: $("#qrcode")[0],
+                                size: 800,
+                                value: data.player.spiridon["public-key"]
+                            });
                         }
 
-                        var qr = new QRious({
-                            element: $("#qrcode")[0],
-                            size: 800,
-                            value: data.player.spiridon["public-key"]
-                        });
                     },
                     function(jqXHR, textStatus, errorThrown) {
                         console.log("/dj/get-config (POST) failed");
