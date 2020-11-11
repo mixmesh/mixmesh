@@ -110,10 +110,17 @@ var Wipe = (function() {
                           data["public-key"],
                           data["secret-key"]);
                 },
-                function(_jqXHR, textStatus, errorThrown) {
+                function(jqXHR, textStatus, errorThrown) {
                     console.log("/dj/wipe (POST) failed");
                     console.log("textStatus: " + textStatus);
                     console.log("errorThrown: " + errorThrown);
+                    Mixmesh.showGenericDialog({
+                        title: "Wipe failed",
+                        content: "<p>" + Mixmesh.formatError(jqXHR, textStatus, errorThrown) + "</p>",
+                        onok: function() {
+                            Mixmesh.hideGenericDialog();
+                        }
+                    });                    
                 })
         })
     };

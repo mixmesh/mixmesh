@@ -64,7 +64,7 @@ var System = (function() {
                     console.log("errorThrown: " + errorThrown);
                     Mixmesh.showGenericDialog({
                         title: "System not available",
-                        content: "<p>" + Mixmesh.formatXHRError(jqXHR) + "</p>",
+                        content: "<p>" + Mixmesh.formatError(jqXHR, textStatus, errorThrown) + "</p>",
                         onok: function() {
                             Mixmesh.hideGenericDialog();
                         }
@@ -108,7 +108,7 @@ var System = (function() {
                     console.log("errorThrown: " + errorThrown);
                     Mixmesh.showGenericDialog({
                         "title": "System not available",
-                        content: "<p>" + Mixmesh.formatXHRError(jqXHR) + "</p>",
+                        content: "<p>" + Mixmesh.formatError(jqXHR, textStatus, errorThrown) + "</p>",
                         onok: function() {
                             Mixmesh.hideGenericDialog();
                         }
@@ -173,7 +173,7 @@ $(document).ready(function() {
 
             Mixmesh.showGenericDialog({
                 "title": "System not available",
-                content: "<p>" + Mixmesh.formatXHRError(jqXHR) + "</p>",
+                content: "<p>" + Mixmesh.formatError(jqXHR, textStatus, errorThrown) + "</p>",
                 onok: function() {
                     Mixmesh.hideGenericDialog();
                 }

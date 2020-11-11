@@ -17,7 +17,7 @@ $(document).ready(function() {
         error: function(e) {
             Mixmesh.showGenericDialog({
                 title: "Import failed",
-                content: "<p>" + Mixmesh.formatXHRError(e.xhr) + "</p>",
+                content: "<p>" + Mixmesh.formatError(e.xhr) + "</p>",
                 onok: function() {
                     Mixmesh.hideGenericDialog();
                 }

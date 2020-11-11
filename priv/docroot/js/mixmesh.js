@@ -106,11 +106,11 @@ var Mixmesh = (function() {
         hideGenericDialog: function(params) {
             UIkit.modal("#generic-dialog").hide();
         },
-        formatXHRError: function(xhr) {
-            if (xhr.response && xhr.response.length > 0) {
-                return xhr.response;
+        formatError: function(jqXHR, _textStatus, _errorThrown) {
+            if (jqXHR.response && jqXHR.response.length > 0) {
+                return jqXHR.response;
             } else {
-                if (xhr.readyState == 4 && xhr.status == 0) {
+                if (jqXHR.readyState == 4 && jqXHR.status == 0) {
                     return "Network error";
                 } else {
                     return "Internal error";

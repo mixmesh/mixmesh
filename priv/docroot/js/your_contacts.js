@@ -60,7 +60,7 @@ var YourContacts = (function() {
                     console.log("errorThrown: " + errorThrown);
                     Mixmesh.showGenericDialog({
                         title: "Contact could not be deleted",
-                        content: "<p>" + Mixmesh.formatXHRError(jqXHR) + "</p>",
+                        content: "<p>" + Mixmesh.formatError(jqXHR, textStatus, errorThrown) + "</p>",
                         onok: function() {
                             Mixmesh.hideGenericDialog();
                         }
@@ -130,7 +130,7 @@ var YourContacts = (function() {
                     console.log("errorThrown: " + errorThrown);
                     Mixmesh.showGenericDialog({
                         title: "Filter not working",
-                        content: "<p>" + Mixmesh.formatXHRError(jqXHR) + "</p>",
+                        content: "<p>" + Mixmesh.formatError(jqXHR, textStatus, errorThrown) + "</p>",
                         onok: function() {
                             Mixmesh.hideGenericDialog();
                         }
@@ -211,7 +211,7 @@ $(document).ready(function() {
 
                 Mixmesh.showGenericDialog({
                     title: "Could not delete contacts",
-                    content: "<p>" + Mixmesh.formatXHRError(jqXHR) + "</p>",
+                    content: "<p>" + Mixmesh.formatError(jqXHR, textStatus, errorThrown) + "</p>",
                     onok: function() {
                         Mixmesh.hideGenericDialog();
                     }
@@ -272,7 +272,7 @@ $(document).ready(function() {
                 $("#export-selected-button").prop('disabled', false);
                 Mixmesh.showGenericDialog({
                     title: "Export failed",
-                    content: "<p>" + Mixmesh.formatXHRError(jqXHR) + "</p>",
+                    content: "<p>" + Mixmesh.formatError(jqXHR, textStatus, errorThrown) + "</p>",
                     onok: function() {
                         Mixmesh.hideGenericDialog();
                         UIkit.modal("#generic-dialog").hide();
@@ -298,13 +298,13 @@ $(document).ready(function() {
                     }
                 });
             },
-            function(_jqXHR, textStatus, errorThrown) {
+            function(jqXHR, textStatus, errorThrown) {
                 console.log("/dj/key/export (POST) failed");
                 console.log("textStatus: " + textStatus);
                 console.log("errorThrown: " + errorThrown);
                 Mixmesh.showGenericDialog({
                     title: "Export failed",
-                    content: "<p>" + Mixmesh.formatXHRError(jqXHR) + "</p>",
+                    content: "<p>" + Mixmesh.formatError(jqXHR, textStatus, errorThrown) + "</p>",
                     onok: function() {
                         Mixmesh.hideGenericDialog();
                         UIkit.modal("#generic-dialog").hide();

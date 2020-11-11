@@ -54,26 +54,31 @@ var Reinstall = (function() {
                         "pin-salt": pinSalt
                     },
                     fail: function(reason) {
-                        $("#generic-dialog-title").text("Import failed").show();
-                        $("#generic-dialog-content")
-                            .html("<p>" + reason + "</p>");
-                        UIkit.modal("#generic-dialog").show();
+                        Mixmesh.showGenericDialog({
+                            title: "Import failed",
+                            content: "<p>" + reason + "</p>",
+                            onok: function() {
+                                Mixmesh.hideGenericDialog();
+                            }
+                        });                    
                     },
                     error: function(e) {
-                        $("#generic-dialog-title").text("Import failed").show();
-                        $("#generic-dialog-content")
-                            .html("<p>" + e.xhr.response + "</p>");
-                        UIkit.modal("#generic-dialog").show();
+                        Mixmesh.showGenericDialog({
+                            title: "Import failed",
+                            content: "<p>" + Mixmesh.formatError(e.xhr) + "</p>",
+                            onok: function() {
+                                Mixmesh.hideGenericDialog();
+                            }
+                        });                    
                     },
                     completeAll: function(xhr) {
-                        $("#generic-dialog-title")
-                            .text("Import succeeded").show();
-                        $("#generic-dialog-content")
-                            .empty()
-                            .html("<p>You have imported " +
-                                  xhr.responseText +
-                                  " public keys.</p>");
-                        UIkit.modal("#generic-dialog").show();
+                        Mixmesh.showGenericDialog({
+                            title: "Import succeeded",
+                            content: "<p>You have imported " + xhr.responseText + " contacts.</p>");
+                            onok: function() {
+                                Mixmesh.hideGenericDialog();
+                            }
+                        });                    
                     }
                 });
             });
@@ -138,16 +143,14 @@ var Reinstall = (function() {
                             console.log("/dj/reinstall (POST) failed");
                             console.log("textStatus: " + textStatus);
                             console.log("errorThrown: " + errorThrown);
-                            
-                            // Error dialog
-                            $("#generic-dialog-title")
-                                .text("Reinstall failed").show();
-                            $("#generic-dialog-content")
-                                .html("<p>Internal error: " +
-                                      jqXHR.responseText + "</p>");
-                            UIkit.modal("#generic-dialog").show();
-                            $("#reinstall-button")
-                                .prop('disabled', false);
+                            Mixmesh.showGenericDialog({
+                                title: "Reinstall failed",
+                                content: "<p>" + Mixmesh.formatError(jqXHR, textStatus, errorThrown) + "</p>",
+                                onok: function() {
+                                    Mixmesh.hideGenericDialog();
+                                }
+                            });                    
+                            $("#reinstall-button").prop('disabled', false);
                         });
                 });
             })
