@@ -32,26 +32,22 @@ var Mixmesh = (function() {
             Mixmesh.setClass(id, "uk-form-danger", "uk-form-success");
         },
         passwordKeyupHandler: function(id, callback) {
+            var idAgain = id + "-again";
             var handler = function() {
-                if ($(id).val().length >= 6) {
-                    Mixmesh.validPassword(id);
-                } else {
+                if ($(id).val().length < 6) {
                     Mixmesh.invalidPassword(id);
-                }
-                callback();
-            };
-            return handler;
-        },
-        passwordAgainKeyupHandler: function(id, callback) {
-            var handler = function() {
-                if ($(id).val() == $(id + "-again").val() &&
-                    $(id).val().length >= 6) {
-                    Mixmesh.validPassword(id + "-again");
+                    Mixmesh.invalidPassword(idAgain);
                 } else {
-                    Mixmesh.invalidPassword(id + "-again");
+                    if ($(id).val() == $(idAgain).val()) {
+                        Mixmesh.validPassword(id);
+                        Mixmesh.validPassword(idAgain);
+                    } else {
+                        Mixmesh.invalidPassword(id);
+                        Mixmesh.invalidPassword(idAgain);
+                    }
                 }
                 callback();
-            };
+            }
             return handler;
         },
         passwordLockHandler: function(id) {

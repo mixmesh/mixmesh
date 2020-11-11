@@ -71,13 +71,13 @@ var Wipe = (function() {
                    .passwordKeyupHandler("#mail-password", toggleWipeButton))
         $("#mail-password-again")
             .keyup(Mixmesh
-                   .passwordAgainKeyupHandler("#mail-password", toggleWipeButton));
+                   .passwordKeyupHandler("#mail-password", toggleWipeButton));
         $("#http-password")
             .keyup(Mixmesh
                    .passwordKeyupHandler("#http-password", toggleWipeButton));
         $("#http-password-again")
             .keyup(Mixmesh
-                   .passwordAgainKeyupHandler("#http-password", toggleWipeButton));    
+                   .passwordKeyupHandler("#http-password", toggleWipeButton));    
         $("#mail-password-lock")
             .click(Mixmesh.passwordLockHandler("#mail-password"));
         $("#http-password-lock")

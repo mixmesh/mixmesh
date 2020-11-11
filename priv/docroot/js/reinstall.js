@@ -89,14 +89,14 @@ var Reinstall = (function() {
                                "#mail-password", toggleReinstallButton));
                 $("#mail-password-again")
                     .keyup(Mixmesh
-                           .passwordAgainKeyupHandler(
+                           .passwordKeyupHandler(
                                "#mail-password", toggleReinstallButton));
                 $("#http-password")
                     .keyup(Mixmesh.passwordKeyupHandler(
                         "#http-password", toggleReinstallButton));
                 $("#http-password-again")
                     .keyup(Mixmesh
-                           .passwordAgainKeyupHandler(
+                           .passwordKeyupHandler(
                                "#http-password", toggleReinstallButton));
                 $("#mail-password-lock")
                     .click(Mixmesh.passwordLockHandler("#mail-password"));
