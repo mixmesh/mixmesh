@@ -74,7 +74,7 @@ var Reinstall = (function() {
                     completeAll: function(xhr) {
                         Mixmesh.showGenericDialog({
                             title: "Import succeeded",
-                            content: "<p>You have imported " + xhr.responseText + " contacts.</p>");
+                            content: "<p>You have imported " + xhr.responseText + " contacts.</p>",
                             onok: function() {
                                 Mixmesh.hideGenericDialog();
                             }

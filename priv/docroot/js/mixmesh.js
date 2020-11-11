@@ -38,11 +38,10 @@ var Mixmesh = (function() {
                     Mixmesh.invalidPassword(id);
                     Mixmesh.invalidPassword(idAgain);
                 } else {
+                    Mixmesh.validPassword(id);
                     if ($(id).val() == $(idAgain).val()) {
-                        Mixmesh.validPassword(id);
                         Mixmesh.validPassword(idAgain);
                     } else {
-                        Mixmesh.invalidPassword(id);
                         Mixmesh.invalidPassword(idAgain);
                     }
                 }
