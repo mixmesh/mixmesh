@@ -2,10 +2,10 @@ $(document).ready(function() {
     var onScanFailure = function(error) {
 	console.warn(`QR error = ${error}`);
     }
-    
+
     var html5QrcodeScanner = new Html5QrcodeScanner(
 	"reader", { fps: 10, qrbox: 500 }, /* verbose= */ true);
-    
+
     var onScanSuccess = function(qrMessage) {
         console.log(qrMessage);
         html5QrcodeScanner.clear();
@@ -30,7 +30,8 @@ $(document).ready(function() {
                 console.log("errorThrown: " + errorThrown);
                 Mixmesh.showGenericDialog({
                     title: "Contact not recognized",
-                    content: "<p>" + Mixmesh.formatError(jqXHR, textStatus, errorThrown) + "</p>",
+                    content: "<p>" + Mixmesh.formatError(
+                        jqXHR, textStatus, errorThrown) + "</p>",
                     onok: function() {
                         Mixmesh.hideGenericDialog();
                         UIkit.modal("#generic-dialog").hide();
@@ -39,6 +40,6 @@ $(document).ready(function() {
                 html5QrcodeScanner.render(onScanSuccess, onScanFailure);
             });
     };
-    
+
     html5QrcodeScanner.render(onScanSuccess, onScanFailure);
 });

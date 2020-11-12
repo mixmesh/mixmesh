@@ -5,16 +5,16 @@ var Wipe = (function() {
             $("#mail-password-again").hasClass("uk-form-success") &&
             $("#http-password").hasClass("uk-form-success") &&
             $("#http-password-again").hasClass("uk-form-success")) {
-            if ($("#wipe-button").prop('disabled')) {
-                $("#wipe-button").prop('disabled', false);
+            if ($("#wipe-button").prop("disabled")) {
+                $("#wipe-button").prop("disabled", false);
             }
         } else {
-            if (!$("#wipe-button").prop('disabled')) {
-                $("#wipe-button").prop('disabled', true);
+            if (!$("#wipe-button").prop("disabled")) {
+                $("#wipe-button").prop("disabled", true);
             }
         }
     };
-        
+
     var step3 = function(nym, mailPassword, smtpAddress, pop3Address,
                          httpAddress) {
         $("#meta-content").load(
@@ -30,7 +30,7 @@ var Wipe = (function() {
                 $("#mail-password").val(mailPassword);
             });
     };
-    
+
     var step2 = function(nym, mailPassword, httpPassword, smtpAddress,
                          pop3Address, httpAddress, publicKey, secretKey) {
         $("#meta-content").load(
@@ -47,7 +47,7 @@ var Wipe = (function() {
                 });
             })
     };
-    
+
     var step1 = function() {
         $("#pseudonym").keyup(function() {
             if ($(this).val().length == 0) {
@@ -56,7 +56,7 @@ var Wipe = (function() {
                 Mixmesh.setClass(this, "uk-form-success", "uk-form-danger");
             }
             toggleWipeButton();
-        });    
+        });
         $("#mail-password")
             .keyup(Mixmesh
                    .passwordKeyupHandler("#mail-password", toggleWipeButton))
@@ -68,13 +68,13 @@ var Wipe = (function() {
                    .passwordKeyupHandler("#http-password", toggleWipeButton));
         $("#http-password-again")
             .keyup(Mixmesh
-                   .passwordKeyupHandler("#http-password", toggleWipeButton));    
+                   .passwordKeyupHandler("#http-password", toggleWipeButton));
         $("#mail-password-lock")
             .click(Mixmesh.passwordLockHandler("#mail-password"));
         $("#http-password-lock")
             .click(Mixmesh.passwordLockHandler("#http-password"));
         $("#wipe-button").click(function() {
-            $("#wipe-button").prop('disabled', true);
+            $("#wipe-button").prop("disabled", true);
             Mixmesh.post(
                 "/dj/system/wipe",
                 {
@@ -86,11 +86,11 @@ var Wipe = (function() {
                 function(data, textStatus, _jqXHR) {
                     console.log("/dj/wipe (POST) succeeded");
                     console.log(data);
-                    
+
                     // Disable top-level navigation bar
-                    $("#navbar-wipe a").removeAttr("href");    
+                    $("#navbar-wipe a").removeAttr("href");
                     $("#navbar-wipe").removeClass("uk-active");
-                    $("#navbar-reinstall a").removeAttr("href");    
+                    $("#navbar-reinstall a").removeAttr("href");
 
                     step2($("#pseudonym").val(),
                           $("#mail-password").val(),
@@ -107,16 +107,17 @@ var Wipe = (function() {
                     console.log("errorThrown: " + errorThrown);
                     Mixmesh.showGenericDialog({
                         title: "Wipe failed",
-                        content: "<p>" + Mixmesh.formatError(jqXHR, textStatus, errorThrown) + "</p>",
+                        content: "<p>" + Mixmesh.formatError(
+                            jqXHR, textStatus, errorThrown) + "</p>",
                         onok: function() {
                             Mixmesh.hideGenericDialog();
                         }
                     });
-                    $("#wipe-button").prop('disabled', false);
+                    $("#wipe-button").prop("disabled", false);
                 })
         })
     };
-    
+
     return {
         step1: step1
     };

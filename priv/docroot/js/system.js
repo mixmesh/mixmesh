@@ -2,7 +2,7 @@ var System = (function() {
     var notChangedPassword = function(id) {
         $(id).removeClass("uk-form-danger").removeClass("uk-form-success")
     };
-    
+
     return {
         passwordKeyupHandler: function(id, updatePassword) {
             var idAgain = id + "-again";
@@ -64,7 +64,8 @@ var System = (function() {
                     console.log("errorThrown: " + errorThrown);
                     Mixmesh.showGenericDialog({
                         title: "System not available",
-                        content: "<p>" + Mixmesh.formatError(jqXHR, textStatus, errorThrown) + "</p>",
+                        content: "<p>" + Mixmesh.formatError(
+                            jqXHR, textStatus, errorThrown) + "</p>",
                         onok: function() {
                             Mixmesh.hideGenericDialog();
                         }
@@ -108,7 +109,8 @@ var System = (function() {
                     console.log("errorThrown: " + errorThrown);
                     Mixmesh.showGenericDialog({
                         "title": "System not available",
-                        content: "<p>" + Mixmesh.formatError(jqXHR, textStatus, errorThrown) + "</p>",
+                        content: "<p>" + Mixmesh.formatError(
+                            jqXHR, textStatus, errorThrown) + "</p>",
                         onok: function() {
                             Mixmesh.hideGenericDialog();
                         }
@@ -155,12 +157,12 @@ $(document).ready(function() {
         function(data, textStatus, _jqXHR) {
             console.log("/dj/get-config (POST) succeeded");
             console.log(data);
-            
+
             // SMTP server
             var ip_port = data.player["smtp-server"].address.split(":");
             $("#smtp-ip-address").val(ip_port[0]);
             $("#smtp-port").val(ip_port[1]);
-            
+
             // POP3 server
             ip_port = data.player["pop3-server"].address.split(":");
             $("#pop3-ip-address").val(ip_port[0]);
@@ -173,7 +175,8 @@ $(document).ready(function() {
 
             Mixmesh.showGenericDialog({
                 "title": "System not available",
-                content: "<p>" + Mixmesh.formatError(jqXHR, textStatus, errorThrown) + "</p>",
+                content: "<p>" + Mixmesh.formatError(
+                    jqXHR, textStatus, errorThrown) + "</p>",
                 onok: function() {
                     Mixmesh.hideGenericDialog();
                 }

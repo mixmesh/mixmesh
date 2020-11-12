@@ -3,15 +3,15 @@ var YourContacts = (function() {
         // Add event handlers to all checkboxes
         $("#key-table-body tr td :checkbox").click(function() {
             if ($(this).prop("checked")) {
-                $("#delete-selected-button").prop('disabled', false);
-                $("#export-selected-button").prop('disabled', false);
+                $("#delete-selected-button").prop("disabled", false);
+                $("#export-selected-button").prop("disabled", false);
             } else {
                 if ($("#key-table-body tr td :checkbox:checked")
                     .length == 0) {
                     $("#delete-selected-button")
-                        .prop('disabled', true);
+                        .prop("disabled", true);
                     $("#export-selected-button")
-                        .prop('disabled', true);
+                        .prop("disabled", true);
                 }
             }
         });
@@ -60,7 +60,8 @@ var YourContacts = (function() {
                     console.log("errorThrown: " + errorThrown);
                     Mixmesh.showGenericDialog({
                         title: "Contact could not be deleted",
-                        content: "<p>" + Mixmesh.formatError(jqXHR, textStatus, errorThrown) + "</p>",
+                        content: "<p>" + Mixmesh.formatError(
+                            jqXHR, textStatus, errorThrown) + "</p>",
                         onok: function() {
                             Mixmesh.hideGenericDialog();
                         }
@@ -80,9 +81,10 @@ var YourContacts = (function() {
                 function(data, status) {
                     if (status == "success") {
                         // Toggle buttons
-                        $("#delete-selected-button").prop('disabled', true);
-                        $("#export-selected-button").prop('disabled', true);
-                        $("#export-all-button").prop('disabled', data.length == 0);
+                        $("#delete-selected-button").prop("disabled", true);
+                        $("#export-selected-button").prop("disabled", true);
+                        $("#export-all-button").prop(
+                            "disabled", data.length == 0);
 
                         // Create key rows
                         $.each(data, function(_index, key) {
@@ -105,9 +107,9 @@ var YourContacts = (function() {
                     console.log(data + " keys were found");
 
                     // Toggle buttons
-                    $("#delete-selected-button").prop('disabled', true);
-                    $("#export-selected-button").prop('disabled', true);
-                    $("#export-all-button").prop('disabled', data.length == 0);
+                    $("#delete-selected-button").prop("disabled", true);
+                    $("#export-selected-button").prop("disabled", true);
+                    $("#export-all-button").prop("disabled", data.length == 0);
 
                     // Remove all key rows
                     $("#key-table-body").empty();
@@ -125,7 +127,8 @@ var YourContacts = (function() {
                     console.log("errorThrown: " + errorThrown);
                     Mixmesh.showGenericDialog({
                         title: "Filter not working",
-                        content: "<p>" + Mixmesh.formatError(jqXHR, textStatus, errorThrown) + "</p>",
+                        content: "<p>" + Mixmesh.formatError(
+                            jqXHR, textStatus, errorThrown) + "</p>",
                         onok: function() {
                             Mixmesh.hideGenericDialog();
                         }
@@ -136,7 +139,7 @@ var YourContacts = (function() {
             if (fullStr.length <= strLen) {
                 return fullStr;
             }
-            separator = separator || '...';
+            separator = separator || "...";
             var sepLen = separator.length;
             var charsToShow = strLen - sepLen;
             var frontChars = Math.ceil(charsToShow / 2);
@@ -163,8 +166,8 @@ $(document).ready(function() {
     // Select-all checkboxes
     $("#select-all").click(function() {
         var checkedStatus = this.checked;
-        $("#delete-selected-button").prop('disabled', !checkedStatus);
-        $("#export-selected-button").prop('disabled', !checkedStatus);
+        $("#delete-selected-button").prop("disabled", !checkedStatus);
+        $("#export-selected-button").prop("disabled", !checkedStatus);
         $("#key-table-body tr").find("td:first :checkbox").each(function() {
             $(this).prop("checked", checkedStatus);
         });
@@ -184,8 +187,8 @@ $(document).ready(function() {
         });
 
         // Disable buttons
-        $("#delete-selected-button").prop('disabled', true);
-        $("#export-selected-button").prop('disabled', true);
+        $("#delete-selected-button").prop("disabled", true);
+        $("#export-selected-button").prop("disabled", true);
 
         Mixmesh.post(
             "/dj/key/delete",
@@ -206,15 +209,16 @@ $(document).ready(function() {
 
                 Mixmesh.showGenericDialog({
                     title: "Could not delete contacts",
-                    content: "<p>" + Mixmesh.formatError(jqXHR, textStatus, errorThrown) + "</p>",
+                    content: "<p>" + Mixmesh.formatError(
+                        jqXHR, textStatus, errorThrown) + "</p>",
                     onok: function() {
                         Mixmesh.hideGenericDialog();
                     }
                 });
 
                 // Enable buttons again
-                $("#delete-selected-button").prop('disabled', false);
-                $("#export-selected-button").prop('disabled', false);
+                $("#delete-selected-button").prop("disabled", false);
+                $("#export-selected-button").prop("disabled", false);
             });
     });
 
@@ -233,8 +237,8 @@ $(document).ready(function() {
         });
 
         // Disable buttons
-        $("#delete-selected-button").prop('disabled', true);
-        $("#export-selected-button").prop('disabled', true);
+        $("#delete-selected-button").prop("disabled", true);
+        $("#export-selected-button").prop("disabled", true);
 
         Mixmesh.post(
             "/dj/key/export",
@@ -263,11 +267,12 @@ $(document).ready(function() {
                 console.log("errorThrown: " + errorThrown);
 
                 // Enable buttons again
-                $("#delete-selected-button").prop('disabled', false);
-                $("#export-selected-button").prop('disabled', false);
+                $("#delete-selected-button").prop("disabled", false);
+                $("#export-selected-button").prop("disabled", false);
                 Mixmesh.showGenericDialog({
                     title: "Export failed",
-                    content: "<p>" + Mixmesh.formatError(jqXHR, textStatus, errorThrown) + "</p>",
+                    content: "<p>" + Mixmesh.formatError(
+                        jqXHR, textStatus, errorThrown) + "</p>",
                     onok: function() {
                         Mixmesh.hideGenericDialog();
                         UIkit.modal("#generic-dialog").hide();
@@ -299,7 +304,8 @@ $(document).ready(function() {
                 console.log("errorThrown: " + errorThrown);
                 Mixmesh.showGenericDialog({
                     title: "Export failed",
-                    content: "<p>" + Mixmesh.formatError(jqXHR, textStatus, errorThrown) + "</p>",
+                    content: "<p>" + Mixmesh.formatError(
+                        jqXHR, textStatus, errorThrown) + "</p>",
                     onok: function() {
                         Mixmesh.hideGenericDialog();
                         UIkit.modal("#generic-dialog").hide();
