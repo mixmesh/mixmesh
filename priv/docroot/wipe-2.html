@@ -15,7 +15,6 @@
     <script src="js/qrious.min.js"></script>
     <script src="js/jml.js"></script>
     <script src="js/mixmesh.js"></script>
-    <script src="js/template.js"></script>
   </head>
   <body>
     <div class="uk-container uk-padding-remove uk-container-xsmall">
@@ -40,9 +39,11 @@
 new QRCode(document.getElementById("qrcode"), "http://jindo.dev.naver.com/collie");
         </script>
         <div uk-alert>
-          <b>Notice:</b> Have you taken a screenshot of the key yet? The key will only be available for one hour after the wipe.</div>
+          <b>Notice:</b> Have you taken a screenshot of the key yet?
+          The key will only be available for one hour after the wipe.
+        </div>
         <div class="uk-text-right">
-          <button class="uk-button uk-button-default" id="next-button"
+          <button class="uk-button" id="next-button"
                   type="button">Next</button>
         </div>
       </div>

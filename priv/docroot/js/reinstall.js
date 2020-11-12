@@ -163,13 +163,22 @@ var Reinstall = (function() {
         }
 
         var html5QrcodeScanner = new Html5QrcodeScanner(
-	    "reader", { fps: 10, qrbox: 300 }, /* verbose= */ true);
+	    "reader", { fps: 10, qrbox: 500 }, /* verbose= */ true);
 
         var onScanSuccess = function(qrMessage) {
             html5QrcodeScanner.clear();
             console.log(qrMessage);
             var publicKey = qrMessage.substring(0, 180);
             var secretKey = qrMessage.substring(180);
+
+            Mixmesh.showGenericDialog({
+                title: "Key recognized",
+                content: "<p>Please provide new passwords.</p>",
+                onok: function() {
+                    Mixmesh.hideGenericDialog();
+                }
+            });
+
             step2(publicKey, secretKey);
         };
 

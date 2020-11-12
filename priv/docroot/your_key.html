@@ -19,7 +19,7 @@
   <body>
     <div class="uk-container uk-padding-remove uk-container-xsmall">
       <nav id="navigation"
-           class="uk-navbar-container uk-container-expand" uk-navbar>
+           class="uk-navbar-container uk-container-expand" uk-navbar uk-sticky>
         <div class="uk-navbar-center">
           <ul class="uk-navbar-nav">
             <li class="uk-active">
@@ -43,7 +43,7 @@
       <div id="content" class="uk-padding-small">
         <h3 id="title"></h3>
         <p id="description"></p>
-        <canvas class="uk-margin-remove uk-padding-remove" id="qrcode"></canvas>
+        <canvas id="qrcode" class="uk-margin-remove uk-padding-remove"></canvas>
       </div>
     </div>
     <div id="generic-dialog" uk-modal>
