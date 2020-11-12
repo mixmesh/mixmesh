@@ -20,8 +20,8 @@ var System = (function() {
                             $(idAgain).prop("disabled", true);
                             updatePassword($(id).val());
                         } else {
-                            Mixmesh.invalidPassword(id);
-                            Mixmesh.invalidPassword(idAgain);
+                            Mixmesh.validPassword(id);
+                            Mixmesh.validPassword(idAgain);
                         }
                     }
                 }
@@ -125,22 +125,22 @@ var System = (function() {
 })();
 
 $(document).ready(function() {
-    $("#mail-password").keyup(
-        System.passwordKeyupHandler(
+    $("#mail-password")
+        .keyup(System.passwordKeyupHandler(
             "#mail-password", System.updateMailPassword));
-    $("#mail-password-again").keyup(
-        System.passwordKeyupHandler(
+    $("#mail-password-again")
+        .keyup(System.passwordKeyupHandler(
             "#mail-password", System.updateMailPassword));
-    $("#http-password").keyup(
-        System.passwordKeyupHandler(
+    $("#http-password")
+        .keyup(System.passwordKeyupHandler(
             "#http-password", System.updateHTTPPassword));
-    $("#http-password-again").keyup(
-        System.passwordKeyupHandler(
+    $("#http-password-again")
+        .keyup(System.passwordKeyupHandler(
             "#http-password", System.updateHTTPPassword));
-    $("#mail-password-lock").click(
-        Mixmesh.passwordLockHandler("#mail-password"));
-    $("#http-password-lock").click(
-        Mixmesh.passwordLockHandler("#http-password"));
+    $("#mail-password-lock")
+        .click(Mixmesh.passwordLockHandler("#mail-password"));
+    $("#http-password-lock")
+        .click(Mixmesh.passwordLockHandler("#http-password"));
 
     Mixmesh.post(
         "/dj/get-config",
