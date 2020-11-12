@@ -152,7 +152,7 @@ $(document).ready(function() {
                       ["#navigation", "#filter", "#key-table-buttons"]);
 
     // Add handler to filter input
-    $("#filter").keyup(function() {
+    $("#filter-input").keyup(function() {
         if ($(this).val().length == 0) {
             YourContacts.refreshRows();
         } else {
