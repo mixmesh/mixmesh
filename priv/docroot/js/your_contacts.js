@@ -139,8 +139,8 @@ var YourContacts = (function() {
             separator = separator || '...';
             var sepLen = separator.length;
             var charsToShow = strLen - sepLen;
-            var frontChars = Math.ceil(charsToShow/2);
-            var backChars = Math.floor(charsToShow/2);
+            var frontChars = Math.ceil(charsToShow / 2);
+            var backChars = Math.floor(charsToShow / 2);
             return fullStr.substr(0, frontChars) +
                 separator + fullStr.substr(fullStr.length - backChars);
         }
@@ -160,7 +160,7 @@ $(document).ready(function() {
         }
     });
 
-    // Select-all checkbox
+    // Select-all checkboxes
     $("#select-all").click(function() {
         var checkedStatus = this.checked;
         $("#delete-selected-button").prop('disabled', !checkedStatus);
