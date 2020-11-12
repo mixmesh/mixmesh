@@ -16,7 +16,7 @@ var YourContacts = (function() {
             }
         });
     };
-    
+
     var createRow = function(key) {
         var row =
             ml("tr", {},
@@ -43,7 +43,7 @@ var YourContacts = (function() {
 	               }}))]);
         return row;
     };
-    
+
     return {
         deleteKey: function(event, nym) {
             Mixmesh.post(
@@ -64,7 +64,7 @@ var YourContacts = (function() {
                         onok: function() {
                             Mixmesh.hideGenericDialog();
                         }
-                    });                    
+                    });
                 });
         },
         showKey: function(event) {
@@ -129,7 +129,7 @@ var YourContacts = (function() {
                         onok: function() {
                             Mixmesh.hideGenericDialog();
                         }
-                    });                    
+                    });
                 });
         },
         truncate: function(fullStr, strLen, separator) {
@@ -149,7 +149,7 @@ var YourContacts = (function() {
 
 $(document).ready(function() {
     Mixmesh.setHeight("#key-table",
-                      ["#navigation", "#search", "#key-table-buttons"]);
+                      ["#navigation", "#filter", "#key-table-buttons"]);
 
     // Add handler to filter input
     $("#filter").keyup(function() {
@@ -210,8 +210,8 @@ $(document).ready(function() {
                     onok: function() {
                         Mixmesh.hideGenericDialog();
                     }
-                });                    
-                
+                });
+
                 // Enable buttons again
                 $("#delete-selected-button").prop('disabled', false);
                 $("#export-selected-button").prop('disabled', false);
@@ -275,7 +275,7 @@ $(document).ready(function() {
                 });
             });
     });
-    
+
     // Add handler to export-all button
     $("#export-all-button").click(function() {
         Mixmesh.post(
@@ -307,6 +307,6 @@ $(document).ready(function() {
                 });
             });
     });
-    
+
     YourContacts.refreshRows();
 });
