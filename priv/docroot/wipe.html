@@ -38,24 +38,26 @@
             <!-- Pseudonym -->
             <div class="uk-width-1-1">
               <label class="uk-form-label"
-                     for="pseudonym">Pseudonym (at most 31 characters)</label>
+                     for="pseudonym">Pseudonym (<32)</label>
               <div class="uk-form-controls">
                 <input class="uk-input uk-form-danger" id="pseudonym"
-                       type="text" maxlength="31" tabindex="1">
+                       type="text" autocorrect="none" autocapitalize="none"
+                       maxlength="31" tabindex="1">
               </div>
             </div>
-            
+
             <!-- Mail password -->
             <div class="uk-width-1-2">
               <label class="uk-form-label"
-                     for="mail-password">Mail password (>= 6 characters) </label>
+                     for="mail-password">Mail password (>5) </label>
               <div class="uk-form-controls">
                 <div class="uk-position-relative">
                   <a class="uk-form-icon uk-form-icon-flip"
                      id="mail-password-lock"
                      href="javascript:void(0)" uk-icon="icon: lock"></a>
                   <input class="uk-input uk-form-danger" id="mail-password"
-                         type="password" tabindex="2">
+                         type="password" autocorrect="none"
+                         autocapitalize="none" tabindex="2">
                 </div>
               </div>
             </div>
@@ -64,21 +66,23 @@
                      for="mail-password-again">Mail password (again)</label>
               <div class="uk-form-controls">
                 <input class="uk-input uk-form-danger" id="mail-password-again"
-                       type="password" tabindex="3">
+                       type="password" autocorrect="none" autocapitalize="none"
+                       tabindex="3">
               </div>
             </div>
-            
+
             <!-- HTTP password -->
             <div class="uk-width-1-2">
               <label class="uk-form-label"
-                     for="http-password">HTTP password (>= 6 characters)</label>
+                     for="http-password">HTTP password (>5)</label>
               <div class="uk-form-controls">
                 <div class="uk-position-relative">
                   <a class="uk-form-icon uk-form-icon-flip"
                      id="http-password-lock"
                      href="javascript:void(0)" uk-icon="icon: lock"></a>
                   <input class="uk-input uk-form-danger" id="http-password"
-                         type="password" tabindex="4">
+                         type="password" autocorrect="none"
+                         autocapitalize="none" tabindex="4">
                 </div>
               </div>
             </div>
@@ -87,7 +91,8 @@
                      for="http-password-again">HTTP password (again)</label>
               <div class="uk-form-controls">
                 <input class="uk-input uk-form-danger" id="http-password-again"
-                       type="password" tabindex="5">
+                       type="password" autocorrect="none" autocapitalize="none"
+                       tabindex="5">
               </div>
             </div>
           </form>
