@@ -20,7 +20,7 @@ $(document).ready(function() {
                         if (secondsSinceInitialization < 3600) {
                             $("#title").text("Secret key");
                             $("#description")
-                                .html("This is your secret key. Take a screenshot of the key now before it is too late. The key will go away in " + Math.round((3600 - secondsSinceInitialization) / 60) + " minutes.</p>");
+                                .html("This is your secret key. Take a screenshot of the key now before it is too late. The key will go away in " + Mixmesh.formatAmount(Math.round((3600 - secondsSinceInitialization) / 60), "minute") + ".</p>");
                             var qr = new QRious({
                                 element: $("#qrcode")[0],
                                 size: 800,
