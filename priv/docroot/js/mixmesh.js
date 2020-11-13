@@ -39,7 +39,7 @@ var Mixmesh = (function() {
                 n = parseInt(n);
             }
             if (n == 0) {
-                return "no " + what + "s";
+                return "zero " + what + "s";
             } else if (n == 1) {
                 return "one " + what;
             } else {
