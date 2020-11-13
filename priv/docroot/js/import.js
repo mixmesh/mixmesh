@@ -1,6 +1,6 @@
 $(document).ready(function() {
     UIkit.upload("#select-contacts", {
-        url: "/v1/key/import",
+        url: "/key/import",
         name: "key-file",
         multiple: false,
         allow : "*.bin",

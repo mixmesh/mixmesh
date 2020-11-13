@@ -47,15 +47,15 @@ var Contacts = (function() {
     return {
         deleteKey: function(event, nym) {
             Mixmesh.post(
-                "/v1/key/delete",
+                "/key/delete",
                 [nym],
                 function(data, textStatus, _jqXHR) {
-                    console.log("/v1/key/delete (POST) succeeded");
+                    console.log("/key/delete (POST) succeeded");
                     console.log(nym + " has been deleted");
                     $(event.target).closest("tr").remove();
                 },
                 function(jqXHR, textStatus, errorThrown) {
-                    console.log("/v1/key/delete (POST) failed");
+                    console.log("/key/delete (POST) failed");
                     console.log("textStatus: " + textStatus);
                     console.log("errorThrown: " + errorThrown);
                     Mixmesh.showGenericDialog({
@@ -77,7 +77,7 @@ var Contacts = (function() {
         },
         refreshRows: function() {
             Mixmesh.get(
-                "/v1/key",
+                "/key",
                 function(data, status) {
                     if (status == "success") {
                         // Toggle buttons
@@ -93,17 +93,17 @@ var Contacts = (function() {
                         });
                         adornRows();
                     } else {
-                        console.log("/v1/key (GET) failed");
+                        console.log("/key (GET) failed");
                         console.log(data);
                     }
                 });
         },
         filterRows: function(subStringNym) {
             Mixmesh.post(
-                "/v1/key/filter",
+                "/key/filter",
                 [subStringNym],
                 function(data, textStatus, _jqXHR) {
-                    console.log("/v1/key/filter (POST) succeeded");
+                    console.log("/key/filter (POST) succeeded");
                     console.log(data + " keys were found");
 
                     // Toggle buttons
@@ -122,7 +122,7 @@ var Contacts = (function() {
                     adornRows();
                 },
                 function(jqXHR, textStatus, errorThrown) {
-                    console.log("/v1/key/filter (POST) failed");
+                    console.log("/key/filter (POST) failed");
                     console.log("textStatus: " + textStatus);
                     console.log("errorThrown: " + errorThrown);
                     Mixmesh.showGenericDialog({
@@ -191,10 +191,10 @@ $(document).ready(function() {
         $("#export-selected-button").prop("disabled", true);
 
         Mixmesh.post(
-            "/v1/key/delete",
+            "/key/delete",
             selectedNyms,
             function(data, textStatus, _jqXHR) {
-                console.log("/v1/key/delete (POST) succeeded");
+                console.log("/key/delete (POST) succeeded");
                 console.log(selectedNyms + " has been deleted");
 
                 // Remove deleted keys
@@ -203,7 +203,7 @@ $(document).ready(function() {
                 }
             },
             function(jqXHR, textStatus, errorThrown) {
-                console.log("/v1/key/delete (POST) failed");
+                console.log("/key/delete (POST) failed");
                 console.log("textStatus: " + textStatus);
                 console.log("errorThrown: " + errorThrown);
 
@@ -241,10 +241,10 @@ $(document).ready(function() {
         $("#export-selected-button").prop("disabled", true);
 
         Mixmesh.post(
-            "/v1/key/export",
+            "/key/export",
             selectedNyms,
             function(data, textStatus, _jqXHR) {
-                console.log("/v1/key/export (POST) succeeded");
+                console.log("/key/export (POST) succeeded");
                 console.log(selectedNyms + " has been exported to " + data);
 
                 // Clear checkboxes
@@ -255,14 +255,14 @@ $(document).ready(function() {
 
                 Mixmesh.showGenericDialog({
                     title: "Export succeeded",
-                    content: "<p>You have exported " + data.size + " contacts(s) to a file named <a href=\"" + data["uri-path"] + "\">" + data["uri-path"] + "</a>. Download it and use it to perform a reinstall of a box and/or give them to a friend.</p>",
+                    content: "<p>You have exported " + Mixmesh.formatAmount(data.size, "contact") + " to a file named <a href=\"" + data["uri-path"] + "\">" + data["uri-path"] + "</a>. Download it and use it to perform a reinstall of a box and/or give them to a friend.</p>",
                     onok: function() {
                         Mixmesh.hideGenericDialog();
                     }
                 });
             },
             function(jqXHR, textStatus, errorThrown) {
-                console.log("/v1/key/export (POST) failed");
+                console.log("/key/export (POST) failed");
                 console.log("textStatus: " + textStatus);
                 console.log("errorThrown: " + errorThrown);
 
@@ -284,22 +284,22 @@ $(document).ready(function() {
     // Add handler to export-all button
     $("#export-all-button").click(function() {
         Mixmesh.post(
-            "/v1/key/export",
+            "/key/export",
             "all",
             function(data, textStatus, _jqXHR) {
-                console.log("/v1/key/export (POST) succeeded");
+                console.log("/key/export (POST) succeeded");
                 console.log("All contacts have been exported to " + data);
 
                 Mixmesh.showGenericDialog({
                     title: "Export succeeded",
-                    content: "<p>You have exported " + data.size + " contacts(s) to a file named <a href=\"" + data["uri-path"] + "\">" + data["uri-path"] + "</a>. Download it and use it to perform a reinstall of a box and/or give them to a friend.</p>",
+                    content: "<p>You have exported " + Mixmesh.formatAmount(data.size, "contact") + " to a file named <a href=\"" + data["uri-path"] + "\">" + data["uri-path"] + "</a>. Download it and use it to perform a reinstall of a box and/or give them to a friend.</p>",
                     onok: function() {
                         Mixmesh.hideGenericDialog();
                     }
                 });
             },
             function(jqXHR, textStatus, errorThrown) {
-                console.log("/v1/key/export (POST) failed");
+                console.log("/key/export (POST) failed");
                 console.log("textStatus: " + textStatus);
                 console.log("errorThrown: " + errorThrown);
                 Mixmesh.showGenericDialog({

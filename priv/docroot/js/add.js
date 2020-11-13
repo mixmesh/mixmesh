@@ -10,10 +10,10 @@ $(document).ready(function() {
         console.log(qrMessage);
         html5QrcodeScanner.clear();
         Mixmesh.put(
-            "/v1/key",
+            "/key",
             qrMessage,
             function(nym, textStatus, _jqXHR) {
-                console.log("/v1/key (PUT) succeeded");
+                console.log("/key (PUT) succeeded");
                 console.log("Contact have been added");
                 Mixmesh.showGenericDialog({
                     title: "Contact recognized",
@@ -25,7 +25,7 @@ $(document).ready(function() {
                 html5QrcodeScanner.render(onScanSuccess, onScanFailure);
             },
             function(jqXHR, textStatus, errorThrown) {
-                console.log("/v1/key (PUT) failed");
+                console.log("/key (PUT) failed");
                 console.log("textStatus: " + textStatus);
                 console.log("errorThrown: " + errorThrown);
                 Mixmesh.showGenericDialog({

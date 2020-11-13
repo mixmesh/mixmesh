@@ -1,10 +1,10 @@
 $(document).ready(function() {
     Mixmesh.get(
-        "/v1/seconds-since-initialization",
+        "/seconds-since-initialization",
         function(secondsSinceInitialization, status, xhr) {
             if (status == "success") {
                 Mixmesh.post(
-                    "/v1/get-config",
+                    "/get-config",
                     {
                         player: {
                             spiridon: {
@@ -14,7 +14,7 @@ $(document).ready(function() {
                         }
                     },
                     function(data, textStatus, _jqXHR) {
-                        console.log("/v1/get-config (POST) succeeded");
+                        console.log("/get-config (POST) succeeded");
                         console.log(data.player.spiridon["public-key"]);
 
                         if (secondsSinceInitialization < 3600) {
@@ -40,7 +40,7 @@ $(document).ready(function() {
 
                     },
                     function(jqXHR, textStatus, errorThrown) {
-                        console.log("/v1/get-config (POST) failed");
+                        console.log("/get-config (POST) failed");
                         console.log("textStatus: " + textStatus);
                         console.log("errorThrown: " + errorThrown);
                         Mixmesh.showGenericDialog({
@@ -53,7 +53,7 @@ $(document).ready(function() {
                         });
                     });
             } else {
-                console.log("/v1/seconds-since-initialization (GET) failed");
+                console.log("/seconds-since-initialization (GET) failed");
                 console.log(secondsSinceInitialization);
                 Mixmesh.showGenericDialog({
                     title: "System not responsive",

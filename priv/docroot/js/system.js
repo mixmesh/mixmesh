@@ -29,7 +29,7 @@ var System = (function() {
         },
         updateMailPassword: function(password) {
             Mixmesh.post(
-                "/v1/edit-config",
+                "/edit-config",
                 {
                     "player": {
                         "smtp-server": {
@@ -41,7 +41,7 @@ var System = (function() {
                     }
                 },
                 function(data, textStatus, _jqXHR) {
-                    console.log("/v1/edit-config (POST) succeeded");
+                    console.log("/edit-config (POST) succeeded");
                     console.log(data);
                     notChangedPassword("#mail-password");
                     notChangedPassword("#mail-password-again");
@@ -58,7 +58,7 @@ var System = (function() {
                     }, 2000);
                 },
                 function(jqXHR, textStatus, errorThrown) {
-                    console.log("/v1/edit-config (POST) failed");
+                    console.log("/edit-config (POST) failed");
                     console.log("textStatus: " + textStatus);
                     console.log("errorThrown: " + errorThrown);
                     Mixmesh.showGenericDialog({
@@ -77,7 +77,7 @@ var System = (function() {
         },
         updateHTTPPassword: function(password) {
             Mixmesh.post(
-                "/v1/edit-config",
+                "/edit-config",
                 {
                     "player": {
                         "http-server": {
@@ -86,7 +86,7 @@ var System = (function() {
                     }
                 },
                 function(data, textStatus, _jqXHR) {
-                    console.log("/v1/edit-config (POST) succeeded");
+                    console.log("/edit-config (POST) succeeded");
                     console.log(data);
                     notChangedPassword("#http-password");
                     notChangedPassword("#http-password-again");
@@ -103,7 +103,7 @@ var System = (function() {
                     }, 2000);
                 },
                 function(jqXHR, textStatus, errorThrown) {
-                    console.log("/v1/edit-config (POST) failed");
+                    console.log("/edit-config (POST) failed");
                     console.log("textStatus: " + textStatus);
                     console.log("errorThrown: " + errorThrown);
                     Mixmesh.showGenericDialog({
@@ -142,7 +142,7 @@ $(document).ready(function() {
         .click(Mixmesh.passwordLockHandler("#http-password"));
 
     Mixmesh.post(
-        "/v1/get-config",
+        "/get-config",
         {
             "player": {
                 "smtp-server": {
@@ -154,7 +154,7 @@ $(document).ready(function() {
             }
         },
         function(data, textStatus, _jqXHR) {
-            console.log("/v1/get-config (POST) succeeded");
+            console.log("/get-config (POST) succeeded");
             console.log(data);
 
             // SMTP server
@@ -168,7 +168,7 @@ $(document).ready(function() {
             $("#pop3-port").val(ip_port[1]);
         },
         function(jqXHR, textStatus, errorThrown) {
-            console.log("/v1/get-config (POST) failed");
+            console.log("/get-config (POST) failed");
             console.log("textStatus: " + textStatus);
             console.log("errorThrown: " + errorThrown);
 

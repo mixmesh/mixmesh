@@ -76,7 +76,7 @@ var Install = (function() {
         $("#install-button").click(function() {
             $("#install-button").prop("disabled", true);
             Mixmesh.post(
-                "/v1/system/install",
+                "/system/install",
                 {
                     nym: $("#pseudonym").val(),
                     "smtp-password": $("#mail-password").val(),
@@ -84,7 +84,7 @@ var Install = (function() {
                     "http-password": $("#http-password").val()
                 },
                 function(data, textStatus, _jqXHR) {
-                    console.log("/v1/install (POST) succeeded");
+                    console.log("/install (POST) succeeded");
                     console.log(data);
 
                     // Disable top-level navigation bar
@@ -102,7 +102,7 @@ var Install = (function() {
                           data["secret-key"]);
                 },
                 function(jqXHR, textStatus, errorThrown) {
-                    console.log("/v1/install (POST) failed");
+                    console.log("/install (POST) failed");
                     console.log("textStatus: " + textStatus);
                     console.log("errorThrown: " + errorThrown);
                     Mixmesh.showGenericDialog({

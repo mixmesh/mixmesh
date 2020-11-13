@@ -43,7 +43,7 @@ var Reinstall = (function() {
 
                 // Select button
                 UIkit.upload("#select-contacts", {
-                    url: "/v1/key/import",
+                    url: "/key/import",
                     name: "key-file",
                     multiple: false,
                     allow : "*.bin",
@@ -110,7 +110,7 @@ var Reinstall = (function() {
                 $("#reinstall-button").click(function() {
                     $("#reinstall-button").prop("disabled", true);
                     Mixmesh.post(
-                        "/v1/system/reinstall",
+                        "/system/reinstall",
                         {
                             "public-key": publicKey,
                             "secret-key": secretKey,
@@ -120,7 +120,7 @@ var Reinstall = (function() {
                         },
                         function(data, textStatus, _jqXHR) {
                             console.log(
-                                "/v1/reinstall (POST) succeeded");
+                                "/reinstall (POST) succeeded");
                             console.log(data);
 
                             // Disable top-level navigation bar
@@ -140,7 +140,7 @@ var Reinstall = (function() {
                                   data["pin-salt"]);
                         },
                         function(jqXHR, textStatus, errorThrown) {
-                            console.log("/v1/reinstall (POST) failed");
+                            console.log("/reinstall (POST) failed");
                             console.log("textStatus: " + textStatus);
                             console.log("errorThrown: " + errorThrown);
                             Mixmesh.showGenericDialog({

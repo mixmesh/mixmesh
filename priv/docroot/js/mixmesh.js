@@ -34,6 +34,15 @@ var Mixmesh = (function() {
                 $(id).addClass(newClass);
             }
         },
+        formatAmount: function(n, what) {
+            if (n == 0) {
+                return "no " + what + "s";
+            } else if (n == 1) {
+                return "one " + what;
+            } else {
+                return n.toString() + " " + what + "s";
+            }
+        },
         validPassword: function(id) {
             Mixmesh.setClass(id, "uk-form-success", "uk-form-danger");
         },
@@ -79,21 +88,21 @@ var Mixmesh = (function() {
             } else {
                 $("#generic-dialog-title").hide();
             }
-            
+
             if (params.oncancel) {
                 $("#generic-dialog-cancel").click(params.oncancel);
                 $("#generic-dialog-cancel").show();
             } else {
                 $("#generic-dialog-cancel").hide();
             }
-            
+
             if (params.onok) {
                 $("#generic-dialog-ok").click(params.onok);
                 $("#generic-dialog-ok").show();
             } else {
                 $("#generic-dialog-ok").hide();
             }
-            
+
             if (params.oncancel && params.onok) {
                 Mixmesh.setClass("#generic-dialog-ok", "uk-button-primary",
                                  "uk-button-default");
@@ -101,14 +110,14 @@ var Mixmesh = (function() {
                 Mixmesh.setClass("#generic-dialog-ok", "uk-button-default",
                                  "uk-button-primary");
             }
-            
+
             if (params.content) {
                 $("#generic-dialog-content").html(params.content);
                 $("#generic-dialog-content").show();
             } else {
                 $("#generic-dialog-content").hide();
             }
-            
+
             UIkit.modal("#generic-dialog").show();
         },
         hideGenericDialog: function(params) {
