@@ -18,13 +18,14 @@
 
 ### Joakim
 
-* Write HTML pages as described in https://github.com/obscrete/obscrete/blob/master/doc/webui/suggestions.md. It should be fairly little work now that I have https://github.com/obscrete/obscrete/blob/master/doc/rest/suggestions.md implemented.
 * Make code reload more resiliant. I tried!!
 * Document README.md pin-salt digest
+* Rename /dj/* REST calls to /* and refresh (and rename) obscrete/doc/rest/suggestions.md
+* Refresh (and rename) obscrete/doc/webui/suggestions.md
+
 
 ### Both
 
-* Write REST commands.
 * Prata om en möjlig avnästlad lagring av config i app env.
 * remove MessageID from player\_sync\_serv
 * exchanging messages may be good a strategy when is comes to clients
@@ -56,13 +57,7 @@ maybe BUTTON to terminate connection
 
 ## Fixes needed
 
-* packet mode for player_sync. Is packet 2 enough or do we need packet 4?
 * Iron out the box installation procedure of the box in detail
-* Read/write public keys from PKI server?
-* How should we import new keys? An app? Mounted disk? How?
-.* Example simple web ui, import export show delete
-.* Export secret key once at startup
-* Go through all message mangling and make sure that we understand multipart MIME messages (when needed)
 
 ## Buffer session
 
