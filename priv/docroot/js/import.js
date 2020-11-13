@@ -10,7 +10,6 @@ $(document).ready(function() {
                 content: "<p>" + reason + "</p>",
                 onok: function() {
                     Mixmesh.hideGenericDialog();
-                    UIkit.modal("#generic-dialog").hide();
                 }
             });
         },

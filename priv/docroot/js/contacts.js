@@ -275,7 +275,6 @@ $(document).ready(function() {
                         jqXHR, textStatus, errorThrown) + "</p>",
                     onok: function() {
                         Mixmesh.hideGenericDialog();
-                        UIkit.modal("#generic-dialog").hide();
                     }
                 });
             });
@@ -308,7 +307,6 @@ $(document).ready(function() {
                         jqXHR, textStatus, errorThrown) + "</p>",
                     onok: function() {
                         Mixmesh.hideGenericDialog();
-                        UIkit.modal("#generic-dialog").hide();
                     }
                 });
             });
