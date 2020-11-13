@@ -1,4 +1,4 @@
-var YourContacts = (function() {
+var Contacts = (function() {
     var adornRows = function() {
         // Add event handlers to all checkboxes
         $("#key-table-body tr td :checkbox").click(function() {
@@ -30,16 +30,16 @@ var YourContacts = (function() {
                             "data-nym": key.nym,
                             "data-public-key": key["public-key"],
                             onclick: function(event) {
-                                YourContacts.showKey(event);
+                                Contacts.showKey(event);
 	                    }},
-                      YourContacts.truncate(
+                      Contacts.truncate(
                           key["public-key"], 16, "..."))),,
                 ml("td", {},
                    ml("span", {
                        class: "clickable uk-align-right",
                        "uk-icon": "trash",
                        onclick: function(event) {
-                           YourContacts.deleteKey(event, key.nym);
+                           Contacts.deleteKey(event, key.nym);
 	               }}))]);
         return row;
     };
@@ -157,9 +157,9 @@ $(document).ready(function() {
     // Add handler to filter input
     $("#filter-input").keyup(function() {
         if ($(this).val().length == 0) {
-            YourContacts.refreshRows();
+            Contacts.refreshRows();
         } else {
-            YourContacts.filterRows($(this).val());
+            Contacts.filterRows($(this).val());
         }
     });
 
@@ -314,5 +314,5 @@ $(document).ready(function() {
             });
     });
 
-    YourContacts.refreshRows();
+    Contacts.refreshRows();
 });

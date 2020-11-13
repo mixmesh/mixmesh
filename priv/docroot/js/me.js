@@ -1,5 +1,4 @@
 $(document).ready(function() {
-
     Mixmesh.get(
         "/dj/seconds-since-initialization",
         function(secondsSinceInitialization, status, xhr) {
@@ -19,7 +18,7 @@ $(document).ready(function() {
                         console.log(data.player.spiridon["public-key"]);
 
                         if (secondsSinceInitialization < 3600) {
-                            $("#title").text("Your secret key");
+                            $("#title").text("Secret key");
                             $("#description")
                                 .html("This is your secret key. Take a screenshot of the key now before it is too late. The key will go away in " + Math.round((3600 - secondsSinceInitialization) / 60) + " minutes.</p>");
                             var qr = new QRious({
@@ -29,7 +28,7 @@ $(document).ready(function() {
                                     data.player.spiridon["secret-key"]
                             });
                         } else {
-                            $("#title").text("Your public key");
+                            $("#title").text("Public key");
                             $("#description")
                                 .html("This is your public key. Show this key to anyone you want to communicate with and ask them to add it to their list of contacts.");
                             var qr = new QRious({
