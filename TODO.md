@@ -15,14 +15,12 @@
 * simulator fix grid demo!
 * Buffer management, send/recv messages
 
-
 ### Joakim
 
 * Make code reload more resiliant. I tried!!
 * Document README.md pin-salt digest
-* Rename /dj/* REST calls to /* and refresh (and rename) obscrete/doc/rest/suggestions.md
+* Refresh (and rename) obscrete/doc/rest/suggestions.md
 * Refresh (and rename) obscrete/doc/webui/suggestions.md
-
 
 ### Both
 
