@@ -22,7 +22,7 @@
            class="uk-navbar-container uk-container-expand" uk-navbar uk-sticky>
         <div class="uk-navbar-center">
           <ul class="uk-navbar-nav">
-            <li class="uk-active" id="navbar-wipe">
+            <li id="navbar-wipe" class="uk-active">
               <a href="wipe.html"><span uk-icon="bolt"></span>&nbsp;Wipe all</a>
             </li>
             <li id="navbar-reinstall">
@@ -40,7 +40,7 @@
               <label class="uk-form-label"
                      for="pseudonym">Pseudonym (<32)</label>
               <div class="uk-form-controls">
-                <input class="uk-input uk-form-danger" id="pseudonym"
+                <input id="pseudonym" class="uk-input uk-form-danger"
                        type="text" autocorrect="none" autocapitalize="none"
                        maxlength="31" tabindex="1">
               </div>
@@ -52,10 +52,11 @@
                      for="mail-password">Mail password (>5) </label>
               <div class="uk-form-controls">
                 <div class="uk-position-relative">
-                  <a class="uk-form-icon uk-form-icon-flip"
-                     id="mail-password-lock"
+                  <a id="mail-password-lock"
+                     class="uk-form-icon uk-form-icon-flip"
                      href="javascript:void(0)" uk-icon="icon: lock"></a>
-                  <input class="uk-input uk-form-danger" id="mail-password"
+                  <input id="mail-password"
+                         class="uk-input uk-form-danger"
                          type="password" autocorrect="none"
                          autocapitalize="none" tabindex="2">
                 </div>
@@ -65,7 +66,7 @@
               <label class="uk-form-label"
                      for="mail-password-again">Mail password (again)</label>
               <div class="uk-form-controls">
-                <input class="uk-input uk-form-danger" id="mail-password-again"
+                <input id="mail-password-again" class="uk-input uk-form-danger"
                        type="password" autocorrect="none" autocapitalize="none"
                        tabindex="3">
               </div>
@@ -77,10 +78,10 @@
                      for="http-password">HTTP password (>5)</label>
               <div class="uk-form-controls">
                 <div class="uk-position-relative">
-                  <a class="uk-form-icon uk-form-icon-flip"
-                     id="http-password-lock"
+                  <a id="http-password-lock"
+                     class="uk-form-icon uk-form-icon-flip"
                      href="javascript:void(0)" uk-icon="icon: lock"></a>
-                  <input class="uk-input uk-form-danger" id="http-password"
+                  <input id="http-password" class="uk-input uk-form-danger"
                          type="password" autocorrect="none"
                          autocapitalize="none" tabindex="4">
                 </div>
@@ -90,7 +91,7 @@
               <label class="uk-form-label"
                      for="http-password-again">HTTP password (again)</label>
               <div class="uk-form-controls">
-                <input class="uk-input uk-form-danger" id="http-password-again"
+                <input id="http-password-again" class="uk-input uk-form-danger"
                        type="password" autocorrect="none" autocapitalize="none"
                        tabindex="5">
               </div>
@@ -100,7 +101,7 @@
             <b>Notice:</b> Remember these parameters or you will be sorry.
           </div>
           <div class="uk-text-right">
-            <button class="uk-button uk-button-default" id="wipe-button"
+            <button id="wipe-button" class="uk-button uk-button-default"
                   type="button" disabled tabindex="6">Wipe now!</button>
           </div>
         </div>
