@@ -16,78 +16,61 @@
     <script src="js/reinstall.js"></script>
   </head>
   <body>
-    <div class="uk-container uk-padding-remove uk-container-xsmall">
-      <nav id="navigation"
-           class="uk-navbar-container uk-container-expand" uk-navbar>
-        <div class="uk-navbar-center">
-          <ul class="uk-navbar-nav">
-            <li id="navbar-wipe">
-              <a href="wipe.html"><span uk-icon="bolt"></span>&nbsp;Wipe all</a>
-            </li>
-            <li class="uk-active" id="navbar-reinstall">
-              <a href="reinstall.html"><span uk-icon="lifesaver"></span>&nbsp;Reinstall from backup</a>
-            </li>
-          </ul>
+    <div id="content" class="uk-padding-small">
+      <h3>Provide new passwords (2/4)</h3>
+      <form class="uk-grid-small" uk-grid>
+        <!-- Mail password -->
+        <div class="uk-width-1-2">
+          <label class="uk-form-label"
+                 for="mail-password">Mail password (>5) </label>
+          <div class="uk-form-controls">
+            <div class="uk-position-relative">
+              <a class="uk-form-icon uk-form-icon-flip"
+                 id="mail-password-lock"
+                 href="javascript:void(0)" uk-icon="icon: lock"></a>
+              <input class="uk-input uk-form-danger" id="mail-password"
+                     type="password" tabindex="2">
+            </div>
+          </div>
         </div>
-      </nav>
-      <div id="meta-content">
-        <div id="content" class="uk-padding-small">
-          <h3>Provide new passwords (2/4)</h3>
-          <form class="uk-grid-small" uk-grid>
-            <!-- Mail password -->
-            <div class="uk-width-1-2">
-              <label class="uk-form-label"
-                     for="mail-password">Mail password (>5) </label>
-              <div class="uk-form-controls">
-                <div class="uk-position-relative">
-                  <a class="uk-form-icon uk-form-icon-flip"
-                     id="mail-password-lock"
-                     href="javascript:void(0)" uk-icon="icon: lock"></a>
-                  <input class="uk-input uk-form-danger" id="mail-password"
-                         type="password" tabindex="2">
-                </div>
-              </div>
-            </div>
-            <div class="uk-width-1-2">
-              <label class="uk-form-label"
-                     for="mail-password-again">Mail password (again)</label>
-              <div class="uk-form-controls">
-                <input class="uk-input uk-form-danger" id="mail-password-again"
-                       type="password" tabindex="3">
-              </div>
-            </div>
+        <div class="uk-width-1-2">
+          <label class="uk-form-label"
+                 for="mail-password-again">Mail password (again)</label>
+          <div class="uk-form-controls">
+            <input class="uk-input uk-form-danger" id="mail-password-again"
+                   type="password" tabindex="3">
+          </div>
+        </div>
 
-            <!-- HTTP password -->
-            <div class="uk-width-1-2">
-              <label class="uk-form-label"
-                     for="http-password">HTTP password (>5)</label>
-              <div class="uk-form-controls">
-                <div class="uk-position-relative">
-                  <a class="uk-form-icon uk-form-icon-flip"
-                     id="http-password-lock"
-                     href="javascript:void(0)" uk-icon="icon: lock"></a>
-                  <input class="uk-input uk-form-danger" id="http-password"
-                         type="password" tabindex="4">
-                </div>
-              </div>
+        <!-- HTTP password -->
+        <div class="uk-width-1-2">
+          <label class="uk-form-label"
+                 for="http-password">HTTP password (>5)</label>
+          <div class="uk-form-controls">
+            <div class="uk-position-relative">
+              <a class="uk-form-icon uk-form-icon-flip"
+                 id="http-password-lock"
+                 href="javascript:void(0)" uk-icon="icon: lock"></a>
+              <input class="uk-input uk-form-danger" id="http-password"
+                     type="password" tabindex="4">
             </div>
-            <div class="uk-width-1-2">
-              <label class="uk-form-label"
-                     for="http-password-again">HTTP password (again)</label>
-              <div class="uk-form-controls">
-                <input class="uk-input uk-form-danger" id="http-password-again"
-                       type="password" tabindex="5">
-              </div>
-            </div>
-          </form>
-          <div uk-alert>
-            <b>Notice:</b> Remember these passwords or you will be sorry.
-          </div>
-          <div class="uk-text-right">
-            <button class="uk-button uk-button-default" id="reinstall-button"
-                    type="button" disabled tabindex="6">Reinstall now!</button>
           </div>
         </div>
+        <div class="uk-width-1-2">
+          <label class="uk-form-label"
+                 for="http-password-again">HTTP password (again)</label>
+          <div class="uk-form-controls">
+            <input class="uk-input uk-form-danger" id="http-password-again"
+                   type="password" tabindex="5">
+          </div>
+        </div>
+      </form>
+      <div uk-alert>
+        <b>Notice:</b> Remember these passwords or you will be sorry.
+      </div>
+      <div class="uk-text-right">
+        <button class="uk-button uk-button-default" id="reinstall-button"
+                type="button" disabled tabindex="6">Reinstall now!</button>
       </div>
     </div>
   </body>

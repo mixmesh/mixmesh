@@ -17,35 +17,16 @@
     <script src="js/mixmesh.js"></script>
   </head>
   <body>
-    <div class="uk-container uk-padding-remove uk-container-xsmall">
-      <nav id="navigation"
-           class="uk-navbar-container uk-container-expand" uk-navbar>
-        <div class="uk-navbar-center">
-          <ul class="uk-navbar-nav">
-            <li class="uk-active">
-              <a href="wipe.html"><span uk-icon="bolt"></span>&nbsp;Wipe all</a>
-            </li>
-            <li>
-              <a href="reinstall.html"><span uk-icon="lifesaver"></span>&nbsp;Reinstall from backup</a>
-            </li>
-          </ul>
-        </div>
-      </nav>
-      <div id="content" class="uk-padding-small">
-        <h3>Your secret key (2/3)</h3>
-        <p>This is your secret key. Take a screenshot and put it in a secure place, i.e. ideally put a printout in a safe. If not your identity can not be salvaged if the box is lost (or stolen).</p>
-        <canvas id="qrcode" class="uk-flex uk-flex-center"></canvas>
-        <script type="text/javascript">
-new QRCode(document.getElementById("qrcode"), "http://jindo.dev.naver.com/collie");
-        </script>
-        <div uk-alert>
-          <b>Notice:</b> Have you taken a screenshot of the key yet?
-          The key will only be available for one hour after the wipe.
-        </div>
-        <div class="uk-text-right">
-          <button class="uk-button" id="next-button"
-                  type="button">Next</button>
-        </div>
+    <div id="content" class="uk-padding-small">
+      <h3>Your secret key (2/3)</h3>
+      <p>This is your secret key. Take a screenshot and put it in a secure place, i.e. ideally put a printout in a safe. If not your identity can not be salvaged if the box is lost (or stolen).</p>
+      <canvas id="qrcode" class="uk-flex uk-flex-center"></canvas>
+      <div uk-alert>
+        <b>Notice:</b> Have you taken a screenshot of the key yet?
+        The key will only be available for one hour after the wipe.
+      </div>
+      <div class="uk-text-right">
+        <button id="next-button" class="uk-button" type="button">Next</button>
       </div>
     </div>
   </body>
