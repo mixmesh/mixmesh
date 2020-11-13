@@ -21,7 +21,6 @@ var System = (function() {
                             updatePassword($(id).val());
                         } else {
                             Mixmesh.validPassword(id);
-                            Mixmesh.validPassword(idAgain);
                         }
                     }
                 }
