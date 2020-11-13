@@ -26,7 +26,7 @@ $(document).ready(function() {
         completeAll: function(xhr) {
             Mixmesh.showGenericDialog({
                 title: "Import succeeded",
-                content: "<p>You have imported " + xhr.responseText + " contacts.</p>",
+                content: "<p>You have imported " + Mixmesh.formatAmount(xhr.responseText, "contact") + ".</p>",
                 onok: function() {
                     Mixmesh.hideGenericDialog();
                 }

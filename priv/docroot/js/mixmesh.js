@@ -35,6 +35,9 @@ var Mixmesh = (function() {
             }
         },
         formatAmount: function(n, what) {
+            if (typeof n == "string") {
+                n = parseInt(n);
+            }
             if (n == 0) {
                 return "no " + what + "s";
             } else if (n == 1) {
