@@ -1,16 +1,16 @@
-var Wipe = (function() {
-    var toggleWipeButton = function() {
+var Install = (function() {
+    var toggleInstallButton = function() {
         if ($("#pseudonym").hasClass("uk-form-success") &&
             $("#mail-password").hasClass("uk-form-success") &&
             $("#mail-password-again").hasClass("uk-form-success") &&
             $("#http-password").hasClass("uk-form-success") &&
             $("#http-password-again").hasClass("uk-form-success")) {
-            if ($("#wipe-button").prop("disabled")) {
-                $("#wipe-button").prop("disabled", false);
+            if ($("#install-button").prop("disabled")) {
+                $("#install-button").prop("disabled", false);
             }
         } else {
-            if (!$("#wipe-button").prop("disabled")) {
-                $("#wipe-button").prop("disabled", true);
+            if (!$("#install-button").prop("disabled")) {
+                $("#install-button").prop("disabled", true);
             }
         }
     };
@@ -18,7 +18,7 @@ var Wipe = (function() {
     var step3 = function(nym, mailPassword, smtpAddress, pop3Address,
                          httpAddress) {
         $("#meta-content").load(
-            "/wipe-3.html #content",
+            "/install-3.html #content",
             function() {
                 $("#email-address").val(nym + "@mixmesh.net");
                 var ip_port = smtpAddress.split(":");
@@ -34,7 +34,7 @@ var Wipe = (function() {
     var step2 = function(nym, mailPassword, httpPassword, smtpAddress,
                          pop3Address, httpAddress, publicKey, secretKey) {
         $("#meta-content").load(
-            "/wipe-2.html #content",
+            "/install-2.html #content",
             function() {
                 var qr = new QRious({
                     element: $("#qrcode")[0],
@@ -55,28 +55,28 @@ var Wipe = (function() {
             } else {
                 Mixmesh.setClass(this, "uk-form-success", "uk-form-danger");
             }
-            toggleWipeButton();
+            toggleInstallButton();
         });
         $("#mail-password")
             .keyup(Mixmesh
-                   .passwordKeyupHandler("#mail-password", toggleWipeButton))
+                   .passwordKeyupHandler("#mail-password", toggleInstallButton))
         $("#mail-password-again")
             .keyup(Mixmesh
-                   .passwordKeyupHandler("#mail-password", toggleWipeButton));
+                   .passwordKeyupHandler("#mail-password", toggleInstallButton));
         $("#http-password")
             .keyup(Mixmesh
-                   .passwordKeyupHandler("#http-password", toggleWipeButton));
+                   .passwordKeyupHandler("#http-password", toggleInstallButton));
         $("#http-password-again")
             .keyup(Mixmesh
-                   .passwordKeyupHandler("#http-password", toggleWipeButton));
+                   .passwordKeyupHandler("#http-password", toggleInstallButton));
         $("#mail-password-lock")
             .click(Mixmesh.passwordLockHandler("#mail-password"));
         $("#http-password-lock")
             .click(Mixmesh.passwordLockHandler("#http-password"));
-        $("#wipe-button").click(function() {
-            $("#wipe-button").prop("disabled", true);
+        $("#install-button").click(function() {
+            $("#install-button").prop("disabled", true);
             Mixmesh.post(
-                "/dj/system/wipe",
+                "/v1/system/install",
                 {
                     nym: $("#pseudonym").val(),
                     "smtp-password": $("#mail-password").val(),
@@ -84,12 +84,12 @@ var Wipe = (function() {
                     "http-password": $("#http-password").val()
                 },
                 function(data, textStatus, _jqXHR) {
-                    console.log("/dj/wipe (POST) succeeded");
+                    console.log("/v1/install (POST) succeeded");
                     console.log(data);
 
                     // Disable top-level navigation bar
-                    $("#navbar-wipe a").removeAttr("href");
-                    $("#navbar-wipe").removeClass("uk-active");
+                    $("#navbar-install a").removeAttr("href");
+                    $("#navbar-install").removeClass("uk-active");
                     $("#navbar-reinstall a").removeAttr("href");
 
                     step2($("#pseudonym").val(),
@@ -102,18 +102,18 @@ var Wipe = (function() {
                           data["secret-key"]);
                 },
                 function(jqXHR, textStatus, errorThrown) {
-                    console.log("/dj/wipe (POST) failed");
+                    console.log("/v1/install (POST) failed");
                     console.log("textStatus: " + textStatus);
                     console.log("errorThrown: " + errorThrown);
                     Mixmesh.showGenericDialog({
-                        title: "Wipe failed",
+                        title: "Install failed",
                         content: "<p>" + Mixmesh.formatError(
                             jqXHR, textStatus, errorThrown) + "</p>",
                         onok: function() {
                             Mixmesh.hideGenericDialog();
                         }
                     });
-                    $("#wipe-button").prop("disabled", false);
+                    $("#install-button").prop("disabled", false);
                 })
         })
     };
@@ -124,5 +124,5 @@ var Wipe = (function() {
 })();
 
 $(document).ready(function() {
-    Wipe.step1();
+    Install.step1();
 });

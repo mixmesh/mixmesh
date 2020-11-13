@@ -43,7 +43,7 @@ var Reinstall = (function() {
 
                 // Select button
                 UIkit.upload("#select-contacts", {
-                    url: "/dj/key/import",
+                    url: "/v1/key/import",
                     name: "key-file",
                     multiple: false,
                     allow : "*.bin",
@@ -110,7 +110,7 @@ var Reinstall = (function() {
                 $("#reinstall-button").click(function() {
                     $("#reinstall-button").prop("disabled", true);
                     Mixmesh.post(
-                        "/dj/system/reinstall",
+                        "/v1/system/reinstall",
                         {
                             "public-key": publicKey,
                             "secret-key": secretKey,
@@ -120,7 +120,7 @@ var Reinstall = (function() {
                         },
                         function(data, textStatus, _jqXHR) {
                             console.log(
-                                "/dj/reinstall (POST) succeeded");
+                                "/v1/reinstall (POST) succeeded");
                             console.log(data);
 
                             // Disable top-level navigation bar
@@ -128,7 +128,7 @@ var Reinstall = (function() {
                                 .removeAttr("href");
                             $("#navbar-reinstall")
                                 .removeClass("uk-active");
-                            $("#navbar-wipe a").removeAttr("href");
+                            $("#navbar-install a").removeAttr("href");
 
                             step3($("#mail-password").val(),
                                   data.nym,
@@ -140,7 +140,7 @@ var Reinstall = (function() {
                                   data["pin-salt"]);
                         },
                         function(jqXHR, textStatus, errorThrown) {
-                            console.log("/dj/reinstall (POST) failed");
+                            console.log("/v1/reinstall (POST) failed");
                             console.log("textStatus: " + textStatus);
                             console.log("errorThrown: " + errorThrown);
                             Mixmesh.showGenericDialog({

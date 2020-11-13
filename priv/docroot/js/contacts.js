@@ -47,15 +47,15 @@ var Contacts = (function() {
     return {
         deleteKey: function(event, nym) {
             Mixmesh.post(
-                "/dj/key/delete",
+                "/v1/key/delete",
                 [nym],
                 function(data, textStatus, _jqXHR) {
-                    console.log("/dj/key/delete (POST) succeeded");
+                    console.log("/v1/key/delete (POST) succeeded");
                     console.log(nym + " has been deleted");
                     $(event.target).closest("tr").remove();
                 },
                 function(jqXHR, textStatus, errorThrown) {
-                    console.log("/dj/key/delete (POST) failed");
+                    console.log("/v1/key/delete (POST) failed");
                     console.log("textStatus: " + textStatus);
                     console.log("errorThrown: " + errorThrown);
                     Mixmesh.showGenericDialog({
@@ -77,7 +77,7 @@ var Contacts = (function() {
         },
         refreshRows: function() {
             Mixmesh.get(
-                "/dj/key",
+                "/v1/key",
                 function(data, status) {
                     if (status == "success") {
                         // Toggle buttons
@@ -93,17 +93,17 @@ var Contacts = (function() {
                         });
                         adornRows();
                     } else {
-                        console.log("/dj/key (GET) failed");
+                        console.log("/v1/key (GET) failed");
                         console.log(data);
                     }
                 });
         },
         filterRows: function(subStringNym) {
             Mixmesh.post(
-                "/dj/key/filter",
+                "/v1/key/filter",
                 [subStringNym],
                 function(data, textStatus, _jqXHR) {
-                    console.log("/dj/key/filter (POST) succeeded");
+                    console.log("/v1/key/filter (POST) succeeded");
                     console.log(data + " keys were found");
 
                     // Toggle buttons
@@ -122,7 +122,7 @@ var Contacts = (function() {
                     adornRows();
                 },
                 function(jqXHR, textStatus, errorThrown) {
-                    console.log("/dj/key/filter (POST) failed");
+                    console.log("/v1/key/filter (POST) failed");
                     console.log("textStatus: " + textStatus);
                     console.log("errorThrown: " + errorThrown);
                     Mixmesh.showGenericDialog({
@@ -191,10 +191,10 @@ $(document).ready(function() {
         $("#export-selected-button").prop("disabled", true);
 
         Mixmesh.post(
-            "/dj/key/delete",
+            "/v1/key/delete",
             selectedNyms,
             function(data, textStatus, _jqXHR) {
-                console.log("/dj/key/delete (POST) succeeded");
+                console.log("/v1/key/delete (POST) succeeded");
                 console.log(selectedNyms + " has been deleted");
 
                 // Remove deleted keys
@@ -203,7 +203,7 @@ $(document).ready(function() {
                 }
             },
             function(jqXHR, textStatus, errorThrown) {
-                console.log("/dj/key/delete (POST) failed");
+                console.log("/v1/key/delete (POST) failed");
                 console.log("textStatus: " + textStatus);
                 console.log("errorThrown: " + errorThrown);
 
@@ -241,10 +241,10 @@ $(document).ready(function() {
         $("#export-selected-button").prop("disabled", true);
 
         Mixmesh.post(
-            "/dj/key/export",
+            "/v1/key/export",
             selectedNyms,
             function(data, textStatus, _jqXHR) {
-                console.log("/dj/key/export (POST) succeeded");
+                console.log("/v1/key/export (POST) succeeded");
                 console.log(selectedNyms + " has been exported to " + data);
 
                 // Clear checkboxes
@@ -262,7 +262,7 @@ $(document).ready(function() {
                 });
             },
             function(jqXHR, textStatus, errorThrown) {
-                console.log("/dj/key/export (POST) failed");
+                console.log("/v1/key/export (POST) failed");
                 console.log("textStatus: " + textStatus);
                 console.log("errorThrown: " + errorThrown);
 
@@ -284,10 +284,10 @@ $(document).ready(function() {
     // Add handler to export-all button
     $("#export-all-button").click(function() {
         Mixmesh.post(
-            "/dj/key/export",
+            "/v1/key/export",
             "all",
             function(data, textStatus, _jqXHR) {
-                console.log("/dj/key/export (POST) succeeded");
+                console.log("/v1/key/export (POST) succeeded");
                 console.log("All contacts have been exported to " + data);
 
                 Mixmesh.showGenericDialog({
@@ -299,7 +299,7 @@ $(document).ready(function() {
                 });
             },
             function(jqXHR, textStatus, errorThrown) {
-                console.log("/dj/key/export (POST) failed");
+                console.log("/v1/key/export (POST) failed");
                 console.log("textStatus: " + textStatus);
                 console.log("errorThrown: " + errorThrown);
                 Mixmesh.showGenericDialog({
