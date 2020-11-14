@@ -56,7 +56,7 @@ is used as a template.
 }
 ```
 
-### 200 OK
+### On success: 200 OK
 
 ```json
 {
@@ -72,7 +72,7 @@ is used as a template.
 }
 ```
 
-### 400 Bad Request
+### On failure: 400 Bad Request
 
 Including an human readble explaination.
 
@@ -171,7 +171,7 @@ is used as a template.
 }
 ```
 
-### 200 OK
+### On success: 200 OK
 
 ```json
 {
@@ -186,7 +186,7 @@ is used as a template.
 }
 ```
 
-### 400 Bad Request
+### On failure: 400 Bad Request
 
 Including an human readble explaination.
 
@@ -213,32 +213,42 @@ The reinstall method also have optional parameters but they are not examplified 
 
 ----
 
-
-
-
-### `/dj/system/restart` (**POST**)
+## Resource: /system/restart` (**POST**)
 
 Used to restart and enter normal operation.
 
-<table>
-  <tr>
-    <th align="left">Request</th>
-    <th align="left">Success</th>
-    <th align="left">Failure</th>
-  </tr>
-  <tr>
-    <td valign="top"><code>&lt;time in seconds&gt;</code></td>
-    <td valign="top">204</td>
-    <td valign="top">400</td>
-  </tr>
-</table>
+### POST data
 
-Typical usage:
+<time in seconds&gt;
+
+### On success: 204 No Content
+
+-
+
+### Typical usage
 
 ```
-$ curl -X POST -H "Content-Type: application/json" -d '5' http://127.0.0.1:8444/dj/system/restart
+$ curl -X POST -H "Content-Type: application/json" -d '5' http://127.0.0.1:8444/system/restart
 Yes, sir!
 ```
+
+----
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ## Normal operation
 
