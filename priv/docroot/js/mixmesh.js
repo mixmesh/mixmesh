@@ -126,14 +126,31 @@ var Mixmesh = (function() {
         hideGenericDialog: function(params) {
             UIkit.modal("#generic-dialog").hide();
         },
-        formatError: function(jqXHR, _textStatus, _errorThrown) {
-            if (jqXHR.response && jqXHR.response.length > 0) {
+        formatError: function(jqXHR, textStatus, errorThrown) {
+            if (jqXHR && jqXHR.response &&
+                typeof jqXHR.response == "string" &&
+                jqXHR.response.length > 0) {
                 return jqXHR.response;
             } else {
-                if (jqXHR.readyState == 4 && jqXHR.status == 0) {
-                    return "Network error";
+                if (textStatus && typeof textStatus == "string" &&
+                    textStatus.length > 0) {
+                    if (errorThrown && typeof errorThrown == "string" &&
+                        errorThrown.length > 0) {
+                        return textStatus + " (" + errorThrown + ")";
+                    } else {
+                        return textStatus;
+                    }
                 } else {
-                    return "Internal error";
+                    if (errorThrown && typeof errorThrown == "string" &&
+                        errorThrown.length > 0) {
+                        return errorThrown;
+                    } else {
+                        if (jqXHR.readyState == 4 && jqXHR.status == 0) {
+                            return "Network error";
+                        } else {
+                            return "Internal error";
+                        }
+                    }
                 }
             }
         }
