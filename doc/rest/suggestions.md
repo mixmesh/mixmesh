@@ -12,8 +12,7 @@ This REST API should be expressive enough to perform the services needed to buil
 
 ## Resource: /system/install (**POST**)
 
-Used to do a clean install of the box configuration. A harsh cousin to
-`/system/reinstall`.
+Used to do a clean install of the box. A harsh cousin to `/system/reinstall`.
 
 Implementation note: On success <obscrete-dir&gt;/obscrete.conf is
 generated with the following parameters configured:
@@ -57,7 +56,7 @@ is used as a template.
 }
 ```
 
-### On success (Status: 200)
+### On success (status: 200)
 
 ```json
   "public-key": "<Base64 encoded public key&gt;",
@@ -70,10 +69,11 @@ is used as a template.
   "pin": "<six digits&gt;",
   "pin-salt": "<Base64 encoded pin salt&gt;"
 }
+```
 
-### On failure (Status code: 400 Bad request)
+### On failure (Status code: 400 Bad Request)
 
-An explaination on why the request was bad.
+Including an explaination on why the request was bad.
 
 ### Typical usage
 
