@@ -43,7 +43,7 @@ var Reinstall = (function() {
 
                 // Select button
                 UIkit.upload("#select-contacts", {
-                    url: "/key/import",
+                    url: "/bootstrap/key/import",
                     name: "key-file",
                     multiple: false,
                     allow : "*.bin",
@@ -110,7 +110,7 @@ var Reinstall = (function() {
                 $("#reinstall-button").click(function() {
                     $("#reinstall-button").prop("disabled", true);
                     Mixmesh.post(
-                        "/system/reinstall",
+                        "/bootstrap/reinstall",
                         {
                             "public-key": publicKey,
                             "secret-key": secretKey,

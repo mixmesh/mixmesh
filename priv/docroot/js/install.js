@@ -76,7 +76,7 @@ var Install = (function() {
         $("#install-button").click(function() {
             $("#install-button").prop("disabled", true);
             Mixmesh.post(
-                "/system/install",
+                "/bootstrap/install",
                 {
                     nym: $("#pseudonym").val(),
                     "smtp-password": $("#mail-password").val(),
