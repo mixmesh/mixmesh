@@ -657,7 +657,6 @@ $ curl --user alice:hello --digest --silent --output keys-66.bin http://127.0.0.
 And then the exported file is imported:
 
 ```
-$ ./bin/obscrete --bootstrap
-$ curl --form key-file=@keys-66.bin http://127.0.0.1:8444/bootstrap/key/import
+$ curl --form key-file=@keys-66.bin http://127.0.0.1:8444/key/import
 101
 ```
