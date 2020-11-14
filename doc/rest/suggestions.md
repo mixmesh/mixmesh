@@ -124,20 +124,39 @@ $ ./bin/obscrete --config /tmp/obscrete/obscrete.conf
 
 ----
 
-### `/dj/system/reinstall` (**POST**)
+## Resource: /system/reinstall` (**POST**)
 
-Used to reinstall the box using pre-existing keys. Nice cousin to `dj/wipe`.
+Used to reinstall the box using pre-existing keys. Nice cousin to `/install`.
 
-Implementation note: On success &lt;obscrete-dir&gt;/&lt;nym&gt;/obscrete.conf is generated with the following parameters injected: "obscrete-dir", "pin", "pin-salt", "nym", "sync-address", "smtp-address", "smtp-password", "pop3-address", "pop3-password", "http-address", "http-password", "public-key" and "secret-key". obscrete/priv/obscrete.conf.src is used as a template.
+Implementation note: On success <obscrete-dir&gt;/obscrete.conf is
+generated with the following parameters configured:
 
-<table>
-  <tr>
-    <th align="left">Request</th>
-    <th align="left">Success</th>
-    <th align="left">Failure</th>
-  </tr>
-  <tr>
-    <td valign="top"><pre lang="json">{
+* initialization-time
+* obscrete-dir
+* pin
+* pin-salt
+* global-pki-server/data-dir
+* nym
+* sync-address
+* public-key
+* secret-key
+* smtp-server/address
+* smtp-server/password-digest
+* pop3-server/address
+* pop3-server/password-digest
+* http-server/address
+* http-server/password
+* daemon/file/path
+* dbg/file/path
+* daemon/file/path
+
+[player/priv/obscrete.conf.src](https://github.com/obscrete/player/blob/master/priv/obscrete.conf.src)
+is used as a template.
+
+### POST data
+
+```json
+{
   "public-key": "&lt;Base64 encoded public key&gt;",
   "secret-key": "&lt;Base64 encoded secret key&gt;",
   "smtp-password": "&lt;string&gt;",
@@ -149,8 +168,13 @@ Implementation note: On success &lt;obscrete-dir&gt;/&lt;nym&gt;/obscrete.conf i
   "http-address": "&lt;ip:port&gt; (optional)",
   "obscrete-dir": "&lt;path&gt; (optional)",
   "pin": "&lt;six digits&gt; (optional)"
-}</pre></td>
-    <td valign="top">200<pre lang="json">{
+}
+```
+
+### 200 OK
+
+```json
+{
   "nym": "&lt;string (<32 characters)&gt;",
   "sync-address": "&lt;ip:port&gt;",
   "smtp-address": "&lt;ip:port&gt;",
@@ -159,17 +183,20 @@ Implementation note: On success &lt;obscrete-dir&gt;/&lt;nym&gt;/obscrete.conf i
   "obscrete-dir": "&lt;path&gt;",
   "pin": "&lt;six digits&gt;",
   "pin-salt": "&lt;Base64 encoded pin salt&gt;"
-}</pre></td>
-    <td valign="top">400</td>
-  </tr>
-</table>
+}
+```
 
-Typical usage:
+### 400 Bad Request
+
+Including an human readble explaination.
+
+### Typical usage
 
 ```
+$ mkdir /tmp/obscrete
 $ ./bin/obscrete --bootstrap
 
-$ curl -X POST -H "Content-Type: application/json" -d '{"public-key": "BWFsaWNlBbqW75jjJ0aPtaq1zGPObUc7ZQ2WIwIRbX2bkVyOkeIkAC9Hg0oc+J7BD\/RG04TDvd1fETcpmJpyvV8QyeKJ3B3BMHi+LPWSRY60yX1XoA\/1A1iuIxTnt22Q68iXyMMlZvA+ivmNxJlsqN3PB2KOch45KkNzi9Hez9u7KTZBhp3d", "secret-key": "BWFsaWNlgMwhWxEO5Ovn0OpNnN62Mu9nvL7Zn1mzlgSBkfC2zZQII\/otb+1jPqLMCDQlFKqNEXGy\/N1PUhotV3w7JBitwsZSUeGfVi2gLJFEkrZ6tGjrUoN3eB65JIzpfQirlLX6oCO5Ab1t4rOmD4BsHvA+lYBbYw3QihArIGqcTyNrbiC1BbqW75jjJ0aPtaq1zGPObUc7ZQ2WIwIRbX2bkVyOkeIkAC9Hg0oc+J7BD\/RG04TDvd1fETcpmJpyvV8QyeKJ3B3BMHi+LPWSRY60yX1XoA\/1A1iuIxTnt22Q68iXyMMlZvA+ivmNxJlsqN3PB2KOch45KkNzi9Hez9u7KTZBhp3d", "smtp-password": "baz", "pop3-password": "baz", "http-password": "hello"}' http://127.0.0.1:8444/dj/system/reinstall
+$ curl -X POST -H "Content-Type: application/json" -d '{"public-key": "BWFsaWNlBbqW75jjJ0aPtaq1zGPObUc7ZQ2WIwIRbX2bkVyOkeIkAC9Hg0oc+J7BD\/RG04TDvd1fETcpmJpyvV8QyeKJ3B3BMHi+LPWSRY60yX1XoA\/1A1iuIxTnt22Q68iXyMMlZvA+ivmNxJlsqN3PB2KOch45KkNzi9Hez9u7KTZBhp3d", "secret-key": "BWFsaWNlgMwhWxEO5Ovn0OpNnN62Mu9nvL7Zn1mzlgSBkfC2zZQII\/otb+1jPqLMCDQlFKqNEXGy\/N1PUhotV3w7JBitwsZSUeGfVi2gLJFEkrZ6tGjrUoN3eB65JIzpfQirlLX6oCO5Ab1t4rOmD4BsHvA+lYBbYw3QihArIGqcTyNrbiC1BbqW75jjJ0aPtaq1zGPObUc7ZQ2WIwIRbX2bkVyOkeIkAC9Hg0oc+J7BD\/RG04TDvd1fETcpmJpyvV8QyeKJ3B3BMHi+LPWSRY60yX1XoA\/1A1iuIxTnt22Q68iXyMMlZvA+ivmNxJlsqN3PB2KOch45KkNzi9Hez9u7KTZBhp3d", "smtp-password": "baz", "pop3-password": "baz", "http-password": "hello"}' http://127.0.0.1:8444/system/reinstall
 {
   "nym": "alice",
   "sync-address": "0.0.0.0:9900",
@@ -183,6 +210,11 @@ $ curl -X POST -H "Content-Type: application/json" -d '{"public-key": "BWFsaWNlB
 ```
 
 The reinstall method also have optional parameters but they are not examplified here.
+
+----
+
+
+
 
 ### `/dj/system/restart` (**POST**)
 
