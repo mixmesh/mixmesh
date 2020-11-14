@@ -1,6 +1,8 @@
-# Suggestions: The making of a web app
+# A Mixmesh web app
 
-This suggested web app will not use a REST API, i.e. it will not be a single page web application (to start with). The [suggested REST API](rest.md) is expressive enough build such a single page web appliccation though.
+NOTE: This document was a pre-cursor to the actual implementation of a  Mixmesh web app, i.e. it has not been updated to describe how things work in the current web app.
+
+A Mixmesh web app should ideally be a single page web application using the REST API described in [The Mixmesh REST API](rest.md).
 
 We should in the end probably use a framwork such as [UIkit](https://getuikit.com/docs/introduction). That way we can just write plain HTML and adorn it as seen in, for example, https://getuikit.com/docs/list and https://getuikit.com/docs/iconnav. This way we can avoid CSS altogether. We do not even need to import an icon pack if we use https://getuikit.com/docs/icon. :-)
 
