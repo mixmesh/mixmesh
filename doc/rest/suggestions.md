@@ -43,31 +43,31 @@ is used as a template.
 
 ```json
 {
-  "nym": "<string (<32 characters)&gt;",
-  "smtp-password": "<string&gt;",
-  "pop3-password": "<string&gt;",
-  "http-password": "<string&gt;",
-  "sync-address": "<ip:port&gt; (optional)",
-  "smtp-address": "<ip:port&gt; (optional)",
-  "pop3-address": "<ip:port&gt; (optional)",
-  "http-address": "<ip:port&gt; (optional)",
-  "obscrete-dir": "<path&gt; (optional)",
-  "pin": "<six digits&gt; (optional)"
+  "nym": "<string (<32 characters)>",
+  "smtp-password": "<string>",
+  "pop3-password": "<string>",
+  "http-password": "<string>",
+  "sync-address": "<ip:port> (optional)",
+  "smtp-address": "<ip:port> (optional)",
+  "pop3-address": "<ip:port> (optional)",
+  "http-address": "<ip:port> (optional)",
+  "obscrete-dir": "<path> (optional)",
+  "pin": "<six digits> (optional)"
 }
 ```
 
 ### On success (status: 200)
 
 ```json
-  "public-key": "<Base64 encoded public key&gt;",
-  "secret-key": "<Base64 encoded secret key&gt;",
-  "sync-address": "<ip:port&gt;",
-  "smtp-address": "<ip:port&gt;",
-  "pop3-address": "<ip:port&gt;",
-  "http-address": "<ip:port&gt;",
-  "obscrete-dir": "<path&gt;",
-  "pin": "<six digits&gt;",
-  "pin-salt": "<Base64 encoded pin salt&gt;"
+  "public-key": "<Base64 encoded public key>",
+  "secret-key": "<Base64 encoded secret key>",
+  "sync-address": "<ip:port>",
+  "smtp-address": "<ip:port>",
+  "pop3-address": "<ip:port>",
+  "http-address": "<ip:port>",
+  "obscrete-dir": "<path>",
+  "pin": "<six digits>",
+  "pin-salt": "<Base64 encoded pin salt>"
 }
 ```
 
