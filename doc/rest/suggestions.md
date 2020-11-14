@@ -39,7 +39,7 @@ generated with the following parameters configured:
 [player/priv/obscrete.conf.src](https://github.com/obscrete/player/blob/master/priv/obscrete.conf.src)
 is used as a template.
 
-### Input
+### POST data
 
 ```json
 {
@@ -56,7 +56,7 @@ is used as a template.
 }
 ```
 
-### On success (status: 200)
+### 200 OK
 
 ```json
   "public-key": "<Base64 encoded public key>",
@@ -71,9 +71,9 @@ is used as a template.
 }
 ```
 
-### On failure (Status code: 400 Bad Request)
+### 400 Bad Request
 
-Including an explaination on why the request was bad.
+Including an human readble explaination.
 
 ### Typical usage
 
