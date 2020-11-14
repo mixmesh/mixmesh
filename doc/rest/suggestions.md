@@ -243,7 +243,7 @@ In this example a file with public keys is first exported during
 normal operation:
 
 ```
-$ curl --user alice:hello --digest --request POST --header "Content-Type: application/json" --data '"all"' http://127.0.0.1:8444/dj/key/export
+$ curl --user alice:hello --digest --request POST --header "Content-Type: application/json" --data '"all"' http://127.0.0.1:8444/key/export
 {
   "size": 101,
   "uri-path": "\/temp\/keys-66.bin"
@@ -579,31 +579,49 @@ $ curl --user alice:hello --digest --request POST --header "Content-Type: applic
 
 ----
 
-
-
-### `/dj/key/export` (**POST**)
+## Resource: /key/export (**POST**)
 
 Used to export public keys.
 
-<table>
-  <tr>
-    <th align="left">Request</th>
-    <th align="left">Success</th>
-    <th align="left">Failure</th>
-  </tr>
-  <tr>
-    <td valign="top"><pre lang="json">["&lt;nym (<32 characters)&gt;"]</pre></td>
-    <td valign="top">200<br><code>&lt;Base64 encoded key bundle&gt;</code></td>
-    <td valign="top">400</td>
-  </tr>
-</table>
+### POST data
 
-Typical usage:
+```json
+["<string (<32 characters)>", ..., "<string (<32 characters)>"]
+```
+
+or
+
+```json
+"all"
+```
+
+### On success: 200 OK
+
+```json
+{
+  "size": <integer (number of exported public keys)>,
+  "uri-path": <string (URI to a file with the exported public keys)>
+}
+```
+
+### On failure: 400 Bad Request
+
+Invalid nyms
+
+### Typical usage
 
 ```
-$ curl --user alice:hello --digest --request POST --header "Content-Type: application/json" --data '["alice", "p42"]' http://127.0.0.1:8444/dj/key/export
-"AIUDcDQyAVhSeZp9niFBbEbUUwue0FpJnraVlsMUCJfMlGaOZHNqA1HD5uxevxbDumkCPcM693C9MWSb7k0FWaJgKeBWCLp9wpJ3DTz3nPcl5+A\/zOqA6z89MNGXEuGFv4\/+px4p0JZeT+7zIFMMHXUZmItfW3a04mcNn96POw87vw74f3J7AIYFYWxpY2XGAMPwGV5HSVk7JNUy6C6qz0gTUTtK5aCzLI002ni+utBlukXw9KISGO7Z0vdwydzlkUCh7jU1Dj4Ljmv5fCT12mjeyflTCP4RNnDmcL9K1b5h4CUCl4JlUvXboBw6FA+2BE3JqNzzhCDR0zsrlQOJz\/zWRvQSqRpnVrC3BSuY+w=="
+$ curl --user alice:hello --digest --request POST --header "Content-Type: application/json" --data '"all"' http://127.0.0.1:8444/key/export
+{
+  "size": 101,
+  "uri-path": "\/temp\/keys-66.bin"
+}
 ```
+
+----
+
+
+
 
 ### `/dj/key/import` (**POST**)
 
