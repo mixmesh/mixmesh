@@ -34,7 +34,7 @@ init([]) ->
                          #dbg_log_info{
                             enabled = true,
                             tty = true,
-                            show_filters = [],
+                            show_filters = [system, rest_bootstrap_server],
                             hide_filters = [],
                             file = {true, <<"/tmp/bootstrap_dbg.log">>}},
                          #error_log_info{

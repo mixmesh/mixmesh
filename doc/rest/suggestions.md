@@ -74,15 +74,15 @@ is used as a template.
 
 ### On failure: 400 Bad Request
 
-Including an human readble explaination.
+A nice description on why the request failed.
 
 ### Typical usage
 
 ```
-$ mkdir /tmp/obscrete
+$ mkdir /tmp/obscrete-
 $ ./bin/obscrete --bootstrap
 
-$ curl -X POST -H "Content-Type: application/json" -d '{"nym": "alice", "smtp-password": "baz", "pop3-password": "baz", "http-password": "hello"}' http://127.0.0.1:8444/system/install
+$ curl --request POST --header "Content-Type: application/json" --data '{"nym": "alice", "smtp-password": "baz", "pop3-password": "baz", "http-password": "hello"}' http://127.0.0.1:8444/system/install
 {
   "public-key": "BWFsaWNlt8GZL4n7Tbyqbr5JD6IUKbEO0TZeQ6JQOnFuj9ggayRm\/JhRs1\/QPF1UNzkRIPakugXCMjELYnuz8V+hEHWq4hOa5IzNp\/MSomKJamK4608bMgMwRQ4RKx5KbfD+V2NL3KictMM5QKFh+AWgjZN0SyN8VinhT4K7ye\/FRh3zl\/E=",
   "secret-key": "BWFsaWNlgNRUP8jfeJHgQH4CwDAkD1VvucDSqNxvdnbcu6mBmtNsfzHWeLxYKAcut\/+doKt+D5xZ\/dZ2RyG2AyxGJrb3atZvpBug1q71GqEFYHlAEk2E0qJDKHnxQs7R3I5z7c237hctQjc79tJI\/FqT\/9FAtmtKJd8OUWPDEN+WoUGr4lk2t8GZL4n7Tbyqbr5JD6IUKbEO0TZeQ6JQOnFuj9ggayRm\/JhRs1\/QPF1UNzkRIPakugXCMjELYnuz8V+hEHWq4hOa5IzNp\/MSomKJamK4608bMgMwRQ4RKx5KbfD+V2NL3KictMM5QKFh+AWgjZN0SyN8VinhT4K7ye\/FRh3zl\/E=",
@@ -99,7 +99,7 @@ $ curl -X POST -H "Content-Type: application/json" -d '{"nym": "alice", "smtp-pa
 In the example above the optional parameters were ommited, i.e. these optional parameters will not be in the final version anyway, but here all possible optional parameters are provided (with their current default values):
 
 ```json
-$ curl -X POST -H "Content-Type: application/json" -d '{"nym": "alice", "smtp-password": "baz", "pop3-password": "baz", "http-password": "hello", "sync-address": "0.0.0.0:9900", "smtp-address": "0.0.0.0:19900", "pop3-address": "0.0.0.0:29900", "http-address": "0.0.0.0:8444", "obscrete-dir": "/tmp/obscrete", "pin": "123456"}' http://127.0.0.1:8444/system/install
+$ curl --request POST --header "Content-Type: application/json" --data '{"nym": "alice", "smtp-password": "baz", "pop3-password": "baz", "http-password": "hello", "sync-address": "0.0.0.0:9900", "smtp-address": "0.0.0.0:19900", "pop3-address": "0.0.0.0:29900", "http-address": "0.0.0.0:8444", "obscrete-dir": "/tmp/obscrete", "pin": "123456"}' http://127.0.0.1:8444/system/install
 {
   "public-key": "BWFsaWNlAb580nSD7dm2ltsNxz\/yO7nAikKko4FMxKzL8rF0EUY+lF0YX5J9ljlZuemxhh3QrQuKY2KnMJ0ATMfdSleyUUBsOEC2YzDFMpqR7Dx0iiQ6ZUZdfPoYlL9oC2mjOIOXmEtgBtTeeOeVPgk\/\/P5xrCaPjf8BC0fh\/90oU9YWLIV4",
   "secret-key": "BWFsaWNlgQK3RdpgKoErxfuNjH1dH0T1Zf27DT6T+BO0gJrTdHF8pb+lkkT19epLk7ofGlgh6HErwbvPfGIZzXlYpzdnmqRvLjOFg5s5aUqnimuIgfYm9fRGu6hRNZBgQRakulbm2zLYqsrYaR8fhpbXKpm5HH8sBkSfRuECTh+PPE5xZO49EwG+fNJ0g+3ZtpbbDcc\/8ju5wIpCpKOBTMSsy\/KxdBFGPpRdGF+SfZY5WbnpsYYd0K0LimNipzCdAEzH3UpXslFAbDhAtmMwxTKakew8dIokOmVGXXz6GJS\/aAtpoziDl5hLYAbU3njnlT4JP\/z+cawmj43\/AQtH4f\/dKFPWFiyFeA==",
@@ -116,7 +116,7 @@ $ curl -X POST -H "Content-Type: application/json" -d '{"nym": "alice", "smtp-pa
 Upon completion a new <obscrete-dir&gt;/obscrete.conf is created, i.e.  /tmp/obscrete/obscrete.conf. Bootstrap is now ready and Obscrete can be restarted to perform normal operation:
 
 ```
-$ curl -X POST -H "Content-Type: application/json" -d '5' http://127.0.0.1:8444/system/restart
+$ curl --request POST --header "Content-Type: application/json" --data '5' http://127.0.0.1:8444/system/restart
 Yes, sir!
 
 $ ./bin/obscrete --config /tmp/obscrete/obscrete.conf
@@ -124,7 +124,7 @@ $ ./bin/obscrete --config /tmp/obscrete/obscrete.conf
 
 ----
 
-## Resource: /system/reinstall` (**POST**)
+## Resource: /system/reinstall (**POST**)
 
 Used to reinstall the box using pre-existing keys. Nice cousin to `/install`.
 
@@ -188,15 +188,14 @@ is used as a template.
 
 ### On failure: 400 Bad Request
 
-Including an human readble explaination.
+A nice description on why the request failed.
 
 ### Typical usage
 
 ```
 $ mkdir /tmp/obscrete
 $ ./bin/obscrete --bootstrap
-
-$ curl -X POST -H "Content-Type: application/json" -d '{"public-key": "BWFsaWNlBbqW75jjJ0aPtaq1zGPObUc7ZQ2WIwIRbX2bkVyOkeIkAC9Hg0oc+J7BD\/RG04TDvd1fETcpmJpyvV8QyeKJ3B3BMHi+LPWSRY60yX1XoA\/1A1iuIxTnt22Q68iXyMMlZvA+ivmNxJlsqN3PB2KOch45KkNzi9Hez9u7KTZBhp3d", "secret-key": "BWFsaWNlgMwhWxEO5Ovn0OpNnN62Mu9nvL7Zn1mzlgSBkfC2zZQII\/otb+1jPqLMCDQlFKqNEXGy\/N1PUhotV3w7JBitwsZSUeGfVi2gLJFEkrZ6tGjrUoN3eB65JIzpfQirlLX6oCO5Ab1t4rOmD4BsHvA+lYBbYw3QihArIGqcTyNrbiC1BbqW75jjJ0aPtaq1zGPObUc7ZQ2WIwIRbX2bkVyOkeIkAC9Hg0oc+J7BD\/RG04TDvd1fETcpmJpyvV8QyeKJ3B3BMHi+LPWSRY60yX1XoA\/1A1iuIxTnt22Q68iXyMMlZvA+ivmNxJlsqN3PB2KOch45KkNzi9Hez9u7KTZBhp3d", "smtp-password": "baz", "pop3-password": "baz", "http-password": "hello"}' http://127.0.0.1:8444/system/reinstall
+$ curl --request POST --header "Content-Type: application/json" --data '{"public-key": "BWFsaWNlBbqW75jjJ0aPtaq1zGPObUc7ZQ2WIwIRbX2bkVyOkeIkAC9Hg0oc+J7BD\/RG04TDvd1fETcpmJpyvV8QyeKJ3B3BMHi+LPWSRY60yX1XoA\/1A1iuIxTnt22Q68iXyMMlZvA+ivmNxJlsqN3PB2KOch45KkNzi9Hez9u7KTZBhp3d", "secret-key": "BWFsaWNlgMwhWxEO5Ovn0OpNnN62Mu9nvL7Zn1mzlgSBkfC2zZQII\/otb+1jPqLMCDQlFKqNEXGy\/N1PUhotV3w7JBitwsZSUeGfVi2gLJFEkrZ6tGjrUoN3eB65JIzpfQirlLX6oCO5Ab1t4rOmD4BsHvA+lYBbYw3QihArIGqcTyNrbiC1BbqW75jjJ0aPtaq1zGPObUc7ZQ2WIwIRbX2bkVyOkeIkAC9Hg0oc+J7BD\/RG04TDvd1fETcpmJpyvV8QyeKJ3B3BMHi+LPWSRY60yX1XoA\/1A1iuIxTnt22Q68iXyMMlZvA+ivmNxJlsqN3PB2KOch45KkNzi9Hez9u7KTZBhp3d", "smtp-password": "baz", "pop3-password": "baz", "http-password": "hello"}' http://127.0.0.1:8444/system/reinstall
 {
   "nym": "alice",
   "sync-address": "0.0.0.0:9900",
@@ -213,7 +212,57 @@ The reinstall method also have optional parameters but they are not examplified 
 
 ----
 
-## Resource: /system/restart` (**POST**)
+## Resource: /key/import (**POST**)
+
+Used to import public keys from a contacts file. The file is supposed to have been exported during normal operation using `/key/export`.
+
+Implementation detail: In the end a PIN-encrypted file is generated, suitable to be loaded by the local PKI server during normal operation. This file typically ends up in `<obscrete-dir&gt/<nym&gt;/player/local-pki/pki.db`.
+
+### POST data
+
+The POST data is supposed to be uploaded as multipart/form-data content with the following form parts:
+
+* nym
+* obscrete-dir
+* pin
+* pin-salt
+
+See example below for more info.
+
+### On success: 200 OK
+
+The number of imported contacts.
+
+### On failure: 400 Bad Request
+
+A nice description on why the request failed.
+
+### Typical usage
+
+Below I expect that a contacts file has been exported during normal
+operation:
+
+```
+$ curl --user alice:hello --digest --request POST --header "Content-Type: application/json" --data '"all"' http://127.0.0.1:8444/dj/key/export
+{
+  "size": 101,
+  "uri-path": "\/temp\/keys-66.bin"
+}
+
+$ curl --user alice:hello --digest --silent --output keys-66.bin http://127.0.0.1:8444/temp/keys-66.bin
+```
+
+And finally an exmple on how to import it during bootstrap operation:
+
+```
+$ ./bin/obscrete --bootstrap
+$ curl --form nym=alice --form obscrete-dir=/tmp/obscrete --form pin=223456 --form pin-salt=xFxxsWkBHF9SWcEQA4pvzg== --form key-file=@keys-66.bin http://127.0.0.1:8444/key/import
+101
+```
+
+----
+
+## Resource: /system/restart (**POST**)
 
 Used to restart and enter normal operation.
 
@@ -228,7 +277,7 @@ Used to restart and enter normal operation.
 ### Typical usage
 
 ```
-$ curl -X POST -H "Content-Type: application/json" -d '5' http://127.0.0.1:8444/system/restart
+$ curl --request POST --header "Content-Type: application/json" --data '5' http://127.0.0.1:8444/system/restart
 Yes, sir!
 ```
 
@@ -274,7 +323,7 @@ Used to get a filtered set of configuration values.
 Typical usage:
 
 ```
-$ curl --user alice:hello --digest -X POST -H "Content-Type: application/json" -d '{"player": {"nym": true, "spiridon": {"public-key": true}}}' http://127.0.0.1:8444/dj/get-config
+$ curl --user alice:hello --digest --request POST --header "Content-Type: application/json" --data '{"player": {"nym": true, "spiridon": {"public-key": true}}}' http://127.0.0.1:8444/dj/get-config
 {
   "player": {
     "nym": "alice",
@@ -305,7 +354,7 @@ Used to edit a partial set of configuration values.
 Typical usage:
 
 ```
-$ curl --user alice:hello --digest -X POST -H "Content-Type: application/json" -d '{"player": {"http-server": {"password": true}}}' http://127.0.0.1:8444/dj/get-config
+$ curl --user alice:hello --digest --request POST --header "Content-Type: application/json" --data '{"player": {"http-server": {"password": true}}}' http://127.0.0.1:8444/dj/get-config
 {
   "player": {
     "http-server": {
@@ -314,10 +363,10 @@ $ curl --user alice:hello --digest -X POST -H "Content-Type: application/json" -
   }
 }
 
-$ curl --user alice:hello --digest -X POST -H "Content-Type: application/json" -d '{"player": {"spiridon": {"f": 0.3}, "http-server": {"password":"zooooop"}}}' http://127.0.0.1:8444/dj/edit-config
+$ curl --user alice:hello --digest --request POST --header "Content-Type: application/json" --data '{"player": {"spiridon": {"f": 0.3}, "http-server": {"password":"zooooop"}}}' http://127.0.0.1:8444/dj/edit-config
 Config has been updated
 
-$ curl --user alice:hello --digest -X POST -H "Content-Type: application/json" -d '{"player": {"http-server": {"password": true}}}' http://127.0.0.1:8444/dj/get-config
+$ curl --user alice:hello --digest --request POST --header "Content-Type: application/json" --data '{"player": {"http-server": {"password": true}}}' http://127.0.0.1:8444/dj/get-config
 {
   "player": {
     "http-server": {
@@ -418,7 +467,7 @@ Used to show a *sub-string* filtered set of keys. At most 100 keys will be shown
 Typical usage:
 
 ```
-$ curl --user alice:hello --digest -X POST -H "Content-Type: application/json" -d '["p1"]' http://127.0.0.1:8444/dj/key/filter
+$ curl --user alice:hello --digest --request POST --header "Content-Type: application/json" --data '["p1"]' http://127.0.0.1:8444/dj/key/filter
 [
   {
     nym: "p1",
@@ -465,7 +514,7 @@ pqrvo9PEVoAUuEI9B6g5zxjaqqPcHSTEmNn5+qVv/lsgrgOlEygGmoUowPxP0LIqyVSOysAe33bPckGO
 BWFsaWNlBJNUFPQyNBgndEf8QJLBY/kngZbjbCgWtpZhRUWtbDaEPxxmIrdWOZcpUa2yDauWNCZ/cZ4r7hSUXOW8TlJaqz2yJjG1OZ9nesloWrkrxDIU8xXjkZ7A6O2Trwf1xmYwMe17sp4BwR87lR8K3LBBYEwB1f3BFtle4zRCupxbAwGy
 -----END PUBLIC KEY-----
 
-$ curl --user alice:hello --digest -X PUT -H "Content-Type: application/json" -d '"BWFsaWNlBJNUFPQyNBgndEf8QJLBY/kngZbjbCgWtpZhRUWtbDaEPxxmIrdWOZcpUa2yDauWNCZ/cZ4r7hSUXOW8TlJaqz2yJjG1OZ9nesloWrkrxDIU8xXjkZ7A6O2Trwf1xmYwMe17sp4BwR87lR8K3LBBYEwB1f3BFtle4zRCupxbAwGy"' http://127.0.0.1:8444/dj/key
+$ curl --user alice:hello --digest --request PUT --header "Content-Type: application/json" --data '"BWFsaWNlBJNUFPQyNBgndEf8QJLBY/kngZbjbCgWtpZhRUWtbDaEPxxmIrdWOZcpUa2yDauWNCZ/cZ4r7hSUXOW8TlJaqz2yJjG1OZ9nesloWrkrxDIU8xXjkZ7A6O2Trwf1xmYwMe17sp4BwR87lR8K3LBBYEwB1f3BFtle4zRCupxbAwGy"' http://127.0.0.1:8444/dj/key
 Key has been updated
 
 $ curl --user alice:hello --digest http://127.0.0.1:8444/dj/key/alice
@@ -495,10 +544,10 @@ Used to delete a filtered set of keys.
 Typical usage:
 
 ```
-$ curl --user alice:hello --digest -X POST -H "Content-Type: application/json" -d '["p41", "p65"]}' http://127.0.0.1:8444/dj/key/delete
+$ curl --user alice:hello --digest --request POST --header "Content-Type: application/json" --data '["p41", "p65"]}' http://127.0.0.1:8444/dj/key/delete
 []
 
-$ curl --user alice:hello --digest -X POST -H "Content-Type: application/json" -d '["p41", "p65"]' http://127.0.0.1:8444/dj/key/delete
+$ curl --user alice:hello --digest --request POST --header "Content-Type: application/json" --data '["p41", "p65"]' http://127.0.0.1:8444/dj/key/delete
 [
   {
     "nym": "p65",
@@ -531,7 +580,7 @@ Used to export contacts/public keys.
 Typical usage:
 
 ```
-$ curl --user alice:hello --digest -X POST -H "Content-Type: application/json" -d '["alice", "p42"]' http://127.0.0.1:8444/dj/key/export
+$ curl --user alice:hello --digest --request POST --header "Content-Type: application/json" --data '["alice", "p42"]' http://127.0.0.1:8444/dj/key/export
 "AIUDcDQyAVhSeZp9niFBbEbUUwue0FpJnraVlsMUCJfMlGaOZHNqA1HD5uxevxbDumkCPcM693C9MWSb7k0FWaJgKeBWCLp9wpJ3DTz3nPcl5+A\/zOqA6z89MNGXEuGFv4\/+px4p0JZeT+7zIFMMHXUZmItfW3a04mcNn96POw87vw74f3J7AIYFYWxpY2XGAMPwGV5HSVk7JNUy6C6qz0gTUTtK5aCzLI002ni+utBlukXw9KISGO7Z0vdwydzlkUCh7jU1Dj4Ljmv5fCT12mjeyflTCP4RNnDmcL9K1b5h4CUCl4JlUvXboBw6FA+2BE3JqNzzhCDR0zsrlQOJz\/zWRvQSqRpnVrC3BSuY+w=="
 ```
 
@@ -555,5 +604,5 @@ Used to import a key bundle.
 Typical usage:
 
 ```
-$ curl --user alice:hello --digest -X POST -H "Content-Type: application/json" -d '"AIUDcDQyAVhSeZp9niFBbEbUUwue0FpJnraVlsMUCJfMlGaOZHNqA1HD5uxevxbDumkCPcM693C9MWSb7k0FWaJgKeBWCLp9wpJ3DTz3nPcl5+A\/zOqA6z89MNGXEuGFv4\/+px4p0JZeT+7zIFMMHXUZmItfW3a04mcNn96POw87vw74f3J7AIYFYWxpY2XGAMPwGV5HSVk7JNUy6C6qz0gTUTtK5aCzLI002ni+utBlukXw9KISGO7Z0vdwydzlkUCh7jU1Dj4Ljmv5fCT12mjeyflTCP4RNnDmcL9K1b5h4CUCl4JlUvXboBw6FA+2BE3JqNzzhCDR0zsrlQOJz\/zWRvQSqRpnVrC3BSuY+w=="' http://127.0.0.1:8444/dj/key/import
+$ curl --user alice:hello --digest --request POST --header "Content-Type: application/json" --data '"AIUDcDQyAVhSeZp9niFBbEbUUwue0FpJnraVlsMUCJfMlGaOZHNqA1HD5uxevxbDumkCPcM693C9MWSb7k0FWaJgKeBWCLp9wpJ3DTz3nPcl5+A\/zOqA6z89MNGXEuGFv4\/+px4p0JZeT+7zIFMMHXUZmItfW3a04mcNn96POw87vw74f3J7AIYFYWxpY2XGAMPwGV5HSVk7JNUy6C6qz0gTUTtK5aCzLI002ni+utBlukXw9KISGO7Z0vdwydzlkUCh7jU1Dj4Ljmv5fCT12mjeyflTCP4RNnDmcL9K1b5h4CUCl4JlUvXboBw6FA+2BE3JqNzzhCDR0zsrlQOJz\/zWRvQSqRpnVrC3BSuY+w=="' http://127.0.0.1:8444/dj/key/import
 ```
