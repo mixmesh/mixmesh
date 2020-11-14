@@ -2,7 +2,7 @@
 
 This REST API should be expressive enough to perform the services needed to build the web app described in "[A Mixmesh web app](webapp.md)".
 
-he resources described below are either available during the bootstrap or normal operation.
+The resources described below are either available during the bootstrap or normal operation.
 
 ## A few RESTful links
 

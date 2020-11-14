@@ -1,6 +1,6 @@
 # A Mixmesh web app
 
-NOTE: This document was a pre-cursor to the actual implementation of a  Mixmesh web app, i.e. it has not been updated to describe how things work in the current web app.
+NOTE: This document was a pre-cursor to the actual implementation of the web app, i.e. it has not been updated to describe how things currently work. That said...
 
 A Mixmesh web app should ideally be a single page web application using the REST API described in [The Mixmesh REST API](rest.md).
 
