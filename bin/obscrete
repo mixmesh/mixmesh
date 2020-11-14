@@ -129,12 +129,12 @@ while :; do
 	--simulator)
 	    simulator=1
             ;;
-	
+
 	--n)
 	    erl_env="-env NPLAYER $2"
             shift
 	    ;;
-	    
+
 	--sname)
             if [ $# -lt 2 ]; then
                 usage

@@ -79,6 +79,7 @@ Including an human readble explaination.
 ### Typical usage
 
 ```
+$ mkdir /tmp/obscrete
 $ ./bin/obscrete --bootstrap
 
 $ curl -X POST -H "Content-Type: application/json" -d '{"nym": "alice", "smtp-password": "baz", "pop3-password": "baz", "http-password": "hello"}' http://127.0.0.1:8444/system/install
@@ -112,10 +113,10 @@ $ curl -X POST -H "Content-Type: application/json" -d '{"nym": "alice", "smtp-pa
 }
 ```
 
-Upon completion a new <obscrete-dir&gt;/obscrete.conf is created, i.e.  /tmp/obscrete/obscrete.conf. Bootstrap is now ready and Obscrete can be restarted for normal operation:
+Upon completion a new <obscrete-dir&gt;/obscrete.conf is created, i.e.  /tmp/obscrete/obscrete.conf. Bootstrap is now ready and Obscrete can be restarted to perform normal operation:
 
 ```
-$ curl -X POST -H "Content-Type: application/json" -d '5' http://127.0.0.1:8444/dj/system/restart
+$ curl -X POST -H "Content-Type: application/json" -d '5' http://127.0.0.1:8444/system/restart
 Yes, sir!
 
 $ ./bin/obscrete --config /tmp/obscrete/obscrete.conf
