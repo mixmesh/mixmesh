@@ -145,7 +145,8 @@ var Mixmesh = (function() {
                         errorThrown.length > 0) {
                         return errorThrown;
                     } else {
-                        if (jqXHR.readyState == 4 && jqXHR.status == 0) {
+                        if (jqXHR && jqXHR.readyState == 4 &&
+                            jqXHR.status == 0) {
                             return "Network error";
                         } else {
                             return "Internal error";
