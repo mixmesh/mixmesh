@@ -256,7 +256,7 @@ And finally an example on how to import it during bootstrap operation:
 
 ```
 $ ./bin/obscrete --bootstrap
-$ curl --form nym=alice --form obscrete-dir=/tmp/obscrete --form pin=223456 --form pin-salt=xFxxsWkBHF9SWcEQA4pvzg== --form key-file=@keys-66.bin http://127.0.0.1:8444/key/import
+$ curl --form nym=alice --form obscrete-dir=/tmp/obscrete --form pin=123456 --form pin-salt=xFxxsWkBHF9SWcEQA4pvzg== --form key-file=@keys-66.bin http://127.0.0.1:8444/key/import
 101
 ```
 
