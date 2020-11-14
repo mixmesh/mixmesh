@@ -213,7 +213,7 @@ The reinstall method also have optional parameters but they are not examplified 
 
 ## Resource: /bootstrap/key/import (**POST**)
 
-Used to import public keys from a contacts file. The file is supposed to have been exported during normal operation using `/key/export`.
+Used to import public keys from a file. The file is supposed to have been exported during normal operation using `/key/export`.
 
 Implementation detail: In the end a PIN-encrypted file is generated, suitable to be loaded by the local PKI server during normal operation. This file typically ends up in `<obscrete-dir>/<nym>/player/local-pki/pki.db`.
 
@@ -231,7 +231,7 @@ See example below for more info.
 
 ### On success: 200 OK
 
-The number of imported contacts.
+The number of imported public keys.
 
 ### On failure: 400 Bad Request
 
@@ -239,7 +239,8 @@ A nice description on why the request failed.
 
 ### Typical usage
 
-In this example a contacts file is first exported during normal operation:
+In this example a file with public keys is first exported during
+normal operation:
 
 ```
 $ curl --user alice:hello --digest --request POST --header "Content-Type: application/json" --data '"all"' http://127.0.0.1:8444/dj/key/export
@@ -251,8 +252,7 @@ $ curl --user alice:hello --digest --request POST --header "Content-Type: applic
 $ curl --user alice:hello --digest --silent --output keys-66.bin http://127.0.0.1:8444/temp/keys-66.bin
 ```
 
-And finally the exported contacts file is imported in during bootstrap
-operaion:
+And finally the exported file is imported during bootstrap operaion:
 
 ```
 $ ./bin/obscrete --bootstrap
@@ -368,33 +368,30 @@ $ curl --user alice:hello --digest --request POST --header "Content-Type: applic
 
 ----
 
+## Resource: /key (**GET**)
 
+Used to show all available public keys. At most 100 keys will be shown.
 
+### On success: 200 OK
 
-### `/dj/key` (**GET**)
+```json
+[
+  {
+    "nym": "<string (<32 characters)>",
+    "public-key": "<Base64 encoded public key>"
+  },
+  ...
+  {
+    "nym": "<string (<32 characters)>",
+    "public-key": "<Base64 encoded public key>"
+  }
+]
+```
 
-Used to show all available keys. At most 100 keys will be shown.
-
-<table>
-  <tr>
-    <th align="left">Request</th>
-    <th align="left">Success</th>
-    <th align="left">Failure</th>
-  </tr>
-  <tr>
-    <td valign="top">-</td>
-    <td valign="top">200<pre lang="json">[{
-  "nym": "<string (<32 characters)&gt;",
-  "public-key": "<Base64 encoded public key&gt;"
- }]</pre></td>
-    <td valign="top">400</td>
-  </tr>
-</table>
-
-Typical usage:
+### Typical usage
 
 ```
-$ curl --user alice:hello --digest http://127.0.0.1:8444/dj/key
+$ curl --user alice:hello --digest http://127.0.0.1:8444/key
 [
   {
     "nym": "alice",
@@ -415,29 +412,42 @@ $ curl --user alice:hello --digest http://127.0.0.1:8444/dj/key
 ]
 ```
 
-### `/dj/key/<nym>` (**GET**)
+## Resource: /key/<nym&gt; (**GET**)
 
 Used to show a key for a specific nym.
 
-<table>
-  <tr>
-    <th align="left">Request</th>
-    <th align="left">Success</th>
-    <th align="left">Failure</th>
-  </tr>
-  <tr>
-    <td valign="top">-</td>
-    <td valign="top">200<br><code>&lt;Base64 encoded public key&gt;</code></td>
-    <td valign="top">400, 404</td>
-</tr>
-</table>
+### On success: 200 OK
 
-Typical usage:
+```json
+{
+  "nym": "<string (<32 characters)>",
+  "public-key": "<Base64 encoded public key>"
+}
+```
+
+### On failure: 404 Not Found
+
+<nothing&gt;
+
+### Typical usage
 
 ```
-$ curl --user alice:hello --digest http://127.0.0.1:8444/dj/key/alice
-"BWFsaWNlxgDD8BleR0lZOyTVMuguqs9IE1E7SuWgsyyNNNp4vrrQZbpF8PSiEhju2dL3cMnc5ZFAoe41NQ4+C45r+Xwk9dpo3sn5Uwj+ETZw5nC\/StW+YeAlApeCZVL126AcOhQPtgRNyajc84Qg0dM7K5UDic\/81kb0EqkaZ1awtwUrmPs="
+curl --user alice:hello --digest http://127.0.0.1:8444/key/alice
+{
+  "nym": "alice",
+  "public-key": "BWFsaWNlxgDD8BleR0lZOyTVMuguqs9IE1E7SuWgsyyNNNp4vrrQZbpF8PSiEhju2dL3cMnc5ZFAoe41NQ4+C45r+Xwk9dpo3sn5Uwj+ETZw5nC\/StW+YeAlApeCZVL126AcOhQPtgRNyajc84Qg0dM7K5UDic\/81kb0EqkaZ1awtwUrmPs="
+}
 ```
+
+----
+
+
+
+
+HERE
+
+
+
 
 ### `/dj/key/filter` (**POST**)
 
@@ -557,7 +567,7 @@ $ curl --user alice:hello --digest --request POST --header "Content-Type: applic
 
 ### `/dj/key/export` (**POST**)
 
-Used to export contacts/public keys.
+Used to export public keys.
 
 <table>
   <tr>
