@@ -285,7 +285,7 @@ Yes, sir!
 
 # Normal operation
 
-## Resource: /get-config` (**POST**)
+## Resource: /get-config (**POST**)
 
 Used to extract a filtered set of configuration values.
 
@@ -323,7 +323,7 @@ $ curl --user alice:hello --digest --request POST --header "Content-Type: applic
 
 ----
 
-## Resource: /edit-config` (**POST**)
+## Resource: /edit-config (**POST**)
 
 Used to edit a partial set of configuration values.
 
@@ -441,38 +441,41 @@ curl --user alice:hello --digest http://127.0.0.1:8444/key/alice
 
 ----
 
+## Resource: /key/filter (**POST**)
 
+Used to show a *sub-string* filtered set of keys. At most 100 keys
+will be shown.
 
+### POST data
 
-HERE
+```json
+["<string (<32 characters)>", ..., "<string (<32 characters)>"]
+```
 
+### On success: 200 OK
 
+```json
+[
+  {
+    "nym": "<string (<32 characters)>",
+    "public-key": "<Base64 encoded public key>"
+  },
+  ...
+  {
+    "nym": "<string (<32 characters)>",
+    "public-key": "<Base64 encoded public key>"
+  }
+]
+```
 
+### On failure: 404 Bad Request
 
-### `/dj/key/filter` (**POST**)
+Invalid filter
 
-Used to show a *sub-string* filtered set of keys. At most 100 keys will be shown.
-
-<table>
-  <tr>
-    <th align="left">Request</th>
-    <th align="left">Success</th>
-    <th align="left">Failure</th>
-  </tr>
-  <tr>
-    <td valign="top"><pre lang="json">["&lt;sub-string nym (<32 characters)&gt;"]</pre></td>
-    <td valign="top">200<pre lang="json">[{
-  "nym": "&lt;string (<32 characters)&gt;",
-  "public-key": "&lt;Base64 encoded public key&gt;"
-}]</pre></td>
-    <td valign="top">400</td>
-  </tr>
-</table>
-
-Typical usage:
+### Typical usage
 
 ```
-$ curl --user alice:hello --digest --request POST --header "Content-Type: application/json" --data '["p1"]' http://127.0.0.1:8444/dj/key/filter
+$ curl --user alice:hello --digest --request POST --header "Content-Type: application/json" --data '["p1"]' http://127.0.0.1:8444/key/filter
 [
   {
     nym: "p1",
@@ -485,7 +488,11 @@ $ curl --user alice:hello --digest --request POST --header "Content-Type: applic
 ]
 ```
 
-### `/dj/key` (**PUT**)
+----
+
+
+
+### `/dj/key (**PUT**)
 
 Used to import new (or replace an existing) key.
 
