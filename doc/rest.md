@@ -658,6 +658,6 @@ And then the exported file is imported:
 
 ```
 $ ./bin/obscrete --bootstrap
-$ curl --form nym=alice --form obscrete-dir=/tmp/obscrete --form pin=123456 --form pin-salt=xFxxsWkBHF9SWcEQA4pvzg== --form key-file=@keys-66.bin http://127.0.0.1:8444/bootstrap/key/import
+$ curl --form key-file=@keys-66.bin http://127.0.0.1:8444/bootstrap/key/import
 101
 ```
