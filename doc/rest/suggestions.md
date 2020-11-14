@@ -59,6 +59,7 @@ is used as a template.
 ### 200 OK
 
 ```json
+{
   "public-key": "<Base64 encoded public key>",
   "secret-key": "<Base64 encoded secret key>",
   "sync-address": "<ip:port>",
@@ -111,7 +112,7 @@ $ curl -X POST -H "Content-Type: application/json" -d '{"nym": "alice", "smtp-pa
 }
 ```
 
-Upon completion a new <obscrete-dir&gt;/obscrete.conf is generated, i.e.  /tmp/obscrete/obscrete.conf. Bootstrap is now ready and Obscrete can be restarted for normal operation:
+Upon completion a new <obscrete-dir&gt;/obscrete.conf is created, i.e.  /tmp/obscrete/obscrete.conf. Bootstrap is now ready and Obscrete can be restarted for normal operation:
 
 ```
 $ curl -X POST -H "Content-Type: application/json" -d '5' http://127.0.0.1:8444/dj/system/restart
