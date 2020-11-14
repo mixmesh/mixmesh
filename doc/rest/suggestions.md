@@ -201,7 +201,7 @@ $ curl --request POST --header "Content-Type: application/json" --data '{"public
   "smtp-address": "0.0.0.0:19900",
   "pop3-address": "0.0.0.0:29900",
   "http-address": "0.0.0.0:8444",
-  "obscrete-dir": "\/tmp\/obscrete",
+  "obscrete-dir": "/tmp/obscrete",
   "pin": "123456",
   "pin-salt": "carYm55t3hqcmUNiAd+zkA=="
 }
@@ -239,8 +239,7 @@ A nice description on why the request failed.
 
 ### Typical usage
 
-Below I expect that a contacts file has been exported during normal
-operation:
+In this example a contacts file is first exported during normal operation:
 
 ```
 $ curl --user alice:hello --digest --request POST --header "Content-Type: application/json" --data '"all"' http://127.0.0.1:8444/dj/key/export
@@ -252,7 +251,8 @@ $ curl --user alice:hello --digest --request POST --header "Content-Type: applic
 $ curl --user alice:hello --digest --silent --output keys-66.bin http://127.0.0.1:8444/temp/keys-66.bin
 ```
 
-And finally an example on how to import it during bootstrap operation:
+And finally the exported contacts file is imported in during bootstrap
+operaion:
 
 ```
 $ ./bin/obscrete --bootstrap
@@ -285,33 +285,32 @@ Yes, sir!
 
 # Normal operation
 
+## Resource: /get-config` (**POST**)
 
+Used to extract a filtered set of configuration values.
 
+Note: The "secret-key" is only available for one hour after box
+initialization.
 
+### POST data
 
-### `/dj/get-config` (**POST**)
+A partial JSON structure mimicing what can be configured in
+obscrete.conf. All values set to true will be included in the success
+response. This will be clear if you look at the example below.
 
-Used to get a filtered set of configuration values.
+### On success: 200 OK
 
-**NOTE**: The "secret-key" is only available for one hour after box initialization.
+All values that was picked in the filter represented as a partial JSON
+structure.
 
-<table>
-  <tr>
-    <th align="left">Request</th>
-    <th align="left">Success</th>
-    <th align="left">Failure</th>
-  </tr>
-  <tr>
-    <td valign="top">A configuration filter</td>
-    <td valign="top">A filtered configuration</td>
-    <td valign="top">400, 404</td>
-  </tr>
-</table>
+### On failure: 400 Bad Request
 
-Typical usage:
+A nice description on why the request failed.
+
+### Typical usage
 
 ```
-$ curl --user alice:hello --digest --request POST --header "Content-Type: application/json" --data '{"player": {"nym": true, "spiridon": {"public-key": true}}}' http://127.0.0.1:8444/dj/get-config
+$ curl --user alice:hello --digest --request POST --header "Content-Type: application/json" --data '{"player": {"nym": true, "spiridon": {"public-key": true}}}' http://127.0.0.1:8444/get-config
 {
   "player": {
     "nym": "alice",
@@ -321,6 +320,8 @@ $ curl --user alice:hello --digest --request POST --header "Content-Type: applic
   }
 }
 ```
+
+----
 
 ### `/dj/edit-config` (**POST**)
 
