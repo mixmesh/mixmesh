@@ -526,10 +526,6 @@ xSWN08SbX4ZBvJz2uNRa2MP6P/COMWcwAqB60dIYMdLxAI1r+jXY5KGNZA/5oCYCqhutKmAvd1c6h9Cb
 BWFsaWNlBJWFOMpEsNjUcO5WpVPt6Q/ob7+AYIt/iEn2yCzavZdzfuBnrjJ2T+0pjn5IUKpgM1IbLiSedagB+isHgr3NHxlmptGp6QvMBizh8/DsqvZCFO/dvjWUc1olnRrsnLp1S/IFcImj2Zb7vxLEmnnyjSdqLdXbw8YTCSDoWA38Llqm
 -----END PUBLIC KEY-----
 
-
-
-
-
 $ curl --user alice:hello --digest --request PUT --header "Content-Type: application/json" --data '"BWFsaWNlBJNUFPQyNBgndEf8QJLBY/kngZbjbCgWtpZhRUWtbDaEPxxmIrdWOZcpUa2yDauWNCZ/cZ4r7hSUXOW8TlJaqz2yJjG1OZ9nesloWrkrxDIU8xXjkZ7A6O2Trwf1xmYwMe17sp4BwR87lR8K3LBBYEwB1f3BFtle4zRCupxbAwGy"' http://127.0.0.1:8444/key
 "alice"
 
@@ -542,9 +538,7 @@ curl --user alice:hello --digest http://127.0.0.1:8444/key/alice
 
 ----
 
-
-
-### `/dj/key/delete` (**POST**)
+## Resource: /key/delete (**POST**)
 
 Used to delete a filtered set of keys.
 
