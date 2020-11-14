@@ -156,17 +156,17 @@ is used as a template.
 
 ```json
 {
-  "public-key": "&lt;Base64 encoded public key&gt;",
-  "secret-key": "&lt;Base64 encoded secret key&gt;",
-  "smtp-password": "&lt;string&gt;",
-  "pop3-password": "&lt;string&gt;",
-  "http-password": "&lt;string&gt;",
-  "sync-address": "&lt;ip:port&gt; (optional)",
-  "smtp-address": "&lt;ip:port&gt; (optional)",
-  "pop3-address": "&lt;ip:port&gt; (optional)",
-  "http-address": "&lt;ip:port&gt; (optional)",
-  "obscrete-dir": "&lt;path&gt; (optional)",
-  "pin": "&lt;six digits&gt; (optional)"
+  "public-key": "<Base64 encoded public key>",
+  "secret-key": "<Base64 encoded secret key>",
+  "smtp-password": "<string>",
+  "pop3-password": "<string>",
+  "http-password": "<string>",
+  "sync-address": "<ip:port> (optional)",
+  "smtp-address": "<ip:port> (optional)",
+  "pop3-address": "<ip:port> (optional)",
+  "http-address": "<ip:port> (optional)",
+  "obscrete-dir": "<path> (optional)",
+  "pin": "<six digits> (optional)"
 }
 ```
 
@@ -174,14 +174,14 @@ is used as a template.
 
 ```json
 {
-  "nym": "&lt;string (<32 characters)&gt;",
-  "sync-address": "&lt;ip:port&gt;",
-  "smtp-address": "&lt;ip:port&gt;",
-  "pop3-address": "&lt;ip:port&gt;",
-  "http-address": "&lt;ip:port&gt;",
-  "obscrete-dir": "&lt;path&gt;",
-  "pin": "&lt;six digits&gt;",
-  "pin-salt": "&lt;Base64 encoded pin salt&gt;"
+  "nym": "<string (<32 characters)>",
+  "sync-address": "<ip:port>",
+  "smtp-address": "<ip:port>",
+  "pop3-address": "<ip:port>",
+  "http-address": "<ip:port>",
+  "obscrete-dir": "<path>",
+  "pin": "<six digits>",
+  "pin-salt": "<Base64 encoded pin salt>"
 }
 ```
 
@@ -268,7 +268,7 @@ Used to restart and enter normal operation.
 
 ### POST data
 
-<time in seconds&gt;
+Time in seconds until restart.
 
 ### On success: 204 No Content
 
@@ -377,8 +377,8 @@ Used to show all available keys. At most 100 keys will be shown.
   <tr>
     <td valign="top">-</td>
     <td valign="top">200<pre lang="json">[{
-  "nym": "&lt;string (<32 characters)&gt;",
-  "public-key": "&lt;Base64 encoded public key&gt;"
+  "nym": "<string (<32 characters)&gt;",
+  "public-key": "<Base64 encoded public key&gt;"
  }]</pre></td>
     <td valign="top">400</td>
   </tr>
