@@ -294,7 +294,7 @@ initialization.
 
 ### POST data
 
-A partial JSON structure mimicing what can be configured in
+A partial JSON filter structure mimicing what can be configured in
 obscrete.conf. All values set to true will be included in the success
 response. This will be clear if you look at the example below.
 
@@ -323,27 +323,28 @@ $ curl --user alice:hello --digest --request POST --header "Content-Type: applic
 
 ----
 
-### `/dj/edit-config` (**POST**)
+## Resource: /edit-config` (**POST**)
 
 Used to edit a partial set of configuration values.
 
-<table>
-  <tr>
-    <th align="left">Request</th>
-    <th align="left">Success</th>
-    <th align="left">Failure</th>
-  </tr>
-  <tr>
-    <td valign="top">A partial configuration</td>
-    <td valign="top">204</td>
-    <td valign="top">400, 404</td>
-  </tr>
-</table>
+### POST data
 
-Typical usage:
+A partial JSON structure mimicing what can be configured in
+obscrete.conf. All values will be validated according to rules used in
+obscrete.conf. This will be clear if you look at the example below.
+
+### On success: 200 No Content
+
+Configuration has been updated.
+
+### On failure: 400 Bad Request
+
+A nice description on why the request failed.
+
+### Typical usage
 
 ```
-$ curl --user alice:hello --digest --request POST --header "Content-Type: application/json" --data '{"player": {"http-server": {"password": true}}}' http://127.0.0.1:8444/dj/get-config
+$ curl --user alice:hello --digest --request POST --header "Content-Type: application/json" --data '{"player": {"http-server": {"password": true}}}' http://127.0.0.1:8444/get-config
 {
   "player": {
     "http-server": {
@@ -352,10 +353,10 @@ $ curl --user alice:hello --digest --request POST --header "Content-Type: applic
   }
 }
 
-$ curl --user alice:hello --digest --request POST --header "Content-Type: application/json" --data '{"player": {"spiridon": {"f": 0.3}, "http-server": {"password":"zooooop"}}}' http://127.0.0.1:8444/dj/edit-config
+$ curl --user alice:hello --digest --request POST --header "Content-Type: application/json" --data '{"player": {"spiridon": {"f": 0.3}, "http-server": {"password":"zooooop"}}}' http://127.0.0.1:8444/edit-config
 Config has been updated
 
-$ curl --user alice:hello --digest --request POST --header "Content-Type: application/json" --data '{"player": {"http-server": {"password": true}}}' http://127.0.0.1:8444/dj/get-config
+$ curl --user alice:hello --digest --request POST --header "Content-Type: application/json" --data '{"player": {"http-server": {"password": true}}}' http://127.0.0.1:8444/get-config
 {
   "player": {
     "http-server": {
@@ -364,6 +365,11 @@ $ curl --user alice:hello --digest --request POST --header "Content-Type: applic
   }
 }
 ```
+
+----
+
+
+
 
 ### `/dj/key` (**GET**)
 
