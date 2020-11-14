@@ -216,7 +216,7 @@ The reinstall method also have optional parameters but they are not examplified 
 
 Used to import public keys from a contacts file. The file is supposed to have been exported during normal operation using `/key/export`.
 
-Implementation detail: In the end a PIN-encrypted file is generated, suitable to be loaded by the local PKI server during normal operation. This file typically ends up in `<obscrete-dir&gt/<nym&gt;/player/local-pki/pki.db`.
+Implementation detail: In the end a PIN-encrypted file is generated, suitable to be loaded by the local PKI server during normal operation. This file typically ends up in `<obscrete-dir>/<nym>/player/local-pki/pki.db`.
 
 ### POST data
 
@@ -252,7 +252,7 @@ $ curl --user alice:hello --digest --request POST --header "Content-Type: applic
 $ curl --user alice:hello --digest --silent --output keys-66.bin http://127.0.0.1:8444/temp/keys-66.bin
 ```
 
-And finally an exmple on how to import it during bootstrap operation:
+And finally an example on how to import it during bootstrap operation:
 
 ```
 $ ./bin/obscrete --bootstrap
