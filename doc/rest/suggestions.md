@@ -1,60 +1,86 @@
-# Suggestions: The making of a REST API
+# The Mixmesh REST API
 
-This suggested REST API is expressive enough to perform the operations described in the [suggested Web UI](../webui/suggestions.md).
+This REST API should be expressive enough to perform the services needed to build [the Mixmesh web app](webapp.html). The resources described below are either available during the bootstrap or normal operation.
 
-I found some great advice here:
+## A few RESTful links
 
 * https://restfulapi.net/
 * https://restfulapi.net/http-status-codes/
+* https://wikemacs.org/wiki/Markdown#Live_preview_as_you_type (always)
 
-## Bootstrapping
+# Bootstrap operation
 
-### `/dj/system/wipe` (**POST**)
+## Resource: /system/install (**POST**)
 
-Used to wipe the box configuration. A harsh cousin to `dj/reinstall`.
+Used to do a clean install of the box configuration. A harsh cousin to
+`/system/reinstall`.
 
-Implementation note: On success &lt;obscrete-dir&gt;/&lt;nym&gt;/obscrete.conf is generated with the following parameters injected: "obscrete-dir", "pin", "pin-salt", "nym", "sync-address", "smtp-address", "smtp-password", "pop3-address", "pop3-password", "http-address", "http-password", "public-key" and "secret-key". obscrete/priv/obscrete.conf.src is used as a template.
+Implementation note: On success <obscrete-dir&gt;/obscrete.conf is
+generated with the following parameters configured:
 
-<table>
-  <tr>
-    <th align="left">Request</th>
-    <th align="left">Success</th>
-    <th align="left">Failure</th>
-  </tr>
-  <tr>
-    <td valign="top"><pre lang="json">{
-  "nym": "&lt;string (<32 characters)&gt;",
-  "smtp-password": "&lt;string&gt;",
-  "pop3-password": "&lt;string&gt;",
-  "http-password": "&lt;string&gt;",
-  "sync-address": "&lt;ip:port&gt; (optional)",
-  "smtp-address": "&lt;ip:port&gt; (optional)",
-  "pop3-address": "&lt;ip:port&gt; (optional)",
-  "http-address": "&lt;ip:port&gt; (optional)",
-  "obscrete-dir": "&lt;path&gt; (optional)",
-  "pin": "&lt;six digits&gt; (optional)"
-}</pre></td>
-    <td valign="top">200<pre lang="json">{
-  "public-key": "&lt;Base64 encoded public key&gt;",
-  "secret-key": "&lt;Base64 encoded secret key&gt;",
-  "sync-address": "&lt;ip:port&gt;",
-  "smtp-address": "&lt;ip:port&gt;",
-  "pop3-address": "&lt;ip:port&gt;",
-  "http-address": "&lt;ip:port&gt;",
-  "obscrete-dir": "&lt;path&gt;",
-  "pin": "&lt;six digits&gt;",
-  "pin-salt": "&lt;Base64 encoded pin salt&gt;"
-}</pre></td>
-    <td valign="top">400</td>
-  </tr>
-</table>
+* initialization-time
+* obscrete-dir
+* pin
+* pin-salt
+* global-pki-server/data-dir
+* nym
+* sync-address
+* public-key
+* secret-key
+* smtp-server/address
+* smtp-server/password-digest
+* pop3-server/address
+* pop3-server/password-digest
+* http-server/address
+* http-server/password
+* daemon/file/path
+* dbg/file/path
+* daemon/file/path
 
-Typical usage:
+[player/priv/obscrete.conf.src](https://github.com/obscrete/player/blob/master/priv/obscrete.conf.src)
+is used as a template.
+
+### Input
+
+```json
+{
+  "nym": "<string (<32 characters)&gt;",
+  "smtp-password": "<string&gt;",
+  "pop3-password": "<string&gt;",
+  "http-password": "<string&gt;",
+  "sync-address": "<ip:port&gt; (optional)",
+  "smtp-address": "<ip:port&gt; (optional)",
+  "pop3-address": "<ip:port&gt; (optional)",
+  "http-address": "<ip:port&gt; (optional)",
+  "obscrete-dir": "<path&gt; (optional)",
+  "pin": "<six digits&gt; (optional)"
+}
+```
+
+### On success (Status: 200)
+
+```json
+  "public-key": "<Base64 encoded public key&gt;",
+  "secret-key": "<Base64 encoded secret key&gt;",
+  "sync-address": "<ip:port&gt;",
+  "smtp-address": "<ip:port&gt;",
+  "pop3-address": "<ip:port&gt;",
+  "http-address": "<ip:port&gt;",
+  "obscrete-dir": "<path&gt;",
+  "pin": "<six digits&gt;",
+  "pin-salt": "<Base64 encoded pin salt&gt;"
+}
+
+### On failure (Status code: 400 Bad request)
+
+An explaination on why the request was bad.
+
+### Typical usage
 
 ```
 $ ./bin/obscrete --bootstrap
 
-$ curl -X POST -H "Content-Type: application/json" -d '{"nym": "alice", "smtp-password": "baz", "pop3-password": "baz", "http-password": "hello"}' http://127.0.0.1:8444/dj/system/wipe
+$ curl -X POST -H "Content-Type: application/json" -d '{"nym": "alice", "smtp-password": "baz", "pop3-password": "baz", "http-password": "hello"}' http://127.0.0.1:8444/system/install
 {
   "public-key": "BWFsaWNlt8GZL4n7Tbyqbr5JD6IUKbEO0TZeQ6JQOnFuj9ggayRm\/JhRs1\/QPF1UNzkRIPakugXCMjELYnuz8V+hEHWq4hOa5IzNp\/MSomKJamK4608bMgMwRQ4RKx5KbfD+V2NL3KictMM5QKFh+AWgjZN0SyN8VinhT4K7ye\/FRh3zl\/E=",
   "secret-key": "BWFsaWNlgNRUP8jfeJHgQH4CwDAkD1VvucDSqNxvdnbcu6mBmtNsfzHWeLxYKAcut\/+doKt+D5xZ\/dZ2RyG2AyxGJrb3atZvpBug1q71GqEFYHlAEk2E0qJDKHnxQs7R3I5z7c237hctQjc79tJI\/FqT\/9FAtmtKJd8OUWPDEN+WoUGr4lk2t8GZL4n7Tbyqbr5JD6IUKbEO0TZeQ6JQOnFuj9ggayRm\/JhRs1\/QPF1UNzkRIPakugXCMjELYnuz8V+hEHWq4hOa5IzNp\/MSomKJamK4608bMgMwRQ4RKx5KbfD+V2NL3KictMM5QKFh+AWgjZN0SyN8VinhT4K7ye\/FRh3zl\/E=",
@@ -62,16 +88,16 @@ $ curl -X POST -H "Content-Type: application/json" -d '{"nym": "alice", "smtp-pa
   "smtp-address": "0.0.0.0:19900",
   "pop3-address": "0.0.0.0:29900",
   "http-address": "0.0.0.0:8444",
-  "obscrete-dir": "\/tmp\/obscrete",
+  "obscrete-dir": "/tmp/obscrete",
   "pin": "123456",
   "pin-salt": "B70E3LMi8O+IZxUDyPY8ug=="
 }
 ```
 
-Above a number of optional parameters were ommited, i.e. these optional parameters will not be in the final version anyway, but here all possible optional parameters are provided (with their current default values):
+In the example above the optional parameters were ommited, i.e. these optional parameters will not be in the final version anyway, but here all possible optional parameters are provided (with their current default values):
 
-```
-$ curl -X POST -H "Content-Type: application/json" -d '{"nym": "alice", "smtp-password": "baz", "pop3-password": "baz", "http-password": "hello", "sync-address": "0.0.0.0:9900", "smtp-address": "0.0.0.0:19900", "pop3-address": "0.0.0.0:29900", "http-address": "0.0.0.0:8444", "obscrete-dir": "/tmp/obscrete", "pin": "123456"}' http://127.0.0.1:8444/dj/system/wipe
+```json
+$ curl -X POST -H "Content-Type: application/json" -d '{"nym": "alice", "smtp-password": "baz", "pop3-password": "baz", "http-password": "hello", "sync-address": "0.0.0.0:9900", "smtp-address": "0.0.0.0:19900", "pop3-address": "0.0.0.0:29900", "http-address": "0.0.0.0:8444", "obscrete-dir": "/tmp/obscrete", "pin": "123456"}' http://127.0.0.1:8444/system/install
 {
   "public-key": "BWFsaWNlAb580nSD7dm2ltsNxz\/yO7nAikKko4FMxKzL8rF0EUY+lF0YX5J9ljlZuemxhh3QrQuKY2KnMJ0ATMfdSleyUUBsOEC2YzDFMpqR7Dx0iiQ6ZUZdfPoYlL9oC2mjOIOXmEtgBtTeeOeVPgk\/\/P5xrCaPjf8BC0fh\/90oU9YWLIV4",
   "secret-key": "BWFsaWNlgQK3RdpgKoErxfuNjH1dH0T1Zf27DT6T+BO0gJrTdHF8pb+lkkT19epLk7ofGlgh6HErwbvPfGIZzXlYpzdnmqRvLjOFg5s5aUqnimuIgfYm9fRGu6hRNZBgQRakulbm2zLYqsrYaR8fhpbXKpm5HH8sBkSfRuECTh+PPE5xZO49EwG+fNJ0g+3ZtpbbDcc\/8ju5wIpCpKOBTMSsy\/KxdBFGPpRdGF+SfZY5WbnpsYYd0K0LimNipzCdAEzH3UpXslFAbDhAtmMwxTKakew8dIokOmVGXXz6GJS\/aAtpoziDl5hLYAbU3njnlT4JP\/z+cawmj43\/AQtH4f\/dKFPWFiyFeA==",
@@ -79,13 +105,13 @@ $ curl -X POST -H "Content-Type: application/json" -d '{"nym": "alice", "smtp-pa
   "smtp-address": "0.0.0.0:19900",
   "pop3-address": "0.0.0.0:29900",
   "http-address": "0.0.0.0:8444",
-  "obscrete-dir": "\/tmp\/obscrete",
+  "obscrete-dir": "/tmp/obscrete",
   "pin": "123456",
   "pin-salt": "vkEGjmGfrs5vmlExAVbZBA=="
 }
 ```
 
-Upon completion a new &lt;obscrete-dir&gt;/obscrete.conf is generated, i.e.  /tmp/obscrete/obscrete.conf. Bootstrap is now ready and Obscrete can be restarted in normal operation:
+Upon completion a new <obscrete-dir&gt;/obscrete.conf is generated, i.e.  /tmp/obscrete/obscrete.conf. Bootstrap is now ready and Obscrete can be restarted for normal operation:
 
 ```
 $ curl -X POST -H "Content-Type: application/json" -d '5' http://127.0.0.1:8444/dj/system/restart
@@ -93,6 +119,8 @@ Yes, sir!
 
 $ ./bin/obscrete --config /tmp/obscrete/obscrete.conf
 ```
+
+----
 
 ### `/dj/system/reinstall` (**POST**)
 
