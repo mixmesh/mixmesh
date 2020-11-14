@@ -529,7 +529,7 @@ BWFsaWNlBJWFOMpEsNjUcO5WpVPt6Q/ob7+AYIt/iEn2yCzavZdzfuBnrjJ2T+0pjn5IUKpgM1IbLiSe
 $ curl --user alice:hello --digest --request PUT --header "Content-Type: application/json" --data '"BWFsaWNlBJNUFPQyNBgndEf8QJLBY/kngZbjbCgWtpZhRUWtbDaEPxxmIrdWOZcpUa2yDauWNCZ/cZ4r7hSUXOW8TlJaqz2yJjG1OZ9nesloWrkrxDIU8xXjkZ7A6O2Trwf1xmYwMe17sp4BwR87lR8K3LBBYEwB1f3BFtle4zRCupxbAwGy"' http://127.0.0.1:8444/key
 "alice"
 
-curl --user alice:hello --digest http://127.0.0.1:8444/key/alice
+$ curl --user alice:hello --digest http://127.0.0.1:8444/key/alice
 {
   "nym": "alice",
   "public-key": "BWFsaWNlBJWFOMpEsNjUcO5WpVPt6Q\/ob7+AYIt\/iEn2yCzavZdzfuBnrjJ2T+0pjn5IUKpgM1IbLiSedagB+isHgr3NHxlmptGp6QvMBizh8\/DsqvZCFO\/dvjWUc1olnRrsnLp1S\/IFcImj2Zb7vxLEmnnyjSdqLdXbw8YTCSDoWA38Llqm"
@@ -542,29 +542,29 @@ curl --user alice:hello --digest http://127.0.0.1:8444/key/alice
 
 Used to delete a filtered set of keys.
 
-<table>
-  <tr>
-    <th align="left">Request</th>
-    <th align="left">Success</th>
-    <th align="left">Failure</th>
-  </tr>
-  <tr>
-    <td valign="top"><pre lang="json">["&lt;nym (<32 characters)&gt;"]</pre></td>
-   <td valign="top">200<pre lang="json">{
-  "failed": [{"nym": "&lt;string (<32 characters)&gt;",
-              "reason": "&lt;string&gt;"}]
-}</pre></td>
-    <td valign="top">400</td>
-  </tr>
-</table>
+### POST data
 
-Typical usage:
+```json
+["<string (<32 characters)>", ..., "<string (<32 characters)>"]
+```
+
+### On success: 200 OK
+
+```json
+[{"nym": "<string (<32 characters)>", "reason": "<string>"},
+ ..
+ {"nym": "<string (<32 characters)>", "reason": "<string>"}]
+```
+
+In other words: If *all* public keys referred to existed and were deleted an empty list is returned.
+
+### Typical usage
 
 ```
-$ curl --user alice:hello --digest --request POST --header "Content-Type: application/json" --data '["p41", "p65"]}' http://127.0.0.1:8444/dj/key/delete
+$ curl --user alice:hello --digest --request POST --header "Content-Type: application/json" --data '["p41", "p65"]}' http://127.0.0.1:8444/key/delete
 []
 
-$ curl --user alice:hello --digest --request POST --header "Content-Type: application/json" --data '["p41", "p65"]' http://127.0.0.1:8444/dj/key/delete
+$ curl --user alice:hello --digest --request POST --header "Content-Type: application/json" --data '["p41", "p65"]' http://127.0.0.1:8444/key/delete
 [
   {
     "nym": "p65",
@@ -576,6 +576,10 @@ $ curl --user alice:hello --digest --request POST --header "Content-Type: applic
   }
 ]
 ```
+
+----
+
+
 
 ### `/dj/key/export` (**POST**)
 
