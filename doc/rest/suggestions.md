@@ -219,12 +219,13 @@ Implementation detail: In the end a PIN-encrypted file is generated, suitable to
 
 ### POST data
 
-The POST data is supposed to be uploaded as multipart/form-data content with the following form parts:
+The POST data is supposed to be uploaded as multipart/form-data with the following form parts:
 
 * nym
 * obscrete-dir
 * pin
 * pin-salt
+* key-file
 
 See example below for more info.
 
