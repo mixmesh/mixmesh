@@ -252,7 +252,7 @@ $ curl --user alice:hello --digest --request POST --header "Content-Type: applic
 $ curl --user alice:hello --digest --silent --output keys-66.bin http://127.0.0.1:8444/temp/keys-66.bin
 ```
 
-And finally the exported file is imported during bootstrap operaion:
+And then the exported file is imported during bootstrap operation:
 
 ```
 $ ./bin/obscrete --bootstrap
@@ -599,8 +599,8 @@ or
 
 ```json
 {
-  "size": <integer (number of exported public keys)>,
-  "uri-path": <string (URI to a file with the exported public keys)>
+  "size": "<integer (number of exported public keys)>",
+  "uri-path": "<string (URI to a file with the exported public keys)>"
 }
 ```
 
@@ -620,28 +620,42 @@ $ curl --user alice:hello --digest --request POST --header "Content-Type: applic
 
 ----
 
+## Resource: /key/import (**POST**)
 
+Used to import public keys from a file. The file is supposed to have been exported using `/key/export`.
 
+### POST data
 
-### `/dj/key/import` (**POST**)
+The POST data is supposed to be uploaded as multipart/form-data with a simgle "key-file" form part.
 
-Used to import a key bundle.
+See example below for more info.
 
-<table>
-  <tr>
-    <th align="left">Request</th>
-    <th align="left">Success</th>
-    <th align="left">Failure</th>
-  </tr>
-  <tr>
-    <td valign="top"><code>&lt;Base64 encoded key bundle&gt;</code></td>
-    <td valign="top">204</td>
-    <td valign="top">400, 403</td>
-  </tr>
-</table>
+### On success: 200 OK
 
-Typical usage:
+The number of imported public keys.
+
+### On failure: 400 Bad Request
+
+A nice description on why the request failed.
+
+### Typical usage
+
+In this example a file with public keys is first exported:
 
 ```
-$ curl --user alice:hello --digest --request POST --header "Content-Type: application/json" --data '"AIUDcDQyAVhSeZp9niFBbEbUUwue0FpJnraVlsMUCJfMlGaOZHNqA1HD5uxevxbDumkCPcM693C9MWSb7k0FWaJgKeBWCLp9wpJ3DTz3nPcl5+A\/zOqA6z89MNGXEuGFv4\/+px4p0JZeT+7zIFMMHXUZmItfW3a04mcNn96POw87vw74f3J7AIYFYWxpY2XGAMPwGV5HSVk7JNUy6C6qz0gTUTtK5aCzLI002ni+utBlukXw9KISGO7Z0vdwydzlkUCh7jU1Dj4Ljmv5fCT12mjeyflTCP4RNnDmcL9K1b5h4CUCl4JlUvXboBw6FA+2BE3JqNzzhCDR0zsrlQOJz\/zWRvQSqRpnVrC3BSuY+w=="' http://127.0.0.1:8444/dj/key/import
+$ curl --user alice:hello --digest --request POST --header "Content-Type: application/json" --data '"all"' http://127.0.0.1:8444/key/export
+{
+  "size": 101,
+  "uri-path": "\/temp\/keys-66.bin"
+}
+
+$ curl --user alice:hello --digest --silent --output keys-66.bin http://127.0.0.1:8444/temp/keys-66.bin
+```
+
+And then the exported file is imported:
+
+```
+$ ./bin/obscrete --bootstrap
+$ curl --form nym=alice --form obscrete-dir=/tmp/obscrete --form pin=123456 --form pin-salt=xFxxsWkBHF9SWcEQA4pvzg== --form key-file=@keys-66.bin http://127.0.0.1:8444/bootstrap/key/import
+101
 ```
