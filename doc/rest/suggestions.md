@@ -478,11 +478,11 @@ Invalid filter
 $ curl --user alice:hello --digest --request POST --header "Content-Type: application/json" --data '["p1"]' http://127.0.0.1:8444/key/filter
 [
   {
-    nym: "p1",
+    "nym": "p1",
     "public-key": "AnAxBNN4r35tVwRRktbu2N83GmvDvTBdmTNeMLP+u6lPSfM4\/Oby3tGF07qbtQdaZgteOAXj3pB7xNhJbARmril0avcbbXs\/HlfJlidui7JZM0T7Uu+qWmq7X3qAUnYA42rM6lEI7pnfuKn+X4SW\/HTbaW4kBBjq3f\/ERruD2W5c9KoI"
   },
   {
-    nym: "p11",
+    "nym": "p11",
     "public-key": "A3AxMLDb4hxZt3mSZ8Qa+kSfa2K4R\/ayLKhQX+RMNFn7NlS9cxG\/QXdtJy1S28abJ5HTKw+9S8pHw3caXjGCWWS8BfD77yhzbMQgA3Y9c\/\/gaL+nGPRO+4PmgpTykotSVe1VUPWUJO5fQ+oVFROGBjQDnZjLO0S7XI0Ekd37hCGTyS6d"
   }
 ]
@@ -490,48 +490,59 @@ $ curl --user alice:hello --digest --request POST --header "Content-Type: applic
 
 ----
 
-
-
-### `/dj/key (**PUT**)
+## Resource: /key (**PUT**)
 
 Used to import new (or replace an existing) key.
 
-<table>
-  <tr>
-    <th align="left">Request</th>
-    <th align="left">Success</th>
-    <th align="left">Failure</th>
-  </tr>
-  <tr>
-    <td valign="top"><code>&lt;Base64 encoded public key&gt;</code></td>
-    <td valign="top">200</td>
-    <td valign="top">400, 403</td>
-  </tr>
-</table>
+### PUT data
 
-Typical usage:
+A Base64 encoded public key.
+
+### On success: 200 OK
+
+The nym encoded in the public key.
+
+### On failure: 400 Bad Request
+
+Invalid key
+
+### Typical usage
 
 ```
-$ curl --user alice:hello --digest http://127.0.0.1:8444/dj/key/alice
-"BWFsaWNlxgDD8BleR0lZOyTVMuguqs9IE1E7SuWgsyyNNNp4vrrQZbpF8PSiEhju2dL3cMnc5ZFAoe41NQ4+C45r+Xwk9dpo3sn5Uwj+ETZw5nC\/StW+YeAlApeCZVL126AcOhQPtgRNyajc84Qg0dM7K5UDic\/81kb0EqkaZ1awtwUrmPs="
+$ curl --user alice:hello --digest http://127.0.0.1:8444/key/alice
+{
+  "nym": "alice",
+  "public-key": "BWFsaWNlxgDD8BleR0lZOyTVMuguqs9IE1E7SuWgsyyNNNp4vrrQZbpF8PSiEhju2dL3cMnc5ZFAoe41NQ4+C45r+Xwk9dpo3sn5Uwj+ETZw5nC\/StW+YeAlApeCZVL126AcOhQPtgRNyajc84Qg0dM7K5UDic\/81kb0EqkaZ1awtwUrmPs="
+}
 
 $ ./bin/obscrete --pin-salt
-DSzE7cTR+eBfqKtI694kAA==
+dNuxqGX2aQ2IHDsN1qVwKQ==
 
 $ ./bin/obscrete --elgamal-keys 123456 DSzE7cTR+eBfqKtI694kAA== alice
 -----BEGIN SECRET KEY-----
-pqrvo9PEVoAUuEI9B6g5zxjaqqPcHSTEmNn5+qVv/lsgrgOlEygGmoUowPxP0LIqyVSOysAe33bPckGOlhYyX7bG2hR4H2U+Gb0zocfW0wuFCIbLPaN+q3+2OLOSqd0eEz9rDAtTA0x8cwxrAeHElbR0iVx+pOEhm/P9TotkAzYnoSXGhOO6e4wTqQ2MPAD+Zjf9pL0yjpQeykH+ZuttxAWJW/RVmXeKRHrbqzUMvk64DHzKBKt5cPeWevJSp3BkSWh+UiRZjl+ktxwdF92VH5gdo4YcOyetXIaOwQym8XIE/nGiosJEFHVpCo5lvlcRvd4IXkw5u1Q1bf3fN91pHEH+ArZL75QjD/hASNU3l6OHn/NCudGngBk5ZOlnLFHucz6F9bjuLEMnRtX+uZkJTzg=
+xSWN08SbX4ZBvJz2uNRa2MP6P/COMWcwAqB60dIYMdLxAI1r+jXY5KGNZA/5oCYCqhutKmAvd1c6h9CbNKGyDHoaMShBWu2qJjzVOob3vxsloOrUvugIUIkJnGn5wGwU6iVWudzIxZgwUIKv8I0n62HMI2g+gRZs58ePx6SeDvxZ4veIwJmGAKvC1nVCKnFA+bKkVfzIu4I4UNYgFzKinJoMURVDX2Hrh8KY6P/EgerIzc1kGL13QXfXRgYGRNMklTVzlm9GVeaKi7Wh24bHKrtla5dseA1xrdQRRHBNxOn/g0ZTRla5EZnasw1PQlGWT4PX8C9zo1A52tynkQSK8JTrC/zspTk4q68mBWpUnebuOUeMCOuG9mP4WBbwyG19xbddANu6Fto1boQzxM5qAw==
 -----END SECRET KEY-----
 -----BEGIN PUBLIC KEY-----
-BWFsaWNlBJNUFPQyNBgndEf8QJLBY/kngZbjbCgWtpZhRUWtbDaEPxxmIrdWOZcpUa2yDauWNCZ/cZ4r7hSUXOW8TlJaqz2yJjG1OZ9nesloWrkrxDIU8xXjkZ7A6O2Trwf1xmYwMe17sp4BwR87lR8K3LBBYEwB1f3BFtle4zRCupxbAwGy
+BWFsaWNlBJWFOMpEsNjUcO5WpVPt6Q/ob7+AYIt/iEn2yCzavZdzfuBnrjJ2T+0pjn5IUKpgM1IbLiSedagB+isHgr3NHxlmptGp6QvMBizh8/DsqvZCFO/dvjWUc1olnRrsnLp1S/IFcImj2Zb7vxLEmnnyjSdqLdXbw8YTCSDoWA38Llqm
 -----END PUBLIC KEY-----
 
-$ curl --user alice:hello --digest --request PUT --header "Content-Type: application/json" --data '"BWFsaWNlBJNUFPQyNBgndEf8QJLBY/kngZbjbCgWtpZhRUWtbDaEPxxmIrdWOZcpUa2yDauWNCZ/cZ4r7hSUXOW8TlJaqz2yJjG1OZ9nesloWrkrxDIU8xXjkZ7A6O2Trwf1xmYwMe17sp4BwR87lR8K3LBBYEwB1f3BFtle4zRCupxbAwGy"' http://127.0.0.1:8444/dj/key
-Key has been updated
 
-$ curl --user alice:hello --digest http://127.0.0.1:8444/dj/key/alice
-"BWFsaWNlBJNUFPQyNBgndEf8QJLBY\/kngZbjbCgWtpZhRUWtbDaEPxxmIrdWOZcpUa2yDauWNCZ\/cZ4r7hSUXOW8TlJaqz2yJjG1OZ9nesloWrkrxDIU8xXjkZ7A6O2Trwf1xmYwMe17sp4BwR87lR8K3LBBYEwB1f3BFtle4zRCupxbAwGy"
+
+
+
+$ curl --user alice:hello --digest --request PUT --header "Content-Type: application/json" --data '"BWFsaWNlBJNUFPQyNBgndEf8QJLBY/kngZbjbCgWtpZhRUWtbDaEPxxmIrdWOZcpUa2yDauWNCZ/cZ4r7hSUXOW8TlJaqz2yJjG1OZ9nesloWrkrxDIU8xXjkZ7A6O2Trwf1xmYwMe17sp4BwR87lR8K3LBBYEwB1f3BFtle4zRCupxbAwGy"' http://127.0.0.1:8444/key
+"alice"
+
+curl --user alice:hello --digest http://127.0.0.1:8444/key/alice
+{
+  "nym": "alice",
+  "public-key": "BWFsaWNlBJWFOMpEsNjUcO5WpVPt6Q\/ob7+AYIt\/iEn2yCzavZdzfuBnrjJ2T+0pjn5IUKpgM1IbLiSedagB+isHgr3NHxlmptGp6QvMBizh8\/DsqvZCFO\/dvjWUc1olnRrsnLp1S\/IFcImj2Zb7vxLEmnnyjSdqLdXbw8YTCSDoWA38Llqm"
+}
 ```
+
+----
+
+
 
 ### `/dj/key/delete` (**POST**)
 
