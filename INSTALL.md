@@ -7,22 +7,22 @@ and memory card a power adapter and some cables for 469 SEK:
 
     https://www.kjell.com/se/produkter/dator/raspberry-pi/raspberry-pi-zero-wifi-kit-enkortsdator-p88051
 
-## Download the base image 
+## Download the base image
 
-Now you must down load an image and put it onto a SD card, the 
+Now you must down load an image and put it onto a SD card, the
 box above comes with a 16GB card class 10.
 
     https://www.raspberrypi.org/
-	
+
 Download for example this image, or use a image managaer from rasperrypi.org
 
-    
+
 	https://downloads.raspberrypi.org/raspios_lite_armhf_latest
 
-It is about 500 Mb. The downloaded image may be called 
+It is about 500 Mb. The downloaded image may be called
 
 	2020-08-20-raspios-buster-armhf-lite.zip
-	
+
 So unpackit using unzip
 
 	unzip 2020-08-20-raspios-buster-armhf-lite.zip
@@ -32,13 +32,14 @@ So unpackit using unzip
 Now dd the image onto the inserted SD card following this guide
 
 	https://www.raspberrypi.org/documentation/installation/installing-images/linux.md
-	
+
 Or (linux) locate the the device /dev/sdX (X is the name it got)
+[Joakim: On my Ubuntu 20.04 LTS laptop the device was named /dev/mmcblk0]
 
 	umount /dev/sdX1
 	dd bs=4M if=2020-08-20-raspios-buster-armhf.img of=/dev/sdX conv=fsync
 	sync
-	
+
 Remove the card and reinsert it in again.
 
 ## Prepare the image for start
@@ -49,7 +50,7 @@ under /media/<user>/rootfs  and /media/<user>/boot
 ### enable ssh
 
 	sudo touch boot/ssh
-	
+
 Creates a file that enable ssh server login. Then we must
 make raspberry pi connect to your wifi, by updating the file
 /etc/wpa\_supplicant/wpa\_supplicant.conf
@@ -58,7 +59,7 @@ make raspberry pi connect to your wifi, by updating the file
 
 Add the contents, fill in your data
 
-    sudo emacs /etc/wpa_supplicant/wpa\_supplicant.conf
+    sudo emacs rootfs/etc/wpa_supplicant/wpa\_supplicant.conf
 
 add the lines
 
@@ -75,10 +76,10 @@ Raspberry pi. When the LED has a steady green glow after a minuit
 or so try login
 
 	ssh pi@raspberrypi.local
-	
-default password is "raspberrypi"
 
-## Install software needed 
+default password is "raspberry"
+
+## Install software needed
 
 Hopefully you have a promt, if not, check password, SSID, login to the router
 and find the IP of the raspberry pi and use that instead of reaspberrypi.local
@@ -90,13 +91,7 @@ and find the IP of the raspberry pi and use that instead of reaspberrypi.local
 
  Install needed packages
 
-	sudo apt install git
-	sudo apt install wget
-	sudo apt install emacs-nox
-	sudo apt install isc-dhcp-server
-	sudo apt-get install bluez-tools 
-	sudo apt install libncurses-dev
-	sudo apt install libssl-dev	
+	sudo apt install git wget emacs-nox isc-dhcp-server bluez-tools libncurses-dev libssl-dev screen
 
 ### install Erlang (fixme used patched version)
 
@@ -106,6 +101,7 @@ Now download Erlang, unpack, configure, make and install
 	cd src
 	wget http://erlang.org/download/otp_src_23.1.tar.gz
 	tar xf otp_src_23.1.tar.gz
+        cd otp_src_23.1/
 	./configure
 	make
 	make install
@@ -113,7 +109,7 @@ Now download Erlang, unpack, configure, make and install
 Add erlang libraries to your path
 
 	emacs .bashrc
-	
+
 Append the lines
 
 	export ERL_LIBS=$HOME/erlang
@@ -129,9 +125,9 @@ Fetch the top-level application
 	git clone git@github.com:obscrete/obscrete
 
 And make a link to the top-level makefile
-	
+
 	ln -s obscrete/Makefile.top-level Makefile
-	
+
 Now we can clone other applications need and build everything
 
 	make clone
@@ -148,5 +144,16 @@ Now we can clone other applications need and build everything
 ### start application
 
 	./bin/obscrete --config ./etc/obscrete.conf
-	
-	
+
+or start in a screen session
+
+        screen
+	./bin/obscrete --config ./etc/obscrete.conf
+        C-a d (to detach from screen)
+
+to re-attach to a running screen session
+
+        screen -r
+
+        C-a c (to create a new shell)
+        C-a " (to switch between shells)
