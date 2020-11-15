@@ -91,7 +91,9 @@ and find the IP of the raspberry pi and use that instead of reaspberrypi.local
 
  Install needed packages
 
-	sudo apt install git wget emacs-nox isc-dhcp-server bluez-tools libncurses-dev libssl-dev screen
+	sudo apt install git wget emacs-nox isc-dhcp-server bluez-tools libncurses-dev libssl-dev libgmp-dev libsodium-dev
+
+screen
 
 ### install Erlang (fixme used patched version)
 
@@ -102,9 +104,9 @@ Now download Erlang, unpack, configure, make and install
 	wget http://erlang.org/download/otp_src_23.1.tar.gz
 	tar xf otp_src_23.1.tar.gz
         cd otp_src_23.1/
-	./configure
+	./configure --prefix=$HOME/erlang
 	make
-	make install
+	sudo make install
 
 Add erlang libraries to your path
 
@@ -122,7 +124,11 @@ Fetch the top-level application
 
 	mkdir erlang
 	cd erlang
-	git clone git@github.com:obscrete/obscrete
+        git clone https://<your-username>@github.com/obscrete/obscrete
+
+Update GITURL in obscrete/Makefile.top-level
+
+        GITURL = https://<your-username>@github.com/obscrete
 
 And make a link to the top-level makefile
 
@@ -143,12 +149,13 @@ Now we can clone other applications need and build everything
 
 ### start application
 
-	./bin/obscrete --config ./etc/obscrete.conf
+        sed 's#/tmp/obscrete#/etc/erlang/obscrete#g' ./etc/obscrete.conf > ./etc/obscrete-local.conf
+	./bin/obscrete --config ./etc/obscrete-local.conf
 
 or start in a screen session
 
         screen
-	./bin/obscrete --config ./etc/obscrete.conf
+	./bin/obscrete --config ./etc/obscrete-local.conf
         C-a d (to detach from screen)
 
 to re-attach to a running screen session

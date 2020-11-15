@@ -9,7 +9,7 @@ You need to install GMP (for arbitrary precision arithmetic support) and Simple2
 On Ubuntu:
 
     $ sudo apt install libgmp-dev
-    $ sudo apt install libsodium	
+    $ sudo apt install libsodium-dev
 
 and
 
