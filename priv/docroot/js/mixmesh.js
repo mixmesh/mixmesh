@@ -177,6 +177,10 @@ var Mixmesh = (function() {
             if (jqXHR && jqXHR.response && typeof jqXHR.response == "string" &&
                 jqXHR.response.length > 0) {
                 return jqXHR.response;
+            } else if (jqXHR && jqXHR.responseText &&
+                       typeof jqXHR.responseText == "string" &&
+                       jqXHR.responseText.length > 0) {
+                return jqXHR.responseText;
             } else if (textStatus && typeof textStatus == "string" &&
                        textStatus.length > 0) {
                 if (errorThrown && typeof errorThrown == "string" &&
