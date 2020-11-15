@@ -1,32 +1,79 @@
 var Mixmesh = (function() {
+    var lockedScreen = false;
+    var navbarAnimation = null;
+
     return {
+        get: function(url, success) {
+            var lockOwner = Mixmesh.lockScreen();
+            $.get(url, null, function(data, status) {
+                Mixmesh.unlockScreen(lockOwner);
+                success(data, status);
+            });
+        },
+        post: function(url, data, success, error) {
+            var lockOwner = Mixmesh.lockScreen();
+            $.ajax(url, {
+                data: JSON.stringify(data),
+                contentType: "application/json",
+                type: "POST",
+                success: function(data, textStatus, jqXHR) {
+                    Mixmesh.unlockScreen(lockOwner);
+                    success(data, textStatus, jqXHR);
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    Mixmesh.unlockScreen(lockOwner);
+                    error(jqXHR, textStatus, errorThrown);
+                }
+            });
+        },
+        put: function(url, data, success, error) {
+            var lockOwner = Mixmesh.lockScreen();
+            $.ajax(url, {
+                data: JSON.stringify(data),
+                contentType: "application/json",
+                type: "PUT",
+                success: function(data, textStatus, jqXHR) {
+                    Mixmesh.unlockScreen(lockOwner);
+                    success(data, textStatus, jqXHR);
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    Mixmesh.unlockScreen(lockOwner);
+                    error(jqXHR, textStatus, errorThrown);
+                }
+            });
+        },
+        lockScreen: function() {
+            if (!lockedScreen) {
+                $("#lock-screen").css("display", "block");
+                var span = $(".uk-active span");
+                span.addClass("uk-animation-shake");
+                navbarAnimation =
+                    setInterval(function() {
+                        span.removeClass("uk-animation-shake");
+                        setTimeout(function() {
+                            span.addClass("uk-animation-shake");
+                        }, 100);
+                    }, 750);
+                lockedScreen = true;
+                return true;
+            } else {
+                return false;
+            }
+        },
+        unlockScreen: function(lockOwner) {
+            if (lockOwner) {
+                $("#lock-screen").css("display", "none");
+                lockedScreen = false;
+                clearInterval(navbarAnimation);
+                $(".uk-active span").removeClass("uk-animation-shake");
+            }
+        },
         setHeight: function(targetId, siblingIds) {
             var targetHeight = window.innerHeight;
             for (i = 0; i < siblingIds.length; i++) {
                 targetHeight -= $(siblingIds[i]).outerHeight(true);
             }
             $(targetId).outerHeight(targetHeight.toString() + "px", true);
-        },
-        get: function(url, success) {
-            $.get(url, null, success);
-        },
-        post: function(url, data, success, error) {
-            $.ajax(url, {
-                data: JSON.stringify(data),
-                contentType: "application/json",
-                type: "POST",
-                success: success,
-                error: error
-            });
-        },
-        put: function(url, data, success, error) {
-            $.ajax(url, {
-                data: JSON.stringify(data),
-                contentType: "application/json",
-                type: "PUT",
-                success: success,
-                error: error
-            });
         },
         setClass: function(id, newClass, oldClass) {
             if (!$(id).hasClass(newClass)) {

@@ -1,9 +1,13 @@
 $(document).ready(function() {
+    var lockOwner;
     UIkit.upload("#select-contacts", {
         url: "/key/import",
         name: "key-file",
         multiple: false,
         allow : "*.bin",
+        beforeAll: function() {
+            lockOwner = Mixmesh.lockScreen();
+        },
         fail: function(reason) {
             Mixmesh.showGenericDialog({
                 title: "Import failed",
@@ -18,6 +22,7 @@ $(document).ready(function() {
                 title: "Import failed",
                 content: "<p>" + Mixmesh.formatError(e.xhr) + "</p>",
                 onok: function() {
+                    Mixmesh.unlockScreen(lockOwner);
                     Mixmesh.hideGenericDialog();
                 }
             });
@@ -27,6 +32,7 @@ $(document).ready(function() {
                 title: "Import succeeded",
                 content: "<p>You have imported " + Mixmesh.formatAmount(xhr.responseText, "contact") + ".</p>",
                 onok: function() {
+                    Mixmesh.unlockScreen(lockOwner);
                     Mixmesh.hideGenericDialog();
                 }
             });
