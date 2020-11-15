@@ -102,7 +102,7 @@ Now download Erlang, unpack, configure, make and install
 	wget http://erlang.org/download/otp_src_23.1.tar.gz
 	tar xf otp_src_23.1.tar.gz
         cd otp_src_23.1/
-	./configure --prefix=$HOME/erlang
+	./configure
 	make
 	sudo make install
 
