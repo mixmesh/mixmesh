@@ -144,10 +144,10 @@ Now we can clone other applications need and build everything
 	sudo chown pi:pi /etc/erlang/obscrete
 	./bin/obscrete --self-signed-ssl-cert > cert.pem
 	./bin/mkconfig /etc/erlang/obscrete cert.pem alice
+        sed 's#/tmp/obscrete#/etc/erlang/obscrete#g' ./etc/obscrete.conf > ./etc/obscrete-local.conf
 
 ### start application
 
-        sed 's#/tmp/obscrete#/etc/erlang/obscrete#g' ./etc/obscrete.conf > ./etc/obscrete-local.conf
 	./bin/obscrete --config ./etc/obscrete-local.conf
 
 or start in a screen session
