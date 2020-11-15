@@ -127,31 +127,25 @@ var Mixmesh = (function() {
             UIkit.modal("#generic-dialog").hide();
         },
         formatError: function(jqXHR, textStatus, errorThrown) {
-            if (jqXHR && jqXHR.response &&
-                typeof jqXHR.response == "string" &&
+            if (jqXHR && jqXHR.response && typeof jqXHR.response == "string" &&
                 jqXHR.response.length > 0) {
                 return jqXHR.response;
-            } else {
-                if (textStatus && typeof textStatus == "string" &&
-                    textStatus.length > 0) {
-                    if (errorThrown && typeof errorThrown == "string" &&
-                        errorThrown.length > 0) {
-                        return textStatus + " (" + errorThrown + ")";
-                    } else {
-                        return textStatus;
-                    }
+            } else if (textStatus && typeof textStatus == "string" &&
+                       textStatus.length > 0) {
+                if (errorThrown && typeof errorThrown == "string" &&
+                    errorThrown.length > 0) {
+                    return textStatus + " (" + errorThrown + ")";
                 } else {
-                    if (errorThrown && typeof errorThrown == "string" &&
-                        errorThrown.length > 0) {
-                        return errorThrown;
-                    } else {
-                        if (jqXHR && jqXHR.readyState == 4 &&
-                            jqXHR.status == 0) {
-                            return "Network error";
-                        } else {
-                            return "Internal error";
-                        }
-                    }
+                    return textStatus;
+                }
+            } else if (errorThrown && typeof errorThrown == "string" &&
+                       errorThrown.length > 0) {
+                return errorThrown;
+            } else {
+                if (jqXHR && jqXHR.readyState == 4 && jqXHR.status == 0) {
+                    return "Network error";
+                } else {
+                    return "Internal error";
                 }
             }
         }
