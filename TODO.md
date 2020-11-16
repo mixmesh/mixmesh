@@ -18,14 +18,10 @@
 ### Joakim
 
 * Make code reload more resiliant. I tried!!
-* Document README.md pin-salt digest
-* Refresh (and rename) obscrete/doc/rest/suggestions.md
-* Refresh (and rename) obscrete/doc/webui/suggestions.md
 
 ### Both
 
 * Prata om en möjlig avnästlad lagring av config i app env.
-* remove MessageID from player\_sync\_serv
 * exchanging messages may be good a strategy when is comes to clients
   that receive messages by never send (buggy or strange) or sending
   messages but never receives.
@@ -50,8 +46,6 @@ maybe BUTTON to terminate connection
 
 ## WEB ui
 * configure bluetooth interface (on/off)
-* configure import/export/delete and show public keys, both yours and others.
-* document all REST commands with examples!
 
 ## Fixes needed
 
@@ -60,7 +54,6 @@ maybe BUTTON to terminate connection
 ## Buffer session
 
 * Model way of message exchange.
-* Wait until the message buffer is full? until players start to exchange message (maybe just create dummy messages galor)
 * Look into message fullness behaviour during message exchange
 * Message buffer size?
 * May node have different max buffer size and parameters K and F?
