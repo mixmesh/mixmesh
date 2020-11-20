@@ -50,10 +50,10 @@ message_handler(State=#state{i2c=Port,parent=Parent}) ->
             {stop, From, ok};
 
         {call, From, get_soc} ->
-            {stop, From, {ok,State#state.soc}};
+            {reply, From, {ok,State#state.soc}};
 
         {call, From, get_voltage} ->
-            {stop, From, {ok,State#state.voltage}};
+            {reply, From, {ok,State#state.voltage}};
 
         {'EXIT', Parent, Reason} ->
 	    exit(Reason);
