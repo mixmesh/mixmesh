@@ -64,6 +64,11 @@ message_handler(State=#state{i2c=Port,parent=Parent}) ->
     after ?SAMPLE_INTERVAL ->
 	    V1 = i2c_ip5209:read_voltage(Port),
 	    SOC1 = i2c_ip5209:parse_voltage_level(V1),
+	    if abs(SOC1 - State#state.soc) > 1.0 ->
+		    io:format("SOC = ~.2f\n", [SOC1]);
+	       true ->
+		    ok
+	    end,
 	    {noreply, State#state{voltage=V1,soc=SOC1}}
     end.
 
