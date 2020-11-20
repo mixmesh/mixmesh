@@ -20,7 +20,8 @@
 	 parent,
 	 i2c,
 	 voltage,
-	 soc
+	 soc,
+	 soc0   %% last reported soc
 	}).
 
 start_link() ->
@@ -35,7 +36,7 @@ init(Parent, Bus) ->
     V0 = i2c_ip5209:read_voltage(Port),
     SOC0 = i2c_ip5209:parse_voltage_level(V0),
     {ok, #state { parent=Parent, i2c=Port,
-		  voltage=V0, soc=SOC0 }}.
+		  voltage=V0, soc=SOC0, soc0=SOC0 }}.
 
 initial_message_handler(State) ->
     receive
@@ -64,11 +65,12 @@ message_handler(State=#state{i2c=Port,parent=Parent}) ->
     after ?SAMPLE_INTERVAL ->
 	    V1 = i2c_ip5209:read_voltage(Port),
 	    SOC1 = i2c_ip5209:parse_voltage_level(V1),
-	    if abs(SOC1 - State#state.soc) > 1.0 ->
-		    io:format("SOC = ~.2f\n", [SOC1]);
-	       true ->
-		    ok
-	    end,
-	    {noreply, State#state{voltage=V1,soc=SOC1}}
+	    SOC0 = if abs(SOC1 - State#state.soc0) > 1.0 ->
+			   io:format("SOC = ~.2f\n", [SOC1]),
+			   SOC1;
+		      true ->
+			   State#state.soc0
+		   end,
+	    {noreply, State#state{voltage=V1,soc=SOC1, soc0=SOC0}}
     end.
 
