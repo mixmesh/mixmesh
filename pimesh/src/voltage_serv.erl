@@ -29,7 +29,7 @@ start_link() ->
 
 start_link(Bus) ->
     ?spawn_server(fun(Parent) -> init(Parent, Bus) end,
-		  fun initial_message_handler/1).
+		  fun ?MODULE:message_handler/1).
 
 init(Parent, Bus) ->
     {ok,Port} = i2c_ip5209:open1(Bus),
@@ -37,12 +37,6 @@ init(Parent, Bus) ->
     SOC0 = i2c_ip5209:parse_voltage_level(V0),
     {ok, #state { parent=Parent, i2c=Port,
 		  voltage=V0, soc=SOC0, soc0=SOC0 }}.
-
-initial_message_handler(State) ->
-    receive
-        {neighbour_workers, _NeighbourWorkers} ->
-            {swap_message_handler, fun ?MODULE:message_handler/1,State}
-    end.
 
 message_handler(State=#state{i2c=Port,parent=Parent}) ->
     receive
