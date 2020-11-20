@@ -10,50 +10,78 @@
 
 	dwc2
 	g_ether
+	i2c-dev
 
 # interfaces
 
-Add to /etc/network/interfaces
+Config file /etc/network/interfaces
 
+    # Include files from /etc/network/interfaces.d:
+    source-directory /etc/network/interfaces.d
+
+    auto lo
+    iface lo inet loopback
+
+    # ad-hoc wifi (ipv6 only)
     auto wlan0
-    iface wlan0 inet6 static
-        wireless-channel 1
-        wireless-essid ERLGAMAL
-        wireless-mode ad-hoc
+    #iface wlan0 inet dhcp
+    allow-hotplug wlan0
+    iface wlan0 inet static	
+       address 192.168.2.245
+       netmask 255.255.255.0
+       gateway 192.168.2.1
+       wpa-conf /etc/wpa_supplicant/wpa_supplicant.conf       
+       dns-nameservers 192.168.2.1
+
+    # iface wlan0 inet6 static
+    #      wireless-channel 1
+    #      wireless-essid ERLGAMAL
+    #      wireless-mode ad-hoc
 
     # usb cabel (ipv4 network)
     auto usb0
-	allow-hotplug usb0
     iface usb0 inet static
       address 10.1.3.1
       netmask 255.255.255.0
-	# pan0 bluetooth (ipv4 network)
-	auto pan0
+
+    auto pan0
+    allow-hotplug pan0
     iface pan0 inet static
       address 10.1.4.1
-      netmask 255.255.255.0	
+      netmask 255.255.255.0
 
-On the target there is no need to run dhcp client
+On the target the dhcp client MUST be stopped!
 
     sudo systemctl stop dhcpcd.service
 
 # dhcpd
 
-Add to /etc/dhcp/dhcpd.conf
+Config for /etc/dhcp/dhcpd.conf
 
+    option domain-name "obscrete.org";
+
+    default-lease-time 600;
+    max-lease-time 7200;
+    ddns-update-style none;
+
+    authoritative;
+
+    # usb0 network
     subnet 10.1.3.0 netmask 255.255.255.0 {
-      #  option routers 10.1.3.1;
-      option subnet-mask 255.255.255.0;
-      range 10.1.3.2 10.1.3.20;
-      interface usb0;
+    #  option routers 10.1.3.1;
+       option subnet-mask 255.255.255.0;
+       range 10.1.3.2 10.1.3.20;
+       interface usb0;
     }
-    subnet 10.1.4.0 netmask 255.255.255.0 {
-      #  option routers 10.1.4.1;
-      option subnet-mask 255.255.255.0;
-      range 10.1.4.2 10.1.4.20;
-      interface pan0;
-    }	
 
+    # pan0 subnet
+    subnet 10.1.4.0 netmask 255.255.255.0 {
+    #  option routers 10.1.4.1;
+       option subnet-mask 255.255.255.0;
+       range 10.1.4.2 10.1.4.20;
+       interface pan0;
+    }
+	
 # bluetooth
 
 Update following files
