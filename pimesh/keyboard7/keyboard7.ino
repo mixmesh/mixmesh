@@ -39,25 +39,21 @@ void setup() {
 void loop() 
 {
   int i;
+
   for (i = 2; i <= 8; i++) {
     int s = digitalRead(i);
     if (s != pin_state[i]) {
       int j;
       pin_state[i] = s;
-      if ((j = hor[i]) != 0) {
-        if (s == HIGH) h = 0;
-        else h = j;
-      }
-      else if ((j = ver[i]) != 0) {
-        if (s == HIGH) v = 0;
-        else v = j;
-      }
+      if ((j = hor[i]) != 0) h = j;
+      else if ((j = ver[i]) != 0) v = j;
       if ((v != 0) && (h != 0)) {
         if (s == LOW)
           Serial.print("PRESS ");
         else 
           Serial.print("RELEASE ");
         Serial.println(button[v-1][h-1]);
+        h = v = 0;
       }
     }
   }
