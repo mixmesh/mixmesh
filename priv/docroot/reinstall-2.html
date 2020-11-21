@@ -9,12 +9,22 @@
   </head>
   <body>
     <div id="content" class="uk-padding-small">
-      <h3>Provide new passwords (2/4)</h3>
+      <h3>Provide new credentials (2/4)</h3>
       <form class="uk-grid-small" uk-grid>
+        <!-- PIN code -->
+        <div class="uk-width-1-2">
+          <label class="uk-form-label"
+                 for="pin">PIN code (6 digits)</label>
+          <div class="uk-form-controls">
+            <input id="pin" class="uk-input uk-form-danger"
+                   type="text" autocorrect="none" autocapitalize="none"
+                   maxlength="6" tabindex="1">
+          </div>
+        </div>
         <!-- Mail password -->
         <div class="uk-width-1-2">
           <label class="uk-form-label"
-                 for="mail-password">Mail password (>= 6) </label>
+                 for="mail-password">Mail password (at least 6 chars)</label>
           <div class="uk-form-controls">
             <div class="uk-position-relative">
               <a id="mail-password-lock" class="uk-form-icon uk-form-icon-flip"
@@ -35,7 +45,7 @@
         <!-- HTTP password -->
         <div class="uk-width-1-2">
           <label class="uk-form-label"
-                 for="http-password">HTTP password (>= 6)</label>
+                 for="http-password">HTTP password (at least 6 chars)</label>
           <div class="uk-form-controls">
             <div class="uk-position-relative">
               <a id="http-password-lock" class="uk-form-icon uk-form-icon-flip"

@@ -1,6 +1,7 @@
 var Install = (function() {
     var toggleInstallButton = function() {
-        if ($("#pseudonym").hasClass("uk-form-success") &&
+        if ($("#pin").hasClass("uk-form-success") &&
+            $("#pseudonym").hasClass("uk-form-success") &&
             $("#mail-password").hasClass("uk-form-success") &&
             $("#mail-password-again").hasClass("uk-form-success") &&
             $("#http-password").hasClass("uk-form-success") &&
@@ -49,6 +50,14 @@ var Install = (function() {
     };
 
     var step1 = function() {
+        $("#pin").keyup(function() {
+            if ($(this).val().length == 6 && /^\d+$/.test($(this).val())) {
+                Mixmesh.setClass(this, "uk-form-success", "uk-form-danger");
+            } else {
+                Mixmesh.setClass(this, "uk-form-danger", "uk-form-success");
+            }
+            toggleInstallButton();
+        });
         $("#pseudonym").keyup(function() {
             if ($(this).val().length == 0) {
                 Mixmesh.setClass(this, "uk-form-danger", "uk-form-success");
@@ -81,7 +90,8 @@ var Install = (function() {
                     nym: $("#pseudonym").val(),
                     "smtp-password": $("#mail-password").val(),
                     "pop3-password": $("#mail-password").val(),
-                    "http-password": $("#http-password").val()
+                    "http-password": $("#http-password").val(),
+                    pin: $("#pin").val()
                 },
                 function(data, textStatus, _jqXHR) {
                     console.log("/install (POST) succeeded");

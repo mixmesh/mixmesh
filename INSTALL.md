@@ -36,9 +36,9 @@ Now dd the image onto the inserted SD card following this guide
 Or (linux) locate the the device /dev/sdX (X is the name it got)
 [Joakim: On my Ubuntu 20.04 LTS laptop the device was named /dev/mmcblk0]
 
-	umount /dev/sdX1
-	dd bs=4M if=2020-08-20-raspios-buster-armhf.img of=/dev/sdX conv=fsync
-	sync
+	sudo umount /dev/sdX1
+	sudo dd bs=4M if=2020-08-20-raspios-buster-armhf-lite.img of=/dev/sdX conv=fsync
+	sudo sync
 
 Remove the card and reinsert it in again.
 
@@ -91,7 +91,7 @@ and find the IP of the raspberry pi and use that instead of reaspberrypi.local
 
  Install needed packages
 
-	sudo apt install git wget emacs-nox isc-dhcp-server bluez-tools libncurses-dev libssl-dev libgmp-dev libsodium-dev
+	sudo apt install git wget emacs-nox isc-dhcp-server bluez-tools libncurses-dev libssl-dev libgmp-dev libsodium-dev screen
 
 ### install Erlang (fixme used patched version)
 
@@ -108,6 +108,7 @@ Now download Erlang, unpack, configure, make and install
 
 Add erlang libraries to your path
 
+        cd
 	emacs .bashrc
 
 Append the lines
