@@ -17,7 +17,8 @@
 
 ### Joakim
 
-* Make code reload more resiliant. I tried!!
+* Look into Bluetooth on Android
+* Familiarize myself with CL
 
 ### Both
 
