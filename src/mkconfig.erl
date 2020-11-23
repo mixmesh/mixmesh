@@ -6,6 +6,7 @@
 %% name of a player as input, e.g. "./mkconfigdir /tmp/obscrete alice".
 %% If you do this the following will be created:
 %%
+%% /tmp/obscrete/pin
 %% /tmp/obscrete/global-pki
 %% /tmp/obscrete/alice/player/temp/
 %% /tmp/obscrete/alice/player/buffer/
@@ -28,6 +29,9 @@ start([ObscreteDir, SourceCertFilename, Nym]) ->
     try
         true = ensure_libs(stdout, [GlobalPkiDir], true),
         true = create_player(stdout, ObscreteDir, SourceCertFilename, Nym),
+        PinFilename = filename:join([ObscreteDir, <<"pin">>]),
+        io:format("Creates dummy ~s\n", [PinFilename]),
+        ok = file:write_file(PinFilename, <<"123456">>),
         erlang:halt(0)
     catch
         throw:{status, Status} ->
