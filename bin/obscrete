@@ -1,7 +1,6 @@
 #!/bin/sh
 
-usage()
-{
+usage () {
     >&2 echo "obscrete --help | -h"
     >&2 echo "    Display available options"
     >&2 echo "obscrete [--sname <NODE-NAME>] [--simulator] [--config <CONFIG-FILE>] [--]"
@@ -21,6 +20,16 @@ usage()
     >&2 echo "obscrete --self-signed-ssl-cert"
     >&2 echo "    Generate a self-signed SSL certificate"
     exit 100
+}
+
+isparam () {
+    case $1 in
+        --*)
+            usage;
+            ;;
+        *)
+            ;;
+    esac
 }
 
 erl=`which erl`
@@ -46,6 +55,7 @@ while :; do
             if [ $# -lt 2 ]; then
                 usage
             fi
+            isparam $2
             config="--config $2"
             shift
             ;;
@@ -65,6 +75,7 @@ while :; do
             if [ $# -lt 2 ]; then
                 usage
             fi
+            isparam $2
             control_address="--control-address $2"
             shift
             ;;
@@ -72,6 +83,7 @@ while :; do
             if [ $# -lt 2 ]; then
                 usage
             fi
+            isparam $2
             control_port="--control-port $2"
             shift
             ;;
@@ -85,6 +97,7 @@ while :; do
             if [ $# -ne 2 ]; then
                 usage
             fi
+            isparam $2
             sname=""
             shell="-noinput"
             perform="-run obscrete_command digest_password $2"
@@ -96,6 +109,9 @@ while :; do
             if [ $# -ne 4 ]; then
                 usage
             fi
+            isparam $2
+            isparam $3
+            isparam $4
             sname=""
             shell="-noinput"
             perform="-run obscrete_command elgamal_keys $2 $3 $4"
@@ -129,16 +145,19 @@ while :; do
 	--simulator)
 	    simulator=1
             ;;
-
 	--n)
+            if [ $# -lt 2 ]; then
+                usage
+            fi
+            isparam $2
 	    erl_env="-env NPLAYER $2"
             shift
 	    ;;
-
 	--sname)
             if [ $# -lt 2 ]; then
                 usage
             fi
+            isparam $2
 	    sname="-sname $2"
             shift
             ;;
