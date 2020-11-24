@@ -13,6 +13,8 @@
 -include_lib("apptools/include/serv.hrl").
 -include_lib("apptools/include/log.hrl").
 
+-define(INT_PIN, 17).
+
 -record(state,
 	{
 	 parent,
@@ -35,9 +37,9 @@ init(Parent, Bus) ->
     Port = Bus,
     %% configure for 3x3 key matrix evaluation board    
     i2c_tca8418:configure_3x3(Port),
-    gpio:init(17),
-    gpio:input(17),
-    gpio:set_interrupt(17, falling),
+    gpio:init(?INT_PIN),
+    gpio:input(?INT_PIN),
+    gpio:set_interrupt(?INT_PIN, falling),
     Events = i2c_tca8418:read_keys(Port),
     print_events(Events),
     {ok, #state { parent=Parent, i2c=Port, events=Events }}.
@@ -50,8 +52,8 @@ message_handler(State=#state{i2c=Port,parent=Parent}) ->
         {call, From, get_events} ->
             {reply, From, {ok,State#state.events}, State#state { events=[] }};
 
-        {gpio_interrupt, 0, 17, _Value} ->
-	    io:format("pin 17, value=~w\n", [_Value]),
+        {gpio_interrupt, 0, ?INT_PIN, _Value} ->
+	    io:format("pin ~w, value=~w\n", [?INT_PIN,_Value]),
 	    Events = i2c_tca8418:read_keys(Port),
 	    print_events(Events),
 	    {noreply, State#state{ events=State#state.events++Events }};
