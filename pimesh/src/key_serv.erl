@@ -31,27 +31,29 @@ start_link(Bus) ->
 
 init(Parent, Bus) ->
     %% {ok,Port} = i2c_tca8418:open1(Bus),
-    ok =i2c_tca8418:open(Bus),
+    ok = i2c_tca8418:open(Bus),
     Port = Bus,
     %% configure for 3x3 key matrix evaluation board    
-    i2c_tca8418:configure3x3(Port),
+    i2c_tca8418:configure_3x3(Port),
     gpio:init(17),
     gpio:input(17),
-    gpio:set_interrupt(17, rising),
+    gpio:set_interrupt(17, falling),
     Events = i2c_tca8418:read_keys(Port),
+    print_events(Events),
     {ok, #state { parent=Parent, i2c=Port, events=Events }}.
 
 message_handler(State=#state{i2c=Port,parent=Parent}) ->
     receive
         {call, From, stop} ->
             {stop, From, ok};
+
         {call, From, get_events} ->
             {reply, From, {ok,State#state.events}, State#state { events=[] }};
 
         {gpio_interrupt, 0, 17, _Value} ->
 	    io:format("pin 17, value=~w\n", [_Value]),
 	    Events = i2c_tca8418:read_keys(Port),
-	    io:format("Got events = ~w\n", [Events]),
+	    print_events(Events),
 	    {noreply, State#state{ events=State#state.events++Events }};
 
         {'EXIT', Parent, Reason} ->
@@ -63,3 +65,12 @@ message_handler(State=#state{i2c=Port,parent=Parent}) ->
             noreply
     end.
     
+
+print_events([{press,Key}|Es]) ->
+    io:format("press ~s\n", [i2c_tca8418:keycode_3x3_to_string(Key)]),
+    print_events(Es);
+print_events([{release,Key}|Es]) ->
+    io:format("release ~s\n", [i2c_tca8418:keycode_3x3_to_string(Key)]),
+    print_events(Es);
+print_events([]) ->
+    ok.
