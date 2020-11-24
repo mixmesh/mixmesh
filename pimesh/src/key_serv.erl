@@ -30,11 +30,11 @@ start_link(Bus) ->
 		  fun ?MODULE:message_handler/1).
 
 init(Parent, Bus) ->
-    {ok,Port} = i2c_tca8413:open1(Bus),
+    {ok,Port} = i2c_tca8418:open1(Bus),
     gpio:init(17),
     gpio:input(17),
     gpio:set_interrupt(17, rising),
-    Events = i2c_tca8413:read_keys(Port),
+    Events = i2c_tca8418:read_keys(Port),
     {ok, #state { parent=Parent, i2c=Port, events=Events }}.
 
 message_handler(State=#state{i2c=Port,parent=Parent}) ->
@@ -46,7 +46,7 @@ message_handler(State=#state{i2c=Port,parent=Parent}) ->
 
         {gpio_interrupt, 0, 17, _Value} ->
 	    io:format("pin 17, value=~w\n", [_Value]),
-	    Events = i2c_tca8413:read_keys(Port),
+	    Events = i2c_tca8418:read_keys(Port),
 	    io:format("Got events = ~w\n", [Events]),
 	    {noreply, State#state{ events=State#state.events+Events }};
 
