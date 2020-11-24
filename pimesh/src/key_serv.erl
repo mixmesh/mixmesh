@@ -30,7 +30,11 @@ start_link(Bus) ->
 		  fun ?MODULE:message_handler/1).
 
 init(Parent, Bus) ->
-    {ok,Port} = i2c_tca8418:open1(Bus),
+    %% {ok,Port} = i2c_tca8418:open1(Bus),
+    ok =i2c_tca8418:open(Bus),
+    Port = Bus,
+    %% configure for 3x3 key matrix evaluation board    
+    i2c_tca8418:configure3x3(Port),
     gpio:init(17),
     gpio:input(17),
     gpio:set_interrupt(17, rising),
@@ -48,7 +52,7 @@ message_handler(State=#state{i2c=Port,parent=Parent}) ->
 	    io:format("pin 17, value=~w\n", [_Value]),
 	    Events = i2c_tca8418:read_keys(Port),
 	    io:format("Got events = ~w\n", [Events]),
-	    {noreply, State#state{ events=State#state.events+Events }};
+	    {noreply, State#state{ events=State#state.events++Events }};
 
         {'EXIT', Parent, Reason} ->
 	    exit(Reason);
