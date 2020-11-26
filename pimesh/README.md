@@ -18,7 +18,7 @@ Pinlayout on EVM baord
 
 The BIG keyboard 8-pin layout
 
-    G  C2 C0 R3 C2 R2 R1 R0
+    G  C1 C0 R3 C2 R2 R1 R0
 
 For the EVM do not connect the ground (G) pin
 (may be used for PULLUP for eached Ri and  Cj)

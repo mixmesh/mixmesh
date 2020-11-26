@@ -22,6 +22,13 @@
 -define(RED_LED, 18).
 -define(GREEN_LED, 24).
 
+%% default lock code keys
+-define(KEY_Asterisk, 31).
+-define(KEY_Number,   33).
+
+-define(BLINK_ON_TMO, 500).
+-define(BLINK_OFF_TMO, 1000).
+
 -record(state,
 	{
 	 parent,
@@ -32,10 +39,10 @@
 	 pincode_len = 4,       %% needed for digest!?
 	 pincode_accept,        %% accept without enter key
 	 %%pincode_accept = $#,
-	 pincode_lock   = "*#", %% two key sequence
-	 require_pin = true,
-	 require_toggle = false,
-	 require_tmo = 1000
+	 pincode_key1 = ?KEY_Asterisk,
+	 pincode_key2 = ?KEY_Number,
+	 toggle = false,
+	 blink_tmo = ?BLINK_OFF_TMO
 	}).
 
 is_locked(Serv) ->
@@ -111,14 +118,36 @@ message_handler(State=#state{i2c=Port,parent=Parent}) ->
         UnknownMessage ->
             ?error_log({unknown_message, UnknownMessage}),
             noreply
-    after State#state.require_tmo ->
-	    Toggle = not State#state.require_toggle,
-	    if Toggle -> gpio:set(?RED_LED);
-	       true -> gpio:clr(?RED_LED)
-	    end,
-	    {noreply, State#state { require_toggle = Toggle }}
+    after State#state.blink_tmo ->
+	    Toggle = not State#state.toggle,
+	    Tmo = 
+		if Toggle ->
+			gpio:set(?RED_LED),
+			?BLINK_ON_TMO;
+		   true ->
+			gpio:clr(?RED_LED),
+			?BLINK_OFF_TMO
+		end,
+	    {noreply, State#state { toggle = Toggle, blink_tmo = Tmo }}
     end.
-    
+
+scan_events([{press,Key1},{press,Key2}|Es],State) when 
+      Key1 =:= State#state.pincode_key1,
+      Key2 =:= State#state.pincode_key2,
+      not State#state.locked ->
+    %% Lock device
+    gpio:clr(?RED_LED),	    
+    gpio:clr(?GREEN_LED),
+    State1 = State#state { locked = true, code = [],
+			   toggle = false,
+			   blink_tmo = ?BLINK_OFF_TMO },
+    scan_events(Es, State1);
+scan_events([{press,Key1},{press,Key2}|Es],State) when 
+      Key1 =:= State#state.pincode_key1,
+      Key2 =:= State#state.pincode_key2,
+      State#state.locked ->
+    %% device is already locked, just reset code?
+    scan_events(Es, State#state { code = [] });
 scan_events([{press,Key}|Es], State) ->
     io:format("PRESS ~s\n", [[i2c_tca8418:keycode_4x3_to_sym(Key)]]),
     if State#state.locked ->
@@ -153,9 +182,8 @@ check_pincode(State) ->
 	    gpio:clr(?RED_LED),
 	    gpio:set(?GREEN_LED),
 	    State#state { locked = false,
-			  require_toggle = true,
-			  require_pin = false,
-			  require_tmo = infinity };
+			  toggle = true,
+			  blink_tmo = infinity };
        true ->
 	    %% set pinentry delay
 	    State
