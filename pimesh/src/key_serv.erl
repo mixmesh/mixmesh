@@ -133,6 +133,7 @@ scan_events([], State) ->
 
 %% fixme digest!
 check_pincode(State) ->
+    io:format("CODE=~s\n", [State#state.code]),
     if State#state.code =:= State#state.pincode ->
 	    gpio:clr(?RED_LED),
 	    gpio:set(?GREEN_LED),
