@@ -65,7 +65,7 @@ init(Parent, Bus) ->
     gpio:set_interrupt(?INT_PIN, falling),
 
     gpio:set_direction(?RESET_PIN, high),
-    gpio:set_direcion(?GREEN_LED, low),
+    gpio:set_direction(?GREEN_LED, low),
     gpio:set_direction(?RED_LED, low),
 
     %% fixme RESET the tc8418
