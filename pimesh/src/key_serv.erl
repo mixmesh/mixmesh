@@ -35,12 +35,13 @@
 	 i2c,
 	 locked = true,
 	 code = "",
-	 pincode = "1379",      %% digest? 
-	 pincode_len = 4,       %% needed for digest!?
-	 pincode_accept,        %% accept without enter key
-	 %%pincode_accept = $#,
-	 pincode_key1 = ?KEY_Asterisk,
-	 pincode_key2 = ?KEY_Number,
+	 pincode = "123456",    %% digest? 
+	 pincode_len = 6,       %% needed for digest!?
+	 %% pincode_enter_key,     %% accept without enter key
+	 pincode_enter_key = ?KEY_Number,  %% must enter with '#' after code
+	 prev_key,  %% keep last key PRESSED! clear on release
+	 pincode_lock_key1 = ?KEY_Asterisk,
+	 pincode_lock_key2 = ?KEY_Number,
 	 toggle = false,
 	 blink_tmo = ?BLINK_OFF_TMO
 	}).
@@ -131,47 +132,48 @@ message_handler(State=#state{i2c=Port,parent=Parent}) ->
 	    {noreply, State#state { toggle = Toggle, blink_tmo = Tmo }}
     end.
 
-scan_events([{press,Key1},{press,Key2}|Es],State) when 
-      Key1 =:= State#state.pincode_key1,
-      Key2 =:= State#state.pincode_key2,
+scan_events([{press,Key}|Es],State) when 
+      State#state.prev_key =:= State#state.pincode_lock_key1,
+      Key =:= State#state.pincode_lock_key2,
       not State#state.locked ->
     %% Lock device
-    gpio:clr(?RED_LED),	    
+    gpio:clr(?RED_LED),
     gpio:clr(?GREEN_LED),
-    State1 = State#state { locked = true, code = [],
+    State1 = State#state { locked = true,
+			   code = [],
+			   prev_key = undefined,
 			   toggle = false,
 			   blink_tmo = ?BLINK_OFF_TMO },
     scan_events(Es, State1);
-scan_events([{press,Key1},{press,Key2}|Es],State) when 
-      Key1 =:= State#state.pincode_key1,
-      Key2 =:= State#state.pincode_key2,
+scan_events([{press,Key}|Es],State) when 
+      State#state.prev_key =:= State#state.pincode_lock_key1,
+      Key =:= State#state.pincode_lock_key2,
       State#state.locked ->
     %% device is already locked, just reset code?
-    scan_events(Es, State#state { code = [] });
+    scan_events(Es, State#state { code = [], prev_key = undefined });
 scan_events([{press,Key}|Es], State) ->
-    io:format("PRESS ~s\n", [[i2c_tca8418:keycode_4x3_to_sym(Key)]]),
+    io:format("PRESS ~s\n", [[i2c_tca8418:keycode_to_sym(Key)]]),
     if State#state.locked ->
 	    gpio:set(?GREEN_LED);
        true ->
 	    ok
     end,
     State1 = add_key(Key, State),
-    scan_events(Es, State1);
+    scan_events(Es, State1#state { prev_key = Key} );
 scan_events([{release,Key}|Es], State) ->
-    io:format("RELEASE ~s\n", [[i2c_tca8418:keycode_4x3_to_sym(Key)]]),
-    Sym = i2c_tca8418:keycode_4x3_to_sym(Key),
+    io:format("RELEASE ~s\n", [[i2c_tca8418:keycode_to_sym(Key)]]),
     State1 = 
 	if State#state.locked ->
 		gpio:clr(?GREEN_LED),
-		case State#state.pincode_accept of
-		    Sym -> check_pincode(State);
+		case State#state.pincode_enter_key of
 		    undefined -> check_pincode(State);
+		    Key -> check_pincode(State);
 		    _ -> State
 		end;
 	   true ->
 		State
 	end,
-    scan_events(Es, State1);
+    scan_events(Es, State1#state { prev_key = undefined });
 scan_events([], State) ->
     State.
 
@@ -192,7 +194,7 @@ check_pincode(State) ->
 %% add key when 0-9 to pincode make sure length is
 %% at most pincode_len
 add_key(Key, State) ->
-    Sym = i2c_tca8418:keycode_4x3_to_sym(Key),
+    Sym = i2c_tca8418:keycode_to_sym(Key),
     if Sym >= $0, Sym =< $9 ->
 	    Code = State#state.code ++ [Sym],
 	    Len = length(Code),
