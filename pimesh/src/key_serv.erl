@@ -14,6 +14,7 @@
 -include_lib("apptools/include/log.hrl").
 
 -export([is_locked/1]).
+-export([hw_reset/1, hw_reset/2]).
 
 -define(INT_PIN,  17).
 -define(RESET_PIN, 27).
@@ -53,9 +54,6 @@ init(Parent, Bus) ->
     %% {ok,Port} = i2c_tca8418:open1(Bus),
     ok = i2c_tca8418:open(Bus),
     Port = Bus,
-    %% configure for 4x3 key matrix evaluation board
-    i2c_tca8418:configure_4x3(Port),
-
     gpio:init(?INT_PIN),
     gpio:init(?RESET_PIN),
     gpio:init(?GREEN_LED),
@@ -68,12 +66,29 @@ init(Parent, Bus) ->
     gpio:set_direction(?GREEN_LED, low),
     gpio:set_direction(?RED_LED, low),
 
-    %% fixme RESET the tc8418
+    hw_reset(Port, {4,3}),
 
     Events = i2c_tca8418:read_keys(Port),
     State0 = #state { parent=Parent, i2c=Port },
     State  = scan_events(Events, State0),
     {ok, State}.
+
+hw_reset(I2C) ->
+    hw_reset(I2C, {4,3}).
+
+hw_reset(I2C, Config) ->
+    timer:sleep(10),
+    gpio:clr(?RESET_PIN),
+    timer:sleep(10),
+    gpio:set(?RESET_PIN),
+    timer:sleep(10),
+    %% configure for 4x3 key matrix evaluation board
+    case Config of
+	{3,3} ->
+	    i2c_tca8418:configure_3x3(I2C);
+	{4,3} ->
+	    i2c_tca8418:configure_4x3(I2C)
+    end.
 
 message_handler(State=#state{i2c=Port,parent=Parent}) ->
     receive
