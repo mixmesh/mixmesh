@@ -153,7 +153,7 @@ add_key(Key, State) ->
     if Sym >= $0, Sym =< $9 ->
 	    Code = State#state.code ++ [Sym],
 	    Len = length(Code),
-	    if Len < State#state.pincode_len ->
+	    if Len =< State#state.pincode_len ->
 		    State#state { code = Code };
 	       true ->
 		    [_|Code1] = Code,
