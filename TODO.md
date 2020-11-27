@@ -11,23 +11,31 @@
 * select ip from ping interface, convert (0,0,0,0) => (A,B,C,D)
   depending on nodis ip.
 * retry state?
-* nodis neighbour state as ets? pening queue
+* nodis neighbour state as ets? pending queue.
 * simulator fix grid demo!
-* Buffer management, send/recv messages
+* Buffer management, send/recv messages.
 
 ### Joakim
 
-* Look into Bluetooth on Android
-* Familiarize myself with CL
+* Look into Bluetooth on Android.
+* Familiarize myself with CL.
 
 ### Both
 
+* nodis koordinatjänst
+* packet = header + encoded, sync_server endast?
+* Kryptera kontakter med privat nyckel.
+* Kryptera privat nyckel.
+* Player får privat nyckel som meddelande.
+* Kör på standard portar? Möjligt att sätta portar.
+* Ska locked device vara message realy?
 * Prata om en möjlig avnästlad lagring av config i app env.
-* exchanging messages may be good a strategy when is comes to clients
-  that receive messages by never send (buggy or strange) or sending
+* exchanging messages may be good a strategy when is comes to clients.
+  that receive messages by never send (buggy or strange) or sending.
   messages but never receives.
-* Test bluetooth connection, various clients
+* Test bluetooth connection, various clients.
 * Factory reset, Initiate box!
+
 
 
 ## Demo hardware
