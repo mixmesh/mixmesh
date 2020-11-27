@@ -29,6 +29,19 @@
 -define(BLINK_ON_TMO, 500).
 -define(BLINK_OFF_TMO, 1000).
 
+%% max time in ms between keys. (fixme)
+-define(KEY_WAIT_TIME, 5000).
+%% max time for pin code entry in ms (fixme)
+-define(PINCODE_WAIT_TIME, 20000).
+%% min back-off time in ms, for failed input attempt
+-define(BACK_OF_TIME_1, 3).     %% first wait 3s
+-define(BACK_OF_TIME_2, 4).     %% first wait 4s
+-define(BACK_OF_TIME_3, 5).     %% first wait 5s
+-define(BACK_OF_TIME_4, 10).    %% first wait 10s
+-define(BACK_OF_TIME_5, 60).    %% first wait 1m
+-define(BACK_OF_TIME_6, 3400).  %% first wait 1h
+-define(BACK_OF_TIME_7, 86400).  %% max wait one day
+
 -record(state,
 	{
 	 parent,
@@ -43,7 +56,9 @@
 	 pincode_lock_key1 = ?KEY_Asterisk,
 	 pincode_lock_key2 = ?KEY_Number,
 	 toggle = false,
-	 blink_tmo = ?BLINK_OFF_TMO
+	 blink_tmo = ?BLINK_OFF_TMO,
+	 attempts = 0,
+	 backoff = false
 	}).
 
 is_locked(Serv) ->
@@ -66,6 +81,10 @@ init(Parent, Bus) ->
     gpio:init(?RESET_PIN),
     gpio:init(?GREEN_LED),
     gpio:init(?RED_LED),
+    %% sleep since gpio:init is async, fixme somehow...
+    %% we could use low-level api but we still need the 
+    %% to poll on the gpioxyz/value file for interrupts...
+    timer:sleep(1000), 
 
     gpio:set_direction(?INT_PIN, in),
     gpio:set_interrupt(?INT_PIN, falling),
@@ -99,6 +118,11 @@ hw_reset(I2C, Config) ->
     end.
 
 message_handler(State=#state{i2c=Port,parent=Parent}) ->
+    BlinkTmo = if State#state.backoff ->
+		       infinity;
+		  true ->
+		       State#state.blink_tmo
+	       end,
     receive
         {call, From, stop} ->
             {stop, From, ok};
@@ -109,8 +133,15 @@ message_handler(State=#state{i2c=Port,parent=Parent}) ->
         {gpio_interrupt, 0, ?INT_PIN, _Value} ->
 	    io:format("pin ~w, value=~w\n", [?INT_PIN,_Value]),
 	    Events = i2c_tca8418:read_events(Port),
-	    State1 = scan_events(Events, State),
+	    State1 = if State#state.backoff ->
+			     State;
+			true ->
+			     scan_events(Events, State)
+		     end,
 	    {noreply, State1};
+
+	{timeout,_TRef,backoff} ->  %% backoff period is over
+	    {noreply, State#state { backoff = false }};
 
         {'EXIT', Parent, Reason} ->
 	    exit(Reason);
@@ -119,7 +150,7 @@ message_handler(State=#state{i2c=Port,parent=Parent}) ->
         UnknownMessage ->
             ?error_log({unknown_message, UnknownMessage}),
             noreply
-    after State#state.blink_tmo ->
+    after BlinkTmo ->
 	    Toggle = not State#state.toggle,
 	    Tmo = 
 		if Toggle ->
@@ -131,24 +162,34 @@ message_handler(State=#state{i2c=Port,parent=Parent}) ->
 		end,
 	    {noreply, State#state { toggle = Toggle, blink_tmo = Tmo }}
     end.
-
+%% either 
 scan_events([{press,Key}|Es],State) when 
+      not State#state.locked,
       State#state.prev_key =:= State#state.pincode_lock_key1,
-      Key =:= State#state.pincode_lock_key2,
-      not State#state.locked ->
+      Key =:= State#state.pincode_lock_key2
+      ; %% or keys the other order
+      not State#state.locked,
+      State#state.prev_key =:= State#state.pincode_lock_key2,
+      Key =:= State#state.pincode_lock_key1 ->
     %% Lock device
     gpio:clr(?RED_LED),
     gpio:clr(?GREEN_LED),
     State1 = State#state { locked = true,
+			   backoff = false,
+			   attempts = 0,
 			   code = [],
 			   prev_key = undefined,
 			   toggle = false,
 			   blink_tmo = ?BLINK_OFF_TMO },
     scan_events(Es, State1);
 scan_events([{press,Key}|Es],State) when 
+      State#state.locked,
       State#state.prev_key =:= State#state.pincode_lock_key1,
-      Key =:= State#state.pincode_lock_key2,
-      State#state.locked ->
+      Key =:= State#state.pincode_lock_key2
+      ;
+      State#state.locked,
+      State#state.prev_key =:= State#state.pincode_lock_key2,
+      Key =:= State#state.pincode_lock_key1 ->
     %% device is already locked, just reset code?
     scan_events(Es, State#state { code = [], prev_key = undefined });
 scan_events([{press,Key}|Es], State) ->
@@ -187,12 +228,25 @@ check_pincode(State) ->
 	    gpio:clr(?RED_LED),
 	    gpio:set(?GREEN_LED),
 	    State#state { locked = false,
+			  attempts = 0,
 			  toggle = true,
 			  blink_tmo = infinity };
        true ->
-	    %% set pinentry delay
-	    State
+	    Attempts = State#state.attempts + 1,
+	    BackOff_Ms = backoff_s(Attempts)*1000,
+	    erlang:start_timer(BackOff_Ms, self(), backoff),
+	    gpio:set(?RED_LED),
+	    gpio:clr(?GREEN_LED),
+	    State#state { backoff = true, attempts = Attempts }
     end.
+
+backoff_s(1) -> ?BACK_OF_TIME_1;
+backoff_s(2) -> ?BACK_OF_TIME_2;
+backoff_s(3) -> ?BACK_OF_TIME_3;
+backoff_s(4) -> ?BACK_OF_TIME_4;
+backoff_s(5) -> ?BACK_OF_TIME_5;
+backoff_s(6) -> ?BACK_OF_TIME_6;
+backoff_s(_) -> ?BACK_OF_TIME_7.
 
 %% add key when 0-9 to pincode make sure length is
 %% at most pincode_len

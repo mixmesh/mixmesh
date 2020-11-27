@@ -33,9 +33,13 @@ The pin entry process is guided only with LEDS,
 
 Example
 
-- Pin code is needed RED-BLINK, GREEN-OFF
+- Pin code is needed, RED-BLINK, GREEN-OFF
 - Key is pressed FLASH GREEN for each PRESS/RELEASE
 - Pin code is accepted GREEN-ON, RED-OFF, device enabled
+- When device is enabled a sequence of with # and * will
+disable the device again.
+- If key presses are delayed too long the current code
+will be cleared and the process restarted (no back-off penalty needed?)
 
 Pin code could be accepted either when the correct digits
 have been pressed regardless how many key have been pressed.
@@ -44,5 +48,6 @@ missing a key for enter (#) then the first option may be
 needed.
 Enter a bad pin code will set RED-ON and run a exponetial back-off
 delay until a new pin code may be tried.
-
-- one MEDIUM style (telefon) keyboard 4x3 [0-9#\*]
+Pin codes should be digested and matched against a hash.
+This way the clear text pin code does not have to be stored in the 
+key server.
