@@ -76,7 +76,7 @@ init(Parent, Bus) ->
 
     hw_reset(Port, {4,3}),
 
-    Events = i2c_tca8418:read_keys(Port),
+    Events = i2c_tca8418:read_events(Port),
     State0 = #state { parent=Parent, i2c=Port },
     State  = scan_events(Events, State0),
     {ok, State}.
@@ -108,7 +108,7 @@ message_handler(State=#state{i2c=Port,parent=Parent}) ->
 
         {gpio_interrupt, 0, ?INT_PIN, _Value} ->
 	    io:format("pin ~w, value=~w\n", [?INT_PIN,_Value]),
-	    Events = i2c_tca8418:read_keys(Port),
+	    Events = i2c_tca8418:read_events(Port),
 	    State1 = scan_events(Events, State),
 	    {noreply, State1};
 
@@ -174,6 +174,9 @@ scan_events([{release,Key}|Es], State) ->
 		State
 	end,
     scan_events(Es, State1#state { prev_key = undefined });
+scan_events([Event|Es], State) ->
+    io:format("key_serv: ignore event ~w\n", [Event]),
+    scan_events(Es, State);
 scan_events([], State) ->
     State.
 
