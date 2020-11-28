@@ -51,3 +51,22 @@ delay until a new pin code may be tried.
 Pin codes should be digested and matched against a hash.
 This way the clear text pin code does not have to be stored in the 
 key server.
+
+## LED & BATTERY 
+
+We could use the keyboard (using TCA8418) control 
+4 LEDs for the battery level and.
+if the SOC (state of charge) is present this could be used
+to show the status of the battery level.
+
+## LED & APPLICAION
+
+Also on one LED could be used to show when the application is
+running.This is helpful when problem arise in logging in
+to the web UI etc. If the application LED is not ON, then there
+should not be expected that loggin in would be succesful.
+
+May be some kind of watch dog could try to turn the led OFF.
+
+
+
