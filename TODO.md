@@ -17,17 +17,16 @@
 
 ### Joakim
 
+* Kör på standard portar? Möjligt att sätta portar.
+* Kryptera kontakter med privat nyckel istället för med stretchad PIN.
+* Kryptera privat nyckel (kolla i alla fall).
+* nodis koordinatjänst
+* packet = header + encoded, sync_server endast?
 * Look into Bluetooth on Android.
-* Familiarize myself with CL.
 
 ### Both
 
-* nodis koordinatjänst
-* packet = header + encoded, sync_server endast?
-* Kryptera kontakter med privat nyckel.
-* Kryptera privat nyckel.
 * Player får privat nyckel som meddelande.
-* Kör på standard portar? Möjligt att sätta portar.
 * Ska locked device vara message realy?
 * Prata om en möjlig avnästlad lagring av config i app env.
 * exchanging messages may be good a strategy when is comes to clients.
@@ -35,8 +34,6 @@
   messages but never receives.
 * Test bluetooth connection, various clients.
 * Factory reset, Initiate box!
-
-
 
 ## Demo hardware
 * Raspberry pi zero W/H
