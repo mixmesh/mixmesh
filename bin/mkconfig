@@ -6,8 +6,7 @@ if [ -z "${erl}" ]; then
     exit 1
 fi
 
-usage()
-{
+usage () {
     >&2 echo "mkconfig <OBSCRETE-DIR> <CERTIFICATE-FILE> <PLAYER-NAME>"
     exit 100
 }
