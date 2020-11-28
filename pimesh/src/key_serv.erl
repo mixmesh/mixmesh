@@ -7,14 +7,15 @@
 
 -module(key_serv).
 
--export([start_link/0, start_link/1]).
+-export([start_link/0, start_link/2]).
 -export([message_handler/1]).
 
 -include_lib("apptools/include/serv.hrl").
 -include_lib("apptools/include/log.hrl").
 
 -export([is_locked/1]).
--export([hw_reset/1, hw_reset/2]).
+
+-export([hw_reset/0]).
 
 -define(INT_PIN,  17).
 -define(RESET_PIN, 27).
@@ -67,15 +68,15 @@ is_locked(Serv) ->
     serv:call(Serv, is_locked).
 
 start_link() ->
-    start_link(1).
+    start_link(1,false).
 
-start_link(Bus) ->
+start_link(Bus,Reset) ->
     application:start(i2c),
     application:start(gpio),
-    ?spawn_server(fun(Parent) -> init(Parent, Bus) end,
+    ?spawn_server(fun(Parent) -> init(Parent, Bus, Reset) end,
 		  fun ?MODULE:message_handler/1).
 
-init(Parent, Bus) ->
+init(Parent, Bus, Reset) ->
     %% {ok,Port} = i2c_tca8418:open1(Bus),
     ok = i2c_tca8418:open(Bus),
     Port = Bus,
@@ -95,29 +96,28 @@ init(Parent, Bus) ->
     gpio:set_direction(?GREEN_LED, low),
     gpio:set_direction(?RED_LED, low),
 
-    hw_reset(Port, {4,3}),
+    if Reset -> hw_reset();
+       true -> ok
+    end,
+    configure(Port, {4,3}),
 
     Events = i2c_tca8418:read_events(Port),
     State0 = #state { parent=Parent, i2c=Port },
     State  = scan_events(Events, State0),
     {ok, State}.
 
-hw_reset(I2C) ->
-    hw_reset(I2C, {4,3}).
-
-hw_reset(I2C, Config) ->
+%% reset tca8418 - reset all registers
+hw_reset() ->
     timer:sleep(10),
     gpio:clr(?RESET_PIN),
     timer:sleep(10),
     gpio:set(?RESET_PIN),
-    timer:sleep(10),
-    %% configure for 4x3 key matrix evaluation board
-    case Config of
-	{3,3} ->
-	    i2c_tca8418:configure_3x3(I2C);
-	{4,3} ->
-	    i2c_tca8418:configure_4x3(I2C)
-    end.
+    timer:sleep(10).
+    
+configure(I2C,{3,3}) ->
+    i2c_tca8418:configure_3x3(I2C);
+configure(I2C,{4,3}) ->
+    i2c_tca8418:configure_4x3(I2C).
 
 message_handler(State=#state{i2c=Port,parent=Parent}) ->
     BlinkTmo = if State#state.backoff ->
