@@ -22,6 +22,7 @@
 * Kryptera privat nyckel (kolla i alla fall).
 * nodis koordinatjänst
 * packet = header + encoded, sync_server endast?
+* Add a square2 simulator plugin module based on smooth random walks (Perlin noise)
 * Look into Bluetooth on Android.
 
 ### Both
