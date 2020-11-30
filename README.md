@@ -4,7 +4,7 @@
 
 Make it possible for Erlang to bind to ports below 1024:
 
-`$ sudo setcap 'cap_net_bind_service=+ep' /usr/local/lib/erlang/erts-11.1/bin/beam.smp
+`$ sudo setcap 'cap_net_bind_service=+ep' /usr/local/lib/erlang/erts-11.1/bin/beam.smp`
 
 (or whetver erts version you are using.)
 
