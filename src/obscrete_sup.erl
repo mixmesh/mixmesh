@@ -47,7 +47,7 @@ init([]) ->
                  permanent, brutal_kill, worker, [log_serv]},
             RestServSpec =
                 {rest_bootstrap_server,
-                 {rest_bootstrap_server, start_link, [8444]},
+                 {rest_bootstrap_server, start_link, [443]},
                  permanent, brutal_kill, worker, [rest_bootstrap_server]},
             {ok, {{one_for_one, 3, 10}, [LogServSpec, RestServSpec]}}
     end.

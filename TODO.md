@@ -4,6 +4,14 @@
 
 ## Next week
 
+* Discuss player/src/player_interface.erl
+* Discuss "edit-config" in REST
+  1) When we set things with "edit-config" it should be exported to obscrete.conf on disk
+  2) We need to decide which patameters in obscrete.config which should be set to reloadable=true
+  NOT:Jag har väntat på att göra det möjligt att sätta om smtp/pop3/http portar från system settings i web appen. Det går att göra det via REST mha av "edit-config" men inget lär hända mtp  (1) och (2) ovan
+
+* DONE: Kör på standard portar?
+
 ### Tony
 
 * servator release guide
@@ -17,7 +25,6 @@
 
 ### Joakim
 
-* Kör på standard portar? Möjligt att sätta portar.
 * Kryptera kontakter med privat nyckel istället för med stretchad PIN.
 * Kryptera privat nyckel (kolla i alla fall).
 * nodis koordinatjänst

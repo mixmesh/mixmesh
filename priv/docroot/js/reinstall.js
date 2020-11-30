@@ -4,7 +4,10 @@ var Reinstall = (function() {
             $("#mail-password").hasClass("uk-form-success") &&
             $("#mail-password-again").hasClass("uk-form-success") &&
             $("#http-password").hasClass("uk-form-success") &&
-            $("#http-password-again").hasClass("uk-form-success")) {
+            $("#http-password-again").hasClass("uk-form-success") &&
+            $("#smtp-port").hasClass("uk-form-success") &&
+            $("#pop3-port").hasClass("uk-form-success") &&
+            $("#http-port").hasClass("uk-form-success")) {
             if ($("#reinstall-button").prop("disabled")) {
                 $("#reinstall-button").prop("disabled", false);
             }
@@ -98,7 +101,7 @@ var Reinstall = (function() {
                         Mixmesh.setClass(this, "uk-form-danger",
                                          "uk-form-success");
                     }
-                    toggleInstallButton();
+                    toggleRenstallButton();
                 });
                 $("#mail-password")
                     .keyup(Mixmesh
@@ -119,6 +122,12 @@ var Reinstall = (function() {
                     .click(Mixmesh.passwordLockHandler("#mail-password"));
                 $("#http-password-lock")
                     .click(Mixmesh.passwordLockHandler("#http-password"));
+                $("#smtp-port")
+                    .keyup(Mixmesh.portKeyupHandler("#smtp-port", toggleReinstallButton));
+                $("#pop3-port")
+                    .keyup(Mixmesh.portKeyupHandler("#pop3-port", toggleReinstallButton));
+                $("#http-port")
+                    .keyup(Mixmesh.portKeyupHandler("#http-port", toggleReinstallButton));
                 $("#reinstall-button").click(function() {
                     $("#reinstall-button").prop("disabled", true);
                     Mixmesh.post(
@@ -129,6 +138,9 @@ var Reinstall = (function() {
                             "smtp-password": $("#mail-password").val(),
                             "pop3-password": $("#mail-password").val(),
                             "http-password": $("#http-password").val(),
+                            "smtp-port": parseInt($("#smtp-port").val()),
+                            "pop3-port": parseInt($("#pop3-port").val()),
+                            "http-port": parseInt($("#http-port").val()),
                             pin: $("#pin").val()
                         },
                         function(data, textStatus, _jqXHR) {
@@ -186,7 +198,7 @@ var Reinstall = (function() {
 
             Mixmesh.showGenericDialog({
                 title: "Key recognized",
-                content: "<p>Please provide new passwords.</p>",
+                content: "<p>Provide passwords and ports.</p>",
                 onok: function() {
                     Mixmesh.hideGenericDialog();
                 }

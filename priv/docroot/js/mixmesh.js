@@ -114,7 +114,19 @@ var Mixmesh = (function() {
                     }
                 }
                 callback();
-            }
+            };
+            return handler;
+        },
+        portKeyupHandler: function(id, callback) {
+            var handler = function() {
+                var port = parseInt($(id).val());
+                if (!isNaN(port) && port > 0 && port < 65536) {
+                    Mixmesh.setClass(this, "uk-form-success", "uk-form-danger");
+                } else {
+                    Mixmesh.setClass(this, "uk-form-danger", "uk-form-success");
+                }
+                callback();
+            };
             return handler;
         },
         passwordLockHandler: function(id) {

@@ -35,7 +35,7 @@
           <h3>Install (1/3)</h3>
           <form class="uk-grid-small" uk-grid>
             <!-- PIN code -->
-            <div class="uk-width-1-2">
+            <div class="uk-width-1-1">
               <label class="uk-form-label"
                      for="pin">PIN code (6 digits)</label>
               <div class="uk-form-controls">
@@ -47,17 +47,17 @@
             <!-- Pseudonym -->
             <div class="uk-width-1-1">
               <label class="uk-form-label"
-                     for="pseudonym">Pseudonym (at most 31 chars)</label>
+                     for="pseudonym">Pseudonym (< 32 chars)</label>
               <div class="uk-form-controls">
                 <input id="pseudonym" class="uk-input uk-form-danger"
                        type="text" autocorrect="none" autocapitalize="none"
-                       maxlength="31" tabindex="1">
+                       maxlength="31" tabindex="2">
               </div>
             </div>
             <!-- Mail password -->
             <div class="uk-width-1-2">
               <label class="uk-form-label"
-                     for="mail-password">Mail password (at least 6 chars)</label>
+                     for="mail-password">Mail password (> 5 chars)</label>
               <div class="uk-form-controls">
                 <div class="uk-position-relative">
                   <a id="mail-password-lock"
@@ -66,7 +66,7 @@
                   <input id="mail-password"
                          class="uk-input uk-form-danger"
                          type="password" autocorrect="none"
-                         autocapitalize="none" tabindex="2">
+                         autocapitalize="none" tabindex="3">
                 </div>
               </div>
             </div>
@@ -76,13 +76,13 @@
               <div class="uk-form-controls">
                 <input id="mail-password-again" class="uk-input uk-form-danger"
                        type="password" autocorrect="none" autocapitalize="none"
-                       tabindex="3">
+                       tabindex="4">
               </div>
             </div>
             <!-- HTTP password -->
             <div class="uk-width-1-2">
               <label class="uk-form-label"
-                     for="http-password">HTTP password (at least 6 chars)</label>
+                     for="http-password">HTTP password (> 5 chars)</label>
               <div class="uk-form-controls">
                 <div class="uk-position-relative">
                   <a id="http-password-lock"
@@ -90,7 +90,7 @@
                      href="javascript:void(0)" uk-icon="icon: lock"></a>
                   <input id="http-password" class="uk-input uk-form-danger"
                          type="password" autocorrect="none"
-                         autocapitalize="none" tabindex="4">
+                         autocapitalize="none" tabindex="5">
                 </div>
               </div>
             </div>
@@ -100,7 +100,37 @@
               <div class="uk-form-controls">
                 <input id="http-password-again" class="uk-input uk-form-danger"
                        type="password" autocorrect="none" autocapitalize="none"
-                       tabindex="5">
+                       tabindex="6">
+              </div>
+            </div>
+            <!-- SMTP port -->
+            <div class="uk-width-1-3">
+              <label class="uk-form-label"
+                     for="smtp-port">SMTP port [465]</label>
+              <div class="uk-form-controls">
+                <input id="smtp-port" class="uk-input uk-form-success"
+                       type="text" autocorrect="none" autocapitalize="none"
+                       maxlength="5" tabindex="7" value="465">
+              </div>
+            </div>
+            <!-- POP3 port -->
+            <div class="uk-width-1-3">
+              <label class="uk-form-label"
+                     for="pop3-port">SMTP port [995]</label>
+              <div class="uk-form-controls">
+                <input id="pop3-port" class="uk-input uk-form-success"
+                       type="text" autocorrect="none" autocapitalize="none"
+                       maxlength="5" tabindex="8" value="995">
+              </div>
+            </div>
+            <!-- HTTP port -->
+            <div class="uk-width-1-3">
+              <label class="uk-form-label"
+                     for="http-port">HTTP port [443]</label>
+              <div class="uk-form-controls">
+                <input id="http-port" class="uk-input uk-form-success"
+                       type="text" autocorrect="none" autocapitalize="none"
+                       maxlength="5" tabindex="9" value="443">
               </div>
             </div>
           </form>
@@ -109,7 +139,7 @@
           </div>
           <div class="uk-text-right">
             <button id="install-button" class="uk-button uk-button-default"
-                  type="button" disabled tabindex="6">Install!</button>
+                  type="button" disabled tabindex="10">Install!</button>
           </div>
         </div>
       </div>

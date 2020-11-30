@@ -24,14 +24,13 @@ generated with the following parameters configured:
 * pin-salt
 * global-pki-server/data-dir
 * nym
-* sync-address
 * public-key
 * secret-key
-* smtp-server/address
+* smtp-server/address (port only)
 * smtp-server/password-digest
-* pop3-server/address
+* pop3-server/address (port only)
 * pop3-server/password-digest
-* http-server/address
+* http-server/address (port only)
 * http-server/password
 * daemon/file/path
 * dbg/file/path
@@ -48,10 +47,9 @@ is used as a template.
   "smtp-password": "<string>",
   "pop3-password": "<string>",
   "http-password": "<string>",
-  "sync-address": "<ip:port> (optional)",
-  "smtp-address": "<ip:port> (optional)",
-  "pop3-address": "<ip:port> (optional)",
-  "http-address": "<ip:port> (optional)",
+  "smtp-port": "<integer> (optional)",
+  "pop3-port": "<integer> (optional)",
+  "http-port": "<integer> (optional)",
   "obscrete-dir": "<path> (optional)",
   "pin": "<six digits> (optional)"
 }
@@ -63,7 +61,6 @@ is used as a template.
 {
   "public-key": "<Base64 encoded public key>",
   "secret-key": "<Base64 encoded secret key>",
-  "sync-address": "<ip:port>",
   "smtp-address": "<ip:port>",
   "pop3-address": "<ip:port>",
   "http-address": "<ip:port>",
@@ -80,44 +77,42 @@ A nice description on why the request failed.
 ### Typical usage
 
 ```
-$ mkdir /tmp/obscrete-
+$ mkdir /tmp/obscrete
 $ ./bin/obscrete --bootstrap
 
-$ curl --request POST --header "Content-Type: application/json" --data '{"nym": "alice", "smtp-password": "baz", "pop3-password": "baz", "http-password": "hello"}' http://127.0.0.1:8444/bootstrap/install
+$ curl --insecure --request POST --header "Content-Type: application/json" --data '{"nym": "alice", "smtp-password": "baz", "pop3-password": "baz", "http-password": "hello"}' https://127.0.0.1/bootstrap/install
 {
-  "public-key": "BWFsaWNlt8GZL4n7Tbyqbr5JD6IUKbEO0TZeQ6JQOnFuj9ggayRm\/JhRs1\/QPF1UNzkRIPakugXCMjELYnuz8V+hEHWq4hOa5IzNp\/MSomKJamK4608bMgMwRQ4RKx5KbfD+V2NL3KictMM5QKFh+AWgjZN0SyN8VinhT4K7ye\/FRh3zl\/E=",
-  "secret-key": "BWFsaWNlgNRUP8jfeJHgQH4CwDAkD1VvucDSqNxvdnbcu6mBmtNsfzHWeLxYKAcut\/+doKt+D5xZ\/dZ2RyG2AyxGJrb3atZvpBug1q71GqEFYHlAEk2E0qJDKHnxQs7R3I5z7c237hctQjc79tJI\/FqT\/9FAtmtKJd8OUWPDEN+WoUGr4lk2t8GZL4n7Tbyqbr5JD6IUKbEO0TZeQ6JQOnFuj9ggayRm\/JhRs1\/QPF1UNzkRIPakugXCMjELYnuz8V+hEHWq4hOa5IzNp\/MSomKJamK4608bMgMwRQ4RKx5KbfD+V2NL3KictMM5QKFh+AWgjZN0SyN8VinhT4K7ye\/FRh3zl\/E=",
-  "sync-address": "0.0.0.0:9900",
-  "smtp-address": "0.0.0.0:19900",
-  "pop3-address": "0.0.0.0:29900",
-  "http-address": "0.0.0.0:8444",
-  "obscrete-dir": "/tmp/obscrete",
+  "public-key": "BWFsaWNlA545HxYMKpYFS0GoofqJTqq2x5Qqust2NBGPEqbNbzueOSAsw40gna3f9Gj0t686Y6HIctouBQK0pfBjidfR9LqECh6jV09t7PYa2r6SSX5keN2\/r21Zki5npxYjNiV6PfpZuwuqvvI+xpZ6j7MNRipbS12st\/e2zPr49yg3AdOK",
+  "secret-key": "BWFsaWNlgQG74DOG+xCoeIIk5PXQgyUvfpfJwKSdVxvv9NGh11\/stPmGp9vSVGpmkn4Sz0QqAh375dH6pTDLV65hlnpMapp9gM1j\/vGKgaHvtXUL6GeyYl4GOX4HWYrh8FaOTWqcpQcFWz6i24syX8wMPANAmA0yzRsEpXE5NcOhzTP+zCenEAOeOR8WDCqWBUtBqKH6iU6qtseUKrrLdjQRjxKmzW87njkgLMONIJ2t3\/Ro9LevOmOhyHLaLgUCtKXwY4nX0fS6hAoeo1dPbez2Gtq+kkl+ZHjdv69tWZIuZ6cWIzYlej36WbsLqr7yPsaWeo+zDUYqW0tdrLf3tsz6+PcoNwHTig==",
+  "smtp-address": "172.16.0.139:465",
+  "pop3-address": "172.16.0.139:995",
+  "http-address": "172.16.0.139:443",
+  "obscrete-dir": "\/tmp\/obscrete",
   "pin": "123456",
-  "pin-salt": "B70E3LMi8O+IZxUDyPY8ug=="
+  "pin-salt": "t8M4ffJQa8Hkr\/rawzwG8w=="
 }
 ```
 
 In the example above the optional parameters were ommited, i.e. these optional parameters will not be in the final version anyway, but here all possible optional parameters are provided (with their current default values):
 
 ```json
-$ curl --request POST --header "Content-Type: application/json" --data '{"nym": "alice", "smtp-password": "baz", "pop3-password": "baz", "http-password": "hello", "sync-address": "0.0.0.0:9900", "smtp-address": "0.0.0.0:19900", "pop3-address": "0.0.0.0:29900", "http-address": "0.0.0.0:8444", "obscrete-dir": "/tmp/obscrete", "pin": "123456"}' http://127.0.0.1:8444/bootstrap/install
+$ curl --insecure --request POST --header "Content-Type: application/json" --data '{"nym": "alice", "smtp-password": "baz", "pop3-password": "baz", "http-password": "hello", "smtp-port": 465, "pop3-port": 995, "http-port": 443, "obscrete-dir": "/tmp/obscrete", "pin": "123456"}' https://127.0.0.1/bootstrap/install
 {
-  "public-key": "BWFsaWNlAb580nSD7dm2ltsNxz\/yO7nAikKko4FMxKzL8rF0EUY+lF0YX5J9ljlZuemxhh3QrQuKY2KnMJ0ATMfdSleyUUBsOEC2YzDFMpqR7Dx0iiQ6ZUZdfPoYlL9oC2mjOIOXmEtgBtTeeOeVPgk\/\/P5xrCaPjf8BC0fh\/90oU9YWLIV4",
-  "secret-key": "BWFsaWNlgQK3RdpgKoErxfuNjH1dH0T1Zf27DT6T+BO0gJrTdHF8pb+lkkT19epLk7ofGlgh6HErwbvPfGIZzXlYpzdnmqRvLjOFg5s5aUqnimuIgfYm9fRGu6hRNZBgQRakulbm2zLYqsrYaR8fhpbXKpm5HH8sBkSfRuECTh+PPE5xZO49EwG+fNJ0g+3ZtpbbDcc\/8ju5wIpCpKOBTMSsy\/KxdBFGPpRdGF+SfZY5WbnpsYYd0K0LimNipzCdAEzH3UpXslFAbDhAtmMwxTKakew8dIokOmVGXXz6GJS\/aAtpoziDl5hLYAbU3njnlT4JP\/z+cawmj43\/AQtH4f\/dKFPWFiyFeA==",
-  "sync-address": "0.0.0.0:9900",
-  "smtp-address": "0.0.0.0:19900",
-  "pop3-address": "0.0.0.0:29900",
-  "http-address": "0.0.0.0:8444",
-  "obscrete-dir": "/tmp/obscrete",
+  "public-key": "BWFsaWNlAfTIzBHK5nd6O76t7c+0O7hRs\/Kj\/OjUduNsXaNeMnmd\/Kan55OhybZjB2R49BLEsEtP+FNcPt1tZrJzml7hzZ2XLnxK9glHPM52IzdStErd3bGryGeaYCqt32TZz1vFSkmoT7uVs\/X58qjCHEn0\/1Q7ZZtW7OvaOvTTQ3bMTXlF",
+  "secret-key": "BWFsaWNlgQFmqZ17qy4JLi6o\/uhac4OyqQYMXPDqI8uHqtpuFzVkZzUja7om1EYvMSsEVIuZExnPk0qynN8wBXy7xuZQT0oBf3\/WCO6dFBeYNe444VZhPAbgNeKAUp5skdUv1AdlJhavB\/HWglDsgfE6DXHPpU\/Mxiw7\/9+5Ioc231C0MfuFSgH0yMwRyuZ3eju+re3PtDu4UbPyo\/zo1HbjbF2jXjJ5nfymp+eTocm2YwdkePQSxLBLT\/hTXD7dbWayc5pe4c2dly58SvYJRzzOdiM3UrRK3d2xq8hnmmAqrd9k2c9bxUpJqE+7lbP1+fKowhxJ9P9UO2WbVuzr2jr000N2zE15RQ==",
+  "smtp-address": "172.16.0.139:465",
+  "pop3-address": "172.16.0.139:995",
+  "http-address": "172.16.0.139:443",
+  "obscrete-dir": "\/tmp\/obscrete",
   "pin": "123456",
-  "pin-salt": "vkEGjmGfrs5vmlExAVbZBA=="
+  "pin-salt": "LaO3uWrIsALduyApDUYYIg=="
 }
 ```
 
 Upon completion a new <obscrete-dir&gt;/obscrete.conf is created, i.e.  /tmp/obscrete/obscrete.conf. Bootstrap is now ready and Obscrete can be restarted to perform normal operation:
 
 ```
-$ curl --request POST --header "Content-Type: application/json" --data '5' http://127.0.0.1:8444/bootstrap/restart
+$ curl --insecure --request POST --header "Content-Type: application/json" --data '5' https://127.0.0.1/bootstrap/restart
 Yes, sir!
 
 $ ./bin/obscrete --config /tmp/obscrete/obscrete.conf
@@ -138,14 +133,13 @@ generated with the following parameters configured:
 * pin-salt
 * global-pki-server/data-dir
 * nym
-* sync-address
 * public-key
 * secret-key
-* smtp-server/address
+* smtp-server/address (port only)
 * smtp-server/password-digest
-* pop3-server/address
+* pop3-server/address (port only)
 * pop3-server/password-digest
-* http-server/address
+* http-server/address (port only)
 * http-server/password
 * daemon/file/path
 * dbg/file/path
@@ -163,10 +157,9 @@ is used as a template.
   "smtp-password": "<string>",
   "pop3-password": "<string>",
   "http-password": "<string>",
-  "sync-address": "<ip:port> (optional)",
-  "smtp-address": "<ip:port> (optional)",
-  "pop3-address": "<ip:port> (optional)",
-  "http-address": "<ip:port> (optional)",
+  "smtp-port": "<integer> (optional)",
+  "pop3-port": "<integer> (optional)",
+  "http-port": "<integer> (optional)",
   "obscrete-dir": "<path> (optional)",
   "pin": "<six digits> (optional)"
 }
@@ -177,7 +170,6 @@ is used as a template.
 ```json
 {
   "nym": "<string (<32 characters)>",
-  "sync-address": "<ip:port>",
   "smtp-address": "<ip:port>",
   "pop3-address": "<ip:port>",
   "http-address": "<ip:port>",
@@ -196,16 +188,15 @@ A nice description on why the request failed.
 ```
 $ mkdir /tmp/obscrete
 $ ./bin/obscrete --bootstrap
-$ curl --request POST --header "Content-Type: application/json" --data '{"public-key": "BWFsaWNlBbqW75jjJ0aPtaq1zGPObUc7ZQ2WIwIRbX2bkVyOkeIkAC9Hg0oc+J7BD\/RG04TDvd1fETcpmJpyvV8QyeKJ3B3BMHi+LPWSRY60yX1XoA\/1A1iuIxTnt22Q68iXyMMlZvA+ivmNxJlsqN3PB2KOch45KkNzi9Hez9u7KTZBhp3d", "secret-key": "BWFsaWNlgMwhWxEO5Ovn0OpNnN62Mu9nvL7Zn1mzlgSBkfC2zZQII\/otb+1jPqLMCDQlFKqNEXGy\/N1PUhotV3w7JBitwsZSUeGfVi2gLJFEkrZ6tGjrUoN3eB65JIzpfQirlLX6oCO5Ab1t4rOmD4BsHvA+lYBbYw3QihArIGqcTyNrbiC1BbqW75jjJ0aPtaq1zGPObUc7ZQ2WIwIRbX2bkVyOkeIkAC9Hg0oc+J7BD\/RG04TDvd1fETcpmJpyvV8QyeKJ3B3BMHi+LPWSRY60yX1XoA\/1A1iuIxTnt22Q68iXyMMlZvA+ivmNxJlsqN3PB2KOch45KkNzi9Hez9u7KTZBhp3d", "smtp-password": "baz", "pop3-password": "baz", "http-password": "hello"}' http://127.0.0.1:8444/bootstrap/reinstall
+$ curl --insecure --request POST --header "Content-Type: application/json" --data '{"public-key": "BWFsaWNlBbqW75jjJ0aPtaq1zGPObUc7ZQ2WIwIRbX2bkVyOkeIkAC9Hg0oc+J7BD\/RG04TDvd1fETcpmJpyvV8QyeKJ3B3BMHi+LPWSRY60yX1XoA\/1A1iuIxTnt22Q68iXyMMlZvA+ivmNxJlsqN3PB2KOch45KkNzi9Hez9u7KTZBhp3d", "secret-key": "BWFsaWNlgMwhWxEO5Ovn0OpNnN62Mu9nvL7Zn1mzlgSBkfC2zZQII\/otb+1jPqLMCDQlFKqNEXGy\/N1PUhotV3w7JBitwsZSUeGfVi2gLJFEkrZ6tGjrUoN3eB65JIzpfQirlLX6oCO5Ab1t4rOmD4BsHvA+lYBbYw3QihArIGqcTyNrbiC1BbqW75jjJ0aPtaq1zGPObUc7ZQ2WIwIRbX2bkVyOkeIkAC9Hg0oc+J7BD\/RG04TDvd1fETcpmJpyvV8QyeKJ3B3BMHi+LPWSRY60yX1XoA\/1A1iuIxTnt22Q68iXyMMlZvA+ivmNxJlsqN3PB2KOch45KkNzi9Hez9u7KTZBhp3d", "smtp-password": "baz", "pop3-password": "baz", "http-password": "hello"}' https://127.0.0.1/bootstrap/reinstall
 {
   "nym": "alice",
-  "sync-address": "0.0.0.0:9900",
-  "smtp-address": "0.0.0.0:19900",
-  "pop3-address": "0.0.0.0:29900",
-  "http-address": "0.0.0.0:8444",
-  "obscrete-dir": "/tmp/obscrete",
+  "smtp-address": "172.16.0.139:465",
+  "pop3-address": "172.16.0.139:995",
+  "http-address": "172.16.0.139:443",
+  "obscrete-dir": "\/tmp\/obscrete",
   "pin": "123456",
-  "pin-salt": "carYm55t3hqcmUNiAd+zkA=="
+  "pin-salt": "\/VYY9pek5O6mgA5bANnltQ=="
 }
 ```
 
@@ -245,20 +236,20 @@ In this example a file with public keys is first exported during
 normal operation:
 
 ```
-$ curl --user alice:hello --digest --request POST --header "Content-Type: application/json" --data '"all"' http://127.0.0.1:8444/key/export
+$ curl --insecure --user alice:hello --digest --request POST --header "Content-Type: application/json" --data '"all"' https://127.0.0.1/key/export
 {
   "size": 101,
   "uri-path": "\/temp\/keys-66.bin"
 }
 
-$ curl --user alice:hello --digest --silent --output keys-66.bin http://127.0.0.1:8444/temp/keys-66.bin
+$ curl --insecure --user alice:hello --digest --silent --output keys-66.bin https://127.0.0.1/temp/keys-66.bin
 ```
 
 And then the exported file is imported during bootstrap operation:
 
 ```
 $ ./bin/obscrete --bootstrap
-$ curl --form nym=alice --form obscrete-dir=/tmp/obscrete --form pin=123456 --form pin-salt=xFxxsWkBHF9SWcEQA4pvzg== --form key-file=@keys-66.bin http://127.0.0.1:8444/bootstrap/key/import
+$ curl --insecure --form nym=alice --form obscrete-dir=/tmp/obscrete --form pin=123456 --form pin-salt=xFxxsWkBHF9SWcEQA4pvzg== --form key-file=@keys-66.bin https://127.0.0.1/bootstrap/key/import
 101
 ```
 
@@ -279,7 +270,7 @@ Time in seconds until restart.
 ### Typical usage
 
 ```
-$ curl --request POST --header "Content-Type: application/json" --data '5' http://127.0.0.1:8444/bootstrap/restart
+$ curl --insecure --request POST --header "Content-Type: application/json" --data '5' https://127.0.0.1/bootstrap/restart
 Yes, sir!
 ```
 
@@ -312,7 +303,7 @@ A nice description on why the request failed.
 ### Typical usage
 
 ```
-$ curl --user alice:hello --digest --request POST --header "Content-Type: application/json" --data '{"player": {"nym": true, "spiridon": {"public-key": true}}}' http://127.0.0.1:8444/get-config
+$ curl --insecure --user alice:hello --digest --request POST --header "Content-Type: application/json" --data '{"player": {"nym": true, "spiridon": {"public-key": true}}}' https://127.0.0.1/get-config
 {
   "player": {
     "nym": "alice",
@@ -346,7 +337,7 @@ A nice description on why the request failed.
 ### Typical usage
 
 ```
-$ curl --user alice:hello --digest --request POST --header "Content-Type: application/json" --data '{"player": {"http-server": {"password": true}}}' http://127.0.0.1:8444/get-config
+$ curl --insecure --user alice:hello --digest --request POST --header "Content-Type: application/json" --data '{"player": {"http-server": {"password": true}}}' https://127.0.0.1/get-config
 {
   "player": {
     "http-server": {
@@ -355,10 +346,10 @@ $ curl --user alice:hello --digest --request POST --header "Content-Type: applic
   }
 }
 
-$ curl --user alice:hello --digest --request POST --header "Content-Type: application/json" --data '{"player": {"spiridon": {"f": 0.3}, "http-server": {"password":"zooooop"}}}' http://127.0.0.1:8444/edit-config
+$ curl --insecure --user alice:hello --digest --request POST --header "Content-Type: application/json" --data '{"player": {"spiridon": {"f": 0.3}, "http-server": {"password":"zooooop"}}}' https://127.0.0.1/edit-config
 Config has been updated
 
-$ curl --user alice:hello --digest --request POST --header "Content-Type: application/json" --data '{"player": {"http-server": {"password": true}}}' http://127.0.0.1:8444/get-config
+$ curl --insecure --user alice:hello --digest --request POST --header "Content-Type: application/json" --data '{"player": {"http-server": {"password": true}}}' https://127.0.0.1/get-config
 {
   "player": {
     "http-server": {
@@ -393,7 +384,7 @@ Used to show all available public keys. At most 100 keys will be shown.
 ### Typical usage
 
 ```
-$ curl --user alice:hello --digest http://127.0.0.1:8444/key
+$ curl --insecure --user alice:hello --digest https://127.0.0.1/key
 [
   {
     "nym": "alice",
@@ -434,7 +425,7 @@ Used to show a key for a specific nym.
 ### Typical usage
 
 ```
-curl --user alice:hello --digest http://127.0.0.1:8444/key/alice
+curl --user alice:hello --digest https://127.0.0.1/key/alice
 {
   "nym": "alice",
   "public-key": "BWFsaWNlxgDD8BleR0lZOyTVMuguqs9IE1E7SuWgsyyNNNp4vrrQZbpF8PSiEhju2dL3cMnc5ZFAoe41NQ4+C45r+Xwk9dpo3sn5Uwj+ETZw5nC\/StW+YeAlApeCZVL126AcOhQPtgRNyajc84Qg0dM7K5UDic\/81kb0EqkaZ1awtwUrmPs="
@@ -477,7 +468,7 @@ Invalid filter
 ### Typical usage
 
 ```
-$ curl --user alice:hello --digest --request POST --header "Content-Type: application/json" --data '["p1"]' http://127.0.0.1:8444/key/filter
+$ curl --insecure --user alice:hello --digest --request POST --header "Content-Type: application/json" --data '["p1"]' https://127.0.0.1/key/filter
 [
   {
     "nym": "p1",
@@ -511,7 +502,7 @@ Invalid key
 ### Typical usage
 
 ```
-$ curl --user alice:hello --digest http://127.0.0.1:8444/key/alice
+$ curl --insecure --user alice:hello --digest https://127.0.0.1/key/alice
 {
   "nym": "alice",
   "public-key": "BWFsaWNlxgDD8BleR0lZOyTVMuguqs9IE1E7SuWgsyyNNNp4vrrQZbpF8PSiEhju2dL3cMnc5ZFAoe41NQ4+C45r+Xwk9dpo3sn5Uwj+ETZw5nC\/StW+YeAlApeCZVL126AcOhQPtgRNyajc84Qg0dM7K5UDic\/81kb0EqkaZ1awtwUrmPs="
@@ -528,10 +519,10 @@ xSWN08SbX4ZBvJz2uNRa2MP6P/COMWcwAqB60dIYMdLxAI1r+jXY5KGNZA/5oCYCqhutKmAvd1c6h9Cb
 BWFsaWNlBJWFOMpEsNjUcO5WpVPt6Q/ob7+AYIt/iEn2yCzavZdzfuBnrjJ2T+0pjn5IUKpgM1IbLiSedagB+isHgr3NHxlmptGp6QvMBizh8/DsqvZCFO/dvjWUc1olnRrsnLp1S/IFcImj2Zb7vxLEmnnyjSdqLdXbw8YTCSDoWA38Llqm
 -----END PUBLIC KEY-----
 
-$ curl --user alice:hello --digest --request PUT --header "Content-Type: application/json" --data '"BWFsaWNlBJNUFPQyNBgndEf8QJLBY/kngZbjbCgWtpZhRUWtbDaEPxxmIrdWOZcpUa2yDauWNCZ/cZ4r7hSUXOW8TlJaqz2yJjG1OZ9nesloWrkrxDIU8xXjkZ7A6O2Trwf1xmYwMe17sp4BwR87lR8K3LBBYEwB1f3BFtle4zRCupxbAwGy"' http://127.0.0.1:8444/key
+$ curl --insecure --user alice:hello --digest --request PUT --header "Content-Type: application/json" --data '"BWFsaWNlBJNUFPQyNBgndEf8QJLBY/kngZbjbCgWtpZhRUWtbDaEPxxmIrdWOZcpUa2yDauWNCZ/cZ4r7hSUXOW8TlJaqz2yJjG1OZ9nesloWrkrxDIU8xXjkZ7A6O2Trwf1xmYwMe17sp4BwR87lR8K3LBBYEwB1f3BFtle4zRCupxbAwGy"' https://127.0.0.1/key
 "alice"
 
-$ curl --user alice:hello --digest http://127.0.0.1:8444/key/alice
+$ curl --insecure --user alice:hello --digest https://127.0.0.1/key/alice
 {
   "nym": "alice",
   "public-key": "BWFsaWNlBJWFOMpEsNjUcO5WpVPt6Q\/ob7+AYIt\/iEn2yCzavZdzfuBnrjJ2T+0pjn5IUKpgM1IbLiSedagB+isHgr3NHxlmptGp6QvMBizh8\/DsqvZCFO\/dvjWUc1olnRrsnLp1S\/IFcImj2Zb7vxLEmnnyjSdqLdXbw8YTCSDoWA38Llqm"
@@ -563,10 +554,10 @@ In other words: If *all* public keys referred to existed and were deleted an emp
 ### Typical usage
 
 ```
-$ curl --user alice:hello --digest --request POST --header "Content-Type: application/json" --data '["p41", "p65"]}' http://127.0.0.1:8444/key/delete
+$ curl --insecure --user alice:hello --digest --request POST --header "Content-Type: application/json" --data '["p41", "p65"]}' https://127.0.0.1/key/delete
 []
 
-$ curl --user alice:hello --digest --request POST --header "Content-Type: application/json" --data '["p41", "p65"]' http://127.0.0.1:8444/key/delete
+$ curl --insecure --user alice:hello --digest --request POST --header "Content-Type: application/json" --data '["p41", "p65"]' https://127.0.0.1/key/delete
 [
   {
     "nym": "p65",
@@ -613,7 +604,7 @@ Invalid nyms
 ### Typical usage
 
 ```
-$ curl --user alice:hello --digest --request POST --header "Content-Type: application/json" --data '"all"' http://127.0.0.1:8444/key/export
+$ curl --insecure --user alice:hello --digest --request POST --header "Content-Type: application/json" --data '"all"' https://127.0.0.1/key/export
 {
   "size": 101,
   "uri-path": "\/temp\/keys-66.bin"
@@ -645,18 +636,18 @@ A nice description on why the request failed.
 In this example a file with public keys is first exported:
 
 ```
-$ curl --user alice:hello --digest --request POST --header "Content-Type: application/json" --data '"all"' http://127.0.0.1:8444/key/export
+$ curl --insecure --user alice:hello --digest --request POST --header "Content-Type: application/json" --data '"all"' https://127.0.0.1/key/export
 {
   "size": 101,
   "uri-path": "\/temp\/keys-66.bin"
 }
 
-$ curl --user alice:hello --digest --silent --output keys-66.bin http://127.0.0.1:8444/temp/keys-66.bin
+$ curl --insecure --user alice:hello --digest --silent --output keys-66.bin https://127.0.0.1/temp/keys-66.bin
 ```
 
 And then the exported file is imported:
 
 ```
-$ curl --user alice:hello --digest --form key-file=@keys-66.bin http://127.0.0.1:8444/key/import
+$ curl --insecure --user alice:hello --digest --form key-file=@keys-66.bin https://127.0.0.1/key/import
 101
 ```

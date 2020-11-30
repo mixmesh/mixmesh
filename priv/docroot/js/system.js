@@ -150,6 +150,9 @@ $(document).ready(function() {
                 },
                 "pop3-server": {
                     address: true
+                },
+                "http-server": {
+                    address: true
                 }
             }
         },
@@ -166,6 +169,11 @@ $(document).ready(function() {
             ip_port = data.player["pop3-server"].address.split(":");
             $("#pop3-ip-address").val(ip_port[0]);
             $("#pop3-port").val(ip_port[1]);
+
+            // HTTP server
+            ip_port = data.player["http-server"].address.split(":");
+            $("#http-ip-address").val(ip_port[0]);
+            $("#http-port").val(ip_port[1]);
         },
         function(jqXHR, textStatus, errorThrown) {
             console.log("/get-config (POST) failed");

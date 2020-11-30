@@ -5,7 +5,10 @@ var Install = (function() {
             $("#mail-password").hasClass("uk-form-success") &&
             $("#mail-password-again").hasClass("uk-form-success") &&
             $("#http-password").hasClass("uk-form-success") &&
-            $("#http-password-again").hasClass("uk-form-success")) {
+            $("#http-password-again").hasClass("uk-form-success") &&
+            $("#smtp-port").hasClass("uk-form-success") &&
+            $("#pop3-port").hasClass("uk-form-success") &&
+            $("#http-port").hasClass("uk-form-success")) {
             if ($("#install-button").prop("disabled")) {
                 $("#install-button").prop("disabled", false);
             }
@@ -15,7 +18,7 @@ var Install = (function() {
             }
         }
     };
-
+    
     var step3 = function(nym, mailPassword, smtpAddress, pop3Address,
                          httpAddress) {
         $("#meta-content").load(
@@ -82,6 +85,12 @@ var Install = (function() {
             .click(Mixmesh.passwordLockHandler("#mail-password"));
         $("#http-password-lock")
             .click(Mixmesh.passwordLockHandler("#http-password"));
+        $("#smtp-port")
+            .keyup(Mixmesh.portKeyupHandler("#smtp-port", toggleInstallButton));
+        $("#pop3-port")
+            .keyup(Mixmesh.portKeyupHandler("#pop3-port", toggleInstallButton));
+        $("#http-port")
+            .keyup(Mixmesh.portKeyupHandler("#http-port", toggleInstallButton));
         $("#install-button").click(function() {
             $("#install-button").prop("disabled", true);
             Mixmesh.post(
@@ -91,6 +100,9 @@ var Install = (function() {
                     "smtp-password": $("#mail-password").val(),
                     "pop3-password": $("#mail-password").val(),
                     "http-password": $("#http-password").val(),
+                    "smtp-port": parseInt($("#smtp-port").val()),
+                    "pop3-port": parseInt($("#pop3-port").val()),
+                    "http-port": parseInt($("#http-port").val()),
                     pin: $("#pin").val()
                 },
                 function(data, textStatus, _jqXHR) {
