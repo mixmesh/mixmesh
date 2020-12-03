@@ -82,7 +82,7 @@ export_public_key() ->
     case config:lookup([player, enabled]) of
 	true ->
 	    Nym = config:lookup([player, username]),
-	    case config:lookup([player, spiridon, 'public-key'], false) of
+	    case config:lookup([player, routing, 'public-key'], false) of
 		false ->
 		    false;
 		Pk ->
