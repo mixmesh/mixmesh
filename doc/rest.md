@@ -303,11 +303,11 @@ A nice description on why the request failed.
 ### Typical usage
 
 ```
-$ curl --insecure --user alice:hello --digest --request POST --header "Content-Type: application/json" --data '{"player": {"nym": true, "spiridon": {"public-key": true}}}' https://127.0.0.1/get-config
+$ curl --insecure --user alice:hello --digest --request POST --header "Content-Type: application/json" --data '{"player": {"nym": true, "routing": {"public-key": true}}}' https://127.0.0.1/get-config
 {
   "player": {
     "nym": "alice",
-    "spiridon": {
+    "routing": {
       "public-key": "BWFsaWNlxgDD8BleR0lZOyTVMuguqs9IE1E7SuWgsyyNNNp4vrrQZbpF8PSiEhju2dL3cMnc5ZFAoe41NQ4+C45r+Xwk9dpo3sn5Uwj+ETZw5nC\/StW+YeAlApeCZVL126AcOhQPtgRNyajc84Qg0dM7K5UDic\/81kb0EqkaZ1awtwUrmPs="
     }
   }
@@ -346,7 +346,7 @@ $ curl --insecure --user alice:hello --digest --request POST --header "Content-T
   }
 }
 
-$ curl --insecure --user alice:hello --digest --request POST --header "Content-Type: application/json" --data '{"player": {"spiridon": {"f": 0.3}, "http-server": {"password":"zooooop"}}}' https://127.0.0.1/edit-config
+$ curl --insecure --user alice:hello --digest --request POST --header "Content-Type: application/json" --data '{"player": {"routing": {"f": 0.3}, "http-server": {"password":"zooooop"}}}' https://127.0.0.1/edit-config
 Config has been updated
 
 $ curl --insecure --user alice:hello --digest --request POST --header "Content-Type: application/json" --data '{"player": {"http-server": {"password": true}}}' https://127.0.0.1/get-config
