@@ -9,6 +9,7 @@
 
 -export([start_link/0, start_link/1]).
 -export([set_voltage/2, get_voltage/1, get_soc/1]).
+-export([set_charging/2]).
 %% serv callback
 -export([message_handler/1]).
 
@@ -68,6 +69,9 @@ get_voltage(Serv) ->
 
 get_soc(Serv) ->
     serv:call(Serv, get_soc).
+
+set_charging(Serv, OnOff) when is_boolean(OnOff) ->
+    serv:call(Serv, {set_charging, OnOff}).
 
 
 init(Parent, Bus) ->
