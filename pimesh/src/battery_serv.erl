@@ -17,11 +17,27 @@
 
 -define(SAMPLE_INTERVAL, 1000).
 
--define(APPLICATION_LED,  {col,8}).
--define(BLUE_LED_100, {col,7}).
--define(BLUE_LED_75,  {col,6}).
--define(BLUE_LED_50,  {col,5}).
--define(BLUE_LED_25,  {col,4}).
+-define(BAT_LED_5, {col,8}).  %% green (fully charged)
+-define(BAT_LED_4, {col,7}).  %% blue
+-define(BAT_LED_3, {col,6}).  %% blue
+-define(BAT_LED_2, {col,5}).  %% blue
+-define(BAT_LED_1, {col,4}).  %% blue
+
+-record(level,
+	{
+	 pin,
+	 steady,
+	 charge_low,
+	 charge_high
+	}).
+
+%% {Pin, Steady, Charge-low, Charge-high}
+-define(LEVEL_LIST,
+	[#level{pin=?BAT_LED_1, steady=20,  charge_low=15, charge_high=20},
+	 #level{pin=?BAT_LED_2, steady=40,  charge_low=30, charge_high=40},
+	 #level{pin=?BAT_LED_3, steady=60,  charge_low=50, charge_high=60},
+	 #level{pin=?BAT_LED_4, steady=80,  charge_low=70, charge_high=80},
+	 #level{pin=?BAT_LED_4, steady=95,  charge_low=90, charge_high=95}]).
 
 -record(state,
 	{
@@ -29,6 +45,7 @@
 	 ip5209,
 	 tca8418,
 	 voltage,
+	 charging = false,  %% for simulation
 	 soc,
 	 soc0,  %% last reported soc
 	 toggle = false
@@ -55,30 +72,20 @@ get_soc(Serv) ->
 
 init(Parent, Bus) ->
     {ok,TCA8418} = i2c_tca8418:open1(Bus),
-    i2c_tca8418:gpio_init(TCA8418, ?APPLICATION_LED),
-    i2c_tca8418:gpio_init(TCA8418, ?BLUE_LED_100),
-    i2c_tca8418:gpio_init(TCA8418, ?BLUE_LED_75),
-    i2c_tca8418:gpio_init(TCA8418, ?BLUE_LED_50),
-    i2c_tca8418:gpio_init(TCA8418, ?BLUE_LED_25),
-
-    i2c_tca8418:gpio_output(TCA8418, ?APPLICATION_LED),
-    i2c_tca8418:gpio_output(TCA8418, ?BLUE_LED_100),
-    i2c_tca8418:gpio_output(TCA8418, ?BLUE_LED_75),
-    i2c_tca8418:gpio_output(TCA8418, ?BLUE_LED_50),
-    i2c_tca8418:gpio_output(TCA8418, ?BLUE_LED_25),
-
-    i2c_tca8418:gpio_set(TCA8418, ?APPLICATION_LED),
-    i2c_tca8418:gpio_clr(TCA8418, ?BLUE_LED_100),
-    i2c_tca8418:gpio_clr(TCA8418, ?BLUE_LED_75),
-    i2c_tca8418:gpio_clr(TCA8418, ?BLUE_LED_50),
-    i2c_tca8418:gpio_clr(TCA8418, ?BLUE_LED_25),
-
+    lists:foreach(
+      fun(#level{pin=Pin}) ->
+	      i2c_tca8418:gpio_init(TCA8418, Pin),
+	      i2c_tca8418:gpio_output(TCA8418, Pin),
+	      i2c_tca8418:gpio_clr(TCA8418, Pin)
+      end, ?LEVEL_LIST),
     %% {ok,IP5209}  = i2c_ip5209:open1(Bus),
     %% V0 = i2c_ip5209:read_voltage(Port),
+    %% Charging = i2c_ip5209:is_power_plugged_2led(Port),
+    Charging = false,
     IP5209 = 1,
     V0 = 3.80,
     SOC0 = i2c_ip5209:parse_voltage_level(V0),
-    update_soc(TCA8418, SOC0, true),
+    update_soc(TCA8418, SOC0, Charging, true),
     {ok, #state { parent=Parent,
     	 	  ip5209 = IP5209, tca8418 = TCA8418,
 		  voltage=V0, soc=SOC0, soc0=SOC0 }}.
@@ -98,6 +105,9 @@ message_handler(State=#state{tca8418=TCA8418,ip5209=_IP5209,parent=Parent}) ->
         {call, From, {set_voltage,V}} ->
             {reply, From, ok,State#state { voltage = V }};
 
+        {call, From, {set_charging,OnOff}} ->
+            {reply, From, ok,State#state { charging = OnOff }};
+
         {'EXIT', Parent, Reason} ->
 	    exit(Reason);
         {system, From, Request} ->
@@ -109,49 +119,40 @@ message_handler(State=#state{tca8418=TCA8418,ip5209=_IP5209,parent=Parent}) ->
 	    %% V1 = i2c_ip5209:read_voltage(Port),
 	    V1 = State#state.voltage, %% simulated (set_voltage)
 	    SOC1 = i2c_ip5209:parse_voltage_level(V1),
+	    %% Charging = i2c_ip5209:is_power_plugged_2led(Port),
+	    Charging = State#state.charging,
 	    SOC0 = if abs(SOC1 - State#state.soc0) > 1.0 ->
 			   SOC1;
 		      true ->
 			   State#state.soc0
 		   end,
 	    Toggle = not State#state.toggle,
-	    update_soc(TCA8418, SOC0, Toggle),
+	    update_soc(TCA8418, SOC0, Charging, Toggle),
 	    {noreply, State#state{voltage=V1,soc=SOC1, soc0=SOC0,
 	    	      		  toggle=Toggle}}
     end.
 
-%% (0-5)     0   0   0   0
-%% (5-10)    x   0   0   0
-%% (10-30)   1   0   0   0
-%% (30-40)   1   x   0   0
-%% (40-60)   1   1   0   0
-%% (60-70)   1   1   x   0
-%% (70-80)   1   1   1   0
-%% (80-90)   1   1   1   x
-%% (90-100)  1   1   1   1
+%%           B1  B2  B3  B4  G
+%% (0-5)     0   0   0   0   0
+%% (5-10)    x   0   0   0   0
+%% (10-30)   1   0   0   0   0
+%% (30-40)   1   x   0   0   0
+%% (40-60)   1   1   0   0   0
+%% (60-70)   1   1   x   0   0
+%% (70-80)   1   1   1   0   0
+%% (80-90)   1   1   1   x   0
+%% (90-100)  1   1   1   1   0
+%% (80-90)   1   1   1   x   0
+%% (95-100)  1   1   1   1   1
 
-update_soc(TCA8418, Soc, Set) ->
-    if
-       Soc > 10; Soc >= 5, Soc =< 10, Set ->
-       	   i2c_tca8418:gpio_set(TCA8418, ?BLUE_LED_25);
-       true ->
-           i2c_tca8418:gpio_clr(TCA8418, ?BLUE_LED_25)
-    end,
-    if
-       Soc > 40; Soc >= 30, Soc =< 40, Set ->
-       	   i2c_tca8418:gpio_set(TCA8418, ?BLUE_LED_50);
-       true ->
-           i2c_tca8418:gpio_clr(TCA8418, ?BLUE_LED_50)
-    end,
-    if
-       Soc > 60; Soc >= 60, Soc =< 70, Set ->
-       	   i2c_tca8418:gpio_set(TCA8418, ?BLUE_LED_75);
-       true ->
-           i2c_tca8418:gpio_clr(TCA8418, ?BLUE_LED_75)
-    end,
-    if 
-       Soc > 90; Soc >= 80, Soc =< 90, Set ->
-       	   i2c_tca8418:gpio_set(TCA8418, ?BLUE_LED_100);
-       true ->
-           i2c_tca8418:gpio_clr(TCA8418, ?BLUE_LED_100)
-    end.
+update_soc(TCA8418, Soc, Charging, Set) ->
+    lists:foreach(
+      fun(#level{pin=Pin, steady=Steady, 
+	       charge_low=Low, charge_high=High}) ->
+	      if Soc > Steady; Charging, Soc >= Low, Soc =< High, Set ->
+		      i2c_tca8418:gpio_set(TCA8418, Pin);
+		 true ->
+		      i2c_tca8418:gpio_clr(TCA8418, Pin)
+	      end
+      end, ?LEVEL_LIST).
+

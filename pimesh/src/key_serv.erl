@@ -17,11 +17,12 @@
 
 -export([hw_reset/0]).
 
--define(INT_PIN,  17).
--define(RESET_PIN, 27).
-%% Led on raspberry pi, soon on TCA8414?
--define(RED_LED, 18).
--define(GREEN_LED, 24).
+-define(INT_PIN,  17).   %% gpio on raspberry pi
+-define(RESET_PIN, 27).  %% gpio on raspberry pi
+
+%% two colored led
+-define(RED_LED,   {row,6}).  %% gpio on tca8418
+-define(GREEN_LED, {row,7}).  %% gpio on tca8418
 
 %% default lock code keys
 -define(KEY_Asterisk, 31).
@@ -46,7 +47,7 @@
 -record(state,
 	{
 	 parent,
-	 i2c,
+	 tca8418,
 	 locked = true,
 	 %% pincode = "123456",    %% digest? 
 	 pincode = "4567",
@@ -77,13 +78,20 @@ start_link(Bus,Reset) ->
 		  fun ?MODULE:message_handler/1).
 
 init(Parent, Bus, Reset) ->
-    %% {ok,Port} = i2c_tca8418:open1(Bus),
+    %% {ok,TCA8418} = i2c_tca8418:open1(Bus),
     ok = i2c_tca8418:open(Bus),
-    Port = Bus,
+    TCA8418 = Bus,
     gpio:init(?INT_PIN),
     gpio:init(?RESET_PIN),
-    gpio:init(?GREEN_LED),
-    gpio:init(?RED_LED),
+
+    i2c_tca8418:gpio_init(TCA8418, ?GREEN_LED),
+    i2c_tca8418:gpio_output(TCA8418, ?GREEN_LED),
+
+    i2c_tca8418:gpio_init(TCA8418, ?RED_LED),
+    i2c_tca8418:gpio_output(TCA8418, ?RED_LED),
+
+    set_led(TCA8418, off),
+
     %% sleep since gpio:init is async, fixme somehow...
     %% we could use low-level api but we still need the 
     %% to poll on the gpioxyz/value file for interrupts...
@@ -93,16 +101,15 @@ init(Parent, Bus, Reset) ->
     gpio:set_interrupt(?INT_PIN, falling),
 
     gpio:set_direction(?RESET_PIN, high),
-    gpio:set_direction(?GREEN_LED, low),
-    gpio:set_direction(?RED_LED, low),
 
     if Reset -> hw_reset();
        true -> ok
     end,
-    configure(Port, {4,3}),
 
-    Events = i2c_tca8418:read_events(Port),
-    State0 = #state { parent=Parent, i2c=Port },
+    configure(TCA8418, {4,3}),
+
+    Events = i2c_tca8418:read_events(TCA8418),
+    State0 = #state { parent=Parent, tca8418=TCA8418 },
     State  = scan_events(Events, State0),
     {ok, State}.
 
@@ -119,7 +126,7 @@ configure(I2C,{3,3}) ->
 configure(I2C,{4,3}) ->
     i2c_tca8418:configure_4x3(I2C).
 
-message_handler(State=#state{i2c=Port,parent=Parent}) ->
+message_handler(State=#state{tca8418=TCA8418,parent=Parent}) ->
     BlinkTmo = if State#state.backoff ->
 		       infinity;
 		  true ->
@@ -134,7 +141,7 @@ message_handler(State=#state{i2c=Port,parent=Parent}) ->
 
         {gpio_interrupt, 0, ?INT_PIN, _Value} ->
 	    io:format("pin ~w, value=~w\n", [?INT_PIN,_Value]),
-	    Events = i2c_tca8418:read_events(Port),
+	    Events = i2c_tca8418:read_events(TCA8418),
 	    State1 = if State#state.backoff ->
 			     State;
 			true ->
@@ -156,10 +163,10 @@ message_handler(State=#state{i2c=Port,parent=Parent}) ->
 	    Toggle = not State#state.toggle,
 	    Tmo = 
 		if Toggle ->
-			gpio:set(?RED_LED),
+			set_led(TCA8418, yellow),
 			?BLINK_ON_TMO;
 		   true ->
-			gpio:clr(?RED_LED),
+			set_led(TCA8418, off),
 			?BLINK_OFF_TMO
 		end,
 	    {noreply, State#state { toggle = Toggle, blink_tmo = Tmo }}
@@ -174,8 +181,7 @@ scan_events([{press,Key}|Es],State) when
       State#state.prev_key =:= State#state.pincode_lock_key2,
       Key =:= State#state.pincode_lock_key1 ->
     %% Lock device
-    gpio:clr(?RED_LED),
-    gpio:clr(?GREEN_LED),
+    set_led(State#state.tca8418, off),
     State1 = State#state { locked   = true,
 			   backoff  = false,
 			   attempts = 0,
@@ -198,7 +204,7 @@ scan_events([{press,Key}|Es],State) when
 scan_events([{press,Key}|Es], State) ->
     io:format("PRESS ~s\n", [[i2c_tca8418:keycode_to_sym(Key)]]),
     if State#state.locked ->
-	    gpio:set(?GREEN_LED);
+	    set_led(State#state.tca8418, green);
        true ->
 	    ok
     end,
@@ -208,7 +214,7 @@ scan_events([{release,Key}|Es], State) ->
     io:format("RELEASE ~s\n", [[i2c_tca8418:keycode_to_sym(Key)]]),
     State1 = 
 	if State#state.locked ->
-		gpio:clr(?GREEN_LED),
+		set_led(State#state.tca8418, off),
 		case State#state.pincode_enter_key of
 		    undefined -> check_pincode(State, false);
 		    Key -> check_pincode(State, true);
@@ -228,8 +234,7 @@ scan_events([], State) ->
 check_pincode(State, Enter) ->
     io:format("CODE=~s\n", [State#state.code]),
     if State#state.code =:= State#state.pincode ->
-	    gpio:clr(?RED_LED),
-	    gpio:set(?GREEN_LED),
+	    set_led(State#state.tca8418, green),
 	    State#state { locked = false,
 			  attempts = 0,
 			  count = 0,
@@ -253,8 +258,7 @@ check_pincode(State, Enter) ->
 failed_attempt(Attempts, State) ->
     BackOff_Ms = backoff_s(Attempts)*1000,
     erlang:start_timer(BackOff_Ms, self(), backoff),
-    gpio:set(?RED_LED),
-    gpio:clr(?GREEN_LED),
+    set_led(State#state.tca8418, red),
     State#state { backoff = true, attempts = Attempts }.
     
 
@@ -265,6 +269,19 @@ backoff_s(4) -> ?BACK_OF_TIME_4;
 backoff_s(5) -> ?BACK_OF_TIME_5;
 backoff_s(6) -> ?BACK_OF_TIME_6;
 backoff_s(_) -> ?BACK_OF_TIME_7.
+
+set_led(TCA8418, off) ->
+    i2c_tca8418:gpio_clr(TCA8418, ?GREEN_LED),
+    i2c_tca8418:gpio_clr(TCA8418, ?RED_LED);    
+set_led(TCA8418, red) ->
+    i2c_tca8418:gpio_clr(TCA8418, ?GREEN_LED),
+    i2c_tca8418:gpio_set(TCA8418, ?RED_LED);
+set_led(TCA8418, green) ->
+    i2c_tca8418:gpio_set(TCA8418, ?GREEN_LED),
+    i2c_tca8418:gpio_clr(TCA8418, ?RED_LED);
+set_led(TCA8418, yellow) ->
+    i2c_tca8418:gpio_set(TCA8418, ?GREEN_LED),
+    i2c_tca8418:gpio_set(TCA8418, ?RED_LED).
 
 %% add key when 0-9 to pincode make sure length is
 %% at most pincode_len
