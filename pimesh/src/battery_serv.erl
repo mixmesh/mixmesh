@@ -37,7 +37,7 @@
 	 #level{pin=?BAT_LED_2, steady=40,  charge_low=30, charge_high=40},
 	 #level{pin=?BAT_LED_3, steady=60,  charge_low=50, charge_high=60},
 	 #level{pin=?BAT_LED_4, steady=80,  charge_low=70, charge_high=80},
-	 #level{pin=?BAT_LED_4, steady=95,  charge_low=90, charge_high=95}]).
+	 #level{pin=?BAT_LED_5, steady=95,  charge_low=90, charge_high=95}]).
 
 -record(state,
 	{
