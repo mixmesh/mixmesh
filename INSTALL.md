@@ -105,6 +105,7 @@ Now download Erlang, unpack, configure, make and install
 	./configure
 	make
 	sudo make install
+        sudo setcap 'cap_net_bind_service=+ep' /usr/local/lib/erlang/erts-11.1/bin/beam.smp
 
 Add erlang libraries to your path
 

@@ -47,8 +47,6 @@
 
 * Make it possible to use ifs for ip-addresses in obscrete.conf + listen on on several ifs, for http, usb0, pan0. Be creative.
 * Ask for GPS in web app (or country and city)
-* Check setcap on PI
-* Add monitor to serv:call/2
 * Do a refresh of Rome simulation + add a background map
 [* Add a square2 simulator plugin module based on smooth random walks (Perlin noise)]
 
