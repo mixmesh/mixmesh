@@ -6,6 +6,6 @@
 get() ->
     [{'obscrete-control',
       [{listen,
-        #json_type{name = ipv4address_port,
+        #json_type{name = ip4_address_port,
                    typical = {{127,0,0,1}, 23765},
                    reloadable = false}}]}].
