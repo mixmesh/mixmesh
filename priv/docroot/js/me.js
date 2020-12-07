@@ -7,7 +7,7 @@ $(document).ready(function() {
                     "/get-config",
                     {
                         player: {
-                            spiridon: {
+                            routing: {
                                 "public-key": true,
                                 "secret-key": true
                             }
@@ -15,7 +15,7 @@ $(document).ready(function() {
                     },
                     function(data, textStatus, _jqXHR) {
                         console.log("/get-config (POST) succeeded");
-                        console.log(data.player.spiridon["public-key"]);
+                        console.log(data.player.routing["public-key"]);
 
                         if (secondsSinceInitialization < 3600) {
                             $("#title").text("Secret key");
@@ -24,8 +24,8 @@ $(document).ready(function() {
                             var qr = new QRious({
                                 element: $("#qrcode")[0],
                                 size: 800,
-                                value: data.player.spiridon["public-key"] +
-                                    data.player.spiridon["secret-key"]
+                                value: data.player.routing["public-key"] +
+                                    data.player.routing["secret-key"]
                             });
                         } else {
                             $("#title").text("Public key");
@@ -34,7 +34,7 @@ $(document).ready(function() {
                             var qr = new QRious({
                                 element: $("#qrcode")[0],
                                 size: 800,
-                                value: data.player.spiridon["public-key"]
+                                value: data.player.routing["public-key"]
                             });
                         }
 
