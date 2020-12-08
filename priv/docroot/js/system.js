@@ -170,10 +170,15 @@ $(document).ready(function() {
             $("#pop3-ip-address").val(ip_port[0]);
             $("#pop3-port").val(ip_port[1]);
 
-            // HTTP server
-            ip_port = data.player["http-server"].address.split(":");
-            $("#http-ip-address").val(ip_port[0]);
-            $("#http-port").val(ip_port[1]);
+            // HTTP server (USB)
+            ip_port = data.player["http-server"].address[0].split(":");
+            $("#http-ip-address-usb").val(ip_port[0]);
+            $("#http-port-usb").val(ip_port[1]);
+
+            // HTTP server (Bluetooth)
+            ip_port = data.player["http-server"].address[1].split(":");
+            $("#http-ip-address-bluetooth").val(ip_port[0]);
+            $("#http-port-bluetooth").val(ip_port[1]);
         },
         function(jqXHR, textStatus, errorThrown) {
             console.log("/get-config (POST) failed");
