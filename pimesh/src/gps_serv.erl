@@ -88,11 +88,11 @@ message_handler(State=#state{uart=Uart,parent=Parent}) ->
 		    %% ?error_log({nmea_parser_error, Reason}),
 		    io:format("~p\n", [{nmea_parse_error, Reason}]),
 		    {noreply, State};
-		{ok,{<<"GPGGA">>,[Utc,Lat,La,Long,Lo,Stat|_]}} ->
-		    {Time,Times} = gps_time(Utc),
-		    Lat = latitude(Lat,La),
-		    Long = longitude(Long,Lo),
-		    Stat = try binary_to_integer(Stat) of
+		{ok,{<<"GPGGA">>,[FUtc,FLat,FLa,FLong,FLo,FStat|_]}} ->
+		    {Time,Times} = gps_time(FUtc),
+		    Lat = latitude(FLat,FLa),
+		    Long = longitude(FLong,FLo),
+		    Stat = try binary_to_integer(FStat) of
 			       Val -> Val 
 			   catch error:_ ->
 				   -1
@@ -124,9 +124,9 @@ message_handler(State=#state{uart=Uart,parent=Parent}) ->
 		       true ->
 			    {noreply,State}
 		    end;
-		{ok,{<<"GPZDA">>,[Utc,Day,Month,Year,TzH,TzM|_]}} ->
-		    {Time,Times} = gps_time(Utc),
-		    {Date,Tz} = gps_date(Day,Month,Year,TzH,TzM),
+		{ok,{<<"GPZDA">>,[FUtc,FDay,FMonth,FYear,FTzH,FTzM|_]}} ->
+		    {Time,Times} = gps_time(FUtc),
+		    {Date,Tz} = gps_date(FDay,FMonth,FYear,FTzH,FTzM),
 		    {noreply,State#state{times=Times,
 					 time=Time,
 					 date=Date,
