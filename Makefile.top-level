@@ -10,9 +10,7 @@ APP_LIST = apptools elgamal enacl jsone mail mpa nodis obscrete pki player tor r
 SIM_LIST = rstar simulator
 TEST_LIST = $(shell (cd $(LPATH); ls -d */test))
 
-GITURL = https://joagre@github.com/obscrete
-#GITURL = git@github.com:obscrete
-
+GITURL = https://github.com/obscrete
 
 # make all (directories found in parent) and test
 all: allapp test

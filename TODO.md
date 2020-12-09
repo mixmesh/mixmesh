@@ -41,10 +41,11 @@ REMOVED) Discuss player/src/player_interface.erl
 * build a disk image to simplify everything, with a factor of 1000000
 * select ip from ping interface, convert (0,0,0,0) => (A,B,C,D)
   depending on nodis ip.
-* retry state?
-* nodis neighbour state as ets? pending queue.
-* simulator fix grid demo!
-* Buffer management, send/recv messages.
+* Add GPS coordinates to nodis
+* Install GPS modules to hardware
+* Update configuration to store 
+  buffer, local-pki, received-messages, spooler
+  in /var/erlang/obscrete/
 
 ### Joakim
 

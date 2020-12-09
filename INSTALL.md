@@ -105,7 +105,7 @@ Now download Erlang, unpack, configure, make and install
 	./configure
 	make
 	sudo make install
-        sudo setcap 'cap_net_bind_service=+ep' /usr/local/lib/erlang/erts-11.1/bin/beam.smp
+    sudo setcap 'cap_net_bind_service=+ep' /usr/local/lib/erlang/erts-11.1/bin/beam.smp
 
 Add erlang libraries to your path
 
@@ -124,11 +124,7 @@ Fetch the top-level application
 
 	mkdir erlang
 	cd erlang
-        git clone https://<your-username>@github.com/obscrete/obscrete
-
-Update GITURL in obscrete/Makefile.top-level
-
-        GITURL = https://<your-username>@github.com/obscrete
+        git clone https://github.com/obscrete/obscrete
 
 And make a link to the top-level makefile
 
@@ -138,6 +134,15 @@ Now we can clone other applications need and build everything
 
 	make clone
 	make
+
+# (PiMesh)
+
+For pimesh (MixMesh on Raspberry pi) you need the following packages
+in the obscrete directory.
+
+	git clone https://github.com/tonyrog/gpio
+	git clone https://github.com/tonyrog/i2c	
+	git clone https://github.com/tonyrog/uart
 
 ### setup configuration
 
@@ -164,3 +169,31 @@ to re-attach to a running screen session
 
         C-a c (to create a new shell)
         C-a " (to switch between shells)
+
+### Make a servator release
+
+Servator can create releases from a running system, 
+extracting the applications and start arguments from
+the node it self
+
+Get servator
+
+    git clone https://github.com/tonyrog/servator
+    cd servator
+	make
+	
+Go to obscrete directory and start the node
+
+	cd obscrete
+	./bin/obscrete --config ./etc/obscrete-local.conf
+	(obscrete@localhost)1> servator:make_release(obscrete).
+	
+This will create a release directory
+
+	obscrete-X.Y/
+	
+To install that release do
+
+	cd obscrete-X.Y
+	./install.sh
+	sudo setcap 'cap_net_bind_service=+ep' /var/erlang/obscrete/erts-11.1/bin/beam.smp

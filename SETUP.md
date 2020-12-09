@@ -1,10 +1,38 @@
 # Configure and setup the obsecrete computer
 
-# resize SD card
+# resize SD card & enable interfaces
+
+Resize the SD card to use all of the space.
+
+    7 A1
+
+Enable i2c interface.
+
+    5 P5
+
+Disable login over serial port but enable serial port hardware.
+
+	5 P6
+
+Setup locale
+
+    4
+
+Reboot
 
 # edit the file /boot/config.txt
 
     dtoverlay=dwc2
+
+also check that /boot/config.txt contains the line
+
+	enable_uart=1
+
+and also check that 
+
+    /dev/ttyAMA0 
+	
+exists	
 
 # update /etc/modules (or set in /boot/cmdline.txt )
 
