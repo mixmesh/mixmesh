@@ -8,6 +8,9 @@
 -module(gps_serv).
 
 -export([start_link/0, start_link/1]).
+-export([get_position/1, get_time/1, get_tz/1, 
+	 get_date/1, get_speed/1]).
+
 -export([message_handler/1]).
 
 -include_lib("apptools/include/serv.hrl").
@@ -18,20 +21,38 @@
 	 parent,
 	 uart,
 	 valid=false,
+	 date,          %% {Year,Month,Day}
+	 time,          %% {Hour,Minute,Seconds}
+	 tz,            %% {Tz-hours, Tz-minutes}
 	 long = 0.0,
 	 lat = 0.0,
-	 time = 0.0,
+	 times = 0.0,    %% (0.0 - 86400.0)
 	 speed = 0.0
 	}).
 
 -define(EARTH_RADIUS, 6371000.0).  %% radius in meters
 
 start_link() ->
-    start_link("/dev/ttyAMA").
+    start_link("/dev/serial0").
 
 start_link(UartDeviceName) ->
     ?spawn_server(fun(Parent) -> init(Parent, UartDeviceName) end,
 		  fun ?MODULE:message_handler/1).
+
+get_position(Serv) ->
+    serv:call(Serv, get_position).
+
+get_time(Serv) ->
+    serv:call(Serv, get_time).
+
+get_date(Serv) ->
+    serv:call(Serv, get_date).
+
+get_tz(Serv) ->
+    serv:call(Serv, get_tz).
+
+get_speed(Serv) ->
+    serv:call(Serv, get_speed).
 
 init(Parent, UartDeviceName) ->
     Baud = 9600,
@@ -49,50 +70,67 @@ message_handler(State=#state{uart=Uart,parent=Parent}) ->
     receive
         {call, From, stop} ->
             {stop, From, ok};
-        {call, From, position} ->
-	    {reply, From, {State#state.long, State#state.lat}};
+        {call, From, get_position} ->
+	    {reply, From, {State#state.valid,State#state.lat,State#state.long}};
+        {call, From, get_time} ->
+	    {reply, From, {State#state.valid,State#state.time}};
+        {call, From, get_date} ->
+	    {reply, From, {State#state.valid,State#state.date}};
+        {call, From, get_tz} ->
+	    {reply, From, {State#state.valid,State#state.tz}};
+        {call, From, get_speed} ->
+	    {reply, From, {State#state.valid,State#state.speed}};
 	{uart, Uart, Line} ->
+	    uart:setopts(Uart, [{active, once}]),
 	    case parse(Line) of
 		{error,Reason} ->
 		    ?error_log({nmea_parser_error, Reason}),
 		    {noreply, State};
 		{<<"GPGGA">>,[Utc,Lat,La,Long,Lo,Stat|_]} ->
-		    Time2 = gps_utc(Utc),
-		    Lat2 = latitude(Lat,La),
-		    Long2 = longitude(Long,Lo),
-		    Stat2 = try binary_to_integer(Stat) of
-				Val -> Val 
-			    catch error:_ ->
-				    -1
-			    end,
-		    if State#state.valid, Stat2 >= 0,
-		       is_float(Time2),is_float(Lat2),is_float(Long2) ->
-			    Lat1 = State#state.lat,
-			    Long1 = State#state.long,
-			    Dist2 = flat_distance(Lat1,Lat2,Long1,Long2),
-			    Dt = Time2 - State#state.time,
-			    Spd2 = if Dt >= 0.001 ->
-					   (Dist2 / Dt) * 3.6;
+		    {Time,Times} = gps_time(Utc),
+		    Lat = latitude(Lat,La),
+		    Long = longitude(Long,Lo),
+		    Stat = try binary_to_integer(Stat) of
+			       Val -> Val 
+			   catch error:_ ->
+				   -1
+			   end,
+		    if State#state.valid, Stat >= 0,
+		       is_float(Times),is_float(Lat),is_float(Long) ->
+			    Lat0 = State#state.lat,
+			    Long0 = State#state.long,
+			    Dist = flat_distance(Lat0,Long0,Lat,Long),
+			    Dt = Times - State#state.times,
+			    Spd = if Dt >= 0.001 ->
+					  (Dist / Dt) * 3.6;
 				      true ->
 					   0.0
-				   end,
-			    {noreply,State#state{time=Time2,
-						 long=Long2,
-						 lat=Lat2,
-						 speed=Spd2}};
-		       Stat2 >= 0,
-		       is_float(Time2),is_float(Lat2),is_float(Long2) ->
+				  end,
+			    {noreply,State#state{time=Time,
+						 times=Times,
+						 long=Long,
+						 lat=Lat,
+						 speed=Spd}};
+		       Stat >= 0,
+		       is_float(Times),is_float(Lat),is_float(Long) ->
 			    {noreply,State#state{valid=true,
-						 time=Time2,
-						 long=Long2,
-						 lat=Lat2,
+						 time=Time,
+						 times=Times,
+						 long=Long,
+						 lat=Lat,
 						 speed=0.0}};
 		       true ->
 			    {noreply,State}
 		    end;
+		{<<"GPZDA">>,[Utc,Day,Month,Year,TzH,TzM|_]} ->
+		    {Time,Times} = gps_time(Utc),
+		    {Date,Tz} = gps_date(Day,Month,Year,TzH,TzM),
+		    {noreply,State#state{times=Times,
+					 time=Time,
+					 date=Date,
+					 tz=Tz}};
 		_Message ->
 		    ?dbg_log_fmt("gps_serv: skip message ~p\n", [_Message]),
-		    uart:setopts(Uart, [{active, once}]),
 		    {noreply, State}
 	    end;
         {'EXIT', Parent, Reason} ->
@@ -146,21 +184,23 @@ checksum(<<C,Cs/binary>>, Sum) ->
 checksum(<<>>, Sum) ->
     Sum.
 
+%% fixme: second fraction .ss (two decimals?)
+%% return secons since midnight
+gps_time(<<H1,H0,M1,M0,S1,S0,$.,D1,D0,_Bin/binary>>) ->
+    {Time,Times} = gps_time(H1,H0,M1,M0,S1,S0),
+    {Time,Times + list_to_float([$0,$.,D1,D0])};
+gps_time(<<H1,H0,M1,M0,S1,S0,_Bin/binary>>) ->
+    gps_time(H1,H0,M1,M0,S1,S0).
 
-%% return gps_utc in float seconds since 1970
-gps_utc(<<H1,H0,M1,M0,S1,S0,Bin/binary>>) ->
-    {Date,_Time} = calendar:universal_time(),
-    Time = {(H1-$0)*10 + (H0-$0),
-	    (M1-$0)*10 + (M0-$0),
-	    (S1-$0)*10 + (S0-$0)},
-    DateTime = {Date,Time},
-    Seconds = calendar:datetime_to_gregorian_seconds(DateTime) - 62167219200,
-    case Bin of
-	<<$.,_/binary>> ->
-	    Seconds + binary_to_float(<<$0,Bin/binary>>);
-	<<>> ->
-	    float(Seconds)
-    end.
+gps_time(H1,H0,M1,M0,S1,S0) ->
+    H = (H1-$0)*10 + (H0-$0),
+    M = (M1-$0)*10 + (M0-$0),
+    S = (S1-$0)*10 + (S0-$0),
+    {{H,M,S},float((H*24 + M)*60 + S)}.
+
+gps_date(D,M,Y,TzH,TzM) ->
+    {{binary_to_integer(Y),binary_to_integer(M),binary_to_integer(D)},
+     {binary_to_integer(TzH),binary_to_integer(TzM)}}.
 
 longitude(<<>>,_) -> undefined;
 longitude(Coord,<<"W">>) -> -coord_to_deg(Coord);
@@ -206,7 +246,6 @@ distance(Lat1,Long1,Lat2,Long2) ->
     ?EARTH_RADIUS * C.
 
 -endif.
-
 
 %% return distancs in meters
 flat_distance(Lat1,Long1,Lat2,Long2) ->
