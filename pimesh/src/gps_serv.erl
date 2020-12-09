@@ -62,7 +62,8 @@ init(Parent, UartDeviceName) ->
 	{ok,Uart} ->
 	    {ok, #state { parent=Parent, uart=Uart }};
 	Error = {erro,Reason} ->
-	    ?error_log({uart_open_errro, Reason}),
+	    io:format("~p\n", [{uart_open_error, Reason}]),
+	    %% ?error_log({uart_open_error, Reason}),
 	    Error
     end.
 
@@ -84,7 +85,8 @@ message_handler(State=#state{uart=Uart,parent=Parent}) ->
 	    uart:setopts(Uart, [{active, once}]),
 	    case parse(Line) of
 		{error,Reason} ->
-		    ?error_log({nmea_parser_error, Reason}),
+		    %% ?error_log({nmea_parser_error, Reason}),
+		    io:format("~p\n", [{nmea_parse_error, Reason}]),
 		    {noreply, State};
 		{<<"GPGGA">>,[Utc,Lat,La,Long,Lo,Stat|_]} ->
 		    {Time,Times} = gps_time(Utc),
@@ -130,7 +132,8 @@ message_handler(State=#state{uart=Uart,parent=Parent}) ->
 					 date=Date,
 					 tz=Tz}};
 		_Message ->
-		    ?dbg_log_fmt("gps_serv: skip message ~p\n", [_Message]),
+		    io:format("gps_serv: skip message ~p\n", [_Message]),
+		    %%?dbg_log_fmt("gps_serv: skip message ~p\n", [_Message]),
 		    {noreply, State}
 	    end;
         {'EXIT', Parent, Reason} ->
@@ -138,7 +141,8 @@ message_handler(State=#state{uart=Uart,parent=Parent}) ->
         {system, From, Request} ->
             {system, From, Request};
         UnknownMessage ->
-            ?error_log({unknown_message, UnknownMessage}),
+	    io:format("~p\n", [{unknown_message, UnknownMessage}]),
+            %% ?error_log({unknown_message, UnknownMessage}),
             noreply
     end.
 
