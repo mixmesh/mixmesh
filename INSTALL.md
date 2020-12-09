@@ -170,7 +170,7 @@ to re-attach to a running screen session
         C-a c (to create a new shell)
         C-a " (to switch between shells)
 
-### Make a servator release
+### Make a servator release and install it
 
 Servator can create releases from a running system, 
 extracting the applications and start arguments from
@@ -197,3 +197,34 @@ To install that release do
 	cd obscrete-X.Y
 	./install.sh
 	sudo setcap 'cap_net_bind_service=+ep' /var/erlang/obscrete/erts-11.1/bin/beam.smp
+
+Then install the linux start script, that is "hidden" among the installation
+directory but need gentel touch.
+
+	cd obscrete-X.Y/etc
+	sudo cp obscrete-X.Y/etc/init.d/obscrete /etc/init.d/
+	sudo chmod +x /etc/init.d/obscrete
+	sudo update-rc.d obscrete defaults
+
+Now copy the configure file to the final place
+
+	cp ./etc/obscrete-local.conf /etc/erlang/obscrete/obscrete-local.conf
+	
+Edit the /etc/erlang/obscrete/obscrete.run script to add the 
+applcation specific optionfor parsing the json config files. 
+Search for OPTS and set it.
+
+	OPTS="--config $ETC/obscrete-local.conf"
+
+Now we should be able to start obscrete the standard way
+
+    /etc/init.d/obscrete start
+
+And check status
+
+	/etc/init.d/obscrete status
+
+More commands
+
+	/etc/init.d/obscrete help
+    Usage: /etc/init.d/obscrete {start|stop|status|interactive|restart|reload|force-reload}
