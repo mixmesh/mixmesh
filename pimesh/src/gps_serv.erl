@@ -21,14 +21,17 @@
 	 parent,
 	 uart,
 	 valid=false,
-	 date,          %% {Year,Month,Day}
-	 time,          %% {Hour,Minute,Seconds}
-	 tz,            %% {Tz-hours, Tz-minutes}
+	 use_message = rmc, %% use GPRMC
+	 date,              %% {Year,Month,Day}
+	 time,              %% {Hour,Minute,Seconds}
+	 tz,                %% {Tz-hours, Tz-minutes}
 	 long = 0.0,
 	 lat = 0.0,
 	 times = 0.0,    %% (0.0 - 86400.0)
 	 speed = 0.0
 	}).
+
+-define(SECONDS_PER_DAY, 86400).
 
 -define(EARTH_RADIUS, 6371000.0).  %% radius in meters
 
@@ -67,7 +70,8 @@ init(Parent, UartDeviceName) ->
 	    Error
     end.
 
-message_handler(State=#state{uart=Uart,parent=Parent}) ->
+message_handler(State=#state{uart=Uart,use_message=UseMessage,
+			     parent=Parent}) ->
     receive
         {call, From, stop} ->
             {stop, From, ok};
@@ -88,49 +92,19 @@ message_handler(State=#state{uart=Uart,parent=Parent}) ->
 		    %% ?error_log({nmea_parser_error, Reason}),
 		    io:format("~p\n", [{nmea_parse_error, Reason}]),
 		    {noreply, State};
-		{ok,{<<"GPGGA">>,[FUtc,FLat,FLa,FLong,FLo,FStat|_]}} ->
-		    {Time,Times} = gps_time(FUtc),
-		    Lat = latitude(FLat,FLa),
-		    Long = longitude(FLong,FLo),
-		    Stat = try binary_to_integer(FStat) of
-			       Val -> Val 
-			   catch error:_ ->
-				   -1
-			   end,
-		    if State#state.valid, Stat >= 0,
-		       is_float(Times),is_float(Lat),is_float(Long) ->
-			    Lat0 = State#state.lat,
-			    Long0 = State#state.long,
-			    Dist = flat_distance(Lat0,Long0,Lat,Long),
-			    Dt = Times - State#state.times,
-			    Spd = if Dt >= 0.001 ->
-					  (Dist / Dt) * 3.6;
-				      true ->
-					   0.0
-				  end,
-			    {noreply,State#state{time=Time,
-						 times=Times,
-						 long=Long,
-						 lat=Lat,
-						 speed=Spd}};
-		       Stat >= 0,
-		       is_float(Times),is_float(Lat),is_float(Long) ->
-			    {noreply,State#state{valid=true,
-						 time=Time,
-						 times=Times,
-						 long=Long,
-						 lat=Lat,
-						 speed=0.0}};
-		       true ->
-			    {noreply,State}
-		    end;
-		{ok,{<<"GPZDA">>,[FUtc,FDay,FMonth,FYear,FTzH,FTzM|_]}} ->
-		    {Time,Times} = gps_time(FUtc),
-		    {Date,Tz} = gps_date(FDay,FMonth,FYear,FTzH,FTzM),
-		    {noreply,State#state{times=Times,
-					 time=Time,
-					 date=Date,
-					 tz=Tz}};
+
+		{ok,{<<"GPRMC">>,Fields}} when UseMessage =:= rmc ->
+		    State1 = rmc(Fields,State),
+		    {noreply, State1};
+
+		{ok,{<<"GPGGA">>,Fields}} when UseMessage =:= gga ->
+		    State1 = gga(Fields, State),
+		    {noreply, State1};
+
+		{ok,{<<"GPZDA">>,Fields}} when UseMessage =:= zda ->
+		    State1 = zda(Fields, State),
+		    {noreply, State1};
+
 		{ok,_Message} ->
 		    %%io:format("gps_serv: skip message ~p\n", [_Message]),
 		    %%?dbg_log_fmt("gps_serv: skip message ~p\n", [_Message]),
@@ -144,6 +118,68 @@ message_handler(State=#state{uart=Uart,parent=Parent}) ->
 	    io:format("~p\n", [{unknown_message, UnknownMessage}]),
             %% ?error_log({unknown_message, UnknownMessage}),
             noreply
+    end.
+
+rmc([FUtc,<<"A">>,FLat,FLa,FLong,FLo,_FSpdog,_FCog,Date|_],State) ->
+    Date = gps_short_date(Date),
+    {Time,Times} = gps_time(FUtc,Date),
+    Lat = latitude(FLat,FLa),
+    Long = longitude(FLong,FLo),
+    if State#state.valid ->
+	    Lat0 = State#state.lat,
+	    Long0 = State#state.long,
+	    Dist = flat_distance(Lat0,Long0,Lat,Long),
+	    Dt = Times - State#state.times,
+	    Spd = if Dt >= 0.001 ->
+			  (Dist / Dt) * 3.6;
+		     true ->
+			  0.0
+		  end,
+	    State#state{time=Time,times=Times,date=Date,
+			long=Long,lat=Lat,speed=Spd};
+       is_float(Times),is_float(Lat),is_float(Long) ->
+	    State#state{valid=true,time=Time,times=Times,date=Date,
+			long=Long,lat=Lat,speed=0.0}
+    end;
+rmc([_FUtc,<<"V">>|_],State) ->
+    State;
+rmc(Fields, State) ->
+    io:format("GPRMC unable to parse ~p\n", [Fields]),
+    State.
+
+zda([FUtc,FDay,FMonth,FYear,FTzH,FTzM|_], State) ->
+    {Date,Tz} = gps_date(FDay,FMonth,FYear,FTzH,FTzM),
+    {Time,Times} = gps_time(FUtc,Date),
+    State#state{times=Times,time=Time,date=Date,tz=Tz}.
+
+gga([FUtc,FLat,FLa,FLong,FLo,FStat|_], State) ->
+    {Time,Times} = gps_time(FUtc),
+    Lat = latitude(FLat,FLa),
+    Long = longitude(FLong,FLo),
+    Stat = try binary_to_integer(FStat) of
+	       Val -> Val 
+	   catch error:_ ->
+		   -1
+	   end,
+    if State#state.valid, Stat >= 0,
+       is_float(Times),is_float(Lat),is_float(Long) ->
+	    Lat0 = State#state.lat,
+	    Long0 = State#state.long,
+	    Dist = flat_distance(Lat0,Long0,Lat,Long),
+	    Dt = Times - State#state.times,
+	    Spd = if Dt >= 0.001 ->
+			  (Dist / Dt) * 3.6;
+		     true ->
+			  0.0
+		  end,
+	    State#state{time=Time,times=Times,
+			long=Long,lat=Lat,speed=Spd};
+       Stat >= 0,
+       is_float(Times),is_float(Lat),is_float(Long) ->
+	    State#state{valid=true,time=Time,times=Times,
+			long=Long,lat=Lat,speed=0.0};
+       true ->
+	    State
     end.
 
 %% Take a NMEA log line from file or uart ...
@@ -188,19 +224,30 @@ checksum(<<C,Cs/binary>>, Sum) ->
 checksum(<<>>, Sum) ->
     Sum.
 
-%% fixme: second fraction .ss (two decimals?)
-%% return secons since midnight
-gps_time(<<H1,H0,M1,M0,S1,S0,$.,D1,D0,_Bin/binary>>) ->
-    {Time,Times} = gps_time(H1,H0,M1,M0,S1,S0),
-    {Time,Times + list_to_float([$0,$.,D1,D0])};
-gps_time(<<H1,H0,M1,M0,S1,S0,_Bin/binary>>) ->
-    gps_time(H1,H0,M1,M0,S1,S0).
+gps_time(TimeString) ->
+    gps_time(TimeString,{0,1,1}).
 
-gps_time(H1,H0,M1,M0,S1,S0) ->
+gps_time(TimeString,{Date={_Year,_Month,_Day},_Tz}) ->
+    gps_time(TimeString,Date);
+gps_time(<<H1,H0,M1,M0,S1,S0,$.,D1,D0,_Bin/binary>>,Date={_Y,_M,_D}) ->
+    {Time,Times} = gps_time(H1,H0,M1,M0,S1,S0, Date),
+    {Time,Times+list_to_float([$0,$.,D1,D0])};
+gps_time(<<H1,H0,M1,M0,S1,S0,_Bin/binary>>,Date={_Y,_M,_D}) ->
+    gps_time(H1,H0,M1,M0,S1,S0, Date).
+
+gps_time(H1,H0,M1,M0,S1,S0, Date={_Y,_D,_M}) ->
     H = (H1-$0)*10 + (H0-$0),
     M = (M1-$0)*10 + (M0-$0),
     S = (S1-$0)*10 + (S0-$0),
-    {{H,M,S},float((H*24 + M)*60 + S)}.
+    Days = calendar:date_to_gregorian_days(Date),
+    DaysSeconds = Days*?SECONDS_PER_DAY,
+    {{H,M,S},float((H*24 + M)*60 + S + DaysSeconds)}.
+
+gps_short_date(<<D1,D0,M1,M0,Y1,Y0,_/binary>>) ->
+    D = (D1-$0)*10 + (D0-$0),
+    M = (M1-$0)*10 + (M0-$0),
+    Y = (Y1-$0)*10 + (Y0-$0),
+    {2000+Y, M, D}.
 
 gps_date(D,M,Y,TzH,TzM) ->
     {{binary_to_integer(Y),binary_to_integer(M),binary_to_integer(D)},
