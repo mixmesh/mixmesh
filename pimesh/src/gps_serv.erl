@@ -120,8 +120,8 @@ message_handler(State=#state{uart=Uart,use_message=UseMessage,
             noreply
     end.
 
-rmc([FUtc,<<"A">>,FLat,FLa,FLong,FLo,_FSpdog,_FCog,Date|_],State) ->
-    Date = gps_short_date(Date),
+rmc([FUtc,<<"A">>,FLat,FLa,FLong,FLo,_FSpdog,_FCog,FDate|_],State) ->
+    Date = gps_short_date(FDate),
     {Time,Times} = gps_time(FUtc,Date),
     Lat = latitude(FLat,FLa),
     Long = longitude(FLong,FLo),
