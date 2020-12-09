@@ -88,7 +88,7 @@ message_handler(State=#state{uart=Uart,parent=Parent}) ->
 		    %% ?error_log({nmea_parser_error, Reason}),
 		    io:format("~p\n", [{nmea_parse_error, Reason}]),
 		    {noreply, State};
-		{<<"GPGGA">>,[Utc,Lat,La,Long,Lo,Stat|_]} ->
+		{ok,{<<"GPGGA">>,[Utc,Lat,La,Long,Lo,Stat|_]}} ->
 		    {Time,Times} = gps_time(Utc),
 		    Lat = latitude(Lat,La),
 		    Long = longitude(Long,Lo),
@@ -124,15 +124,15 @@ message_handler(State=#state{uart=Uart,parent=Parent}) ->
 		       true ->
 			    {noreply,State}
 		    end;
-		{<<"GPZDA">>,[Utc,Day,Month,Year,TzH,TzM|_]} ->
+		{ok,{<<"GPZDA">>,[Utc,Day,Month,Year,TzH,TzM|_]}} ->
 		    {Time,Times} = gps_time(Utc),
 		    {Date,Tz} = gps_date(Day,Month,Year,TzH,TzM),
 		    {noreply,State#state{times=Times,
 					 time=Time,
 					 date=Date,
 					 tz=Tz}};
-		_Message ->
-		    io:format("gps_serv: skip message ~p\n", [_Message]),
+		{ok,_Message} ->
+		    %%io:format("gps_serv: skip message ~p\n", [_Message]),
 		    %%?dbg_log_fmt("gps_serv: skip message ~p\n", [_Message]),
 		    {noreply, State}
 	    end;
