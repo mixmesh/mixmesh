@@ -180,41 +180,42 @@ Get servator
 
     git clone https://github.com/tonyrog/servator
     cd servator
-	make
+    make
 	
 Go to obscrete directory and start the node
 
-	cd obscrete
-	./bin/obscrete --config ./etc/obscrete-local.conf
-	(obscrete@localhost)1> servator:make_release(obscrete).
+   cd obscrete
+   ./bin/obscrete --config ./etc/obscrete-local.conf
+   (obscrete@localhost)1> servator:make_release(obscrete).
 	
 This will create a release directory
 
-	obscrete-X.Y/
+    obscrete-X.Y/
 	
 To install that release do
 
-	cd obscrete-X.Y
-	./install.sh
-	sudo setcap 'cap_net_bind_service=+ep' /var/erlang/obscrete/erts-11.1/bin/beam.smp
+    cd obscrete-X.Y
+    ./install.sh
+    sudo setcap 'cap_net_bind_service=+ep' /var/erlang/obscrete/erts-11.1/bin/beam.smp
 
 Then install the linux start script, that is "hidden" among the installation
 directory but need gentel touch.
 
-	cd obscrete-X.Y/etc
-	sudo cp obscrete-X.Y/etc/init.d/obscrete /etc/init.d/
-	sudo chmod +x /etc/init.d/obscrete
-	sudo update-rc.d obscrete defaults
+    cd obscrete-X.Y/etc
+    sudo cp init.d/obscrete /etc/init.d/
+    sudo chmod +x /etc/init.d/obscrete
+    sudo update-rc.d obscrete defaults
 
 Now copy the configure file to the final place
 
-	cp ./etc/obscrete-local.conf /etc/erlang/obscrete/obscrete-local.conf
+    cd obscrete
+    cp ./etc/obscrete-local.conf /etc/erlang/obscrete/obscrete-local.conf
 	
 Edit the /etc/erlang/obscrete/obscrete.run script to add the 
 applcation specific optionfor parsing the json config files. 
 Search for OPTS and set it.
 
-	OPTS="--config $ETC/obscrete-local.conf"
+    OPTS="--config $ETC/obscrete-local.conf"
 
 Now we should be able to start obscrete the standard way
 
@@ -222,9 +223,9 @@ Now we should be able to start obscrete the standard way
 
 And check status
 
-	/etc/init.d/obscrete status
+    /etc/init.d/obscrete status
 
 More commands
 
-	/etc/init.d/obscrete help
+    /etc/init.d/obscrete help
     Usage: /etc/init.d/obscrete {start|stop|status|interactive|restart|reload|force-reload}
