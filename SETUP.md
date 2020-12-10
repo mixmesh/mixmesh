@@ -1,6 +1,6 @@
 # Configure and setup the obsecrete computer
 
-# resize SD card & enable interfaces
+# SD card & enable interfaces
 
 Resize the SD card to use all of the space.
 
@@ -20,7 +20,7 @@ Setup locale
 
 Reboot
 
-# edit the file /boot/config.txt
+## edit the file /boot/config.txt
 
     dtoverlay=dwc2
 
@@ -30,17 +30,17 @@ also check that /boot/config.txt contains the line
 
 and also check that 
 
-    /dev/ttyAMA0 
-	
+    /dev/serial0 
+
 exists	
 
-# update /etc/modules (or set in /boot/cmdline.txt )
+## check/update /etc/modules (or set in /boot/cmdline.txt )
 
 	dwc2
 	g_ether
 	i2c-dev
 
-# interfaces
+# Network interfaces
 
 Config file /etc/network/interfaces
 

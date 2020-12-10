@@ -170,7 +170,7 @@ to re-attach to a running screen session
         C-a c (to create a new shell)
         C-a " (to switch between shells)
 
-### Make a servator release and install it
+# Make a servator release and install it
 
 Servator can create releases from a running system, 
 extracting the applications and start arguments from
