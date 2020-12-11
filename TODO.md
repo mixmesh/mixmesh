@@ -37,6 +37,8 @@
 
 * Do a refresh of Rome simulation + add a background map
 [* Add a square2 simulator plugin module based on smooth random walks (Perlin noise)]
+* obscrete.conf-running does not handle updated obscret.conf!
+
 
 ### Both
 

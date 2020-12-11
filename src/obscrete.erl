@@ -23,6 +23,7 @@ start() ->
     ok = application:start(mail),
     ok = application:start(mpa),
     ok = application:start(elgamal),
+    ok = application:start(enacl),
     case config:lookup([player, enabled]) of
         true ->
             ok = application:start(player);
