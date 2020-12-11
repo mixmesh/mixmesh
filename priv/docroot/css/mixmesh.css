@@ -1,3 +1,27 @@
+input[type='radio'] {
+    margin-top: 0;
+}
+
+input[type='radio'] + span {
+    vertical-align: middle;
+}
+
+.first-row-after-sub-title {
+    margin-top: 0.5em !important;
+}
+
+/* https://mdbootstrap.com/live/_doc/all-colors.html */
+.uk-form-danger {
+    border-color: #FF4444 !important;
+    color: #333333 !important; */
+}
+
+/* https://mdbootstrap.com/live/_doc/all-colors.html */
+.uk-form-success {
+    border-color: #00C851 !important;
+    color: #333333 !important; */
+}
+
 #lock-screen {
     position: fixed;
     display: none;
@@ -8,7 +32,7 @@
     right: 0;
     bottom: 0;
     opacity: 0;
-    z-index: 1000; // uk-sticky = 980
+    z-index: 1000; /* uk-sticky = 980 */
 }
 
 #generic-dialog {

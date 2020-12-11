@@ -93,24 +93,27 @@ var Mixmesh = (function() {
                 return n.toString() + " " + what + "s";
             }
         },
-        validPassword: function(id) {
+        validInput: function(id) {
             Mixmesh.setClass(id, "uk-form-success", "uk-form-danger");
         },
-        invalidPassword: function(id) {
+        invalidInput: function(id) {
             Mixmesh.setClass(id, "uk-form-danger", "uk-form-success");
+        },
+        clearInput: function(id) {
+            $(id).removeClass("uk-form-danger").removeClass("uk-form-success");
         },
         passwordKeyupHandler: function(id, callback) {
             var idAgain = id + "-again";
             var handler = function() {
                 if ($(id).val().length < 6) {
-                    Mixmesh.invalidPassword(id);
-                    Mixmesh.invalidPassword(idAgain);
+                    Mixmesh.invalidInput(id);
+                    Mixmesh.invalidInput(idAgain);
                 } else {
-                    Mixmesh.validPassword(id);
+                    Mixmesh.validInput(id);
                     if ($(id).val() == $(idAgain).val()) {
-                        Mixmesh.validPassword(idAgain);
+                        Mixmesh.validInput(idAgain);
                     } else {
-                        Mixmesh.invalidPassword(idAgain);
+                        Mixmesh.invalidInput(idAgain);
                     }
                 }
                 callback();

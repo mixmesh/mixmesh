@@ -6,34 +6,15 @@
 
 * Discuss "edit-config" in REST
 
-  DONE) When we set things with "edit-config" it should be exported to obscrete.conf on disk
+  1) We need to decide which patameters in obscrete.config which should be set to reloadable=true
 
-    NOTE1: We need to decide which patameters in obscrete.config which should be set to reloadable=true
-
-    NOTE2: Jag har väntat på att göra det möjligt att sätta om smtp/pop3/http portar från system settings i web appen. Det går att göra det via REST mha av "edit-config" men inget lär hända mtp  (1) och (2) ovan
+  2) Jag har väntat på att göra det möjligt att sätta om smtp/pop3/http portar från system settings i web appen. Det går att göra det via REST mha av "edit-config" men inget lär hända mtp (1).
 
 * Discuss location routing:
 
   0) Let each player send a messages to all contacts with its position
      (or habitat) each hour.
-  1) Let each player have and short lived elegamal key pair (recreate it each tewn minutes)
-  DONE) Start sync with a handshake
-
-     i) Players exchange short lived public keys
-     ii) Players exchange a fixed sized routing header. A number of routing types are supported.
-
-         DONE) BLIND: Empty routing hader [Default for now]
-         DONE) LOCATION: Longitude, latitude
-         c) HABITAT: Ellipse (Two foci points and a radius)
-
-     iii) In (1) the players exchanged short lived public keys. Use
-          these to encrypt the routing header.
-
-  DONE) Add a routing header to each message as well. Same idea as in (2).
-
-DONE) Make it possible to use ifs for ip-addresses in obscrete.conf + listen on on several ifs, for http, usb0, pan0. Be creative.
-
-REMOVED) Discuss player/src/player_interface.erl
+  1) Maybe let each player have and short lived elegamal key pair (recreate it each then minutes)
 
 ### Tony
 
@@ -49,7 +30,6 @@ REMOVED) Discuss player/src/player_interface.erl
 
 ### Joakim
 
-* Ask for GPS in web app (or country and city)
 * Do a refresh of Rome simulation + add a background map
 [* Add a square2 simulator plugin module based on smooth random walks (Perlin noise)]
 
