@@ -198,14 +198,6 @@ To install that release do
     ./install.sh
     sudo setcap 'cap_net_bind_service=+ep' /var/erlang/obscrete/erts-11.1/bin/beam.smp
 
-Then install the linux start script, that is "hidden" among the installation
-directory but need gentel touch.
-
-    cd obscrete-X.Y/etc
-    sudo cp init.d/obscrete /etc/init.d/
-    sudo chmod +x /etc/init.d/obscrete
-    sudo update-rc.d obscrete defaults
-
 Now copy the configure file to the final place
 
     cd obscrete
@@ -219,13 +211,33 @@ Search for OPTS and set it.
 
 Now we should be able to start obscrete the standard way
 
-    /etc/init.d/obscrete start
+    /etc/erlang/obscrete/obscrete.run start
 
 And check status
 
-    /etc/init.d/obscrete status
+    /etc/erlang/obscrete/obscrete.run status
 
-More commands
+Maybe stop sometime
 
-    /etc/init.d/obscrete help
-    Usage: /etc/init.d/obscrete {start|stop|status|interactive|restart|reload|force-reload}
+    /etc/erlang/obscrete/obscrete.run stop
+
+# install Systemd script
+
+	cd obscrete
+    sudo cp ./etc/obscrete.service /etc/systemd/system/
+	chmod chmod u+rwx /etc/systemd/system/obscrete.service
+	
+Enable the service, so it is run when machine is booting
+
+	
+	sudo systemctl enable obscrete
+	
+Start it now
+
+	sudo systemctl start obscrete
+
+Stop it now
+
+	sudo systemctl stop obscrete
+
+	
