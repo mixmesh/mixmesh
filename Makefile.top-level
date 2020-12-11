@@ -12,8 +12,8 @@ TEST_LIST = $(shell (cd $(LPATH); ls -d */test))
 
 GITURL = https://github.com/obscrete
 
-# make all (directories found in parent) and test
-all: allapp test
+# make all (directories found in parent)
+all: allapp
 	@echo "ok"
 
 # make all apps found in parent
