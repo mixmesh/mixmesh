@@ -1,11 +1,8 @@
 %% -*- erlang -*-
 {application, obscrete,
  [{description,"The Obscrete top-level application"},
-  {vsn, "0.9"},
-  {modules, [obscrete_app,
-             obscrete_config_serv,
-             obscrete_log_serv,
-             obscrete_sup]},
+  {vsn, git},
+  {modules, ["@@MODULES@@"]},
   {registered, [obscrete_app, obscrete_sup]},
   {env, [{mode, normal}, {app_schemas, []}]},
   {mod, {obscrete_app, []}},
