@@ -2,6 +2,11 @@
 
 ## Possible input to new TODO (pseudo random order):
 
+[* REST: /system-hardware: gps, keyboard, battery]
+[* GPS service ]
+[* PIN entry service]
+[* Battery service]
+
 ## Next week
 
 * Discuss "edit-config" in REST
