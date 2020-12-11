@@ -21,8 +21,11 @@
                    maxlength="6" tabindex="1">
           </div>
         </div>
+        <!----------------------------------------------------------------->
+        <!-- Passwords -->
+        <h4 class="uk-width-1-1">Passwords</h4>
         <!-- Mail password -->
-        <div class="uk-width-1-2">
+        <div class="uk-width-1-2 first-row-after-sub-title">
           <label class="uk-form-label"
                  for="mail-password">Mail password (> 5 chars)</label>
           <div class="uk-form-controls">
@@ -34,7 +37,7 @@
             </div>
           </div>
         </div>
-        <div class="uk-width-1-2">
+        <div class="uk-width-1-2 first-row-after-sub-title">
           <label class="uk-form-label"
                  for="mail-password-again">Mail password (again)</label>
           <div class="uk-form-controls">
@@ -63,8 +66,11 @@
                    type="password" tabindex="5">
           </div>
         </div>
+        <!----------------------------------------------------------------->
+        <!-- Mail TCP ports -->
+        <h4 class="uk-width-1-1">Mail TCP ports</h4>
         <!-- SMTP port -->
-        <div class="uk-width-1-3">
+        <div class="uk-width-1-3 first-row-after-sub-title">
           <label class="uk-form-label"
                  for="smtp-port">SMTP port [465]</label>
           <div class="uk-form-controls">
@@ -74,7 +80,7 @@
           </div>
         </div>
         <!-- POP3 port -->
-        <div class="uk-width-1-3">
+        <div class="uk-width-1-3 first-row-after-sub-title">
           <label class="uk-form-label"
                  for="pop3-port">SMTP port [995]</label>
           <div class="uk-form-controls">
@@ -84,7 +90,7 @@
           </div>
         </div>
         <!-- HTTP port -->
-        <div class="uk-width-1-3">
+        <div class="uk-width-1-3 first-row-after-sub-title">
           <label class="uk-form-label"
                  for="http-port">HTTP port [443]</label>
           <div class="uk-form-controls">
@@ -92,7 +98,56 @@
                    type="text" autocorrect="none" autocapitalize="none"
                    maxlength="5" tabindex="8" value="443">
           </div>
-        </div>        
+        </div>
+        <!----------------------------------------------------------------->
+        <!-- Routing strategy -->
+        <h4 class="uk-width-1-1">Routing strategy</h4>
+        <div class="uk-width-1-1 first-row-after-sub-title">
+          <label class="uk-margin-small-right">
+            <input id="use-gps" name="routing-mode"
+                   value="use-gps" type="radio" class="uk-radio"
+                   checked>
+            <span>Use onboard GPS</span>
+                </input>
+          </label>
+          <label class="uk-margin-small-right">
+            <input id="use-static-location" name="routing-mode"
+                   value="use-static-location" type="radio" class="uk-radio">
+            <span>Use static location</span>
+                </input>
+          </label>
+          <label>
+            <input id="blind-routing" name="routing-mode"
+                   value="blind-routing" type="radio" class="uk-radio">
+            <span>Blind routing</span>
+                </input>
+          </label>
+        </div>
+        <!-- Static location -->
+        <div id="static-location" class="uk-width-1-1" style="display: none">
+          <div class="uk-grid-small" uk-grid>
+            <div class="uk-width-expand">
+              <label class="uk-form-label" for="latitude">Latitude</label>
+              <div class="uk-form-controls">
+                <input id="latitude" class="uk-input uk-form-danger" type="text"
+                       tabindex="10">
+              </div>
+            </div>
+            <div class="uk-width-expand">
+              <label class="uk-form-label" for="longitude">Longitude</label>
+              <div class="uk-form-controls">
+                <input id="longitude" class="uk-input uk-form-danger" type="text"
+                       tabindex="11">
+              </div>
+            </div>
+            <div class="uk-width-auto uk-flex uk-flex-bottom">
+              <button id="get-location-button" type="button"
+                      class="uk-button uk-button-default" disabled>
+                <span uk-icon="icon: location"></span>
+              </button>
+            </div>
+          </div>
+        </div>
       </form>
       <div uk-alert>
         <b>Notice:</b> Remember these passwords or you will be sorry.

@@ -24,6 +24,10 @@ generated with the following parameters configured:
 * pin-salt
 * global-pki-server/data-dir
 * nym
+* routing/type
+* routing/use-gps
+* routing/longitude
+* routing/latitude
 * public-key
 * secret-key
 * smtp-server/address (port only)
@@ -47,6 +51,10 @@ is used as a template.
   "smtp-password": "<string>",
   "pop3-password": "<string>",
   "http-password": "<string>",
+  "routing-type": "<blind | location> (optional)",
+  "use-gps": "<boolean> (optional)",
+  "longitude": "<-180 to 180> (optional)"
+  "latitude": "<-90 to 90> (optional)"
   "smtp-port": "<integer> (optional)",
   "pop3-port": "<integer> (optional)",
   "http-port": "<integer> (optional)",
@@ -61,6 +69,10 @@ is used as a template.
 {
   "public-key": "<Base64 encoded public key>",
   "secret-key": "<Base64 encoded secret key>",
+  "routing-type": "<blind | location> (optional)",
+  "use-gps": "<boolean>",
+  "longitude": "<-180 to 180>"
+  "latitude": "<-90 to 90>"
   "smtp-address": "<ip:port>",
   "pop3-address": "<ip:port>",
   "http-address": "<ip:port>",
@@ -84,6 +96,10 @@ $ curl --insecure --request POST --header "Content-Type: application/json" --dat
 {
   "public-key": "BWFsaWNlA545HxYMKpYFS0GoofqJTqq2x5Qqust2NBGPEqbNbzueOSAsw40gna3f9Gj0t686Y6HIctouBQK0pfBjidfR9LqECh6jV09t7PYa2r6SSX5keN2\/r21Zki5npxYjNiV6PfpZuwuqvvI+xpZ6j7MNRipbS12st\/e2zPr49yg3AdOK",
   "secret-key": "BWFsaWNlgQG74DOG+xCoeIIk5PXQgyUvfpfJwKSdVxvv9NGh11\/stPmGp9vSVGpmkn4Sz0QqAh375dH6pTDLV65hlnpMapp9gM1j\/vGKgaHvtXUL6GeyYl4GOX4HWYrh8FaOTWqcpQcFWz6i24syX8wMPANAmA0yzRsEpXE5NcOhzTP+zCenEAOeOR8WDCqWBUtBqKH6iU6qtseUKrrLdjQRjxKmzW87njkgLMONIJ2t3\/Ro9LevOmOhyHLaLgUCtKXwY4nX0fS6hAoeo1dPbez2Gtq+kkl+ZHjdv69tWZIuZ6cWIzYlej36WbsLqr7yPsaWeo+zDUYqW0tdrLf3tsz6+PcoNwHTig==",
+  "routing-type": "location",
+  "use-gps": true,
+  "longitude": 0,
+  "latitude": 0,
   "smtp-address": "172.16.0.139:465",
   "pop3-address": "172.16.0.139:995",
   "http-address": "172.16.0.139:443",
@@ -96,10 +112,14 @@ $ curl --insecure --request POST --header "Content-Type: application/json" --dat
 In the example above the optional parameters were ommited, i.e. these optional parameters will not be in the final version anyway, but here all possible optional parameters are provided (with their current default values):
 
 ```json
-$ curl --insecure --request POST --header "Content-Type: application/json" --data '{"nym": "alice", "smtp-password": "baz", "pop3-password": "baz", "http-password": "hello", "smtp-port": 465, "pop3-port": 995, "http-port": 443, "obscrete-dir": "/tmp/obscrete", "pin": "123456"}' https://127.0.0.1/bootstrap/install
+$ curl --insecure --request POST --header "Content-Type: application/json" --data '{"nym": "alice", "smtp-password": "baz", "pop3-password": "baz", "http-password": "hello", "routing-type":"location", "use-gps": true, "longitude": 0, "latitude": 0, "smtp-port": 465, "pop3-port": 995, "http-port": 443, "obscrete-dir": "/tmp/obscrete", "pin": "123456"}' https://127.0.0.1/bootstrap/install
 {
   "public-key": "BWFsaWNlAfTIzBHK5nd6O76t7c+0O7hRs\/Kj\/OjUduNsXaNeMnmd\/Kan55OhybZjB2R49BLEsEtP+FNcPt1tZrJzml7hzZ2XLnxK9glHPM52IzdStErd3bGryGeaYCqt32TZz1vFSkmoT7uVs\/X58qjCHEn0\/1Q7ZZtW7OvaOvTTQ3bMTXlF",
   "secret-key": "BWFsaWNlgQFmqZ17qy4JLi6o\/uhac4OyqQYMXPDqI8uHqtpuFzVkZzUja7om1EYvMSsEVIuZExnPk0qynN8wBXy7xuZQT0oBf3\/WCO6dFBeYNe444VZhPAbgNeKAUp5skdUv1AdlJhavB\/HWglDsgfE6DXHPpU\/Mxiw7\/9+5Ioc231C0MfuFSgH0yMwRyuZ3eju+re3PtDu4UbPyo\/zo1HbjbF2jXjJ5nfymp+eTocm2YwdkePQSxLBLT\/hTXD7dbWayc5pe4c2dly58SvYJRzzOdiM3UrRK3d2xq8hnmmAqrd9k2c9bxUpJqE+7lbP1+fKowhxJ9P9UO2WbVuzr2jr000N2zE15RQ==",
+  "routing-type": "location",
+  "use-gps": true,
+  "longitude": 0,
+  "latitude": 0,
   "smtp-address": "172.16.0.139:465",
   "pop3-address": "172.16.0.139:995",
   "http-address": "172.16.0.139:443",
@@ -133,6 +153,10 @@ generated with the following parameters configured:
 * pin-salt
 * global-pki-server/data-dir
 * nym
+* routing/type
+* routing/use-gps
+* routing/longitude
+* routing/latitude
 * public-key
 * secret-key
 * smtp-server/address (port only)
@@ -157,6 +181,10 @@ is used as a template.
   "smtp-password": "<string>",
   "pop3-password": "<string>",
   "http-password": "<string>",
+  "routing-type": "<blind | location> (optional)",
+  "use-gps": "<boolean> (optional)",
+  "longitude": "<-180 to 180> (optional)"
+  "latitude": "<-90 to 90> (optional)"  
   "smtp-port": "<integer> (optional)",
   "pop3-port": "<integer> (optional)",
   "http-port": "<integer> (optional)",
@@ -170,6 +198,10 @@ is used as a template.
 ```json
 {
   "nym": "<string (<32 characters)>",
+  "routing-type": "<blind | location> (optional)",
+  "use-gps": "<boolean>",
+  "longitude": "<-180 to 180>"
+  "latitude": "<-90 to 90>"  
   "smtp-address": "<ip:port>",
   "pop3-address": "<ip:port>",
   "http-address": "<ip:port>",
@@ -191,6 +223,10 @@ $ ./bin/obscrete --bootstrap
 $ curl --insecure --request POST --header "Content-Type: application/json" --data '{"public-key": "BWFsaWNlBbqW75jjJ0aPtaq1zGPObUc7ZQ2WIwIRbX2bkVyOkeIkAC9Hg0oc+J7BD\/RG04TDvd1fETcpmJpyvV8QyeKJ3B3BMHi+LPWSRY60yX1XoA\/1A1iuIxTnt22Q68iXyMMlZvA+ivmNxJlsqN3PB2KOch45KkNzi9Hez9u7KTZBhp3d", "secret-key": "BWFsaWNlgMwhWxEO5Ovn0OpNnN62Mu9nvL7Zn1mzlgSBkfC2zZQII\/otb+1jPqLMCDQlFKqNEXGy\/N1PUhotV3w7JBitwsZSUeGfVi2gLJFEkrZ6tGjrUoN3eB65JIzpfQirlLX6oCO5Ab1t4rOmD4BsHvA+lYBbYw3QihArIGqcTyNrbiC1BbqW75jjJ0aPtaq1zGPObUc7ZQ2WIwIRbX2bkVyOkeIkAC9Hg0oc+J7BD\/RG04TDvd1fETcpmJpyvV8QyeKJ3B3BMHi+LPWSRY60yX1XoA\/1A1iuIxTnt22Q68iXyMMlZvA+ivmNxJlsqN3PB2KOch45KkNzi9Hez9u7KTZBhp3d", "smtp-password": "baz", "pop3-password": "baz", "http-password": "hello"}' https://127.0.0.1/bootstrap/reinstall
 {
   "nym": "alice",
+  "routing-type": "location",
+  "use-gps": true,
+  "longitude": 0,
+  "latitude": 0,  
   "smtp-address": "172.16.0.139:465",
   "pop3-address": "172.16.0.139:995",
   "http-address": "172.16.0.139:443",

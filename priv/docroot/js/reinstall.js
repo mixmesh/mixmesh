@@ -1,4 +1,10 @@
 var Reinstall = (function() {
+    var routingType = "location";
+    var useGPS = true;
+    var longitude = 0;
+    var latitude = 0;
+    var lockOwner;
+
     var toggleReinstallButton = function() {
         if ($("#pin").hasClass("uk-form-success") &&
             $("#mail-password").hasClass("uk-form-success") &&
@@ -7,7 +13,12 @@ var Reinstall = (function() {
             $("#http-password-again").hasClass("uk-form-success") &&
             $("#smtp-port").hasClass("uk-form-success") &&
             $("#pop3-port").hasClass("uk-form-success") &&
-            $("#http-port").hasClass("uk-form-success")) {
+            $("#http-port").hasClass("uk-form-success") &&
+            (routingType == "blind" ||
+             (routingType == "location" && useGPS) ||
+             ((routingType == "location" && !useGPS &&
+               $("#longitude").hasClass("uk-form-success") &&
+               $("#latitude").hasClass("uk-form-success"))))) {
             if ($("#reinstall-button").prop("disabled")) {
                 $("#reinstall-button").prop("disabled", false);
             }
@@ -18,6 +29,18 @@ var Reinstall = (function() {
         }
     };
 
+    var locationKeyupHandler = function(id) {
+        var handler = function() {
+            if (isNaN($(id).val())) {
+                Mixmesh.invalidInput(id);
+            } else {
+                Mixmesh.validInput(id);
+            }
+            toggleReinstallButton();
+        };
+        return handler;
+    };
+    
     var step4 = function(mailPassword, nym, smtpAddress, pop3Address,
                          httpAddress) {
         $("#meta-content").load(
@@ -101,7 +124,7 @@ var Reinstall = (function() {
                         Mixmesh.setClass(this, "uk-form-danger",
                                          "uk-form-success");
                     }
-                    toggleRenstallButton();
+                    toggleReinstallButton();
                 });
                 $("#mail-password")
                     .keyup(Mixmesh
@@ -128,16 +151,94 @@ var Reinstall = (function() {
                     .keyup(Mixmesh.portKeyupHandler("#pop3-port", toggleReinstallButton));
                 $("#http-port")
                     .keyup(Mixmesh.portKeyupHandler("#http-port", toggleReinstallButton));
+                $("#longitude").keyup(locationKeyupHandler("#longitude"));
+                $("#latitude").keyup(locationKeyupHandler("#latitude"));
+                $("#use-gps").click(function() {
+                    $("#static-location").hide();
+                    routingType = "location";
+                    useGPS = true;
+                    toggleReinstallButton();
+                });
+                $("#use-static-location").click(function() {
+                    $("#static-location").show({
+                        duration: 0,
+                        complete: function() {
+                            routingType = "location",
+                            useGPS = false;
+                            toggleReinstallButton();
+                        }
+                    });
+                });
+                $("#blind-routing")
+                    .click(function() {
+                        $("#static-location").hide();
+                        routingType = "blind";
+                        useGPS = false;
+                        toggleReinstallButton();
+                    });
+                if (navigator.geolocation) {
+                    $("#get-location-button").prop("disabled", false);
+                    $("#get-location-button")
+                        .click(function() {
+                            var onSuccess = function(position) {
+                                $("#longitude").val(position.coords.longitude);
+                                (locationKeyupHandler("#longitude"))();
+                                $("#latitude").val(position.coords.latitude);
+                                (locationKeyupHandler("#latitude"))();
+                                Mixmesh.unlockScreen(lockOwner);
+                            };
+                            var onError = function(error) {
+                                var reason;
+                                switch (error.code) {
+                                case 0:
+                                    reason = "Reason: Unknown error";
+                                    break;
+                                case 1:
+                                    reason = "Reason: Permission denied";
+                                    break;
+                                case 2:
+                                    reason = "Reason: Position unavailable";
+                                    break;
+                                case 3:
+                                    reason = "Reason: Timeout";
+                                    break;
+                                default:
+                                    reason = "Reason: Internal error";
+                                }
+                                Mixmesh.showGenericDialog({
+                                    title: "Static location not available",
+                                    content: "<p>" + reason + "</p>",
+                                    onok: function() {
+                                        Mixmesh.unlockScreen(lockOwner);
+                                        Mixmesh.hideGenericDialog();
+                                    }
+                                });
+                            };
+                            lockOwner = Mixmesh.lockScreen();
+                            navigator.geolocation.getCurrentPosition(onSuccess, onError);
+                            return false;
+                        });
+                }
                 $("#reinstall-button").click(function() {
                     $("#reinstall-button").prop("disabled", true);
+                    
+                    if (routingType == "location" && !useGPS) {
+                        longitude = Number($("#longitude").val());
+                        latitude = Number($("#latitude").val());
+                    }
+                    
                     Mixmesh.post(
                         "/bootstrap/reinstall",
-                        {
+                        {                            
                             "public-key": publicKey,
                             "secret-key": secretKey,
                             "smtp-password": $("#mail-password").val(),
                             "pop3-password": $("#mail-password").val(),
                             "http-password": $("#http-password").val(),
+                            "routing-type": routingType,
+                            "use-gps": useGPS,
+                            "longitude": longitude,
+                            "latitude": latitude,
                             "smtp-port": parseInt($("#smtp-port").val()),
                             "pop3-port": parseInt($("#pop3-port").val()),
                             "http-port": parseInt($("#http-port").val()),
@@ -188,7 +289,7 @@ var Reinstall = (function() {
         }
 
         var html5QrcodeScanner = new Html5QrcodeScanner(
-	    "reader", { fps: 10, qrbox: 300 }, /* verbose= */ true);
+	    "reader", { fps: 10, qrbox: 400 }, /* verbose= */ true);
 
         var onScanSuccess = function(qrMessage) {
             html5QrcodeScanner.clear();

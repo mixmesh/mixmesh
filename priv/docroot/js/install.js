@@ -1,4 +1,10 @@
 var Install = (function() {
+    var routingType = "location";
+    var useGPS = true;
+    var longitude = 0;
+    var latitude = 0;
+    var lockOwner;
+    
     var toggleInstallButton = function() {
         if ($("#pin").hasClass("uk-form-success") &&
             $("#pseudonym").hasClass("uk-form-success") &&
@@ -8,7 +14,12 @@ var Install = (function() {
             $("#http-password-again").hasClass("uk-form-success") &&
             $("#smtp-port").hasClass("uk-form-success") &&
             $("#pop3-port").hasClass("uk-form-success") &&
-            $("#http-port").hasClass("uk-form-success")) {
+            $("#http-port").hasClass("uk-form-success") &&
+            (routingType == "blind" ||
+             (routingType == "location" && useGPS) ||
+             ((routingType == "location" && !useGPS &&
+               $("#longitude").hasClass("uk-form-success") &&
+               $("#latitude").hasClass("uk-form-success"))))) {
             if ($("#install-button").prop("disabled")) {
                 $("#install-button").prop("disabled", false);
             }
@@ -17,6 +28,18 @@ var Install = (function() {
                 $("#install-button").prop("disabled", true);
             }
         }
+    };
+    
+    var locationKeyupHandler = function(id) {
+        var handler = function() {
+            if (isNaN($(id).val())) {
+                Mixmesh.invalidInput(id);
+            } else {
+                Mixmesh.validInput(id);
+            }
+            toggleInstallButton();
+        };
+        return handler;
     };
     
     var step3 = function(nym, mailPassword, smtpAddress, pop3Address,
@@ -91,8 +114,82 @@ var Install = (function() {
             .keyup(Mixmesh.portKeyupHandler("#pop3-port", toggleInstallButton));
         $("#http-port")
             .keyup(Mixmesh.portKeyupHandler("#http-port", toggleInstallButton));
+        $("#longitude").keyup(locationKeyupHandler("#longitude"));
+        $("#latitude").keyup(locationKeyupHandler("#latitude"));
+        $("#use-gps").click(function() {
+            $("#static-location").hide();
+            routingType = "location";
+            useGPS = true;
+            toggleInstallButton();
+        });
+        $("#use-static-location").click(function() {
+            $("#static-location").show({
+                duration: 0,
+                complete: function() {
+                    routingType = "location",
+                    useGPS = false;
+                    toggleInstallButton();
+                }
+            });
+        });
+        $("#blind-routing")
+            .click(function() {
+                $("#static-location").hide();
+                routingType = "blind";
+                useGPS = false;
+                toggleInstallButton();
+            });
+        if (navigator.geolocation) {
+            $("#get-location-button").prop("disabled", false);
+            $("#get-location-button")
+                .click(function() {
+                    var onSuccess = function(position) {
+                        $("#longitude").val(position.coords.longitude);
+                        (locationKeyupHandler("#longitude"))();
+                        $("#latitude").val(position.coords.latitude);
+                        (locationKeyupHandler("#latitude"))();
+                        Mixmesh.unlockScreen(lockOwner);
+                    };
+                    var onError = function(error) {
+                        var reason;
+                        switch (error.code) {
+                        case 0:
+                            reason = "Reason: Unknown error";
+                            break;
+                        case 1:
+                            reason = "Reason: Permission denied";
+                            break;
+                        case 2:
+                            reason = "Reason: Position unavailable";
+                            break;
+                        case 3:
+                            reason = "Reason: Timeout";
+                            break;
+                        default:
+                            reason = "Reason: Internal error";
+                        }
+                        Mixmesh.showGenericDialog({
+                            title: "Static location not available",
+                            content: "<p>" + reason + "</p>",
+                            onok: function() {
+                                Mixmesh.unlockScreen(lockOwner);
+                                Mixmesh.hideGenericDialog();
+                            }
+                        });
+                    };
+                    lockOwner = Mixmesh.lockScreen();
+                    navigator.geolocation.getCurrentPosition(onSuccess, onError);
+                    return false;
+                });
+        }
         $("#install-button").click(function() {
             $("#install-button").prop("disabled", true);
+
+            if (routingType == "location" && !useGPS) {
+                longitude = Number($("#longitude").val());
+                latitude = Number($("#latitude").val());
+            }
+            
             Mixmesh.post(
                 "/bootstrap/install",
                 {
@@ -100,6 +197,10 @@ var Install = (function() {
                     "smtp-password": $("#mail-password").val(),
                     "pop3-password": $("#mail-password").val(),
                     "http-password": $("#http-password").val(),
+                    "routing-type": routingType,
+                    "use-gps": useGPS,
+                    "longitude": longitude,
+                    "latitude": latitude,                    
                     "smtp-port": parseInt($("#smtp-port").val()),
                     "pop3-port": parseInt($("#pop3-port").val()),
                     "http-port": parseInt($("#http-port").val()),
