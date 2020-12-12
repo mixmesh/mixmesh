@@ -15,7 +15,6 @@ if [ $# -ne 3 ]; then
    usage
 fi
 
-
 bin_dir=${0%/*}
 erl_libs=${bin_dir}/../..
 pa="-pa ${erl_libs}/*/ebin"

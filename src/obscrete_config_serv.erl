@@ -10,6 +10,8 @@
 -define(DEFAULT_CONTROL_ADDRESS, {127, 0, 0, 1}).
 -define(DEFAULT_CONTROL_PORT, 23313).
 
+-define(CONF_REVISION, 1).
+
 %% Exported: start_link
 
 -spec start_link() -> {'ok', pid()} |
@@ -20,7 +22,8 @@ start_link() ->
     case config_serv:start_link(
            ConfigFilename, get_schemas(),
            fun() -> config:lookup(['obscrete-control', listen]) end,
-           fun config_handler/1) of
+           fun listener_handler/1,
+           fun upgrade_handler/1) of
         {ok, Pid} ->
             {ok, Pid};
         {error, Reason} ->
@@ -45,7 +48,7 @@ get_schemas([]) ->
 get_schemas([{App, SchemaModule}|Rest]) ->
     [{App, SchemaModule:get()}|get_schemas(Rest)].
 
-config_handler(Socket) ->
+listener_handler(Socket) ->
     receive
         {tcp, Socket, <<"stop">>} ->
             init:stop(),
@@ -56,6 +59,76 @@ config_handler(Socket) ->
         {tcp_closed, Socket} ->
             ok
     end.
+
+upgrade_handler(OldConfigFilename) ->
+    {ok, OldConfig} = file:read_file(OldConfigFilename),
+    {ok, ParsedOldConfig, _} =
+        jsone:try_decode(OldConfig, [{object_format, proplist}]),
+    RevisionedParsedOldConfig =
+        case ParsedOldConfig of
+            [{<<"system">>, [{<<"conf-revision">>, OldRevision}|_]}|_] ->
+                ParsedOldConfig;
+            [{<<"system">>, SystemConfig}|Config] ->
+                OldRevision = 0,
+                [{<<"system">>,
+                  [{<<"conf-revision">>, OldRevision}|SystemConfig]}|Config]
+        end,
+    if
+        OldRevision > ?CONF_REVISION ->
+            downgrade_not_supported;
+        OldRevision == ?CONF_REVISION ->
+            {OldRevision, ?CONF_REVISION, not_changed};
+        true ->
+            NewConfig =
+                upgrade_config(
+                  RevisionedParsedOldConfig, OldRevision, ?CONF_REVISION),
+            {ok, Binary} =
+                jsone:try_encode(NewConfig,
+                                 [{float_format, [{decimals, 4}, compact]},
+                                  {indent, 2},
+                                  {object_key_type, value},
+                                  {space, 1},
+                                  native_forward_slash]),
+            {OldRevision, ?CONF_REVISION, Binary}
+    end.
+
+upgrade_config(OldConfig, N, M) when N == M - 1 ->
+    upgrade(N, M, OldConfig, []);
+upgrade_config(OldConfig, N, M) ->
+    upgrade_config(upgrade_config(OldConfig, N, N + 1), N + 1, M).
+
+%% 0 -> 1
+
+upgrade(0, 1, [], _JsonPath) ->
+    [];
+upgrade(0, 1, [{<<"conf-revision">>, 0}|Rest], JsonPath) ->
+    [{<<"conf-revision">>, 1}|upgrade(0, 1, Rest, JsonPath)];
+upgrade(0, 1, [{<<"sync-address">>, SyncAddress},
+               {<<"routing">>,
+                [{<<"type">>, Type},
+                 {<<"use-gps">>, UseGps},
+                 {<<"longitude">>, Longitude},
+                 {<<"latitude">>, Latitude},
+                 {<<"f">>, F},
+                 {<<"k">>, K},
+                 {<<"public-key">>, PublicKey},
+                 {<<"secret-key">>, SecretKey}]}|Rest], [<<"player">>]) ->
+    [{<<"routing">>,
+      [{<<"type">>, Type},
+       {<<"use-gps">>, UseGps},
+       {<<"longitude">>, Longitude},
+       {<<"latitude">>, Latitude}]},
+     {<<"sync-server">>,
+      [{<<"address">>, SyncAddress},
+       {<<"f">>, F},
+       {<<"k">>, K},
+       {<<"public-key">>, PublicKey},
+       {<<"secret-key">>, SecretKey}]}|Rest];
+upgrade(0, 1, [{Name, NestedConfig}|Config], JsonPath) ->
+    [{Name, upgrade(0, 1, NestedConfig, [Name|JsonPath])}|
+     upgrade(0, 1, Config, JsonPath)];
+upgrade(0, 1, Config, _JsonPath) ->
+    Config.
 
 %% Exported: stop
 
