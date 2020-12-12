@@ -208,6 +208,10 @@ applcation specific optionfor parsing the json config files.
 Search for OPTS and set it.
 
     OPTS="--config $ETC/obscrete-local.conf"
+	
+IMPORTANT updated for systemd
+
+In the obscrete.run find and replace -detached with -noinput!
 
 Now we should be able to start obscrete the standard way
 
