@@ -6,9 +6,13 @@
 
 get() ->
     [{system,
-      [{'initialization-time',
+      [{'conf-revision',
         #json_type{
-           name = {integer, 0,  unbounded},
+           name = {integer, 0, unbounded},
+           reloadable = false}},
+       {'initialization-time',
+        #json_type{
+           name = {integer, 0, unbounded},
            reloadable = false}},
        {'obscrete-dir',
         #json_type{
