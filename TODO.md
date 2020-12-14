@@ -7,6 +7,39 @@
 [* PIN entry service]
 [* Battery service]
 
+XBus public keys for above
+     Key					Unit
+     mixmesh.routing.type			hw|static|blind
+     mixmesh.routing.hw.location.latitude	degree
+     mixmesh.routing.hw.location.longitude	degree
+     mixmesh.routing.hw.speed			km/h	
+
+     mixmesh.routing.static.location.latitude	degree  fixed
+     mixmesh.routing.static.location.longitude	degree  fixed
+     mixmesh.routing.static.speed		km/h	0.0
+
+     mixmesh.routing.blind.location.latitude	degree	0.0
+     mixmesh.routing.blind.location.longitude	degree	0.0
+     mixmesh.routing.blind.speed		km/h	0.0
+
+     subscribe to: mixmesh.routing.*.location to get long and lat
+
+     mixmesh.system.enabled			boolean
+     mixmesh.system.pin				boolean
+
+     mixmesh.keypad.installed		      boolean
+     mixmesh.keypad.pinlength		      unsigned
+     mixmesh.keypad.enterkey		      unsigned
+     
+     mixmesg.battery.installed			boolean
+     mixmesh.battery.charging			boolean
+     mixmesh.battery.voltage			V	(3.1-4.16)
+     mixmesh.battery.intensity			V	(3.1-4.16)     
+     mixmesh.battery.soc			%	(0-100)
+
+     mixmesh.battery.is_power_plugged		boolean
+     
+
 ## Next week
 
 * Discuss "edit-config" in REST
@@ -28,7 +61,6 @@
 * select ip from ping interface, convert (0,0,0,0) => (A,B,C,D)
   depending on nodis ip.
 * Add GPS coordinates to nodis
-* Install GPS modules to hardware
 * Update configuration to store 
   buffer, local-pki, received-messages, spooler
   in /var/erlang/obscrete/

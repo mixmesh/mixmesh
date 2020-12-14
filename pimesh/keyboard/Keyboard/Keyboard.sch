@@ -5,8 +5,8 @@ $Descr A4 11693 8268
 encoding utf-8
 Sheet 1 1
 Title "MixMesh keyboard"
-Date "2020-12-01"
-Rev "rev1"
+Date "2020-12-14"
+Rev "1.0"
 Comp "MixMesh"
 Comment1 ""
 Comment2 ""
