@@ -5,7 +5,7 @@
 %%% @end
 %%% Created :  9 Dec 2020 by Tony Rogvall <tony@rogvall.se>
 
--module(gps_serv).
+-module(pimesh_gps_serv).
 
 -export([start_link/0, start_link/1]).
 -export([get_position/1, get_time/1, get_tz/1, 
@@ -61,6 +61,13 @@ init(Parent, UartDeviceName) ->
     Baud = 9600,
     UartOpts = [{mode,binary}, {baud, Baud}, {packet, line},
 		{csize, 8}, {stopb,1}, {parity,none}, {active, once}],
+    xbus:pub_meta(<<"mixmesh.routing.hw.location.latitude">>,
+		  [{unit,"degree"}]),
+    xbus:pub_meta(<<"mixmesh.routing.hw.location.longitude">>,
+		  [{unit,"degree"}]),
+    xbus:pub_meta(<<"mixmesh.routing.hw.speed">>,
+		  [{unit,"km/h"},
+		   {description, "Derived GPS speed using flat distance."}]),
     case uart:open1(UartDeviceName, UartOpts) of
 	{ok,Uart} ->
 	    {ok, #state { parent=Parent, uart=Uart }};
@@ -120,6 +127,17 @@ message_handler(State=#state{uart=Uart,use_message=UseMessage,
             noreply
     end.
 
+set_location(Lat, Long, State) ->
+    xbus:pub(<<"mixmesh.routing.hw.location.latitude">>, Lat),
+    xbus:pub(<<"mixmesh.routing.hw.location.longitude">>, Long),
+    State#state { lat=Lat, long=Long }.
+
+set_location_and_speed(Lat, Long, Speed, State) ->
+    xbus:pub(<<"mixmesh.routing.hw.location.latitude">>, Lat),
+    xbus:pub(<<"mixmesh.routing.hw.location.longitude">>, Long),
+    xbus:pub(<<"mixmesh.routing.hw.speed">>, Speed),
+    State#state { lat=Lat, long=Long, speed=Speed }.
+
 rmc([FUtc,<<"A">>,FLat,FLa,FLong,FLo,_FSpdog,_FCog,FDate|_],State) ->
     Date = gps_short_date(FDate),
     {Time,Times} = gps_time(FUtc,Date),
@@ -135,11 +153,11 @@ rmc([FUtc,<<"A">>,FLat,FLa,FLong,FLo,_FSpdog,_FCog,FDate|_],State) ->
 		     true ->
 			  0.0
 		  end,
-	    State#state{time=Time,times=Times,date=Date,
-			long=Long,lat=Lat,speed=Spd};
+	    State1 = set_location_and_speed(Lat, Long, Spd, State),
+	    State1#state{time=Time,times=Times,date=Date};
        is_float(Times),is_float(Lat),is_float(Long) ->
-	    State#state{valid=true,time=Time,times=Times,date=Date,
-			long=Long,lat=Lat,speed=0.0}
+	    State1 = set_location(Lat, Long, State),
+	    State1#state{valid=true,time=Time,times=Times,date=Date,speed=0.0}
     end;
 rmc([_FUtc,<<"V">>|_],State) ->
     State;
@@ -172,12 +190,12 @@ gga([FUtc,FLat,FLa,FLong,FLo,FStat|_], State) ->
 		     true ->
 			  0.0
 		  end,
-	    State#state{time=Time,times=Times,
-			long=Long,lat=Lat,speed=Spd};
+	    State1 = set_location_and_speed(Lat, Long, Spd, State),
+	    State1#state{time=Time,times=Times};
        Stat >= 0,
        is_float(Times),is_float(Lat),is_float(Long) ->
-	    State#state{valid=true,time=Time,times=Times,
-			long=Long,lat=Lat,speed=0.0};
+	    State1 = set_location(Lat, Long, State),
+	    State1#state{valid=true,time=Time,times=Times,speed=0.0};
        true ->
 	    State
     end.

@@ -5,7 +5,7 @@
 %%% @end
 %%% Created :  4 Dec 2020 by Tony Rogvall <tony@rogvall.se>
 
--module(app_serv).
+-module(pimesh_app_serv).
 
 -export([start_link/0, start_link/1]).
 -export([set_activity/2]).

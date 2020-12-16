@@ -23,4 +23,19 @@ get() ->
         #json_type{
            name = base64,
            typical = <<"xFxxsWkBHF9SWcEQA4pvzg==">>,
-           reloadable = false}}]}].
+           reloadable = false}},
+       {'hardware',
+	#json_type{
+	   name = atom,
+	   info = "none or pimesh",
+	   typical = none,
+	   transform =
+	       fun(none) -> none;
+		  (pimesh) -> pimesh;
+		  (_) ->
+		       throw(
+			 {failed,
+			  "Must be one of none or pimesh"})
+	       end,
+	   reloadable = false}}
+       ]}].

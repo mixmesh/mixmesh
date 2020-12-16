@@ -6,4 +6,4 @@
   {registered, [obscrete_app, obscrete_sup]},
   {env, [{mode, normal}, {app_schemas, []}]},
   {mod, {obscrete_app, []}},
-  {applications, [kernel, stdlib, apptools]}]}.
+  {applications, [kernel, stdlib, apptools, xbus]}]}.

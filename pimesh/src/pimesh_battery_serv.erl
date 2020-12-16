@@ -5,11 +5,10 @@
 %%% @end
 %%% Created : 19 Nov 2020 by Tony Rogvall <tony@rogvall.se>
 
--module(battery_serv).
+-module(pimesh_battery_serv).
 
 -export([start_link/0, start_link/1]).
--export([set_voltage/2, get_voltage/1, get_soc/1]).
--export([set_charging/2]).
+-export([get_voltage/1, get_soc/1]).
 %% serv callback
 -export([message_handler/1]).
 
@@ -46,7 +45,6 @@
 	 ip5209,
 	 tca8418,
 	 voltage,
-	 charging = false,  %% for simulation
 	 soc,
 	 soc0,  %% last reported soc
 	 toggle = false
@@ -61,18 +59,11 @@ start_link(Bus) ->
     ?spawn_server(fun(Parent) -> init(Parent, Bus) end,
 		  fun ?MODULE:message_handler/1).
 
-set_voltage(Serv, V) when is_number(V), V >= 0, V =< 5.0 ->
-    serv:call(Serv, {set_voltage, float(V)}).
-
 get_voltage(Serv) ->
     serv:call(Serv, get_voltage).
 
 get_soc(Serv) ->
     serv:call(Serv, get_soc).
-
-set_charging(Serv, OnOff) when is_boolean(OnOff) ->
-    serv:call(Serv, {set_charging, OnOff}).
-
 
 init(Parent, Bus) ->
     {ok,TCA8418} = i2c_tca8418:open1(Bus),
@@ -82,20 +73,28 @@ init(Parent, Bus) ->
 	      i2c_tca8418:gpio_output(TCA8418, Pin),
 	      i2c_tca8418:gpio_clr(TCA8418, Pin)
       end, ?LEVEL_LIST),
-    %% {ok,IP5209}  = i2c_ip5209:open1(Bus),
-    %% V0 = i2c_ip5209:read_voltage(Port),
-    %% Charging = i2c_ip5209:is_power_plugged_2led(Port),
-    Charging = false,
-    IP5209 = 1,
-    V0 = 3.80,
+
+    xbus:pub_meta(<<"mixmesh.battery.voltage">>,
+		  [{unit,"V"},
+		   {description, "Battery voltage."},
+		   {range, {3.1, 4.16}}]),
+    xbus:pub_meta(<<"mixmesh.battery.soc">>,
+		  [{unit,"%"},
+		   {description, "State of charge."},
+		   {range, {0.0, 100.0}}]),
+    xbus:pub_meta(<<"mixmesh.battery.charging">>,
+		  [{unit,"bool"},
+		   {description, "Is battery charging."}]),
+    {ok,IP5209}  = i2c_ip5209:open1(Bus),
+    V0 = i2c_ip5209:read_voltage(IP5209),
+    Charging = i2c_ip5209:is_power_plugged_2led(IP5209),
     SOC0 = i2c_ip5209:parse_voltage_level(V0),
     update_soc(TCA8418, SOC0, Charging, true),
     {ok, #state { parent=Parent,
     	 	  ip5209 = IP5209, tca8418 = TCA8418,
 		  voltage=V0, soc=SOC0, soc0=SOC0 }}.
 		  
-
-message_handler(State=#state{tca8418=TCA8418,ip5209=_IP5209,parent=Parent}) ->
+message_handler(State=#state{tca8418=TCA8418,ip5209=IP5209,parent=Parent}) ->
     receive
         {call, From, stop} ->
             {stop, From, ok};
@@ -106,12 +105,6 @@ message_handler(State=#state{tca8418=TCA8418,ip5209=_IP5209,parent=Parent}) ->
         {call, From, get_voltage} ->
             {reply, From, State#state.voltage};
 
-        {call, From, {set_voltage,V}} ->
-            {reply, From, ok,State#state { voltage = V }};
-
-        {call, From, {set_charging,OnOff}} ->
-            {reply, From, ok,State#state { charging = OnOff }};
-
         {'EXIT', Parent, Reason} ->
 	    exit(Reason);
         {system, From, Request} ->
@@ -120,16 +113,20 @@ message_handler(State=#state{tca8418=TCA8418,ip5209=_IP5209,parent=Parent}) ->
             ?error_log({unknown_message, UnknownMessage}),
             noreply
     after ?SAMPLE_INTERVAL ->
-	    %% V1 = i2c_ip5209:read_voltage(Port),
-	    V1 = State#state.voltage, %% simulated (set_voltage)
+	    %% FIXME: handle eremoteio, when ip5209 goes away,
+	    %% when USB (power/gadget) is connected at the same
+	    %% time as the PiSuer2 cabel is connected!
+	    V1 = i2c_ip5209:read_voltage(IP5209),
 	    SOC1 = i2c_ip5209:parse_voltage_level(V1),
-	    %% Charging = i2c_ip5209:is_power_plugged_2led(Port),
-	    Charging = State#state.charging,
+	    Charging = i2c_ip5209:is_power_plugged_2led(IP5209),
 	    SOC0 = if abs(SOC1 - State#state.soc0) > 1.0 ->
 			   SOC1;
 		      true ->
 			   State#state.soc0
 		   end,
+	    xbus:pub(<<"mixmesh.battery.voltage">>, V1),
+	    xbus:pub(<<"mixmesh.battery.soc">>, SOC0),
+	    xbus:pub(<<"mixmesh.battery.charging">>, Charging),
 	    Toggle = not State#state.toggle,
 	    update_soc(TCA8418, SOC0, Charging, Toggle),
 	    {noreply, State#state{voltage=V1,soc=SOC1, soc0=SOC0,
@@ -159,4 +156,3 @@ update_soc(TCA8418, Soc, Charging, Set) ->
 		      i2c_tca8418:gpio_clr(TCA8418, Pin)
 	      end
       end, ?LEVEL_LIST).
-

@@ -15,6 +15,8 @@ start() ->
     ok = application:start(sasl),
     {ok,_} = application:ensure_all_started(ssl),
     ok = application:start(apptools),
+    ok = application:start(tree_db),
+    ok = application:start(xbus),
     ok = application:start(rester),
     ok = application:start(obscrete), %% pki use config!
     ok = application:start(pki),
@@ -29,6 +31,14 @@ start() ->
             ok = application:start(player);
         false ->
             skip
+    end,
+    case config:lookup([system,hardware], none) of
+	none ->
+	    skip;
+	pimesh ->
+	    true = code:add_path(filename:join([code:lib_dir(obscrete),
+						"pimesh", "ebin"])),
+	    ok = application:start(pimesh)
     end,
     case config:lookup([simulator, enabled], false) of
         true ->

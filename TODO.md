@@ -8,6 +8,7 @@
 [* Battery service]
 
 XBus public keys for above
+
      Key					Unit
      mixmesh.routing.type			hw|static|blind
      mixmesh.routing.hw.location.latitude	degree

@@ -5,7 +5,7 @@
 %%% @end
 %%% Created : 24 Nov 2020 by Tony Rogvall <tony@rogvall.se>
 
--module(key_serv).
+-module(pimesh_key_serv).
 
 -export([start_link/0, start_link/2]).
 -export([message_handler/1]).
@@ -78,9 +78,9 @@ start_link(Bus,Reset) ->
 		  fun ?MODULE:message_handler/1).
 
 init(Parent, Bus, Reset) ->
-    %% {ok,TCA8418} = i2c_tca8418:open1(Bus),
-    ok = i2c_tca8418:open(Bus),
-    TCA8418 = Bus,
+    {ok,TCA8418} = i2c_tca8418:open1(Bus),
+    %% ok = i2c_tca8418:open(Bus),
+    %% TCA8418 = Bus,
     gpio:init(?INT_PIN),
     gpio:init(?RESET_PIN),
 
