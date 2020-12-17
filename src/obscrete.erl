@@ -36,7 +36,7 @@ start() ->
 	none ->
 	    skip;
 	pimesh ->
-	    ok = application:ensure_all_started(pimesh)
+	    {ok, _} = application:ensure_all_started(pimesh)
     end,
     case config:lookup([simulator, enabled], false) of
         true ->
