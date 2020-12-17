@@ -141,7 +141,9 @@ For pimesh (MixMesh on Raspberry pi) you need the following packages
 in the obscrete directory.
 
 	git clone https://github.com/tonyrog/gpio
-	git clone https://github.com/tonyrog/i2c	
+	git clone https://github.com/tonyrog/i2c
+	git clone https://github.com/tonyrog/uart
+	git clone https://github.com/tonyrog/xbus
 	git clone https://github.com/tonyrog/uart
 
 ### setup configuration
@@ -149,9 +151,18 @@ in the obscrete directory.
     cd obscrete
 	sudo mkdir -p /etc/erlang/obscrete
 	sudo chown pi:pi /etc/erlang/obscrete
+	sudo mkdir -p /var/erlang/obscrete
+	sudo chown pi:pi /var/erlang/obscrete
 	./bin/obscrete --self-signed-ssl-cert > cert.pem
 	./bin/mkconfig /etc/erlang/obscrete cert.pem alice
-        sed 's#/tmp/obscrete#/etc/erlang/obscrete#g' ./etc/obscrete.conf > ./etc/obscrete-local.conf
+        sed 's#/tmp/obscrete#/var/erlang/obscrete#g' ./etc/obscrete.conf > ./etc/obscrete-local.conf
+
+### set hardware
+
+Edit the configuration created above and change the
+hardare from 'none' to 'pimesh'
+
+	"system": { ... "hardware": "pimesh" }
 
 ### start application
 
@@ -184,9 +195,13 @@ Get servator
 	
 Go to obscrete directory and start the node
 
-   cd obscrete
-   ./bin/obscrete --config ./etc/obscrete-local.conf
-   (obscrete@localhost)1> servator:make_release(obscrete).
+    cd obscrete
+    ./bin/obscrete --config ./etc/obscrete-local.conf
+    (obscrete@localhost)1> servator:make_release(obscrete).
+	
+Or if the release tag is not correct
+
+    (obscrete@localhost)1> servator:make_release(obscrete, "x.y.z", release).
 	
 This will create a release directory
 
