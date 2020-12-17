@@ -36,9 +36,7 @@ start() ->
 	none ->
 	    skip;
 	pimesh ->
-	    true = code:add_path(filename:join([code:lib_dir(obscrete),
-						"pimesh", "ebin"])),
-	    ok = application:start(pimesh)
+	    ok = application:ensure_all_started(pimesh)
     end,
     case config:lookup([simulator, enabled], false) of
         true ->
