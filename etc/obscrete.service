@@ -9,7 +9,6 @@ WorkingDirectory=/etc/erlang/obscrete
 ExecStart=/etc/erlang/obscrete/obscrete.run start
 ExecStop=/etc/erlang/obscrete/obscrete.run stop
 Restart=always
-RestartSec=1
 StandardOutput=syslog
 StandardError=syslog
 SyslogIdentifier=obscrete
