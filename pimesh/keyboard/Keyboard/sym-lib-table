@@ -1,3 +1,0 @@
-(sym_lib_table
-  (lib (name Keyboard)(type Legacy)(uri ${KIPRJMOD}/Keyboard.lib)(options "")(descr ""))
-)
