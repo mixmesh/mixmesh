@@ -33,15 +33,12 @@ XBus public keys for above
 
 * Discuss "edit-config" in REST
 
-  1) We need to decide which patameters in obscrete.config which should be set to reloadable=true
+  1) We need to decide which parameters in obscrete.config which
+     should be set to reloadable=true and handle accordingly
 
-  2) Jag har väntat på att göra det möjligt att sätta om smtp/pop3/http portar från system settings i web appen. Det går att göra det via REST mha av "edit-config" men inget lär hända mtp (1).
-
-* Discuss location routing:
-
-  0) Let each player send a messages to all contacts with its position
-     (or habitat) each hour.
-  1) Maybe let each player have and short lived elegamal key pair (recreate it each then minutes)
+  2) Jag har väntat på att göra det möjligt att sätta om
+     smtp/pop3/http portar från system settings i web appen. Det går
+     att via REST mha av "edit-config" men inget lär hända mtp (1).  
 
 ### Tony
 
@@ -57,11 +54,23 @@ XBus public keys for above
 
 ### Joakim
 
-[* REST: /system-hardware: gps, keyboard, battery]
+* Add altiude to web app, keep long, lat, convert
+* Add z to conf file
+  * Make it work everywhere
+* Go through all code
+* Test web app
+* Pull
+* Push
 
-* Do a refresh of Rome simulation + add a background map
-[* Add a square2 simulator plugin module based on smooth random walks (Perlin noise)]
-* obscrete.conf-running does not handle updated obscrete.conf!
+* Run a bunch of statistics test with and without gps-routing
+* Tell Tony about the results
+
+* Make it possible to disable graphics from conf file
+* Move roma simulator to attic (parts of simulator.erl as well) etc
+* Make simulation sleep in player_buffer.erl configurable
+* Test background maps (only epx renderer)
+* Test the Rio buses simulation
+[* REST: /system-hardware: gps, keyboard, battery]
 
 ### Both
 
