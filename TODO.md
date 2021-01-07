@@ -54,20 +54,11 @@ XBus public keys for above
 
 ### Joakim
 
-* Add altiude to web app, keep long, lat, convert
-* Add z to conf file
-  * Make it work everywhere
-* Go through all code
-* Test web app
-* Pull
-* Push
-
 * Run a bunch of statistics test with and without gps-routing
-* Tell Tony about the results
+  * Delay until messages arrives
+  * Total number of messages forwarded
+  * Number of lost messages
 
-* Make it possible to disable graphics from conf file
-* Move roma simulator to attic (parts of simulator.erl as well) etc
-* Make simulation sleep in player_buffer.erl configurable
 * Test background maps (only epx renderer)
 * Test the Rio buses simulation
 [* REST: /system-hardware: gps, keyboard, battery]

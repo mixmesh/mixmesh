@@ -3,7 +3,7 @@
 usage () {
     >&2 echo "obscrete --help | -h"
     >&2 echo "    Display available options"
-    >&2 echo "obscrete [--sname <NODE-NAME>] [--simulator] [--config <CONFIG-FILE>] [--]"
+    >&2 echo "obscrete [--sname <NODE-NAME>] [--simulator] [--n <NUMBER-OF-SIMULATED-PLAYERS>] [--scalefactor <SIMULATOR-SCALE-FACTOR>] [--config <CONFIG-FILE>] [--]"
     >&2 echo "    Start Obscrete (put erl options after --)"
     >&2 echo "obscrete --bootstrap"
     >&2 echo "    Start Obscrete the bootstrap process. Opens an HTTP server on port 8444 (on all interfaces)."
@@ -42,7 +42,8 @@ bin_dir=${0%/*}
 erl_libs=${bin_dir}/../..
 pa="-pa ${erl_libs}/*/test"
 perform="-eval obscrete:start()"
-erl_env=""
+nplayer=""
+scalefactor=""
 simulator=0
 sname="-sname obscrete@localhost"
 
@@ -150,7 +151,15 @@ while :; do
                 usage
             fi
             isparam $2
-	    erl_env="-env NPLAYER $2"
+	    nplayer="-env NPLAYER $2"
+            shift
+	    ;;
+	--scalefactor)
+            if [ $# -lt 2 ]; then
+                usage
+            fi
+            isparam $2
+	    scalefactor="-env SCALEFACTOR $2"
             shift
 	    ;;
 	--sname)
@@ -190,6 +199,6 @@ fi
 export ERL_LIBS=${erl_libs}:$ERL_LIBS
 
 # uncomment to debug execution or add -x flag :-)
-# echo ${erl} ${pa} ${erl_config} ${config} ${shell} ${control_address} ${control_port} ${perform} ${erl_env} ${erl_options}
+# echo ${erl} ${pa} ${erl_config} ${config} ${shell} ${control_address} ${control_port} ${perform} ${nplayer} ${scalefactor} ${erl_options}
 
-${erl} ${sname} ${pa} ${erl_config} ${config} ${shell} ${control_address} ${control_port} ${perform} ${erl_env} ${erl_options}
+${erl} ${sname} ${pa} ${erl_config} ${config} ${shell} ${control_address} ${control_port} ${perform} ${nplayer} ${scalefactor} ${erl_options}
