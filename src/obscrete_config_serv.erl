@@ -92,6 +92,8 @@ upgrade_handler(OldConfigFilename) ->
             {OldRevision, ?CONF_REVISION, Binary}
     end.
 
+upgrade_config(Config, N, N) ->
+    Config;
 upgrade_config(OldConfig, N, M) when N == M - 1 ->
     upgrade(N, M, OldConfig, []);
 upgrade_config(OldConfig, N, M) ->
