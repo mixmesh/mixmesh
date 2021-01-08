@@ -29,16 +29,22 @@ XBus public keys for above
      mixmesh.keypad.enterkey		unsigned
      mixmesg.battery.installed		boolean
 
-## Next week
+## Next week (possible discussion topics)
 
-* Discuss "edit-config" in REST
+* We may need to decide which parameters in obscrete.config which
+  should be set to reloadable=true and handle accordingly. Jag har t
+  ex väntat på att göra det möjligt att sätta om smtp/pop3/http portar
+  från system settings i web appen. Det går att göra via REST mha av
+  "edit-config" men inget lär hända. :-)
 
-  1) We need to decide which parameters in obscrete.config which
-     should be set to reloadable=true and handle accordingly
+* Mäter jag rätt saker och på rätt sätt i simuleringen? Vad mer bör
+  mätas innan jag går in på bussarna i Rio.
 
-  2) Jag har väntat på att göra det möjligt att sätta om
-     smtp/pop3/http portar från system settings i web appen. Det går
-     att via REST mha av "edit-config" men inget lär hända mtp (1).  
+* Från player_serv.erl:
+  %% TONY: Jag tror detta beror på att player_server_sync.erl
+  %% dör på fel sätt.
+  %% Sök efter "%% TONY: Should we die here? Probably not?" i
+  %% player_sync_serv.erl 
 
 ### Tony
 
@@ -54,12 +60,36 @@ XBus public keys for above
 
 ### Joakim
 
-* Run a bunch of statistics test with and without gps-routing
-  * Delay until messages arrives
-  * Total number of messages forwarded
-  * Number of lost messages
+* Measure performance
 
-* Test background maps (only epx renderer)
+  Simulator setup:
+
+    * K = 10
+    * F = 0.2
+    * Message buffer size = 100
+    * Each player sends a message each second
+    * 50 players performs random walk on a 600x600m area
+    * 75 meters neighbour distance
+
+    Note: The above parameters should be varied as well at same time
+
+    Each 30 seconds this kind of report is printed on stdout:
+
+    Simulator run time: 1.1019 minutes
+    Scaled simulator run time: 11.0185 minutes
+    Created messages: 1000
+    Delivered messages: 196
+    Relayed messages: 105170
+    Delivery rate: 0.196
+    Average delivery delay: 2.6763 minutes
+    Mean delivery delay: 1.8032 minutes
+
+    Next step (maybe):
+
+    * Add explcit number of deleted messages?
+    * Measure without GPS (blind routing)
+
+* Add background maps (only epx renderer)
 * Test the Rio buses simulation
 [* REST: /system-hardware: gps, keyboard, battery]
 
