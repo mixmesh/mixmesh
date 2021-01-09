@@ -88,10 +88,9 @@ XBus public keys for above
   Mean delivery delay: 1.8032 minutes
 
   Next step (maybe):
-    * Check N, relayed messages (and keep track of how many *really* is
-      relayed per sync in precentage)
+    * Mesaure!!!
+    * Check again with scale factor 10    
     * Compare with blind routing
-    * Check again with scale factor 10
 
 * Test the Rio buses simulation
 [* REST: /system-hardware: gps, keyboard, battery]
