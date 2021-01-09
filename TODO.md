@@ -69,26 +69,29 @@ XBus public keys for above
     * Buffer size: 1000
     * F: 0.2
     * K: 10
-    * Each player sends a message each second
+    * Each player sends a message each fourth minute
+    * The target player is positioned pang in the middle of the map
     * 50 players performs random walk on a 600x600m area
-    * Average player speed 3m/s (10 km/h)
-    * 75 meters neighbour distance
-
+    * Average player speed 6m/s (20 km/h)
+    * 100 meters neighbour distance
+    * NOTE: Use obscrete/etc/simulator-realistic.conf
+    
   Note: The above parameters should be varied as well at some time
 
   Each 30 seconds this kind of report is printed on stdout:
 
-  Simulator run time: 1.1019 minutes
-  Scaled simulator run time: 11.0185 minutes
-  Created messages: 1000
-  Delivered messages: 196
-  Relayed messages: 105170
-  Delivery rate: 0.196
-  Average delivery delay: 2.6763 minutes
-  Mean delivery delay: 1.8032 minutes
+    Simulator run time: 2.0514 minutes
+    Scaled simulator run time: 2.0514 minutes
+    Created messages: 100 (1000)
+    Delivered messages: 17
+    Relayed messages: 400
+    Overwritten messages: 157
+    Delivery rate: 0.17
+    Average delivery delay: 0.4098 minutes
+    Mean delivery delay: 0.3771 minutes
 
   Next step (maybe):
-    * Mesaure!!!
+    * Measure!!!
     * Check again with scale factor 10    
     * Compare with blind routing
 
