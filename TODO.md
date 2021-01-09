@@ -87,8 +87,6 @@ XBus public keys for above
   Next step (maybe):
     * Check N, relayed messages (and keep track of how many *really* is
       relayed per sync in precentage)
-    * Move static recipient player the center of the map to achieve
-      similar enviroment for each run
     * Compare with blind routing
     * Check again with scale factor 10
 
