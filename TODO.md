@@ -37,14 +37,16 @@ XBus public keys for above
   från system settings i web appen. Det går att göra via REST mha av
   "edit-config" men inget lär hända. :-)
 
-* Mäter jag rätt saker och på rätt sätt i simuleringen? Vad mer bör
-  mätas innan jag går in på bussarna i Rio.
-
 * Från player_serv.erl:
   %% TONY: Jag tror detta beror på att player_server_sync.erl
   %% dör på fel sätt.
   %% Sök efter "%% TONY: Should we die here? Probably not?" i
   %% player_sync_serv.erl 
+
+* Från player_serv.erl:
+  %% Note: RandomIndices may be so few that
+  %% SuitableIndices ++ RandomIndices is less than N.
+  %% Is this really the behaviour want?
 
 ### Tony
 
@@ -64,11 +66,12 @@ XBus public keys for above
 
   Simulator setup:
 
-    * Buffer size: 10
+    * Buffer size: 1000
     * F: 0.2
     * K: 10
     * Each player sends a message each second
     * 50 players performs random walk on a 600x600m area
+    * Average player speed 3m/s (10 km/h)
     * 75 meters neighbour distance
 
   Note: The above parameters should be varied as well at some time
