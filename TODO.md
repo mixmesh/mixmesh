@@ -69,7 +69,7 @@ XBus public keys for above
     * Buffer size: 1000
     * F: 0.2
     * K: 10
-    * Each player sends a message each fourth minute
+    * Each player sends a message each fourth minute to player p1 (!!)
     * The target player is positioned pang in the middle of the map
     * 50 players performs random walk on a 600x600m area
     * Average player speed 6m/s (20 km/h)
@@ -80,15 +80,81 @@ XBus public keys for above
 
   Each 30 seconds this kind of report is printed on stdout:
 
-    Simulator run time: 2.0514 minutes
-    Scaled simulator run time: 2.0514 minutes
-    Created messages: 100 (1000)
-    Delivered messages: 17
-    Relayed messages: 400
-    Overwritten messages: 157
-    Delivery rate: 0.17
-    Average delivery delay: 0.4098 minutes
-    Mean delivery delay: 0.3771 minutes
+  GPS-routing:
+
+  ScaleFactor 1: (routing, normal speed)
+
+  Simulator run time: 88.5518 minutes
+  Scaled simulator run time: 88.5518 minutes
+  Created messages: 1127 (11270)
+  Delivered messages: 1029
+  Relayed messages: 1984200
+  Overwritten messages: 10683
+  Delivery rate: 0.913
+  Average delivery delay: 4.8608 minutes
+  Mean delivery delay: 3.0957 minutes
+
+  ScaleFactor 10 (routing):
+
+  Simulator run time: 8.5513 minutes
+  Scaled simulator run time: 85.5127 minutes
+  Created messages: 1078 (10780)
+  Delivered messages: 876
+  Relayed messages: 1142000
+  Overwritten messages: 10268
+  Delivery rate: 0.8126
+  Average delivery delay: 8.7255 minutes
+  Mean delivery delay: 5.8655 minutes
+
+  ScaleFactor 10 (blind):
+
+  Simulator run time: 8.5516 minutes
+  Scaled simulator run time: 85.5157 minutes
+  Created messages: 1078 (10780)
+  Delivered messages: 935
+  Relayed messages: 1195200
+  Overwritten messages: 10151
+  Delivery rate: 0.8673
+  Average delivery delay: 8.7609 minutes
+  Mean delivery delay: 5.9307 minutes
+
+  ScaleFactor 25 (routing):
+
+  Simulator run time: 3.5522 minutes
+  Scaled simulator run time: 88.8058 minutes
+  Created messages: 1078 (10780)
+  Delivered messages: 615
+  Relayed messages: 345200
+  Overwritten messages: 9744
+  Delivery rate: 0.5705
+  Average delivery delay: 19.1824 minutes
+  Mean delivery delay: 14.1825 minutes
+
+
+
+Simulator run time: 3.0658 minutes
+Scaled simulator run time: 30.6577 minutes
+Created messages: 504 (5040)
+Delivered messages: 253
+Relayed messages: 410400
+Overwritten messages: 4102
+Delivery rate: 0.502
+Average delivery delay: 7.0842 minutes
+Mean delivery delay: 6.551 minutes
+
+
+Simulator run time: 3.1014 minutes
+Scaled simulator run time: 31.0145 minutes
+Created messages: 504 (5040)
+Delivered messages: 274
+Relayed messages: 425200
+Overwritten messages: 4137
+Delivery rate: 0.5437
+Average delivery delay: 7.7955 minutes
+Mean delivery delay: 6.7368 minutes
+
+
+
 
   Next step (maybe):
     * Measure!!!
