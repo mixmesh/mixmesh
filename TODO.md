@@ -71,9 +71,9 @@ XBus public keys for above
     * K: 10
     * Each player sends a message each fourth minute to player p1 (!!)
     * The target player is positioned pang in the middle of the map
-    * 50 players performs random walk on a 600x600m area
-    * Average player speed 6m/s (20 km/h)
-    * 100 meters neighbour distance
+    * 20 players performs random walk on a 600x600m area
+    * Average player speed 3m/s (10 km/h)
+    * 75 meters neighbour distance
     * NOTE: Use obscrete/etc/simulator-realistic.conf
     
   Note: The above parameters should be varied as well at some time
@@ -118,48 +118,10 @@ XBus public keys for above
   Average delivery delay: 8.7609 minutes
   Mean delivery delay: 5.9307 minutes
 
-  ScaleFactor 25 (routing):
-
-  Simulator run time: 3.5522 minutes
-  Scaled simulator run time: 88.8058 minutes
-  Created messages: 1078 (10780)
-  Delivered messages: 615
-  Relayed messages: 345200
-  Overwritten messages: 9744
-  Delivery rate: 0.5705
-  Average delivery delay: 19.1824 minutes
-  Mean delivery delay: 14.1825 minutes
-
-
-
-Simulator run time: 3.0658 minutes
-Scaled simulator run time: 30.6577 minutes
-Created messages: 504 (5040)
-Delivered messages: 253
-Relayed messages: 410400
-Overwritten messages: 4102
-Delivery rate: 0.502
-Average delivery delay: 7.0842 minutes
-Mean delivery delay: 6.551 minutes
-
-
-Simulator run time: 3.1014 minutes
-Scaled simulator run time: 31.0145 minutes
-Created messages: 504 (5040)
-Delivered messages: 274
-Relayed messages: 425200
-Overwritten messages: 4137
-Delivery rate: 0.5437
-Average delivery delay: 7.7955 minutes
-Mean delivery delay: 6.7368 minutes
-
-
-
-
   Next step (maybe):
-    * Measure!!!
-    * Check again with scale factor 10    
-    * Compare with blind routing
+    * Why is GPS routing performing so bad. Most probably because
+      random_walk is too syntehtic an example. Maybe we need to take
+      one step back and think on the bigger picture?
 
 * Test the Rio buses simulation
 [* REST: /system-hardware: gps, keyboard, battery]
