@@ -1,4 +1,4 @@
--module(obscrete_sup).
+-module(mixmesh_sup).
 -behaviour(supervisor).
 -export([start_link/1]).
 -export([init/1]).
@@ -13,14 +13,14 @@ start_link(Args) ->
 %% Exported: init
 
 init([]) ->
-    case application:get_env(obscrete, mode, normal) of
+    case application:get_env(mixmesh, mode, normal) of
         normal ->
             ConfigJsonServSpec =
-                {obscrete_config_serv, {obscrete_config_serv, start_link, []},
-                 permanent, brutal_kill, worker, [obscrete_config_serv]},
+                {mixmesh_config_serv, {mixmesh_config_serv, start_link, []},
+                 permanent, brutal_kill, worker, [mixmesh_config_serv]},
             LogServSpec =
-                {obscrete_log_serv, {obscrete_log_serv, start_link, []},
-                 permanent, brutal_kill, worker, [obscrete_log_serv]},
+                {mixmesh_log_serv, {mixmesh_log_serv, start_link, []},
+                 permanent, brutal_kill, worker, [mixmesh_log_serv]},
             {ok, {{one_for_one, 3, 10}, [ConfigJsonServSpec, LogServSpec]}};
         bootstrap ->
             ReadLogConfig =

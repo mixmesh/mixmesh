@@ -1,4 +1,4 @@
--module(obscrete_config_serv).
+-module(mixmesh_config_serv).
 -export([start_link/0, stop/0, reload/0]).
 -export([get_schemas/0]).
 
@@ -6,7 +6,7 @@
 -include_lib("apptools/include/shorthand.hrl").
 -include_lib("apptools/include/config_schema.hrl").
 
--define(DEFAULT_CONFIG_FILENAME, <<"/etc/obscrete.conf">>).
+-define(DEFAULT_CONFIG_FILENAME, <<"/etc/mixmesh.conf">>).
 -define(DEFAULT_CONTROL_ADDRESS, {127, 0, 0, 1}).
 -define(DEFAULT_CONTROL_PORT, 23313).
 
@@ -21,7 +21,7 @@ start_link() ->
     ConfigFilename = config_filename(),
     case config_serv:start_link(
            ConfigFilename, get_schemas(),
-           fun() -> config:lookup(['obscrete-control', listen]) end,
+           fun() -> config:lookup(['mixmesh-control', listen]) end,
            fun listener_handler/1,
            fun upgrade_handler/1) of
         {ok, Pid} ->
@@ -40,7 +40,7 @@ config_filename() ->
     end.
 
 get_schemas() ->
-    {ok, AppSchemas} = application:get_env(obscrete, app_schemas),
+    {ok, AppSchemas} = application:get_env(mixmesh, app_schemas),
     get_schemas(AppSchemas).
 
 get_schemas([]) ->

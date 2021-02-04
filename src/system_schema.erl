@@ -14,10 +14,10 @@ get() ->
         #json_type{
            name = {integer, 0, unbounded},
            reloadable = false}},
-       {'obscrete-dir',
+       {'mixmesh-dir',
         #json_type{
            name = writable_directory,
-           typical = <<"/var/obscrete">>,
+           typical = <<"/var/mixmesh">>,
            reloadable = false}},
        {'pin-salt',
         #json_type{

@@ -86,7 +86,7 @@ On the target the dhcp client MUST be stopped!
 
 Config for /etc/dhcp/dhcpd.conf
 
-    option domain-name "obscrete.org";
+    option domain-name "mixmesh.org";
 
     default-lease-time 600;
     max-lease-time 7200;

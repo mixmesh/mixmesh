@@ -7,7 +7,7 @@ usage()
     exit 100
 }
 
-config="--config /etc/obscrete.conf"
+config="--config /etc/mixmesh.conf"
 
 while :; do
     case $1 in
@@ -34,4 +34,4 @@ fi
 
 bin_dir=${0%/*}
 base_dir=${bin_dir}/../..
-${bin_dir}/obscrete ${config} -- -noinput -run test_engine start ${base_dir} $*
+${bin_dir}/mixmesh ${config} -- -noinput -run test_engine start ${base_dir} $*

@@ -1,9 +1,9 @@
 %% -*- erlang -*-
-{application, obscrete,
- [{description,"The Obscrete top-level application"},
+{application, mixmesh,
+ [{description,"The Mixmesh top-level application"},
   {vsn, git},
   {modules, ["@@MODULES@@"]},
-  {registered, [obscrete_app, obscrete_sup]},
+  {registered, [mixmesh_app, mixmesh_sup]},
   {env, [{mode, normal}, {app_schemas, []}]},
-  {mod, {obscrete_app, []}},
+  {mod, {mixmesh_app, []}},
   {applications, [kernel, stdlib, apptools, xbus]}]}.

@@ -15,11 +15,11 @@ The resources described below are either available during the bootstrap or norma
 
 Used to do a clean install of the box. A harsh cousin to `/bootstrap/reinstall`.
 
-Implementation note: On success <obscrete-dir&gt;/obscrete.conf is
+Implementation note: On success <mixmesh-dir&gt;/mixmesh.conf is
 generated with the following parameters configured:
 
 * initialization-time
-* obscrete-dir
+* mixmesh-dir
 * pin
 * pin-salt
 * global-pki-server/data-dir
@@ -40,7 +40,7 @@ generated with the following parameters configured:
 * dbg/file/path
 * daemon/file/path
 
-[player/priv/obscrete.conf.src](https://github.com/obscrete/player/blob/master/priv/obscrete.conf.src)
+[player/priv/mixmesh.conf.src](https://github.com/mixmesh/player/blob/master/priv/mixmesh.conf.src)
 is used as a template.
 
 ### POST data
@@ -58,7 +58,7 @@ is used as a template.
   "smtp-port": "<integer> (optional)",
   "pop3-port": "<integer> (optional)",
   "http-port": "<integer> (optional)",
-  "obscrete-dir": "<path> (optional)",
+  "mixmesh-dir": "<path> (optional)",
   "pin": "<six digits> (optional)"
 }
 ```
@@ -76,7 +76,7 @@ is used as a template.
   "smtp-address": "<ip:port>",
   "pop3-address": "<ip:port>",
   "http-address": "<ip:port>",
-  "obscrete-dir": "<path>",
+  "mixmesh-dir": "<path>",
   "pin": "<six digits>",
   "pin-salt": "<Base64 encoded pin salt>"
 }
@@ -89,8 +89,8 @@ A nice description on why the request failed.
 ### Typical usage
 
 ```
-$ mkdir /tmp/obscrete
-$ ./bin/obscrete --bootstrap
+$ mkdir /tmp/mixmesh
+$ ./bin/mixmesh --bootstrap
 
 $ curl --insecure --request POST --header "Content-Type: application/json" --data '{"nym": "alice", "smtp-password": "baz", "pop3-password": "baz", "http-password": "hello"}' https://127.0.0.1/bootstrap/install
 {
@@ -103,7 +103,7 @@ $ curl --insecure --request POST --header "Content-Type: application/json" --dat
   "smtp-address": "172.16.0.139:465",
   "pop3-address": "172.16.0.139:995",
   "http-address": "172.16.0.139:443",
-  "obscrete-dir": "\/tmp\/obscrete",
+  "mixmesh-dir": "\/tmp\/mixmesh",
   "pin": "123456",
   "pin-salt": "t8M4ffJQa8Hkr\/rawzwG8w=="
 }
@@ -112,7 +112,7 @@ $ curl --insecure --request POST --header "Content-Type: application/json" --dat
 In the example above the optional parameters were ommited, i.e. these optional parameters will not be in the final version anyway, but here all possible optional parameters are provided (with their current default values):
 
 ```json
-$ curl --insecure --request POST --header "Content-Type: application/json" --data '{"nym": "alice", "smtp-password": "baz", "pop3-password": "baz", "http-password": "hello", "routing-type":"location", "use-gps": true, "longitude": 0, "latitude": 0, "smtp-port": 465, "pop3-port": 995, "http-port": 443, "obscrete-dir": "/tmp/obscrete", "pin": "123456"}' https://127.0.0.1/bootstrap/install
+$ curl --insecure --request POST --header "Content-Type: application/json" --data '{"nym": "alice", "smtp-password": "baz", "pop3-password": "baz", "http-password": "hello", "routing-type":"location", "use-gps": true, "longitude": 0, "latitude": 0, "smtp-port": 465, "pop3-port": 995, "http-port": 443, "mixmesh-dir": "/tmp/mixmesh", "pin": "123456"}' https://127.0.0.1/bootstrap/install
 {
   "public-key": "BWFsaWNlAfTIzBHK5nd6O76t7c+0O7hRs\/Kj\/OjUduNsXaNeMnmd\/Kan55OhybZjB2R49BLEsEtP+FNcPt1tZrJzml7hzZ2XLnxK9glHPM52IzdStErd3bGryGeaYCqt32TZz1vFSkmoT7uVs\/X58qjCHEn0\/1Q7ZZtW7OvaOvTTQ3bMTXlF",
   "secret-key": "BWFsaWNlgQFmqZ17qy4JLi6o\/uhac4OyqQYMXPDqI8uHqtpuFzVkZzUja7om1EYvMSsEVIuZExnPk0qynN8wBXy7xuZQT0oBf3\/WCO6dFBeYNe444VZhPAbgNeKAUp5skdUv1AdlJhavB\/HWglDsgfE6DXHPpU\/Mxiw7\/9+5Ioc231C0MfuFSgH0yMwRyuZ3eju+re3PtDu4UbPyo\/zo1HbjbF2jXjJ5nfymp+eTocm2YwdkePQSxLBLT\/hTXD7dbWayc5pe4c2dly58SvYJRzzOdiM3UrRK3d2xq8hnmmAqrd9k2c9bxUpJqE+7lbP1+fKowhxJ9P9UO2WbVuzr2jr000N2zE15RQ==",
@@ -123,19 +123,19 @@ $ curl --insecure --request POST --header "Content-Type: application/json" --dat
   "smtp-address": "172.16.0.139:465",
   "pop3-address": "172.16.0.139:995",
   "http-address": "172.16.0.139:443",
-  "obscrete-dir": "\/tmp\/obscrete",
+  "mixmesh-dir": "\/tmp\/mixmesh",
   "pin": "123456",
   "pin-salt": "LaO3uWrIsALduyApDUYYIg=="
 }
 ```
 
-Upon completion a new <obscrete-dir&gt;/obscrete.conf is created, i.e.  /tmp/obscrete/obscrete.conf. Bootstrap is now ready and Obscrete can be restarted to perform normal operation:
+Upon completion a new <mixmesh-dir&gt;/mixmesh.conf is created, i.e.  /tmp/mixmesh/mixmesh.conf. Bootstrap is now ready and Mixmesh can be restarted to perform normal operation:
 
 ```
 $ curl --insecure --request POST --header "Content-Type: application/json" --data '5' https://127.0.0.1/bootstrap/restart
 Yes, sir!
 
-$ ./bin/obscrete --config /tmp/obscrete/obscrete.conf
+$ ./bin/mixmesh --config /tmp/mixmesh/mixmesh.conf
 ```
 
 ----
@@ -144,11 +144,11 @@ $ ./bin/obscrete --config /tmp/obscrete/obscrete.conf
 
 Used to reinstall the box using pre-existing keys. Nice cousin to `/install`.
 
-Implementation note: On success <obscrete-dir&gt;/obscrete.conf is
+Implementation note: On success <mixmesh-dir&gt;/mixmesh.conf is
 generated with the following parameters configured:
 
 * initialization-time
-* obscrete-dir
+* mixmesh-dir
 * pin
 * pin-salt
 * global-pki-server/data-dir
@@ -169,7 +169,7 @@ generated with the following parameters configured:
 * dbg/file/path
 * daemon/file/path
 
-[player/priv/obscrete.conf.src](https://github.com/obscrete/player/blob/master/priv/obscrete.conf.src)
+[player/priv/mixmesh.conf.src](https://github.com/mixmesh/player/blob/master/priv/mixmesh.conf.src)
 is used as a template.
 
 ### POST data
@@ -188,7 +188,7 @@ is used as a template.
   "smtp-port": "<integer> (optional)",
   "pop3-port": "<integer> (optional)",
   "http-port": "<integer> (optional)",
-  "obscrete-dir": "<path> (optional)",
+  "mixmesh-dir": "<path> (optional)",
   "pin": "<six digits> (optional)"
 }
 ```
@@ -205,7 +205,7 @@ is used as a template.
   "smtp-address": "<ip:port>",
   "pop3-address": "<ip:port>",
   "http-address": "<ip:port>",
-  "obscrete-dir": "<path>",
+  "mixmesh-dir": "<path>",
   "pin": "<six digits>",
   "pin-salt": "<Base64 encoded pin salt>"
 }
@@ -218,8 +218,8 @@ A nice description on why the request failed.
 ### Typical usage
 
 ```
-$ mkdir /tmp/obscrete
-$ ./bin/obscrete --bootstrap
+$ mkdir /tmp/mixmesh
+$ ./bin/mixmesh --bootstrap
 $ curl --insecure --request POST --header "Content-Type: application/json" --data '{"public-key": "BWFsaWNlBbqW75jjJ0aPtaq1zGPObUc7ZQ2WIwIRbX2bkVyOkeIkAC9Hg0oc+J7BD\/RG04TDvd1fETcpmJpyvV8QyeKJ3B3BMHi+LPWSRY60yX1XoA\/1A1iuIxTnt22Q68iXyMMlZvA+ivmNxJlsqN3PB2KOch45KkNzi9Hez9u7KTZBhp3d", "secret-key": "BWFsaWNlgMwhWxEO5Ovn0OpNnN62Mu9nvL7Zn1mzlgSBkfC2zZQII\/otb+1jPqLMCDQlFKqNEXGy\/N1PUhotV3w7JBitwsZSUeGfVi2gLJFEkrZ6tGjrUoN3eB65JIzpfQirlLX6oCO5Ab1t4rOmD4BsHvA+lYBbYw3QihArIGqcTyNrbiC1BbqW75jjJ0aPtaq1zGPObUc7ZQ2WIwIRbX2bkVyOkeIkAC9Hg0oc+J7BD\/RG04TDvd1fETcpmJpyvV8QyeKJ3B3BMHi+LPWSRY60yX1XoA\/1A1iuIxTnt22Q68iXyMMlZvA+ivmNxJlsqN3PB2KOch45KkNzi9Hez9u7KTZBhp3d", "smtp-password": "baz", "pop3-password": "baz", "http-password": "hello"}' https://127.0.0.1/bootstrap/reinstall
 {
   "nym": "alice",
@@ -230,7 +230,7 @@ $ curl --insecure --request POST --header "Content-Type: application/json" --dat
   "smtp-address": "172.16.0.139:465",
   "pop3-address": "172.16.0.139:995",
   "http-address": "172.16.0.139:443",
-  "obscrete-dir": "\/tmp\/obscrete",
+  "mixmesh-dir": "\/tmp\/mixmesh",
   "pin": "123456",
   "pin-salt": "\/VYY9pek5O6mgA5bANnltQ=="
 }
@@ -244,14 +244,14 @@ The reinstall method also have optional parameters but they are not examplified 
 
 Used to import public keys from a file. The file is supposed to have been exported during normal operation using `/key/export`.
 
-Implementation detail: In the end a PIN-encrypted file is generated, suitable to be loaded by the local PKI server during normal operation. This file typically ends up in `<obscrete-dir>/<nym>/player/local-pki/pki.db`.
+Implementation detail: In the end a PIN-encrypted file is generated, suitable to be loaded by the local PKI server during normal operation. This file typically ends up in `<mixmesh-dir>/<nym>/player/local-pki/pki.db`.
 
 ### POST data
 
 The POST data is supposed to be uploaded as multipart/form-data with the following form parts:
 
 * nym
-* obscrete-dir
+* mixmesh-dir
 * pin
 * pin-salt
 * key-file
@@ -284,8 +284,8 @@ $ curl --insecure --user alice:hello --digest --silent --output keys-66.bin http
 And then the exported file is imported during bootstrap operation:
 
 ```
-$ ./bin/obscrete --bootstrap
-$ curl --insecure --form nym=alice --form obscrete-dir=/tmp/obscrete --form pin=123456 --form pin-salt=xFxxsWkBHF9SWcEQA4pvzg== --form key-file=@keys-66.bin https://127.0.0.1/bootstrap/key/import
+$ ./bin/mixmesh --bootstrap
+$ curl --insecure --form nym=alice --form mixmesh-dir=/tmp/mixmesh --form pin=123456 --form pin-salt=xFxxsWkBHF9SWcEQA4pvzg== --form key-file=@keys-66.bin https://127.0.0.1/bootstrap/key/import
 101
 ```
 
@@ -324,7 +324,7 @@ initialization.
 ### POST data
 
 A partial JSON filter structure mimicing what can be configured in
-obscrete.conf. All values set to true will be included in the success
+mixmesh.conf. All values set to true will be included in the success
 response. This will be clear if you look at the example below.
 
 ### On success: 200 OK
@@ -359,8 +359,8 @@ Used to edit a partial set of configuration values.
 ### POST data
 
 A partial JSON structure mimicing what can be configured in
-obscrete.conf. All values will be validated according to rules used in
-obscrete.conf. This will be clear if you look at the example below.
+mixmesh.conf. All values will be validated according to rules used in
+mixmesh.conf. This will be clear if you look at the example below.
 
 ### On success: 200 No Content
 
@@ -544,10 +544,10 @@ $ curl --insecure --user alice:hello --digest https://127.0.0.1/key/alice
   "public-key": "BWFsaWNlxgDD8BleR0lZOyTVMuguqs9IE1E7SuWgsyyNNNp4vrrQZbpF8PSiEhju2dL3cMnc5ZFAoe41NQ4+C45r+Xwk9dpo3sn5Uwj+ETZw5nC\/StW+YeAlApeCZVL126AcOhQPtgRNyajc84Qg0dM7K5UDic\/81kb0EqkaZ1awtwUrmPs="
 }
 
-$ ./bin/obscrete --pin-salt
+$ ./bin/mixmesh --pin-salt
 dNuxqGX2aQ2IHDsN1qVwKQ==
 
-$ ./bin/obscrete --elgamal-keys 123456 DSzE7cTR+eBfqKtI694kAA== alice
+$ ./bin/mixmesh --elgamal-keys 123456 DSzE7cTR+eBfqKtI694kAA== alice
 -----BEGIN SECRET KEY-----
 xSWN08SbX4ZBvJz2uNRa2MP6P/COMWcwAqB60dIYMdLxAI1r+jXY5KGNZA/5oCYCqhutKmAvd1c6h9CbNKGyDHoaMShBWu2qJjzVOob3vxsloOrUvugIUIkJnGn5wGwU6iVWudzIxZgwUIKv8I0n62HMI2g+gRZs58ePx6SeDvxZ4veIwJmGAKvC1nVCKnFA+bKkVfzIu4I4UNYgFzKinJoMURVDX2Hrh8KY6P/EgerIzc1kGL13QXfXRgYGRNMklTVzlm9GVeaKi7Wh24bHKrtla5dseA1xrdQRRHBNxOn/g0ZTRla5EZnasw1PQlGWT4PX8C9zo1A52tynkQSK8JTrC/zspTk4q68mBWpUnebuOUeMCOuG9mP4WBbwyG19xbddANu6Fto1boQzxM5qAw==
 -----END SECRET KEY-----

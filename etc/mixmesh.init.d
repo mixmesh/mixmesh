@@ -2,21 +2,21 @@
 #
 
 ### BEGIN INIT INFO
-# Provides:          obscrete
+# Provides:          mixmesh
 # Required-Start:    $all
 # Required-Stop:     $all
 # Default-Start:     2 3 4 5
 # Default-Stop:      0 1 6
-# Short-Description: Starts obscrete
+# Short-Description: Starts mixmesh
 # Description:       Starts a
-#                    longer description of obscrete
+#                    longer description of mixmesh
 ### END INIT INFO
 
 set -e
 
 PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
-DAEMON=/etc/erlang/obscrete/obscrete.run
-NAME="obscrete"
+DAEMON=/etc/erlang/mixmesh/mixmesh.run
+NAME="mixmesh"
 DESC="MixMesh"
 
 test -x $DAEMON || exit 0

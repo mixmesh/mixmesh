@@ -5,13 +5,13 @@ StartLimitIntervalSec=0
 
 [Service]
 Type=simple
-WorkingDirectory=/etc/erlang/obscrete
-ExecStart=/etc/erlang/obscrete/obscrete.run start
-ExecStop=/etc/erlang/obscrete/obscrete.run stop
+WorkingDirectory=/etc/erlang/mixmesh
+ExecStart=/etc/erlang/mixmesh/mixmesh.run start
+ExecStop=/etc/erlang/mixmesh/mixmesh.run stop
 Restart=always
 StandardOutput=syslog
 StandardError=syslog
-SyslogIdentifier=obscrete
+SyslogIdentifier=mixmesh
 User=pi
 Group=pi
 Environment=

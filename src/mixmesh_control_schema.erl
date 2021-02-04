@@ -1,10 +1,10 @@
--module(obscrete_control_schema).
+-module(mixmesh_control_schema).
 -export([get/0]).
 
 -include_lib("apptools/include/config_schema.hrl").
 
 get() ->
-    [{'obscrete-control',
+    [{'mixmesh-control',
       [{listen,
         #json_type{name = ip4_address_port,
                    typical = {{127,0,0,1}, 23765},

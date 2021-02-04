@@ -31,7 +31,7 @@ XBus public keys for above
 
 ## Next week (possible discussion topics)
 
-* We may need to decide which parameters in obscrete.config which
+* We may need to decide which parameters in mixmesh.config which
   should be set to reloadable=true and handle accordingly. Jag har t
   ex väntat på att göra det möjligt att sätta om smtp/pop3/http portar
   från system settings i web appen. Det går att göra via REST mha av
@@ -58,7 +58,7 @@ XBus public keys for above
 * Add GPS coordinates to nodis
 * Update configuration to store 
   buffer, local-pki, received-messages, spooler
-  in /var/erlang/obscrete/
+  in /var/erlang/mixmesh/
 
 ### Joakim
 
@@ -74,7 +74,7 @@ XBus public keys for above
     * 20 players performs random walk on a 600x600m area
     * Average player speed 3m/s (10 km/h)
     * 75 meters neighbour distance
-    * NOTE: Use obscrete/etc/simulator-realistic.conf
+    * NOTE: Use mixmesh/etc/simulator-realistic.conf
     
   Note: The above parameters should be varied as well at some time
 
@@ -177,5 +177,5 @@ maybe BUTTON to terminate connection
 * If the box use a central PKI server over TOR or SSL it must tether on the phone Intenet connection. How?
 * Support a hybrid encryption approach in order to support media streams
 * Add resend/ack/seqnumber etc to better support B?
-* Write bridge servers as hidden services on Tor to bridge traffic between different geograophic islans of Obscrete nets (jocke*nyc@gmail.com) (The box must use the phone's Internet connection. How?)
+* Write bridge servers as hidden services on Tor to bridge traffic between different geograophic islans of Mixmesh nets (jocke*nyc@gmail.com) (The box must use the phone's Internet connection. How?)
 * Talk to a campus and ask them if we can install our boxes in their attics, say 20 boxes on KTH. A 500kr each.

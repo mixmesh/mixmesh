@@ -1,4 +1,4 @@
--module(obscrete).
+-module(mixmesh).
 -export([start/0, start_bootstrap/0]).
 -export([export_public_key/0]).
 -export([import_public_key/1, import_public_key/2]).
@@ -18,7 +18,7 @@ start() ->
     ok = application:start(tree_db),
     ok = application:start(xbus),
     ok = application:start(rester),
-    ok = application:start(obscrete), %% pki use config!
+    ok = application:start(mixmesh), %% pki use config!
     ok = application:start(pki),
     ok = application:start(jsone),
     ok = application:start(nodis),
@@ -50,7 +50,7 @@ ensure_all_loaded() ->
     ok = application:load(apptools),
     ok = application:load(pki),
     ok = application:load(player),
-    ok = application:load(obscrete).
+    ok = application:load(mixmesh).
     %% application:load(simulator).
 
 %% called from servator service
@@ -67,8 +67,8 @@ start_bootstrap() ->
     ok = application:start(rester),
     ok = application:start(elgamal),
     ok = application:set_env(
-           obscrete, mode, bootstrap, [{persistent, true}]),
-    ok = application:start(obscrete).
+           mixmesh, mode, bootstrap, [{persistent, true}]),
+    ok = application:start(mixmesh).
 
 %% Utilities
 

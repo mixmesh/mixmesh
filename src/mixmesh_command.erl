@@ -1,4 +1,4 @@
--module(obscrete_command).
+-module(mixmesh_command).
 -export([digest_password/1, elgamal_keys/1, pin_salt/0]).
 
 -include_lib("apptools/include/shorthand.hrl").

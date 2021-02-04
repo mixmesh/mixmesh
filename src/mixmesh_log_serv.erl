@@ -1,4 +1,4 @@
--module(obscrete_log_serv).
+-module(mixmesh_log_serv).
 -export([start_link/0]).
 
 -include_lib("apptools/include/log_serv.hrl").

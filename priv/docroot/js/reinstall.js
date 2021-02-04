@@ -58,7 +58,7 @@ var Reinstall = (function() {
     };
 
     var step3 = function(mailPassword, nym, smtpAddress, pop3Address,
-                         httpAddress, obscreteDir, pin, pinSalt) {
+                         httpAddress, mixmeshDir, pin, pinSalt) {
         $("#meta-content").load(
             "/reinstall-3.html #content",
             function() {
@@ -76,7 +76,7 @@ var Reinstall = (function() {
                     allow : "*.bin",
                     params: {
                         nym: nym,
-                        "obscrete-dir": obscreteDir,
+                        "mixmesh-dir": mixmeshDir,
                         pin: pin,
                         "pin-salt": pinSalt
                     },
@@ -261,7 +261,7 @@ var Reinstall = (function() {
                                   data["smtp-address"],
                                   data["pop3-address"],
                                   data["http-address"],
-                                  data["obscrete-dir"],
+                                  data["mixmesh-dir"],
                                   data.pin,
                                   data["pin-salt"]);
                         },

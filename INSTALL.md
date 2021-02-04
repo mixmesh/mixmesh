@@ -1,6 +1,6 @@
-# Install obscrete from scratch on raspberry pi Z
+# Install mixmesh from scratch on raspberry pi Z
 
-Here are all the steps necessary to install obscrete
+Here are all the steps necessary to install mixmesh
 on a raspberry pi Z and get it running. You could for example
 go here and buy a kit and you will get raspberry pi Z, box
 and memory card a power adapter and some cables for 469 SEK:
@@ -118,17 +118,17 @@ Append the lines
 	export ERL_CRASH_DUMP_SECONDS=0
 	export EDITOR=emacs
 
-### Install Obscrete
+### Install Mixmesh
 
 Fetch the top-level application
 
 	mkdir erlang
 	cd erlang
-        git clone https://github.com/obscrete/obscrete
+        git clone https://github.com/mixmesh/mixmesh
 
 And make a link to the top-level makefile
 
-	ln -s obscrete/Makefile.top-level Makefile
+	ln -s mixmesh/Makefile.top-level Makefile
 
 Now we can clone other applications need and build everything
 
@@ -138,7 +138,7 @@ Now we can clone other applications need and build everything
 # (PiMesh)
 
 For pimesh (MixMesh on Raspberry pi) you need the following packages
-in the obscrete directory.
+in the mixmesh directory.
 
 	git clone https://github.com/tonyrog/gpio
 	git clone https://github.com/tonyrog/i2c
@@ -148,14 +148,14 @@ in the obscrete directory.
 
 ### setup configuration
 
-    cd obscrete
-	sudo mkdir -p /etc/erlang/obscrete
-	sudo chown pi:pi /etc/erlang/obscrete
-	sudo mkdir -p /var/erlang/obscrete
-	sudo chown pi:pi /var/erlang/obscrete
-	./bin/obscrete --self-signed-ssl-cert > cert.pem
-	./bin/mkconfig /etc/erlang/obscrete cert.pem alice
-        sed 's#/tmp/obscrete#/var/erlang/obscrete#g' ./etc/obscrete.conf > ./etc/obscrete-local.conf
+    cd mixmesh
+	sudo mkdir -p /etc/erlang/mixmesh
+	sudo chown pi:pi /etc/erlang/mixmesh
+	sudo mkdir -p /var/erlang/mixmesh
+	sudo chown pi:pi /var/erlang/mixmesh
+	./bin/mixmesh --self-signed-ssl-cert > cert.pem
+	./bin/mkconfig /etc/erlang/mixmesh cert.pem alice
+        sed 's#/tmp/mixmesh#/var/erlang/mixmesh#g' ./etc/mixmesh.conf > ./etc/mixmesh-local.conf
 
 ### set hardware
 
@@ -166,12 +166,12 @@ hardare from 'none' to 'pimesh'
 
 ### start application
 
-	./bin/obscrete --config ./etc/obscrete-local.conf
+	./bin/mixmesh --config ./etc/mixmesh-local.conf
 
 or start in a screen session
 
         screen
-	./bin/obscrete --config ./etc/obscrete-local.conf
+	./bin/mixmesh --config ./etc/mixmesh-local.conf
         C-a d (to detach from screen)
 
 to re-attach to a running screen session
@@ -193,70 +193,70 @@ Get servator
     cd servator
     make
 	
-Go to obscrete directory and start the node
+Go to mixmesh directory and start the node
 
-    cd obscrete
-    ./bin/obscrete --config ./etc/obscrete-local.conf
-    (obscrete@localhost)1> servator:make_release(obscrete).
+    cd mixmesh
+    ./bin/mixmesh --config ./etc/mixmesh-local.conf
+    (mixmesh@localhost)1> servator:make_release(mixmesh).
 	
 Or if the release tag is not correct
 
-    (obscrete@localhost)1> servator:make_release(obscrete, "x.y.z", release).
+    (mixmesh@localhost)1> servator:make_release(mixmesh, "x.y.z", release).
 	
 This will create a release directory
 
-    obscrete-X.Y/
+    mixmesh-X.Y/
 	
 To install that release do
 
-    cd obscrete-X.Y
+    cd mixmesh-X.Y
     ./install.sh
-    sudo setcap 'cap_net_bind_service=+ep' /var/erlang/obscrete/erts-11.1/bin/beam.smp
+    sudo setcap 'cap_net_bind_service=+ep' /var/erlang/mixmesh/erts-11.1/bin/beam.smp
 
 Now copy the configure file to the final place
 
-    cd obscrete
-    cp ./etc/obscrete-local.conf /etc/erlang/obscrete/obscrete-local.conf
+    cd mixmesh
+    cp ./etc/mixmesh-local.conf /etc/erlang/mixmesh/mixmesh-local.conf
 	
-Edit the /etc/erlang/obscrete/obscrete.run script to add the 
+Edit the /etc/erlang/mixmesh/mixmesh.run script to add the 
 applcation specific optionfor parsing the json config files. 
 Search for OPTS and set it.
 
-    OPTS="--config $ETC/obscrete-local.conf"
+    OPTS="--config $ETC/mixmesh-local.conf"
 	
 IMPORTANT updated for systemd
 
-In the obscrete.run find and replace -detached with -noinput!
+In the mixmesh.run find and replace -detached with -noinput!
 
-Now we should be able to start obscrete the standard way
+Now we should be able to start mixmesh the standard way
 
-    /etc/erlang/obscrete/obscrete.run start
+    /etc/erlang/mixmesh/mixmesh.run start
 
 And check status
 
-    /etc/erlang/obscrete/obscrete.run status
+    /etc/erlang/mixmesh/mixmesh.run status
 
 Maybe stop sometime
 
-    /etc/erlang/obscrete/obscrete.run stop
+    /etc/erlang/mixmesh/mixmesh.run stop
 
 # install Systemd script
 
-	cd obscrete
-    sudo cp ./etc/obscrete.service /etc/systemd/system/
-	chmod chmod u+rwx /etc/systemd/system/obscrete.service
+	cd mixmesh
+    sudo cp ./etc/mixmesh.service /etc/systemd/system/
+	chmod chmod u+rwx /etc/systemd/system/mixmesh.service
 	
 Enable the service, so it is run when machine is booting
 
 	
-	sudo systemctl enable obscrete
+	sudo systemctl enable mixmesh
 	
 Start it now
 
-	sudo systemctl start obscrete
+	sudo systemctl start mixmesh
 
 Stop it now
 
-	sudo systemctl stop obscrete
+	sudo systemctl stop mixmesh
 
 	

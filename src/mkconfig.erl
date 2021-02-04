@@ -2,18 +2,18 @@
 -export([start/1, start/3, create_player/4, ensure_libs/3]).
 
 %% This script creates the appropriate file structure needed to start
-%% Obscrete. You call this command with an obscrete directory and the
-%% name of a player as input, e.g. "./mkconfigdir /tmp/obscrete alice".
+%% Mixmesh. You call this command with an mixmesh directory and the
+%% name of a player as input, e.g. "./mkconfigdir /tmp/mixmesh alice".
 %% If you do this the following will be created:
 %%
-%% /tmp/obscrete/pin
-%% /tmp/obscrete/global-pki
-%% /tmp/obscrete/alice/player/temp/
-%% /tmp/obscrete/alice/player/buffer/
-%% /tmp/obscrete/alice/player/local-pki/
-%% /tmp/obscrete/alice/player/spooler/
-%% /tmp/obscrete/alice/player/received-messages/
-%% /tmp/obscrete/alice/player/ssl/
+%% /tmp/mixmesh/pin
+%% /tmp/mixmesh/global-pki
+%% /tmp/mixmesh/alice/player/temp/
+%% /tmp/mixmesh/alice/player/buffer/
+%% /tmp/mixmesh/alice/player/local-pki/
+%% /tmp/mixmesh/alice/player/spooler/
+%% /tmp/mixmesh/alice/player/received-messages/
+%% /tmp/mixmesh/alice/player/ssl/
 
 -include_lib("apptools/include/log.hrl").
 -include_lib("apptools/include/shorthand.hrl").
@@ -24,12 +24,12 @@
 
 -spec start([string()]) -> no_return().
 
-start([ObscreteDir, SourceCertFilename, Nym]) ->
-    GlobalPkiDir = filename:join([ObscreteDir, <<"global-pki">>]),
+start([MixmeshDir, SourceCertFilename, Nym]) ->
+    GlobalPkiDir = filename:join([MixmeshDir, <<"global-pki">>]),
     try
         true = ensure_libs(stdout, [GlobalPkiDir], true),
-        true = create_player(stdout, ObscreteDir, SourceCertFilename, Nym),
-        PinFilename = filename:join([ObscreteDir, <<"pin">>]),
+        true = create_player(stdout, MixmeshDir, SourceCertFilename, Nym),
+        PinFilename = filename:join([MixmeshDir, <<"pin">>]),
         io:format("Creates dummy ~s\n", [PinFilename]),
         ok = file:write_file(PinFilename, <<"123456">>),
         erlang:halt(0)
@@ -40,11 +40,11 @@ start([ObscreteDir, SourceCertFilename, Nym]) ->
 
 -spec start(binary(), binary(), binary()) -> boolean().
 
-start(ObscreteDir, SourceCertFilename, Nym) ->
-    GlobalPkiDir = filename:join([ObscreteDir, <<"global-pki">>]),
+start(MixmeshDir, SourceCertFilename, Nym) ->
+    GlobalPkiDir = filename:join([MixmeshDir, <<"global-pki">>]),
     try
         true = ensure_libs(log, [GlobalPkiDir], true),
-        create_player(log, ?b2l(ObscreteDir), ?b2l(SourceCertFilename),
+        create_player(log, ?b2l(MixmeshDir), ?b2l(SourceCertFilename),
                       ?b2l(Nym))
     catch
         throw:{status, _Status} ->
@@ -55,8 +55,8 @@ start(ObscreteDir, SourceCertFilename, Nym) ->
 
 -spec create_player(trace_mode(), string(), string(), string()) -> true.
 
-create_player(TraceMode, ObscreteDir, SourceCertFilename, Nym) ->
-    PlayerDir = filename:join([ObscreteDir, Nym, <<"player">>]),
+create_player(TraceMode, MixmeshDir, SourceCertFilename, Nym) ->
+    PlayerDir = filename:join([MixmeshDir, Nym, <<"player">>]),
     TempDir = filename:join([PlayerDir, <<"temp">>]),
     BufferDir = filename:join([PlayerDir, <<"buffer">>]),
     LocalPkiDir = filename:join([PlayerDir, <<"local-pki">>]),
@@ -115,7 +115,7 @@ erase_dir(TraceMode, Dir) ->
               format(TraceMode,
                      "Deletes ~s\n", [filename:join([Dir, Filename])]),
               case filename:join([Dir, Filename]) of
-                  <<"/tmp/obscrete", _/binary>> = AbsoluteFilename ->
+                  <<"/tmp/mixmesh", _/binary>> = AbsoluteFilename ->
                       file:delete(AbsoluteFilename);
                   _ ->
                       yellow

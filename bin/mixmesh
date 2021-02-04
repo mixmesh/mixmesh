@@ -1,23 +1,23 @@
 #!/bin/sh
 
 usage () {
-    >&2 echo "obscrete --help | -h"
+    >&2 echo "mixmesh --help | -h"
     >&2 echo "    Display available options"
-    >&2 echo "obscrete [--sname <NODE-NAME>] [--simulator] [--n <NUMBER-OF-SIMULATED-PLAYERS>] [--scalefactor <SIMULATOR-SCALE-FACTOR>] [--config <CONFIG-FILE>] [--]"
-    >&2 echo "    Start Obscrete (put erl options after --)"
-    >&2 echo "obscrete --bootstrap"
-    >&2 echo "    Start Obscrete the bootstrap process. Opens an HTTP server on port 8444 (on all interfaces)."
-    >&2 echo "obscrete --reload [--control-address <IP-ADDRESS>] [--control-port <PORT>]"
-    >&2 echo "    Reload Obscrete"
-    >&2 echo "obscrete --stop [--control-address <IP-ADDRESS>] [--control-port <PORT>]"
-    >&2 echo "    Stop Obscrete"
-    >&2 echo "obscrete --digest-password <PASSWORD>"
+    >&2 echo "mixmesh [--sname <NODE-NAME>] [--simulator] [--n <NUMBER-OF-SIMULATED-PLAYERS>] [--scalefactor <SIMULATOR-SCALE-FACTOR>] [--config <CONFIG-FILE>] [--]"
+    >&2 echo "    Start Mixmesh (put erl options after --)"
+    >&2 echo "mixmesh --bootstrap"
+    >&2 echo "    Start Mixmesh the bootstrap process. Opens an HTTP server on port 8444 (on all interfaces)."
+    >&2 echo "mixmesh --reload [--control-address <IP-ADDRESS>] [--control-port <PORT>]"
+    >&2 echo "    Reload Mixmesh"
+    >&2 echo "mixmesh --stop [--control-address <IP-ADDRESS>] [--control-port <PORT>]"
+    >&2 echo "    Stop Mixmesh"
+    >&2 echo "mixmesh --digest-password <PASSWORD>"
     >&2 echo "    Digest a password"
-    >&2 echo "obscrete --elgamal-keys <PIN> <PIN-SALT> <NYM>"
+    >&2 echo "mixmesh --elgamal-keys <PIN> <PIN-SALT> <NYM>"
     >&2 echo "    Generate a new ElGamal public/secret key pair"
-    >&2 echo "obscrete --pin-salt"
+    >&2 echo "mixmesh --pin-salt"
     >&2 echo "    Generate a new PIN salt"
-    >&2 echo "obscrete --self-signed-ssl-cert"
+    >&2 echo "mixmesh --self-signed-ssl-cert"
     >&2 echo "    Generate a self-signed SSL certificate"
     exit 100
 }
@@ -41,11 +41,11 @@ fi
 bin_dir=${0%/*}
 erl_libs=${bin_dir}/../..
 pa="-pa ${erl_libs}/*/test"
-perform="-eval obscrete:start()"
+perform="-eval mixmesh:start()"
 nplayer=""
 scalefactor=""
 simulator=0
-sname="-sname obscrete@localhost"
+sname="-sname mixmesh@localhost"
 
 while :; do
     case $1 in
@@ -62,13 +62,13 @@ while :; do
             ;;
         --bootstrap)
             #shell="-noinput"
-            perform="-run obscrete start_bootstrap"
+            perform="-run mixmesh start_bootstrap"
             sname=""
             break
             ;;
         --reload)
             shell="-noinput"
-            perform="-run obscrete_config_serv reload"
+            perform="-run mixmesh_config_serv reload"
             sname=""
             break
             ;;
@@ -90,7 +90,7 @@ while :; do
             ;;
         --stop)
             shell="-noinput"
-            perform="-run obscrete_config_serv stop"
+            perform="-run mixmesh_config_serv stop"
             sname=""
             break
             ;;
@@ -101,7 +101,7 @@ while :; do
             isparam $2
             sname=""
             shell="-noinput"
-            perform="-run obscrete_command digest_password $2"
+            perform="-run mixmesh_command digest_password $2"
             shift
             sname=""
             break
@@ -115,7 +115,7 @@ while :; do
             isparam $4
             sname=""
             shell="-noinput"
-            perform="-run obscrete_command elgamal_keys $2 $3 $4"
+            perform="-run mixmesh_command elgamal_keys $2 $3 $4"
             shift
             break
             ;;
@@ -125,7 +125,7 @@ while :; do
             fi
             sname=""
             shell="-noinput"
-            perform="-run obscrete_command pin_salt"
+            perform="-run mixmesh_command pin_salt"
             shift
             break
             ;;
@@ -192,7 +192,7 @@ if [ ${simulator} -eq 1 ]; then
 	exit 1
     fi
 else
-    erl_config="-config ${bin_dir}/obscrete.config"
+    erl_config="-config ${bin_dir}/mixmesh.config"
 fi
 
 # needed for servator(build release)/epx(simulator) etc

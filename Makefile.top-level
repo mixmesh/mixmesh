@@ -6,11 +6,11 @@ ERL=$(shell which erl)
 ERL_TOP=$(ERL:%/bin/erl=%)
 
 ALL_LIST = $(shell (cd $(LPATH); ls -I "Makefile*" -I "*~"))
-APP_LIST = apptools elgamal enacl jsone mail mpa nodis obscrete pki player tor rester
+APP_LIST = apptools elgamal enacl jsone mail mpa nodis mixmesh pki player tor rester
 SIM_LIST = rstar simulator
 TEST_LIST = $(shell (cd $(LPATH); ls -d */test))
 
-GITURL = https://github.com/obscrete
+GITURL = https://github.com/mixmesh
 
 # make all (directories found in parent)
 all: allapp
@@ -105,9 +105,9 @@ commit:
 # Clone everything
 megaclone: clone simclone
 
-# Clone the application, except obscrete!
+# Clone the application, except mixmesh!
 clone:
-	@for lib in $(filter-out obscrete,$(APP_LIST)) ; do \
+	@for lib in $(filter-out mixmesh,$(APP_LIST)) ; do \
 		echo "==== Clone $$lib ===="; \
 		(cd $(LPATH) && git clone $(GITURL)/$$lib) || exit 1; \
 	done
@@ -127,7 +127,7 @@ info:
 	@echo "APP="$(APP_LIST)
 	@echo "SIM="$(SIM_LIST)
 	@echo "TEST="$(TEST_LIST)
-	@echo "CLONE="$(filter-out obscrete,$(APP_LIST))
+	@echo "CLONE="$(filter-out mixmesh,$(APP_LIST))
 
 #
 # Type checking
@@ -136,7 +136,7 @@ info:
 .PHONY: dialyzer
 
 # The rstar application is out of scope
-DIALYZER_APPS=apptools elgamal enacl jsone mail mpa nodis obscrete pki player rester simulator tor
+DIALYZER_APPS=apptools elgamal enacl jsone mail mpa nodis mixmesh pki player rester simulator tor
 
 # FIXME: *_nif.beam files confuse dialyzer so I just delete them :-)
 dialyzer: dialyzer.plt
