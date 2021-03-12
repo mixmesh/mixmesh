@@ -155,7 +155,7 @@ in the mixmesh directory.
 	sudo chown pi:pi /var/erlang/mixmesh
 	./bin/mixmesh --self-signed-ssl-cert > cert.pem
 	./bin/mkconfig /etc/erlang/mixmesh cert.pem alice
-        sed 's#/tmp/mixmesh#/var/erlang/mixmesh#g' ./etc/mixmesh.conf > ./etc/mixmesh-local.conf
+        sed 's#/tmp/mixmesh#/etc/erlang/mixmesh#g' ./etc/mixmesh.conf > ./etc/mixmesh-local.conf
 
 ### set hardware
 
