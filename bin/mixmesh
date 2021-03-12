@@ -6,7 +6,7 @@ usage () {
     >&2 echo "mixmesh [--sname <NODE-NAME>] [--simulator] [--n <NUMBER-OF-SIMULATED-PLAYERS>] [--scalefactor <SIMULATOR-SCALE-FACTOR>] [--config <CONFIG-FILE>] [--]"
     >&2 echo "    Start Mixmesh (put erl options after --)"
     >&2 echo "mixmesh --bootstrap"
-    >&2 echo "    Start Mixmesh the bootstrap process. Opens an HTTP server on port 8444 (on all interfaces)."
+    >&2 echo "    Start Mixmesh the bootstrap process, i.e. opens an HTTPS server (on all interfaces)."
     >&2 echo "mixmesh --reload [--control-address <IP-ADDRESS>] [--control-port <PORT>]"
     >&2 echo "    Reload Mixmesh"
     >&2 echo "mixmesh --stop [--control-address <IP-ADDRESS>] [--control-port <PORT>]"

@@ -64,6 +64,8 @@ start_bootstrap() ->
     ok = application:start(sasl),
     ok = application:start(apptools),
     {ok, _} = application:ensure_all_started(ssl),
+    ok = application:start(tree_db),
+    ok = application:start(xbus),
     ok = application:start(rester),
     ok = application:start(elgamal),
     ok = application:set_env(
