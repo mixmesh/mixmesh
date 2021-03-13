@@ -23,6 +23,7 @@ Reboot
 ## edit the file /boot/config.txt
 
     dtoverlay=dwc2
+    dtoverlay=pwm	
 
 also check that /boot/config.txt contains the line
 

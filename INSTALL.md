@@ -141,6 +141,7 @@ For pimesh (MixMesh on Raspberry pi) you need the following packages
 in the mixmesh directory.
 
 	git clone https://github.com/tonyrog/gpio
+	git clone https://github.com/tonyrog/pwm
 	git clone https://github.com/tonyrog/i2c
 	git clone https://github.com/tonyrog/tree_db
 	git clone https://github.com/tonyrog/xbus
