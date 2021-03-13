@@ -145,6 +145,7 @@ in the mixmesh directory.
 	git clone https://github.com/tonyrog/tree_db
 	git clone https://github.com/tonyrog/xbus
 	git clone https://github.com/tonyrog/uart
+	git clone https://github.com/mixmesh/pimesh
 
 ### setup configuration
 
