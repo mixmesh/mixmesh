@@ -99,13 +99,13 @@ Now download Erlang, unpack, configure, make and install
 
 	mkdir src
 	cd src
-	wget http://erlang.org/download/otp_src_23.1.tar.gz
-	tar xf otp_src_23.1.tar.gz
-        cd otp_src_23.1/
+	wget http://erlang.org/download/otp_src_23.2.tar.gz
+	tar xf otp_src_23.2.tar.gz
+        cd otp_src_23.2/
 	./configure
 	make
 	sudo make install
-    sudo setcap 'cap_net_bind_service=+ep' /usr/local/lib/erlang/erts-11.1/bin/beam.smp
+    sudo setcap 'cap_net_bind_service=+ep' /usr/local/lib/erlang/erts-11.1.4/bin/beam.smp
 
 Add erlang libraries to your path
 
