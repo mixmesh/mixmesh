@@ -7,7 +7,7 @@
 %% If you do this the following will be created:
 %%
 %% /tmp/mixmesh/pin
-%% /tmp/mixmesh/global-pki/ssl
+%% /tmp/mixmesh/remote-pki/ssl
 %% /tmp/mixmesh/alice/player/temp/
 %% /tmp/mixmesh/alice/player/buffer/
 %% /tmp/mixmesh/alice/player/local-pki/
@@ -26,8 +26,8 @@
 
 %% Called from mixmesh/bin/mkconfig
 start([MixmeshDir, SourceCertFilename, Nym]) ->
-    GlobalPkiDir = filename:join([MixmeshDir, <<"global-pki">>]),
-    SSLDir = filename:join([GlobalPkiDir, <<"ssl">>]),
+    RemotePkiDir = filename:join([MixmeshDir, <<"remote-pki">>]),
+    SSLDir = filename:join([RemotePkiDir, <<"ssl">>]),
     try
         true = ensure_libs(stdout, [SSLDir], true),
         true = copy_certificate(stdout, SourceCertFilename, SSLDir),
@@ -45,8 +45,8 @@ start([MixmeshDir, SourceCertFilename, Nym]) ->
 
 %% Called from player/src/rest_bootstrap_server.erl
 start(MixmeshDir, SourceCertFilename, Nym) ->
-    GlobalPkiDir = filename:join([MixmeshDir, <<"global-pki">>]),
-    SSLDir = filename:join([GlobalPkiDir, <<"ssl">>]),
+    RemotePkiDir = filename:join([MixmeshDir, <<"remote-pki">>]),
+    SSLDir = filename:join([RemotePkiDir, <<"ssl">>]),
     try
         true = ensure_libs(log, [SSLDir], true),
         true = copy_certificate(log, SourceCertFilename, SSLDir),

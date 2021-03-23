@@ -22,7 +22,7 @@ generated with the following parameters configured:
 * mixmesh-dir
 * pin
 * pin-salt
-* global-pki-server/data-dir
+* remote-pki-server/data-dir
 * nym
 * routing/type
 * routing/use-gps
@@ -151,7 +151,7 @@ generated with the following parameters configured:
 * mixmesh-dir
 * pin
 * pin-salt
-* global-pki-server/data-dir
+* remote-pki-server/data-dir
 * nym
 * routing/type
 * routing/use-gps
