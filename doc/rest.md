@@ -22,7 +22,7 @@ generated with the following parameters configured:
 * mixmesh-dir
 * pin
 * pin-salt
-* remote-pki-server/data-dir
+* remote-keydir-server/data-dir
 * nym
 * routing/type
 * routing/use-gps
@@ -151,7 +151,7 @@ generated with the following parameters configured:
 * mixmesh-dir
 * pin
 * pin-salt
-* remote-pki-server/data-dir
+* remote-keydir-server/data-dir
 * nym
 * routing/type
 * routing/use-gps
@@ -244,7 +244,7 @@ The reinstall method also have optional parameters but they are not examplified 
 
 Used to import public keys from a file. The file is supposed to have been exported during normal operation using `/key/export`.
 
-Implementation detail: In the end a PIN-encrypted file is generated, suitable to be loaded by the local PKI server during normal operation. This file typically ends up in `<mixmesh-dir>/<nym>/player/local-pki/pki.db`.
+Implementation detail: In the end a PIN-encrypted file is generated, suitable to be loaded by the local Keydir server during normal operation. This file typically ends up in `<mixmesh-dir>/<nym>/player/local-keydir/keydir.db`.
 
 ### POST data
 

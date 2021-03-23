@@ -74,7 +74,7 @@ $ git clone git@github.com:mixmesh/jsone.git
 $ git clone git@github.com:mixmesh/mail.git
 $ git clone git@github.com:mixmesh/mpa.git
 $ git clone git@github.com:mixmesh/mixmesh.git
-$ git clone git@github.com:mixmesh/pki.git
+$ git clone git@github.com:mixmesh/keydir.git
 $ git clone git@github.com:mixmesh/player.git
 $ git clone git@github.com:mixmesh/rstar.git
 $ git clone git@github.com:mixmesh/simulator.git
@@ -137,10 +137,10 @@ and then create a mandatory file structure needed by Mixmesh:
 
 mkconfig in this case created:
 
-* /tmp/mixmesh/pki/data
+* /tmp/mixmesh/keydir/data
 * /tmp/mixmesh/alice/player/temp/
 * /tmp/mixmesh/alice/player/buffer/
-* /tmp/mixmesh/alice/player/pki/data/
+* /tmp/mixmesh/alice/player/keydir/data/
 * /tmp/mixmesh/alice/player/maildrop/spooler/
 * /tmp/mixmesh/alice/player/ssl/
 

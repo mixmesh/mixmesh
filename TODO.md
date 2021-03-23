@@ -57,7 +57,7 @@ XBus public keys for above
   depending on nodis ip.
 * Add GPS coordinates to nodis
 * Update configuration to store 
-  buffer, local-pki, received-messages, spooler
+  buffer, local-keydir, received-messages, spooler
   in /var/erlang/mixmesh/
 
 ### Joakim
@@ -174,7 +174,7 @@ maybe BUTTON to terminate connection
 * Make it possible to have serveral mail accounts on a single box. Maybe.
 * Move digested passwords from config file into a passwd file on disk (especially if we support several mail accounts on a single box). Use Argon2 or just encrypt the whole passwd file using secretbox or whatever.
 * Add delays between login attempts to SMTP/POP3 servers (Argon2 hashing is to heavy)
-* If the box use a central PKI server over TOR or SSL it must tether on the phone Intenet connection. How?
+* If the box use a central Keydir server over TOR or SSL it must tether on the phone Intenet connection. How?
 * Support a hybrid encryption approach in order to support media streams
 * Add resend/ack/seqnumber etc to better support B?
 * Write bridge servers as hidden services on Tor to bridge traffic between different geograophic islans of Mixmesh nets (jocke*nyc@gmail.com) (The box must use the phone's Internet connection. How?)

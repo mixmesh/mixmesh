@@ -6,7 +6,7 @@
 %%-export([emit_key_pair/0]).
 -export([status/0]).
 
--include_lib("pki/include/pki_serv.hrl").
+-include_lib("keydir/include/keydir_serv.hrl").
 
 %% Exported: start
 
@@ -18,8 +18,8 @@ start() ->
     ok = application:start(tree_db),
     ok = application:start(xbus),
     ok = application:start(rester),
-    ok = application:start(mixmesh), %% pki use config!
-    ok = application:start(pki),
+    ok = application:start(mixmesh), %% keydir use config!
+    ok = application:start(keydir),
     ok = application:start(jsone),
     ok = application:start(nodis),
     ok = application:start(mail),
@@ -48,7 +48,7 @@ start() ->
 %% load applications needed for config schemas
 ensure_all_loaded() ->
     ok = application:load(apptools),
-    ok = application:load(pki),
+    ok = application:load(keydir),
     ok = application:load(player),
     ok = application:load(mixmesh).
     %% application:load(simulator).
@@ -80,15 +80,15 @@ start_bootstrap() ->
 
 list_public_keys() ->
     ets:foldl(
-      fun(#pki_user{nym=Nym,public_key=Pk}, _Acc) ->
+      fun(#keydir_user{nym=Nym,public_key=Pk}, _Acc) ->
 	      MD5 = crypto:hash(md5, elgamal:public_key_to_binary(Pk)),
 	      Fs = [tl(integer_to_list(B+16#100,16)) || <<B>> <= MD5],
 	      io:format("~16s -- ~s\n", [Nym, string:join(Fs, ":")])
-      end, ok, pki_db).
+      end, ok, keydir_db).
 
 %% Exported: export_public_key
 
-%% export a public key in a format useful for pki
+%% export a public key in a format useful for keydir
 export_public_key() ->
     case config:lookup([player, enabled]) of
 	true ->
@@ -97,12 +97,14 @@ export_public_key() ->
 		false ->
 		    false;
 		Pk ->
-		    PkiUser = #pki_user{nym=Nym,
-					password=(<<"">>),
-					email=(<<"">>),
-					public_key=elgamal:binary_to_public_key(Pk)},
-		    <<"PKI:",
-		      (base64:encode(term_to_binary(PkiUser)))/binary>>
+		    KeydirUser =
+                        #keydir_user{
+                           nym=Nym,
+                           password=(<<"">>),
+                           email=(<<"">>),
+                           public_key=elgamal:binary_to_public_key(Pk)},
+		    <<"Keydir:",
+		      (base64:encode(term_to_binary(KeydirUser)))/binary>>
 	    end;
 	false ->
 	    false
@@ -113,16 +115,16 @@ export_public_key() ->
 import_public_key(Key) ->
     import_public_key(Key, undefined).
 
-import_public_key(<<"PKI:",PkiUser64/binary>>, Nym) when
+import_public_key(<<"Keydir:",KeydirUser64/binary>>, Nym) when
       is_binary(Nym); Nym =:= undefined ->
-    PkiUserBin = base64:decode(PkiUser64),
-    PkiUser0 = binary_to_term(PkiUserBin),
-    PkiUser = if Nym =:= undefined -> PkiUser0;
-		 true -> PkiUser0#pki_user{nym=Nym}
-	      end,
-    case pki_serv:create(PkiUser) of
+    KeydirUserBin = base64:decode(KeydirUser64),
+    KeydirUser0 = binary_to_term(KeydirUserBin),
+    KeydirUser = if Nym =:= undefined -> KeydirUser0;
+		 true -> KeydirUser0#keydir_user{nym=Nym}
+                 end,
+    case keydir_serv:create(KeydirUser) of
 	{error, user_already_exists} ->
-	    pki_serv:update(PkiUser);
+	    keydir_serv:update(KeydirUser);
 	Res ->
 	    Res
     end.
