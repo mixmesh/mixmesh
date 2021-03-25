@@ -27,15 +27,16 @@ get() ->
        {'hardware',
 	#json_type{
 	   name = atom,
-	   info = "none or pimesh",
+	   info = "none, epx or pimesh",
 	   typical = none,
 	   transform =
 	       fun(none) -> none;
 		  (pimesh) -> pimesh;
+		  (epxmesh) -> epxmesh;
 		  (_) ->
 		       throw(
 			 {failed,
-			  "Must be one of none or pimesh"})
+			  "Must be one of none, epxmesh or pimesh"})
 	       end,
 	   reloadable = false}}
        ]}].
