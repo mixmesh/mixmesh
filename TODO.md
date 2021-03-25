@@ -1,11 +1,22 @@
 # TODO
 
-## Possible input to new TODO (pseudo random order):
+* (J) Pincode, where is pincode used? and why?
 
-[* REST: /system-hardware: gps, keyboard, battery]
-[* GPS service ]
-[* PIN entry service]
-[* Battery service]
+* mixmesh start, add hardware, simulation shared keys etc
+
+* update player_sync_serv to use player_decrypt_serv
+
+* messure box HxBxD (lid indent dimensions)
+
+	+ Keyboard magic hole mask
+	+ Fan/Cooling holes
+	* Buttons holes ? USB or not?
+	+ Power On/Off button
+	* Power Down button (COL8)
+	* Wipe/Dead man's grip Button (COL9)
+	+ USB power (piSuger2)
+	+ USB ethernet
+
 
 XBus public keys for above
 
