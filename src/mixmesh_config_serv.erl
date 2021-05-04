@@ -62,34 +62,41 @@ listener_handler(Socket) ->
 
 upgrade_handler(OldConfigFilename) ->
     {ok, OldConfig} = file:read_file(OldConfigFilename),
-    {ok, ParsedOldConfig, _} =
-        jsone:try_decode(OldConfig, [{object_format, proplist}]),
-    RevisionedParsedOldConfig =
-        case ParsedOldConfig of
-            [{<<"system">>, [{<<"conf-revision">>, OldRevision}|_]}|_] ->
-                ParsedOldConfig;
-            [{<<"system">>, SystemConfig}|Config] ->
-                OldRevision = 0,
-                [{<<"system">>,
-                  [{<<"conf-revision">>, OldRevision}|SystemConfig]}|Config]
-        end,
-    if
-        OldRevision > ?CONF_REVISION ->
-            downgrade_not_supported;
-        OldRevision == ?CONF_REVISION ->
-            {OldRevision, ?CONF_REVISION, not_changed};
-        true ->
-            NewConfig =
-                upgrade_config(
-                  RevisionedParsedOldConfig, OldRevision, ?CONF_REVISION),
-            {ok, Binary} =
-                jsone:try_encode(NewConfig,
-                                 [{float_format, [{decimals, 4}, compact]},
-                                  {indent, 2},
-                                  {object_key_type, value},
-                                  {space, 1},
-                                  native_forward_slash]),
-            {OldRevision, ?CONF_REVISION, Binary}
+    case jsone:try_decode(OldConfig, [{object_format, proplist}]) of
+        {ok, ParsedOldConfig, _} ->
+            RevisionedParsedOldConfig =
+                case ParsedOldConfig of
+                    [{<<"system">>,
+                      [{<<"conf-revision">>, OldRevision}|_]}|_] ->
+                        ParsedOldConfig;
+                    [{<<"system">>, SystemConfig}|Config] ->
+                        OldRevision = 0,
+                        [{<<"system">>,
+                          [{<<"conf-revision">>, OldRevision}|SystemConfig]}|
+                         Config]
+                end,
+            if
+                OldRevision > ?CONF_REVISION ->
+                    {error, downgrade_not_supported};
+                OldRevision == ?CONF_REVISION ->
+                    {ok, {OldRevision, ?CONF_REVISION, not_changed}};
+                true ->
+                    NewConfig =
+                        upgrade_config(
+                          RevisionedParsedOldConfig, OldRevision,
+                          ?CONF_REVISION),
+                    {ok, Binary} =
+                        jsone:try_encode(
+                          NewConfig,
+                          [{float_format, [{decimals, 4}, compact]},
+                           {indent, 2},
+                           {object_key_type, value},
+                           {space, 1},
+                           native_forward_slash]),
+                    {ok, {OldRevision, ?CONF_REVISION, Binary}}
+            end;
+        {error, Reason} ->
+            {error, {bad_json, Reason}}
     end.
 
 upgrade_config(Config, N, N) ->

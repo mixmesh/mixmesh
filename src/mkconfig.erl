@@ -7,7 +7,8 @@
 %% If you do this the following will be created:
 %%
 %% /tmp/mixmesh/pin
-%% /tmp/mixmesh/remote-keydir/ssl
+%% /tmp/mixmesh/remote-keydir-server/ssl
+%% /tmp/mixmesh/keydir-service/ssl
 %% /tmp/mixmesh/alice/player/temp/
 %% /tmp/mixmesh/alice/player/buffer/
 %% /tmp/mixmesh/alice/player/local-keydir/
@@ -26,11 +27,15 @@
 
 %% Called from mixmesh/bin/mkconfig
 start([MixmeshDir, SourceCertFilename, Nym]) ->
-    RemoteKeydirDir = filename:join([MixmeshDir, <<"remote-keydir">>]),
-    SSLDir = filename:join([RemoteKeydirDir, <<"ssl">>]),
+    RemoteKeydirServerSSLDir =
+        filename:join([MixmeshDir, <<"remote-keydir-server">>, <<"ssl">>]),
+    KeydirServiceSSLDir =
+        filename:join([MixmeshDir, <<"keydir-service">>, <<"ssl">>]),
     try
-        true = ensure_libs(stdout, [SSLDir], true),
-        true = copy_certificate(stdout, SourceCertFilename, SSLDir),
+        true = ensure_libs(
+                 stdout, [RemoteKeydirServerSSLDir, KeydirServiceSSLDir], true),
+        true = copy_certificate(stdout, SourceCertFilename, RemoteKeydirServerSSLDir),
+        true = copy_certificate(stdout, SourceCertFilename, KeydirServiceSSLDir),
         true = create_player(stdout, MixmeshDir, SourceCertFilename, Nym),
         PinFilename = filename:join([MixmeshDir, <<"pin">>]),
         io:format("Creates dummy ~s\n", [PinFilename]),
@@ -45,11 +50,15 @@ start([MixmeshDir, SourceCertFilename, Nym]) ->
 
 %% Called from player/src/rest_bootstrap_server.erl
 start(MixmeshDir, SourceCertFilename, Nym) ->
-    RemoteKeydirDir = filename:join([MixmeshDir, <<"remote-keydir">>]),
-    SSLDir = filename:join([RemoteKeydirDir, <<"ssl">>]),
+    RemoteKeydirServerSSLDir =
+        filename:join([MixmeshDir, <<"remote-keydir-server">>, <<"ssl">>]),
+    KeydirServiceSSLDir =
+        filename:join([MixmeshDir, <<"keydir-service">>, <<"ssl">>]),
     try
-        true = ensure_libs(log, [SSLDir], true),
-        true = copy_certificate(log, SourceCertFilename, SSLDir),
+        true = ensure_libs(
+                 log, [RemoteKeydirServerSSLDir, KeydirServiceSSLDir], true),
+        true = copy_certificate(log, SourceCertFilename, RemoteKeydirServerSSLDir),
+        true = copy_certificate(log, SourceCertFilename, KeydirServiceSSLDir),
         create_player(log, ?b2l(MixmeshDir), ?b2l(SourceCertFilename),
                       ?b2l(Nym))
     catch
