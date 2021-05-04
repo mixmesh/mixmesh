@@ -48,7 +48,7 @@ start([MixmeshDir, SourceCertFilename, Nym]) ->
 
 -spec start(binary(), binary(), binary()) -> boolean().
 
-%% Called from player/src/rest_bootstrap_server.erl
+%% Called from player/src/player_bootstrap_service.erl
 start(MixmeshDir, SourceCertFilename, Nym) ->
     RemoteKeydirServerSSLDir =
         filename:join([MixmeshDir, <<"remote-keydir-server">>, <<"ssl">>]),
