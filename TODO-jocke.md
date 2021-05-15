@@ -15,7 +15,8 @@ instead of the old "PKI" based ditto when it does remote key lookup.
 
 1. The old "PKI" server is not needed anymore. Remove these files:
 keydir/src/{keydir_network_client.erl,keydir_network.hrl,keydir_network_serv.hrl,keydir_serv.erl,remote_keydir_server_schema.erl}
-and do the appropriate cleanup.
+and do the appropriate cleanup. Update the README.md file on top level
+in the keydir repository as well.
 
 1. Go through the Mixmesh REST API,
 i.e. src/mixmesh/src/player_{normal,bootstrap}_service.erl, and make
