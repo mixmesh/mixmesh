@@ -31,4 +31,4 @@ on top of the Mixmesh REST API).
 1. Use iframes in the in the Mixmesh Web app to make it easy to import
 keys from the Keydir Service Web app.
 
-1. Remind Tony about dialyzer errors
+1. Remind Tony about dialyzer errors.
