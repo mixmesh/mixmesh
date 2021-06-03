@@ -136,10 +136,11 @@ info:
 .PHONY: dialyzer
 
 # The rstar application is out of scope
-DIALYZER_APPS=apptools elgamal enacl jsone mail mpa nodis mixmesh keydir player rester simulator tor
+DIALYZER_APPS=apptools cl elgamal enacl jsone keydir mail mixmesh mpa nodis pgp pimesh player rester simulator tor
 
 # FIXME: *_nif.beam files confuse dialyzer so I just delete them :-)
 dialyzer: dialyzer.plt
+	$(MAKE) -f Makefile.top-level all
 	@echo "BEWARE: gmp_nif.beam and simulator_nif.beam are removed permanently!!!"
 	rm -f $(LPATH)/mpa/ebin/gmp_nif.beam $(LPATH)/simulator/ebin/simulator_nif.beam
 	dialyzer --verbose --no_native_cache --no_check_plt --plt $< -r $(DIALYZER_APPS:%=$(LPATH)/%/ebin)

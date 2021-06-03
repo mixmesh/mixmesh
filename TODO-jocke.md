@@ -1,6 +1,10 @@
 1. Remove all #pk{} and #sk{} records from from all repositories and
 replace them with maps. Make sure that everything still works. Do this
-to prepare of next action point.
+to prepare of next action point. Call PublicKey Pk everyehere as well.
+
+1. Reintroduce version numbering in keydir_service.erl
+
+1. Remind Tony not to use private
 
 1. Update all code to use keys generated from
 pgp_keys:generate_mixmesh_keys/1. Start to update ./bin/mixmesh and 
