@@ -2,7 +2,9 @@
 -behaviour(application).
 -export([start/2, stop/1]).
 
+%%
 %% Exported: start
+%%
 
 start(_Type, StartArgs) ->
     case mixmesh_sup:start_link(StartArgs) of
@@ -12,7 +14,9 @@ start(_Type, StartArgs) ->
             Error
     end.
 
-%% Exported: stop
+%%
+%% Exported: sto
+%%
 
 stop(_State) ->
     ok.

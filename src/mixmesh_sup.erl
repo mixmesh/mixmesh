@@ -5,12 +5,16 @@
 
 -include_lib("apptools/include/log_serv.hrl").
 
+%%
 %% Exported: start_link
+%%
 
 start_link(Args) ->
     supervisor:start_link({local, ?MODULE}, ?MODULE, Args).
 
+%%
 %% Exported: init
+%%
 
 init([]) ->
     case application:get_env(mixmesh, mode, normal) of

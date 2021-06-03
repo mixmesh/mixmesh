@@ -20,7 +20,9 @@
 
 -type trace_mode() :: stdout | log.
 
+%%
 %% Exported: start
+%%
 
 -spec start([string()]) -> no_return().
 
@@ -65,7 +67,9 @@ start(MixmeshDir, SourceCertFilename, Nym) ->
             false
     end.
 
+%%
 %% Exported: copy_certificate
+%%
 
 copy_certificate(TraceMode, SourceCertFilename, SSLDir) ->
     TargetCertFilename = filename:join([SSLDir, <<"cert.pem">>]),
@@ -80,7 +84,9 @@ copy_certificate(TraceMode, SourceCertFilename, SSLDir) ->
             throw({status, 100})
     end.
 
+%%
 %% Exported: create_player
+%%
 
 -spec create_player(trace_mode(), string(), string(), string()) -> true.
 
@@ -98,7 +104,9 @@ create_player(TraceMode, MixmeshDir, SourceCertFilename, Nym) ->
                        true),
     copy_certificate(TraceMode, SourceCertFilename, SSLDir).
 
+%%
 %% Exported: ensure_libs
+%%
 
 -spec ensure_libs(trace_mode(), [binary()], boolean()) -> true.
 

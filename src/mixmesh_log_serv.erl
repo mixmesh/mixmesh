@@ -3,7 +3,9 @@
 
 -include_lib("apptools/include/log_serv.hrl").
 
+%%
 %% Exported: start_link
+%%
 
 -spec start_link() -> {'ok', pid()} | {'error', log_serv:error_reason()}.
 

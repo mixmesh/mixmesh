@@ -12,7 +12,9 @@
 
 -define(CONF_REVISION, 1).
 
+%%
 %% Exported: start_link
+%%
 
 -spec start_link() -> {'ok', pid()} |
                       {'error', config_serv:error_reason()}.
@@ -139,7 +141,9 @@ upgrade(0, 1, [{Name, NestedConfig}|Config], JsonPath) ->
 upgrade(0, 1, Config, _JsonPath) ->
     Config.
 
+%%
 %% Exported: stop
+%%
 
 -spec stop() -> no_return().
 
@@ -153,7 +157,9 @@ stop() ->
             die(config_serv:format_error(Reason), [])
     end.
 
+%%
 %% Exported: reload
+%%
 
 -spec reload() -> no_return().
 
