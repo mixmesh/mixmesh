@@ -6,9 +6,10 @@ ERL=$(shell which erl)
 ERL_TOP=$(ERL:%/bin/erl=%)
 
 ALL_LIST = $(shell (cd $(LPATH); ls -I "Makefile*" -I "*~"))
-APP_LIST = apptools elgamal enacl jsone mail mpa nodis mixmesh keydir player tor rester
+APP_LIST = apptools elgamal enacl jsone mail mpa nodis mixmesh keydir player tor afunix rester tree_db xbus
 SIM_LIST = rstar simulator
-TEST_LIST = $(shell (cd $(LPATH); ls -d */test))
+TEST_DIRS = $(shell (cd $(LPATH); ls -d */test))
+TEST_LIST=$(TEST_DIRS:%/test=%)
 
 GITURL = https://github.com/mixmesh
 
@@ -36,10 +37,10 @@ clean:
 	@for lib in $(ALL_LIST) ; do \
 		(cd $(LPATH)/$$lib && $(MAKE) clean) || exit 1; \
 	done
-	rm -f dialyzer.plt
+	rm -f .dialyzer.plt
 
 mrproper: clean cleanfluff
-	rm -f dialyzer_init.plt
+	rm -f .dialyzer_init.plt
 
 cleanfluff:
 	@for lib in $(ALL_LIST) ; do \
@@ -108,8 +109,10 @@ megaclone: clone simclone
 # Clone the application, except mixmesh!
 clone:
 	@for lib in $(filter-out mixmesh,$(APP_LIST)) ; do \
-		echo "==== Clone $$lib ===="; \
-		(cd $(LPATH) && git clone $(GITURL)/$$lib) || exit 1; \
+		if [ ! -d "$$lib" ]; then \
+			echo "==== Clone $$lib ===="; \
+			(cd $(LPATH) && git clone $(GITURL)/$$lib) || exit 1; \
+		fi \
 	done
 
 # Clone the simulator apps
@@ -136,22 +139,21 @@ info:
 .PHONY: dialyzer
 
 # The rstar application is out of scope
-DIALYZER_APPS=apptools cl elgamal enacl jsone keydir mail mixmesh mpa nodis pgp pimesh player rester simulator tor
+DIALYZER_APPS=apptools elgamal enacl jsone keydir mail mixmesh mpa nodis pgp pimesh player rester simulator tor
 
 # FIXME: *_nif.beam files confuse dialyzer so I just delete them :-)
-dialyzer: dialyzer.plt
-	$(MAKE) -f Makefile.top-level all
-	@echo "BEWARE: gmp_nif.beam and simulator_nif.beam are removed permanently!!!"
-	rm -f $(LPATH)/mpa/ebin/gmp_nif.beam $(LPATH)/simulator/ebin/simulator_nif.beam
-	dialyzer --verbose --no_native_cache --no_check_plt --plt $< -r $(DIALYZER_APPS:%=$(LPATH)/%/ebin)
+dialyzer: .dialyzer.plt all
+#	@echo "BEWARE: gmp_nif.beam and simulator_nif.beam are removed permanently!!!"
+#	rm -f $(LPATH)/mpa/ebin/gmp_nif.beam $(LPATH)/simulator/ebin/simulator_nif.beam
+	dialyzer --verbose --no_native_cache --no_check_plt --plt .dialyzer.plt -r $(DIALYZER_APPS:%=$(LPATH)/%/ebin)
 
-dialyzer.plt: dialyzer_init.plt
+.dialyzer.plt: .dialyzer_init.plt
 	rm -f $@ ; cp $< $@
 	dialyzer --verbose --no_native_cache --check_plt --plt $@ || true
 
-DIALYZER_PLT_APPS=asn1 compiler crypto erts ftp hipe inets kernel mnesia public_key runtime_tools sasl ssl stdlib syntax_tools tftp tools
+DIALYZER_PLT_APPS=asn1 compiler crypto erts ftp inets kernel mnesia public_key runtime_tools sasl ssl stdlib syntax_tools tftp tools
 
-dialyzer_init.plt:
+.dialyzer_init.plt:
 	rm -f $@
 	@echo "BEWARE: This will take several minutes the first time..."
 	dialyzer --verbose --no_native_cache --build_plt --output_plt $@ -r $(DIALYZER_PLT_APPS:%=$(ERL_TOP)/lib/erlang/lib/%-*/ebin)
