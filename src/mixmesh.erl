@@ -27,6 +27,7 @@ start() ->
     ok = application:start(mpa),
     ok = application:start(elgamal),
     ok = application:start(enacl),
+    ok = application:start(pgp),
     case config:lookup([player, enabled]) of
         true ->
             ok = application:start(player);
