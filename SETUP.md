@@ -1,4 +1,4 @@
-# Configure and setup the obsecrete computer
+# Configure and setup the MixMesh computer
 
 # SD card & enable interfaces
 
