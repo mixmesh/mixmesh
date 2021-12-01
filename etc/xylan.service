@@ -1,0 +1,19 @@
+[Unit]
+Description=xylan service
+After=network.target
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+WorkingDirectory=/etc/erlang/xylan
+ExecStart=/etc/erlang/xylan/xylan.run start
+ExecStop=/etc/erlang/xylan/xylan.run stop
+Restart=always
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=xylan
+User=pi
+Group=pi
+Environment=
+[Install]
+WantedBy= multi-user.target
