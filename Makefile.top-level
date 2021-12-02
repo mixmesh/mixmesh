@@ -6,7 +6,7 @@ ERL=$(shell which erl)
 ERL_TOP=$(ERL:%/bin/erl=%)
 
 ALL_LIST = $(shell (cd $(LPATH); ls -I "Makefile*" -I "*~"))
-APP_LIST = apptools elgamal enacl jsone mail mpa nodis mixmesh keydir player tor afunix rester tree_db xbus
+APP_LIST = afunix alsa apptools elgamal enacl gaia jsone mail mpa nodis mixmesh keydir player rester tor tree_db xbus vosk
 SIM_LIST = rstar simulator
 TEST_DIRS = $(shell (cd $(LPATH); ls -d */test))
 TEST_LIST=$(TEST_DIRS:%/test=%)

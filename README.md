@@ -39,6 +39,13 @@ $ make
 $ sudo make install
 ```
 
+followed by ALSA and Opus:
+
+```
+$ sudo apt install libasound2-dev
+$ sudo apt install libopus-dev
+```
+
 To run player tests the program mpop and swaks must be installed
 
 ```
@@ -67,18 +74,26 @@ If you want to clone one by one, or you must fix something else,
 then this is the app list
 
 ```
+$ git clone git@github.com:mixmesh/afunix.git
+$ git clone git@github.com:mixmesh/alsa.git
 $ git clone git@github.com:mixmesh/apptools.git
 $ git clone git@github.com:mixmesh/elgamal.git
 $ git clone git@github.com:mixmesh/enacl.git
+$ git clone git@github.com:mixmesh/flite.git
+$ git clone git@github.com:mixmesh/gaia.git
 $ git clone git@github.com:mixmesh/jsone.git
 $ git clone git@github.com:mixmesh/mail.git
 $ git clone git@github.com:mixmesh/mpa.git
 $ git clone git@github.com:mixmesh/mixmesh.git
 $ git clone git@github.com:mixmesh/keydir.git
 $ git clone git@github.com:mixmesh/player.git
+$ git clone git@github.com:mixmesh/rester.git
+$ git clone git@github.com:mixmesh/tor.git
+$ git clone git@github.com:mixmesh/tree_db.git
+$ git clone git@github.com:mixmesh/xbus.git
 $ git clone git@github.com:mixmesh/rstar.git
 $ git clone git@github.com:mixmesh/simulator.git
-$ git clone git@github.com:mixmesh/tor.git
+$ git clone git@github.com:mixmesh/vosk.git
 ```
 
 ### Build repositories
