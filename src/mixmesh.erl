@@ -28,12 +28,12 @@ start() ->
     ok = application:start(elgamal),
     ok = application:start(enacl),
     ok = application:start(pgp),
-%    case config:lookup([gaia, enabled]) of
-%        true ->
-%            ok = application:start(gaia);
-%        false ->
-%            skip
-%    end,
+    case config:lookup([gaia, enabled]) of
+        true ->
+            ok = application:start(gaia);
+        false ->
+            skip
+    end,
     case config:lookup([player, enabled]) of
         true ->
             ok = application:start(player);
