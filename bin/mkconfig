@@ -7,7 +7,7 @@ if [ -z "${erl}" ]; then
 fi
 
 usage () {
-    >&2 echo "mkconfig <OBSCRETE-DIR> <CERTIFICATE-FILE> <PLAYER-NAME>"
+    >&2 echo "mkconfig <MIXMESH-DIR> <CERTIFICATE-FILE> <PLAYER-NAME>"
     exit 100
 }
 
