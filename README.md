@@ -86,6 +86,7 @@ $ git clone git@github.com:mixmesh/mail.git
 $ git clone git@github.com:mixmesh/mpa.git
 $ git clone git@github.com:mixmesh/mixmesh.git
 $ git clone git@github.com:mixmesh/keydir.git
+$ git clone git@github.com:mixmesh/pgp.git
 $ git clone git@github.com:mixmesh/player.git
 $ git clone git@github.com:mixmesh/rester.git
 $ git clone git@github.com:mixmesh/tor.git
