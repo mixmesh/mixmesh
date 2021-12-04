@@ -93,15 +93,15 @@ and find the IP of the raspberry pi and use that instead of reaspberrypi.local
 
 	sudo apt install git wget emacs-nox isc-dhcp-server bluez-tools libncurses-dev libssl-dev libgmp-dev libsodium-dev screen
 
-### install Erlang (fixme used patched version)
+### install Erlang
 
 Now download Erlang, unpack, configure, make and install
 
 	mkdir src
 	cd src
-	wget http://erlang.org/download/otp_src_23.2.tar.gz
-	tar xf otp_src_23.2.tar.gz
-        cd otp_src_23.2/
+	wget http://erlang.org/download/otp_src_X.Y.Z.tar.gz
+	tar xf otp_src_X.Y.Z.tar.gz
+        cd otp_src_X.Y.Z/
 	./configure
 	make
 	sudo make install
