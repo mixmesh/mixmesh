@@ -1,0 +1,8 @@
+#!/bin/sh
+#  find raspberry pi(s)
+#
+NETPAT=`ip -a route | grep default | awk '{ print $3 }' | head -1 | awk -F. '{ printf("%s.%s.%s.*", $1, $2, $3); }'`
+echo "scan net $NETPAT"
+nmap $NETPAT
+arp -na | grep -i b8:27:eb
+
