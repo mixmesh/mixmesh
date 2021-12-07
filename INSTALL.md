@@ -162,7 +162,7 @@ in the mixmesh directory.
 ### set hardware
 
 Edit the configuration created above and change the
-hardare from 'none' to 'pimesh'
+hardware from 'none' to 'pimesh'
 
 	"system": { ... "hardware": "pimesh" }
 

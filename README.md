@@ -17,17 +17,13 @@ You need to install GMP (for arbitrary precision arithmetic support) and Simple2
 On Ubuntu:
 
 ```
-$ sudo apt install libgmp-dev
-$ sudo apt install libsodium-dev
+$ sudo apt install libgmp-dev libsodium-dev
 ```
 
 and
 
 ```
-$ sudo apt install libsdl2-dev
-$ sudo apt install libsdl2-image-dev
-$ sudo apt install libsdl2-mixer-dev
-$ sudo apt install libsdl2-ttf-dev
+$ sudo apt install libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev libsdl2-ttf-dev
 ```
 
 followed by
@@ -42,15 +38,13 @@ $ sudo make install
 followed by ALSA and Opus:
 
 ```
-$ sudo apt install libasound2-dev
-$ sudo apt install libopus-dev
+$ sudo apt install libasound2-dev libopus-dev
 ```
 
 To run player tests the program mpop and swaks must be installed
 
 ```
-$ sudo apt install mpop
-$ sudo apt install swaks
+$ sudo apt install mpop swaks
 ```
 
 To have the tor tests pass the test suite you need to install tor
