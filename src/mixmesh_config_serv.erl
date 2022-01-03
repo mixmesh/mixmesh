@@ -25,7 +25,8 @@ start_link() ->
            ConfigFilename, get_schemas(),
            fun() -> config:lookup(['mixmesh-control', listen]) end,
            fun listener_handler/1,
-           fun upgrade_handler/1) of
+           fun upgrade_handler/1,
+           fun post_process/1) of
         {ok, Pid} ->
             {ok, Pid};
         {error, Reason} ->
@@ -98,7 +99,7 @@ upgrade_handler(OldConfigFilename) ->
                     {ok, {OldRevision, ?CONF_REVISION, Binary}}
             end;
         {error, Reason} ->
-            {error, {bad_json, Reason}}
+            {error, {config, {bad_json, Reason}}}
     end.
 
 upgrade_config(Config, N, N) ->
@@ -140,6 +141,57 @@ upgrade(0, 1, [{Name, NestedConfig}|Config], JsonPath) ->
      upgrade(0, 1, Config, JsonPath)];
 upgrade(0, 1, Config, _JsonPath) ->
     Config.
+
+post_process(JsonTerm) ->
+    try
+        {ok, JsonTerm = post_process(JsonTerm, JsonTerm, [])}
+    catch
+        throw:{failure, FailurePath, Reason} ->
+            {error, FailurePath, Reason}
+    end.
+
+post_process([], _OriginalJsonTerm, _JsonPath) ->
+    [];
+post_process([{admin, Admin} = NameValue|Rest], OriginalJsonTerm,
+             [groups, gaia] = JsonPath) ->
+    case config_serv:json_lookup(OriginalJsonTerm,
+                                 [gaia, peers, {name, Admin}]) of
+        not_found ->
+            Reason = ?l2b(io_lib:format("Peer ~s is missing", [Admin])),
+            throw({failure, JsonPath, Reason});
+        _ ->
+            [NameValue|post_process(Rest, OriginalJsonTerm, JsonPath)]
+    end;
+post_process([{members, Members} = NameValue|Rest], OriginalJsonTerm,
+             [groups, gaia] = JsonPath) ->
+    PeerName = config_serv:json_lookup(OriginalJsonTerm, [gaia, 'peer-name']),
+    lists:foreach(fun(Member) when Member == PeerName ->
+                          ok;
+                     (Member) ->
+                          case config_serv:json_lookup(
+                                 OriginalJsonTerm,
+                                 [gaia, peers, {name, Member}]) of
+                              not_found ->
+                                  Reason =
+                                      ?l2b(io_lib:format("Peer ~s is missing",
+                                                         [Member])),
+                                  throw({failure, JsonPath, Reason});
+                              _ ->
+                                  ok
+                          end
+                  end, Members),
+    [NameValue|post_process(Rest, OriginalJsonTerm, JsonPath)];
+post_process([{Name, Value}|Rest], OriginalJsonTerm, JsonPath)
+  when is_list(Value) ->
+    [{Name, post_process(Value, OriginalJsonTerm, [Name|JsonPath])}|
+     post_process(Rest, OriginalJsonTerm, JsonPath)];
+post_process([{_Name, _Value} = NameValue|Rest], OriginalJsonTerm, JsonPath) ->
+    [NameValue|post_process(Rest, OriginalJsonTerm, JsonPath)];
+post_process([List|Rest], OriginalJsonTerm, JsonPath) when is_list(List) ->
+    [post_process(List, OriginalJsonTerm, JsonPath)|
+     post_process(Rest, OriginalJsonTerm, JsonPath)];
+post_process([Value|Rest], OriginalJsonTerm, JsonPath) ->
+    [Value|post_process(Rest, OriginalJsonTerm, JsonPath)].
 
 %%
 %% Exported: stop
