@@ -157,29 +157,39 @@ post_process([{admin, Admin} = NameValue|Rest], OriginalJsonTerm,
     case config_serv:json_lookup(OriginalJsonTerm,
                                  [gaia, peers, {name, Admin}]) of
         not_found ->
-            Reason = ?l2b(io_lib:format("Peer ~s is missing", [Admin])),
-            throw({failure, JsonPath, Reason});
+            case config_serv:json_lookup(
+                   OriginalJsonTerm, [gaia, 'peer-name']) of
+                Admin ->
+                    [NameValue|post_process(Rest, OriginalJsonTerm, JsonPath)];
+                _ ->
+                    Reason = ?l2b(io_lib:format("Peer ~s is missing", [Admin])),
+                    throw({failure, JsonPath, Reason})
+            end;
         _ ->
             [NameValue|post_process(Rest, OriginalJsonTerm, JsonPath)]
     end;
 post_process([{members, Members} = NameValue|Rest], OriginalJsonTerm,
              [groups, gaia] = JsonPath) ->
-    PeerName = config_serv:json_lookup(OriginalJsonTerm, [gaia, 'peer-name']),
-    lists:foreach(fun(Member) when Member == PeerName ->
-                          ok;
-                     (Member) ->
-                          case config_serv:json_lookup(
-                                 OriginalJsonTerm,
-                                 [gaia, peers, {name, Member}]) of
-                              not_found ->
-                                  Reason =
-                                      ?l2b(io_lib:format("Peer ~s is missing",
-                                                         [Member])),
-                                  throw({failure, JsonPath, Reason});
-                              _ ->
-                                  ok
-                          end
-                  end, Members),
+    lists:foreach(
+      fun(Member) ->
+              case config_serv:json_lookup(
+                     OriginalJsonTerm,
+                     [gaia, peers, {name, Member}]) of
+                  not_found ->
+                      case config_serv:json_lookup(
+                             OriginalJsonTerm, [gaia, 'peer-name']) of
+                          Member ->
+                              ok;
+                          _ ->
+                              Reason =
+                                  ?l2b(io_lib:format("Peer ~s is missing",
+                                                     [Member])),
+                              throw({failure, JsonPath, Reason})
+                      end;
+                  _ ->
+                      ok
+              end
+      end, Members),
     [NameValue|post_process(Rest, OriginalJsonTerm, JsonPath)];
 post_process([{Name, Value}|Rest], OriginalJsonTerm, JsonPath)
   when is_list(Value) ->
