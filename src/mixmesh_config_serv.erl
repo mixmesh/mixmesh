@@ -144,7 +144,7 @@ upgrade(0, 1, Config, _JsonPath) ->
 
 post_process(JsonTerm) ->
     try
-        {ok, JsonTerm = post_process(JsonTerm, JsonTerm, [])}
+        {ok, post_process(JsonTerm, JsonTerm, [])}
     catch
         throw:{failure, FailurePath, Reason} ->
             {error, FailurePath, Reason}
@@ -152,6 +152,11 @@ post_process(JsonTerm) ->
 
 post_process([], _OriginalJsonTerm, _JsonPath) ->
     [];
+post_process([{'peer-id', -1}|Rest], OriginalJsonTerm,
+             [gaia] = JsonPath) ->
+    PeerName = config_serv:json_lookup(OriginalJsonTerm, [gaia, 'peer-name']),
+    PeerId = gaia_serv:generate_artificial_id(PeerName),
+    [{'peer-id', PeerId}|post_process(Rest, OriginalJsonTerm, JsonPath)];
 post_process([{members, Members} = NameValue|Rest], OriginalJsonTerm,
              [groups, gaia] = JsonPath) ->
     lists:foreach(
