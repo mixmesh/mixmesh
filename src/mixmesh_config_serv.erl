@@ -180,6 +180,25 @@ post_process([{members, Members} = NameValue|Rest], OriginalJsonTerm,
               end
       end, Members),
     [NameValue|post_process(Rest, OriginalJsonTerm, JsonPath)];
+post_process([{admin, Admin} = AdminValue|Rest], OriginalJsonTerm,
+             [groups, gaia] = JsonPath) ->
+    case config_serv:json_lookup(
+           OriginalJsonTerm,
+           [gaia, peers, {name, Admin}]) of
+        not_found ->
+            case config_serv:json_lookup(
+                   OriginalJsonTerm, [gaia, 'peer-name']) of
+                Admin ->
+                    [AdminValue|post_process(Rest, OriginalJsonTerm, JsonPath)];
+                _ ->
+                    Reason =
+                        ?l2b(io_lib:format("Peer ~s is missing",
+                                           [Admin])),
+                    throw({failure, JsonPath, Reason})
+            end;
+        _ ->
+            [AdminValue|post_process(Rest, OriginalJsonTerm, JsonPath)]
+    end;
 post_process([{Name, Value}|Rest], OriginalJsonTerm, JsonPath)
   when is_list(Value) ->
     [{Name, post_process(Value, OriginalJsonTerm, [Name|JsonPath])}|
