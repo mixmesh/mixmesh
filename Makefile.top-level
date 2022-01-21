@@ -139,7 +139,8 @@ info:
 .PHONY: dialyzer
 
 # The rstar application is out of scope
-DIALYZER_APPS=apptools elgamal enacl jsone keydir mail mixmesh mpa nodis pgp pimesh player afunix rester simulator tor tree_db xbus
+#DIALYZER_APPS=apptools elgamal enacl jsone keydir mail mixmesh mpa nodis pgp pimesh player afunix rester simulator tor tree_db xbus
+DIALYZER_APPS=apptools jsone mixmesh gaia
 
 # FIXME: *_nif.beam files confuse dialyzer so I just delete them :-)
 dialyzer: .dialyzer.plt all
