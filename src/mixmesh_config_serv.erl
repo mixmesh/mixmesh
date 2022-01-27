@@ -144,6 +144,23 @@ upgrade(0, 1, Config, _JsonPath) ->
 
 post_process(JsonTerm) ->
     try
+        lists:foreach(
+          fun(PeerConfig) ->
+                  [Name, Options] = config:lookup_children([name, options], PeerConfig),
+                  case Name of
+                      <<"*">> ->
+                          ok;
+                      _ ->
+                          case lists:member(<<"known-peers-only">>, Options) of
+                              false ->
+                                  ok;
+                              true ->
+                                  Reason =
+                                      <<"The option known-peers-only can only be used for a wildcard peer">>,
+                                  throw({failure, [peers, gaia], Reason})
+                          end
+                  end
+          end, config_serv:json_lookup(JsonTerm, [gaia, peers])),
         {ok, post_process(JsonTerm, JsonTerm, [])}
     catch
         throw:{failure, FailurePath, Reason} ->
