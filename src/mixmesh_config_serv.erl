@@ -146,7 +146,8 @@ post_process(JsonTerm) ->
     try
         lists:foreach(
           fun(PeerConfig) ->
-                  [Name, Options] = config:lookup_children([name, options], PeerConfig),
+                  [Name, Options] =
+                      config:lookup_children([name, options], PeerConfig),
                   case Name of
                       <<"*">> ->
                           ok;
@@ -155,9 +156,9 @@ post_process(JsonTerm) ->
                               false ->
                                   ok;
                               true ->
-                                  Reason =
-                                      <<"The option known-peers-only can only be used for a wildcard peer">>,
-                                  throw({failure, [peers, gaia], Reason})
+                                  Reason = <<"known-peers-only can only be used by the wildcard peer">>,
+                                  throw({failure,
+                                         [options, peers, gaia], Reason})
                           end
                   end
           end, config_serv:json_lookup(JsonTerm, [gaia, peers])),
@@ -174,10 +175,23 @@ post_process([{'peer-id', -1}|Rest], OriginalJsonTerm,
     PeerName = config_serv:json_lookup(OriginalJsonTerm, [gaia, 'peer-name']),
     PeerId = gaia_serv:generate_artificial_id(PeerName),
     [{'peer-id', PeerId}|post_process(Rest, OriginalJsonTerm, JsonPath)];
+post_process([{members,[<<"*">>]} = NameValue|Rest], OriginalJsonTerm,
+             [groups, gaia] = JsonPath) ->
+    case config_serv:json_lookup(OriginalJsonTerm,
+                                 [gaia, peers, {name, <<"*">>}]) of
+        not_found ->
+            Reason = <<"The wildcard peer is missing">>,
+            throw({failure, [members|JsonPath], Reason});
+        _ ->
+            [NameValue|post_process(Rest, OriginalJsonTerm, JsonPath)]
+    end;
 post_process([{members, Members} = NameValue|Rest], OriginalJsonTerm,
              [groups, gaia] = JsonPath) ->
     lists:foreach(
-      fun(Member) ->
+      fun(<<"*">>) ->
+              Reason = <<"A wildcard peer can not be mixed with other peers">>,
+              throw({failure, [members|JsonPath], Reason});
+         (Member) ->
               case config_serv:json_lookup(
                      OriginalJsonTerm,
                      [gaia, peers, {name, Member}]) of
@@ -190,7 +204,7 @@ post_process([{members, Members} = NameValue|Rest], OriginalJsonTerm,
                               Reason =
                                   ?l2b(io_lib:format("Peer ~s is missing",
                                                      [Member])),
-                              throw({failure, JsonPath, Reason})
+                              throw({failure, [members|JsonPath], Reason})
                       end;
                   _ ->
                       ok
@@ -211,7 +225,7 @@ post_process([{admin, Admin} = AdminValue|Rest], OriginalJsonTerm,
                     Reason =
                         ?l2b(io_lib:format("Peer ~s is missing",
                                            [Admin])),
-                    throw({failure, JsonPath, Reason})
+                    throw({failure, [admin|JsonPath], Reason})
             end;
         _ ->
             [AdminValue|post_process(Rest, OriginalJsonTerm, JsonPath)]
