@@ -170,12 +170,12 @@ post_process(JsonTerm) ->
 
 post_process([], _OriginalJsonTerm, _JsonPath) ->
     [];
-post_process([{'peer-id', -1}|Rest], OriginalJsonTerm,
+post_process([{'peer-id', 0}|Rest], OriginalJsonTerm,
              [gaia] = JsonPath) ->
     PeerName = config_serv:json_lookup(OriginalJsonTerm, [gaia, 'peer-name']),
     PeerId = gaia_serv:generate_artificial_id(PeerName),
     [{'peer-id', PeerId}|post_process(Rest, OriginalJsonTerm, JsonPath)];
-post_process([{members,[<<"*">>]} = NameValue|Rest], OriginalJsonTerm,
+post_process([{members, [<<"*">>]} = NameValue|Rest], OriginalJsonTerm,
              [groups, gaia] = JsonPath) ->
     case config_serv:json_lookup(OriginalJsonTerm,
                                  [gaia, peers, {name, <<"*">>}]) of
