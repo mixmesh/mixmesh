@@ -212,7 +212,8 @@ post_process([{members, Members} = NameValue|Rest], OriginalJsonTerm,
       end, Members),
     [NameValue|post_process(Rest, OriginalJsonTerm, JsonPath)];
 post_process([{admin, Admin} = AdminValue|Rest], OriginalJsonTerm,
-             [groups, gaia] = JsonPath) ->
+             [Groups, gaia] = JsonPath)
+  when Groups == groups orelse Groups == 'groups-of-interest' ->
     case config_serv:json_lookup(
            OriginalJsonTerm,
            [gaia, peers, {name, Admin}]) of
