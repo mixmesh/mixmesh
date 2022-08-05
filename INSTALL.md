@@ -37,7 +37,7 @@ Or (linux) locate the the device /dev/sdX (X is the name it got)
 [Joakim: On my Ubuntu 20.04 LTS laptop the device was named /dev/mmcblk0]
 
 	sudo umount /dev/sdX1
-	sudo dd bs=4M if=2020-08-20-raspios-buster-armhf-lite.img of=/dev/sdX conv=fsync
+	sudo dd bs=4M if=2020-08-20-raspios-buster-armhf-lite.img of=/dev/sdX conv=fsync status=progress
 	sudo sync
 
 Remove the card and reinsert it in again.
@@ -99,7 +99,7 @@ Now download Erlang, unpack, configure, make and install
 
 	mkdir src
 	cd src
-	wget http://erlang.org/download/otp_src_X.Y.Z.tar.gz
+	wget https://github.com/erlang/otp/releases/download/OTP-X.Y.Z/otp_src_X.Y.Z.tar.gz
 	tar xf otp_src_X.Y.Z.tar.gz
         cd otp_src_X.Y.Z/
 	./configure
@@ -143,8 +143,6 @@ in the mixmesh directory.
 	git clone https://github.com/tonyrog/gpio
 	git clone https://github.com/tonyrog/pwm
 	git clone https://github.com/tonyrog/i2c
-	git clone https://github.com/tonyrog/tree_db
-	git clone https://github.com/tonyrog/xbus
 	git clone https://github.com/tonyrog/uart
 	git clone https://github.com/mixmesh/pimesh
 
@@ -246,7 +244,7 @@ Maybe stop sometime
 
 	cd mixmesh
     sudo cp ./etc/mixmesh.service /etc/systemd/system/
-	chmod chmod u+rwx /etc/systemd/system/mixmesh.service
+	sudo chmod u+rwx /etc/systemd/system/mixmesh.service
 	
 Enable the service, so it is run when machine is booting
 
