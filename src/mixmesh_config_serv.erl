@@ -25,7 +25,8 @@ start_link() ->
            ConfigFilename, get_schemas(),
            fun() -> config:lookup(['mixmesh-control', listen]) end,
            fun listener_handler/1,
-           fun upgrade_handler/1) of
+           fun upgrade_handler/1,
+           fun post_process/1) of
         {ok, Pid} ->
             {ok, Pid};
         {error, Reason} ->
@@ -98,7 +99,7 @@ upgrade_handler(OldConfigFilename) ->
                     {ok, {OldRevision, ?CONF_REVISION, Binary}}
             end;
         {error, Reason} ->
-            {error, {bad_json, Reason}}
+            {error, {config, {bad_json, Reason}}}
     end.
 
 upgrade_config(Config, N, N) ->
@@ -140,6 +141,107 @@ upgrade(0, 1, [{Name, NestedConfig}|Config], JsonPath) ->
      upgrade(0, 1, Config, JsonPath)];
 upgrade(0, 1, Config, _JsonPath) ->
     Config.
+
+post_process(JsonTerm) ->
+    try
+        lists:foreach(
+          fun(PeerConfig) ->
+                  [Name, Options] =
+                      config:lookup_children([name, options], PeerConfig),
+                  case Name of
+                      <<"*">> ->
+                          ok;
+                      _ ->
+                          case lists:member(<<"known-peers-only">>, Options) of
+                              false ->
+                                  ok;
+                              true ->
+                                  Reason = <<"known-peers-only can only be used by the wildcard peer">>,
+                                  throw({failure,
+                                         [options, peers, gaia], Reason})
+                          end
+                  end
+          end, config_serv:json_lookup(JsonTerm, [gaia, peers])),
+        {ok, post_process(JsonTerm, JsonTerm, [])}
+    catch
+        throw:{failure, FailurePath, Reason} ->
+            {error, FailurePath, Reason}
+    end.
+
+post_process([], _OriginalJsonTerm, _JsonPath) ->
+    [];
+post_process([{'peer-id', 0}|Rest], OriginalJsonTerm,
+             [gaia] = JsonPath) ->
+    PeerName = config_serv:json_lookup(OriginalJsonTerm, [gaia, 'peer-name']),
+    PeerId = gaia_serv:generate_artificial_id(PeerName),
+    [{'peer-id', PeerId}|post_process(Rest, OriginalJsonTerm, JsonPath)];
+post_process([{members, [<<"*">>]} = NameValue|Rest], OriginalJsonTerm,
+             [groups, gaia] = JsonPath) ->
+    case config_serv:json_lookup(OriginalJsonTerm,
+                                 [gaia, peers, {name, <<"*">>}]) of
+        not_found ->
+            Reason = <<"The wildcard peer is missing">>,
+            throw({failure, [members|JsonPath], Reason});
+        _ ->
+            [NameValue|post_process(Rest, OriginalJsonTerm, JsonPath)]
+    end;
+post_process([{members, Members} = NameValue|Rest], OriginalJsonTerm,
+             [groups, gaia] = JsonPath) ->
+    lists:foreach(
+      fun(<<"*">>) ->
+              Reason = <<"A wildcard peer can not be mixed with other peers">>,
+              throw({failure, [members|JsonPath], Reason});
+         (Member) ->
+              case config_serv:json_lookup(
+                     OriginalJsonTerm,
+                     [gaia, peers, {name, Member}]) of
+                  not_found ->
+                      case config_serv:json_lookup(
+                             OriginalJsonTerm, [gaia, 'peer-name']) of
+                          Member ->
+                              ok;
+                          _ ->
+                              Reason =
+                                  ?l2b(io_lib:format("Peer ~s is missing",
+                                                     [Member])),
+                              throw({failure, [members|JsonPath], Reason})
+                      end;
+                  _ ->
+                      ok
+              end
+      end, Members),
+    [NameValue|post_process(Rest, OriginalJsonTerm, JsonPath)];
+post_process([{admin, Admin} = AdminValue|Rest], OriginalJsonTerm,
+             [Groups, gaia] = JsonPath)
+  when Groups == groups orelse Groups == 'groups-of-interest' ->
+    case config_serv:json_lookup(
+           OriginalJsonTerm,
+           [gaia, peers, {name, Admin}]) of
+        not_found ->
+            case config_serv:json_lookup(
+                   OriginalJsonTerm, [gaia, 'peer-name']) of
+                Admin ->
+                    [AdminValue|post_process(Rest, OriginalJsonTerm, JsonPath)];
+                _ ->
+                    Reason =
+                        ?l2b(io_lib:format("Peer ~s is missing",
+                                           [Admin])),
+                    throw({failure, [admin|JsonPath], Reason})
+            end;
+        _ ->
+            [AdminValue|post_process(Rest, OriginalJsonTerm, JsonPath)]
+    end;
+post_process([{Name, Value}|Rest], OriginalJsonTerm, JsonPath)
+  when is_list(Value) ->
+    [{Name, post_process(Value, OriginalJsonTerm, [Name|JsonPath])}|
+     post_process(Rest, OriginalJsonTerm, JsonPath)];
+post_process([{_Name, _Value} = NameValue|Rest], OriginalJsonTerm, JsonPath) ->
+    [NameValue|post_process(Rest, OriginalJsonTerm, JsonPath)];
+post_process([List|Rest], OriginalJsonTerm, JsonPath) when is_list(List) ->
+    [post_process(List, OriginalJsonTerm, JsonPath)|
+     post_process(Rest, OriginalJsonTerm, JsonPath)];
+post_process([Value|Rest], OriginalJsonTerm, JsonPath) ->
+    [Value|post_process(Rest, OriginalJsonTerm, JsonPath)].
 
 %%
 %% Exported: stop
