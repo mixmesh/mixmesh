@@ -184,6 +184,19 @@ while :; do
     command shift
 done
 
+if [ ! -z "${GAIA_BT_DEVICE}" ]; then
+    rm -f /tmp/bt_device.log
+    touch /tmp/bt_device.log
+    echo "**** hcitool" >> /tmp/bt_device.log 2>&1
+    hcitool cmd 0x3F 0x01C 0x01 0x02 0x00 0x01 0x01 >> /tmp/bt_device.log 2>&1
+    echo "**** set-card-profile" >> /tmp/bt_device.log 2>&1
+    pacmd set-card-profile bluez_card.${GAIA_BTDEVICE} headset_head_unit >> /tmp/bt_device.log 2>&1
+    echo "**** set-default-sink" >> /tmp/bt_device.log 2>&1
+    pacmd set-default-sink bluez_card.${GAIA_BTDEVICE}.headset_head_unit >> /tmp/bt_device.log 2>&1
+    echo "**** set-default-source" >> /tmp/bt_device.log 2>&1
+    pacmd set-default-source bluez_card.${GAIA_BTDEVICE}.headset_head_unit >> /tmp/bt_device.log 2>&1
+fi
+
 if [ ${simulator} -eq 1 ]; then
     if [ -d ${bin_dir}/../../simulator ]; then
 	erl_config="-config ${bin_dir}/simulator.config"
