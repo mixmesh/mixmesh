@@ -57,5 +57,5 @@ init([]) ->
                 #{id => nodis_listener_serv,
                   start => {nodis_listener_serv, start_link, []}},
             {ok, {{one_for_one, 3, 10},
-                  [LogServSpec, RestServSpec, NodisListsnerServ]}}
+                  [LogServSpec, RestServSpec, NodisListenerServ]}}
     end.
