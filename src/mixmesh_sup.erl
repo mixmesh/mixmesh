@@ -25,7 +25,8 @@ init([]) ->
             LogServSpec =
                 {mixmesh_log_serv, {mixmesh_log_serv, start_link, []},
                  permanent, brutal_kill, worker, [mixmesh_log_serv]},
-            {ok, {{one_for_one, 3, 10}, [ConfigJsonServSpec, LogServSpec]}};
+            {ok, {{one_for_one, 3, 10},
+                  [ConfigJsonServSpec, LogServSpec]}};
         bootstrap ->
             ReadLogConfig =
                 fun() ->
@@ -53,9 +54,6 @@ init([]) ->
                 {player_bootstrap_service,
                  {player_bootstrap_service, start_link, [443]},
                  permanent, brutal_kill, worker, [player_bootstrap_service]},
-            NodisListenerServ =
-                #{id => nodis_listener_serv,
-                  start => {nodis_listener_serv, start_link, []}},
             {ok, {{one_for_one, 3, 10},
-                  [LogServSpec, RestServSpec, NodisListenerServ]}}
+                  [LogServSpec, RestServSpec]}}
     end.
