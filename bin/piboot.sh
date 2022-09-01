@@ -19,4 +19,4 @@ if [ -n "${BT_HEADSET}" ]; then
     pacmd set-default-source bluez_source.${BT_HEADSET}.headset_head_unit > /tmp/piboot.log 2>&1
 fi
 
-${MIXMESH_BASE}/mixmesh/bin/mixmesh --config ${MIXMESH_BASE}/mixmesh/etc/${PLAYER}.conf -- -detached  > /tmp/piboot.log 2>&1
+${MIXMESH_BASE}/mixmesh/bin/mixmesh --config ${MIXMESH_BASE}/mixmesh/etc/${PLAYER}.conf -- -detached
