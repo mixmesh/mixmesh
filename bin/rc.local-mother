@@ -20,7 +20,4 @@ fi
 # Patch PI sound card
 hcitool cmd 0x3F 0x01C 0x01 0x02 0x00 0x01 0x01
 
-# Start mixmesh
-runuser pi -c "/home/pi/erlang/mixmesh/bin/mixmesh --config /home/pi/erlang/mixmesh/etc/mother.conf -- -detached"
-
 exit 0
