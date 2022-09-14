@@ -8,7 +8,7 @@
 %%
 %% /tmp/mixmesh/pin
 %% /tmp/mixmesh/keydir-service/ssl
-%% /tmp/mixmesh/gaia
+%% /tmp/mixmesh/alice/gaia
 %% /tmp/mixmesh/alice/player/temp/
 %% /tmp/mixmesh/alice/player/buffer/
 %% /tmp/mixmesh/alice/player/local-keydir/
@@ -29,7 +29,7 @@
 
 %% Called from mixmesh/bin/mkconfig
 start([MixmeshDir, SourceCertFilename, Nym]) ->
-    GaiaDir = filename:join([MixmeshDir, <<"gaia">>]),
+    GaiaDir = filename:join([MixmeshDir, Nym, <<"gaia">>]),
     KeydirServiceDir =
         filename:join([MixmeshDir, <<"keydir-service">>]),
     KeydirServiceSSLDir =

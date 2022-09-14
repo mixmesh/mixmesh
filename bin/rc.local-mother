@@ -17,6 +17,10 @@ if [ "$_IP" ]; then
   printf "My IP address is %s\n" "$_IP"
 fi
 
-runuser pi -c "env BT_HEADSET=20_74_CF_72_85_82 PLAYER=mother /home/pi/erlang/mixmesh/bin/piboot.sh"
+# Patch PI sound card
+hcitool cmd 0x3F 0x01C 0x01 0x02 0x00 0x01 0x01
+
+# Start mixmesh
+runuser pi -c "/home/pi/erlang/mixmesh/bin/mixmesh --config /home/pi/erlang/mixmesh/etc/mother.conf -- -detached
 
 exit 0
