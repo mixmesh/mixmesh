@@ -1,5 +1,5 @@
 [Unit]
-Description=Mixmesh Daemon
+Description=Mixmesh Daemo
 
 [Install]
 WantedBy=multi-user.target
@@ -9,4 +9,4 @@ Type=simple
 User=pi
 WorkingDirectory=/home/pi
 ExecStart=/home/pi/erlang/mixmesh/bin/mixmesh --config /home/pi/erlang/mixmesh/etc/mother.conf -- -noinput
-Restart=yes
+Restart=always
