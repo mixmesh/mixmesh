@@ -30,6 +30,7 @@ start() ->
     ok = application:start(pgp),
     case config:lookup([gaia, enabled]) of
         true ->
+            ok = application:start(inpevt),
             ok = application:start(gaia);
         false ->
             skip

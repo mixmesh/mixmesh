@@ -89,6 +89,7 @@ $ git clone git@github.com:mixmesh/xbus.git
 $ git clone git@github.com:mixmesh/rstar.git
 $ git clone git@github.com:mixmesh/simulator.git
 $ git clone git@github.com:mixmesh/vosk.git
+$ git clone git@github.com:mixmesh/inpevt.git
 ```
 
 ### Build repositories
