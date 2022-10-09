@@ -91,7 +91,51 @@ and find the IP of the raspberry pi and use that instead of reaspberrypi.local
 
  Install needed packages
 
-	sudo apt install git wget emacs-nox isc-dhcp-server bluez-tools libncurses-dev libssl-dev libgmp-dev libsodium-dev screen
+	sudo apt install git wget emacs-nox isc-dhcp-server bluez-tools libncurses-dev libssl-dev libgmp-dev libsodium-dev screen pulseaudio libasound2-dev libopus-dev libsbc-dev libudev-dev python3-pip
+
+### reconfiogure PulseAudio
+
+Setup pulseaudio to run as a system daemon according to https://www.freedesktop.org/wiki/Software/PulseAudio/Documentation/User/SystemWide/
+
+        sudo systemctl --global disable pulseaudio.service pulseaudio.socket
+        sudo usermod -a -G audio pulse
+        sudo usermod -a -G bluetooth pulse
+        sudo usermod -a -G pulse-access pi
+        sudo usermod -a -G pulse-access root
+
+Make sure that modules are loaded in /etc/pulse/system.pa (add them last to the file):
+
+        # Updated by Mixmesh
+        load-module module-bluetooth-policy
+        load-module module-bluetooth-discover autodetect_mtu=yes
+        load-module module-switch-on-connect
+        load-module module-dbus-protocol
+
+Add a systemd script to start PulseAudio as a system daemon:
+
+        sudo cat > /etc/systemd/system/pulseaudio.service
+[Unit]
+Description=PulseAudio Daemon
+
+[Install]
+WantedBy=multi-user.target
+
+[Service]
+Type=simple
+PrivateTmp=true
+ExecStart=/usr/bin/pulseaudio --system --realtime --disallow-exit --no-cpu-limit
+<Ctrl-D>
+
+        sudo systemctl enable pulseaudio
+        sudo systemctl start pulseaudio
+
+### Patch the BCM chip on boot according to http://youness.net/raspberry-pi/how-to-connect-bluetooth-headset-or-speaker-to-raspberry-pi-3
+
+        sudo cp mixmesh/bin/rc.local /etc/rc.local
+
+### Pair a bluetooth headeset
+
+TBD
 
 ### install Erlang
 
@@ -135,6 +179,17 @@ Now we can clone other applications need and build everything
 	make clone
 	make
 
+### Install vosk
+
+    cd vosk/priv
+	make py_install
+	make copy_so
+	make download
+
+### Prepare dbus
+
+    Start Erlang and run dbus:setup/0 (ERL_LIBS must be set)
+
 # (PiMesh)
 
 For pimesh (MixMesh on Raspberry pi) you need the following packages
@@ -154,8 +209,8 @@ in the mixmesh directory.
 	sudo mkdir -p /var/erlang/mixmesh
 	sudo chown pi:pi /var/erlang/mixmesh
 	./bin/mixmesh --self-signed-ssl-cert > cert.pem
-	./bin/mkconfig /etc/erlang/mixmesh cert.pem alice
-        sed 's#/tmp/mixmesh#/etc/erlang/mixmesh#g' ./etc/mixmesh.conf > ./etc/mixmesh-local.conf
+	./bin/mkconfig /etc/erlang/mixmesh cert.pem mother
+        sed 's#/home/pi/mixmesh#/etc/erlang/mixmesh#g' ./etc/mother.conf > ./etc/mother-local.conf
 
 ### set hardware
 
@@ -166,7 +221,7 @@ hardware from 'none' to 'pimesh'
 
 ### start application
 
-	./bin/mixmesh --config ./etc/mixmesh-local.conf
+	./bin/mixmesh --config ./etc/mother-local.conf
 
 or start in a screen session
 
