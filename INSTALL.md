@@ -91,7 +91,7 @@ and find the IP of the raspberry pi and use that instead of reaspberrypi.local
 
  Install needed packages
 
-	sudo apt install git wget emacs-nox isc-dhcp-server bluez-tools libncurses-dev libssl-dev libgmp-dev libsodium-dev screen pulseaudio libasound2-dev libopus-dev libsbc-dev libudev-dev python3-pip
+	sudo apt install git wget emacs-nox isc-dhcp-server bluez-tools libncurses-dev libssl-dev libgmp-dev libsodium-dev screen pulseaudio libasound2-dev libopus-dev libsbc-dev libudev-dev python3-pip pulseaudio-module-bluetooth
 
 ### reconfiogure PulseAudio
 
