@@ -6,12 +6,13 @@ ERL=$(shell which erl)
 ERL_TOP=$(ERL:%/bin/erl=%)
 
 ALL_LIST = $(shell (cd $(LPATH); ls -I "Makefile*" -I "*~"))
-APP_LIST = afunix alsa apptools elgamal enacl gaia inpevt jsone mail mpa nodis mixmesh keydir pgp player rester tor tree_db xbus vosk
+APP_LIST = afunix alsa apptools elgamal enacl gaia jsone mail mpa nodis mixmesh keydir pgp player rester tor tree_db xbus vosk
+XAPP_LIST = dbus inpevt udev  # clone later
 SIM_LIST = rstar simulator
 TEST_DIRS = $(shell (cd $(LPATH); ls -d */test))
 TEST_LIST=$(TEST_DIRS:%/test=%)
-
 GITURL = https://github.com/mixmesh
+XGITURL = https://github.com/tonyrog
 
 # make all (directories found in parent)
 all: allapp
@@ -25,7 +26,7 @@ allapp:
 
 # Make the pure application, that is not simulator
 app:
-	@for lib in $(APP_LIST) ; do \
+	@for lib in $(APP_LIST) $(XAPP_LIST) ; do \
 		(cd $(LPATH)/$$lib && $(MAKE) all) || exit 1; \
 	done
 
@@ -110,8 +111,14 @@ megaclone: clone simclone
 clone:
 	@for lib in $(filter-out mixmesh,$(APP_LIST)) ; do \
 		if [ ! -d "$$lib" ]; then \
-			echo "==== Clone $$lib ===="; \
+			echo "==== Clone $(XGITURL)/$$lib ===="; \
 			(cd $(LPATH) && git clone $(GITURL)/$$lib) || exit 1; \
+		fi \
+	done
+	@for lib in $(filter-out mixmesh,$(XAPP_LIST)) ; do \
+		if [ ! -d "$$lib" ]; then \
+			echo "==== Clone $(XGITURL)/$$lib ==== "; \
+			(cd $(LPATH) && git clone $(XGITURL)/$$lib) || exit 1; \
 		fi \
 	done
 
@@ -128,6 +135,7 @@ info:
 	@echo "ERL_TOP="$(ERL_TOP)
 	@echo "ALL="$(ALL_LIST)
 	@echo "APP="$(APP_LIST)
+	@echo "XAPP="$(XAPP_LIST)
 	@echo "SIM="$(SIM_LIST)
 	@echo "TEST="$(TEST_LIST)
 	@echo "CLONE="$(filter-out mixmesh,$(APP_LIST))
