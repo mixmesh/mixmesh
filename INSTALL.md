@@ -17,28 +17,28 @@ box above comes with a 16GB card class 10.
 Download for example this image, or use a image managaer from rasperrypi.org
 
 
-	https://downloads.raspberrypi.org/raspios_lite_armhf_latest
+        https://downloads.raspberrypi.org/raspios_lite_armhf_latest
 
 It is about 500 Mb. The downloaded image may be called
 
-	2020-08-20-raspios-buster-armhf-lite.zip
+        2020-08-20-raspios-buster-armhf-lite.zip
 
 So unpackit using unzip
 
-	unzip 2020-08-20-raspios-buster-armhf-lite.zip
+        unzip 2020-08-20-raspios-buster-armhf-lite.zip
 
 ## Transfer the image to SD card
 
 Now dd the image onto the inserted SD card following this guide
 
-	https://www.raspberrypi.org/documentation/installation/installing-images/linux.md
+        https://www.raspberrypi.org/documentation/installation/installing-images/linux.md
 
 Or (linux) locate the the device /dev/sdX (X is the name it got)
 [Joakim: On my Ubuntu 20.04 LTS laptop the device was named /dev/mmcblk0]
 
-	sudo umount /dev/sdX1
-	sudo dd bs=4M if=2020-08-20-raspios-buster-armhf-lite.img of=/dev/sdX conv=fsync status=progress
-	sudo sync
+        sudo umount /dev/sdX1
+        sudo dd bs=4M if=2020-08-20-raspios-buster-armhf-lite.img of=/dev/sdX conv=fsync status=progress
+        sudo sync
 
 Remove the card and reinsert it in again.
 
@@ -49,7 +49,7 @@ under /media/<user>/rootfs  and /media/<user>/boot
 
 ### Enable ssh
 
-	sudo touch boot/ssh
+        sudo touch boot/ssh
 
 Creates a file that enable ssh server login. Then we must
 make raspberry pi connect to your wifi, by updating the file
@@ -67,7 +67,7 @@ add the lines
         ssid="Your-Home-network-Name-Here"
         psk="Your-Home-Network-Password-Here"
         key_mgmt=WPA-PSK
-	}
+        }
 
 ## Boot and login
 
@@ -75,7 +75,7 @@ Save and sync (program sync) eject the card and insert it into the
 Raspberry pi. When the LED has a steady green glow after a minuit
 or so try login
 
-	ssh pi@raspberrypi.local
+        ssh pi@raspberrypi.local
 
 default password is "raspberry"
 
@@ -86,12 +86,12 @@ and find the IP of the raspberry pi and use that instead of reaspberrypi.local
 
 ### Update with the latest fixes
 
-	sudo apt update
-	sudo apt upgrade
+        sudo apt update
+        sudo apt upgrade
 
 Install needed packages
 
-	sudo apt install git wget emacs-nox isc-dhcp-server bluez-tools libncurses-dev libssl-dev libgmp-dev libsodium-dev screen pulseaudio libasound2-dev libopus-dev libsbc-dev libudev-dev python3-pip pulseaudio-module-bluetooth
+        sudo apt install git wget emacs-nox isc-dhcp-server bluez-tools libncurses-dev libssl-dev libgmp-dev libsodium-dev screen pulseaudio libasound2-dev libopus-dev libsbc-dev libudev-dev python3-pip pulseaudio-module-bluetooth
 
 ### Reconfiogure PulseAudio
 
@@ -154,14 +154,14 @@ Note: Use "scan on" to figure out the device address of the bluetooth headset
 
 Now download Erlang, unpack, configure, make and install
 
-	mkdir src
-	cd src
-	wget https://github.com/erlang/otp/releases/download/OTP-X.Y.Z/otp_src_X.Y.Z.tar.gz
-	tar xf otp_src_X.Y.Z.tar.gz
+        mkdir src
+        cd src
+        wget https://github.com/erlang/otp/releases/download/OTP-X.Y.Z/otp_src_X.Y.Z.tar.gz
+        tar xf otp_src_X.Y.Z.tar.gz
         cd otp_src_X.Y.Z/
-	./configure
-	make
-	sudo make install
+        ./configure
+        make
+        sudo make install
         sudo setcap 'cap_net_bind_service=+ep' /usr/local/lib/erlang/erts-11.1.4/bin/beam.smp
 
 Add erlang libraries to your path
