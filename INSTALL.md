@@ -211,11 +211,11 @@ Now we can clone other applications need and build everything
 For pimesh (MixMesh on Raspberry pi) you need the following packages
 in the mixmesh directory.
 
-	git clone https://github.com/tonyrog/gpio
-	git clone https://github.com/tonyrog/pwm
-	git clone https://github.com/tonyrog/i2c
-	git clone https://github.com/tonyrog/uart
-	git clone https://github.com/mixmesh/pimesh
+ git clone https://github.com/tonyrog/gpio
+ git clone https://github.com/tonyrog/pwm
+ git clone https://github.com/tonyrog/i2c
+ git clone https://github.com/tonyrog/uart
+ git clone https://github.com/mixmesh/pimesh
 
 ### Setup configuration
 
