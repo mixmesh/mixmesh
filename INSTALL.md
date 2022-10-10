@@ -124,7 +124,7 @@ Add a systemd script to start PulseAudio as a system daemon:
     Type=simple
     PrivateTmp=true
     ExecStart=/usr/bin/pulseaudio --system --realtime --disallow-exit --no-cpu-limit
-    &lt;Ctrl-d&gt;
+    C-d
 
     sudo systemctl enable pulseaudio
     sudo systemctl start pulseaudio
@@ -146,7 +146,7 @@ Patch the BCM chip to enable the bleutooth headset microphone as described in ht
     [OpenMove by AfterShokz]# trust 20:74:CF:C4:F4:A0
     [CHG] Device 20:74:CF:C4:F4:A0 Trusted: yes
     Changing 20:74:CF:C4:F4:A0 trust succeeded
-    [OpenMove by AfterShokz]# 
+    [OpenMove by AfterShokz]#
 
 Note: Use "scan on" to figure out the device address of the bluetooth headset
 
