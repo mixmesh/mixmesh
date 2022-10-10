@@ -135,7 +135,16 @@ ExecStart=/usr/bin/pulseaudio --system --realtime --disallow-exit --no-cpu-limit
 
 ### Pair a bluetooth headeset
 
-TBD
+pi@black:~ $ bluetoothctl 
+Agent registered
+[CHG] Controller B8:27:EB:61:F9:D0 Pairable: yes
+[bluetooth]# pair 20:74:CF:C4:F4:A0
+[bluetooth]# connect 20:74:CF:C4:F4:A0
+Attempting to connect to 20:74:CF:C4:F4:A0
+[OpenMove by AfterShokz]# trust 20:74:CF:C4:F4:A0
+[CHG] Device 20:74:CF:C4:F4:A0 Trusted: yes
+Changing 20:74:CF:C4:F4:A0 trust succeeded
+[OpenMove by AfterShokz]# 
 
 ### install Erlang
 
