@@ -5,7 +5,7 @@ on a raspberry pi Z and get it running. You could for example
 go here and buy a kit and you will get raspberry pi Z, box
 and memory card a power adapter and some cables for 469 SEK:
 
-    https://www.kjell.com/se/produkter/dator/raspberry-pi/raspberry-pi-zero-wifi-kit-enkortsdator-p88051
+https://www.kjell.com/se/produkter/dator/raspberry-pi/raspberry-pi-zero-wifi-kit-enkortsdator-p88051
 
 ## Download the base image
 
