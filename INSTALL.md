@@ -47,7 +47,7 @@ Remove the card and reinsert it in again.
 Find the directory where the images /boot and /rootfs are located. Normally
 under /media/<user>/rootfs  and /media/<user>/boot
 
-### enable ssh
+### Enable ssh
 
 	sudo touch boot/ssh
 
@@ -55,11 +55,11 @@ Creates a file that enable ssh server login. Then we must
 make raspberry pi connect to your wifi, by updating the file
 /etc/wpa\_supplicant/wpa\_supplicant.conf
 
-### update wpa\_supplicant
+### Configure WiFi
 
-Add the contents, fill in your data
+Add the contents, fill in your data in
 
-    sudo emacs rootfs/etc/wpa_supplicant/wpa\_supplicant.conf
+    sudo emacs rootfs/etc/wpa_supplicant/wpa_supplicant.conf
 
 add the lines
 
@@ -84,16 +84,16 @@ default password is "raspberry"
 Hopefully you have a promt, if not, check password, SSID, login to the router
 and find the IP of the raspberry pi and use that instead of reaspberrypi.local
 
-### update with the lastest fixes
+### Update with the latest fixes
 
 	sudo apt update
 	sudo apt upgrade
 
- Install needed packages
+Install needed packages
 
 	sudo apt install git wget emacs-nox isc-dhcp-server bluez-tools libncurses-dev libssl-dev libgmp-dev libsodium-dev screen pulseaudio libasound2-dev libopus-dev libsbc-dev libudev-dev python3-pip pulseaudio-module-bluetooth
 
-### reconfiogure PulseAudio
+### Reconfiogure PulseAudio
 
 Setup pulseaudio to run as a system daemon according to https://www.freedesktop.org/wiki/Software/PulseAudio/Documentation/User/SystemWide/
 
@@ -103,7 +103,7 @@ Setup pulseaudio to run as a system daemon according to https://www.freedesktop.
         sudo usermod -a -G pulse-access pi
         sudo usermod -a -G pulse-access root
 
-Make sure that modules are loaded in /etc/pulse/system.pa (add them last to the file):
+Make sure that these modules are loaded in /etc/pulse/system.pa (add them last to the file):
 
         # Updated by Mixmesh
         load-module module-bluetooth-policy
@@ -129,7 +129,9 @@ ExecStart=/usr/bin/pulseaudio --system --realtime --disallow-exit --no-cpu-limit
         sudo systemctl enable pulseaudio
         sudo systemctl start pulseaudio
 
-### Patch the BCM chip on boot according to http://youness.net/raspberry-pi/how-to-connect-bluetooth-headset-or-speaker-to-raspberry-pi-3
+### Patch the BCM chip
+
+Patch the BCM chip to enable the bleutooth headset microphone as described in http://youness.net/raspberry-pi/how-to-connect-bluetooth-headset-or-speaker-to-raspberry-pi-3
 
         sudo cp mixmesh/bin/rc.local /etc/rc.local
 
@@ -146,7 +148,9 @@ Attempting to connect to 20:74:CF:C4:F4:A0
 Changing 20:74:CF:C4:F4:A0 trust succeeded
 [OpenMove by AfterShokz]# 
 
-### install Erlang
+Note: Use "scan on" to figure out the device address of the bluetooth headset
+
+### Install Erlang
 
 Now download Erlang, unpack, configure, make and install
 
@@ -199,6 +203,9 @@ Now we can clone other applications need and build everything
 
     Start Erlang and run dbus:setup/0 (ERL_LIBS must be set)
 
+    erl
+    dbus:setup().
+    
 # (PiMesh)
 
 For pimesh (MixMesh on Raspberry pi) you need the following packages
@@ -210,7 +217,7 @@ in the mixmesh directory.
 	git clone https://github.com/tonyrog/uart
 	git clone https://github.com/mixmesh/pimesh
 
-### setup configuration
+### Setup configuration
 
     cd mixmesh
 	sudo mkdir -p /etc/erlang/mixmesh
@@ -221,21 +228,23 @@ in the mixmesh directory.
 	./bin/mkconfig /etc/erlang/mixmesh cert.pem mother
         sed 's#/home/pi/mixmesh#/etc/erlang/mixmesh#g' ./etc/mother.conf > ./etc/mother-local.conf
 
-### set hardware
+NOTE: Here we use the mother config file. YMMV.
+
+### Set hardware
 
 Edit the configuration created above and change the
 hardware from 'none' to 'pimesh'
 
 	"system": { ... "hardware": "pimesh" }
 
-### start application
+### Start application
 
 	./bin/mixmesh --config ./etc/mother-local.conf
 
 or start in a screen session
 
         screen
-	./bin/mixmesh --config ./etc/mixmesh-local.conf
+	./bin/mixmesh --config ./etc/mother-local.conf
         C-a d (to detach from screen)
 
 to re-attach to a running screen session
@@ -260,7 +269,7 @@ Get servator
 Go to mixmesh directory and start the node
 
     cd mixmesh
-    ./bin/mixmesh --config ./etc/mixmesh-local.conf
+    ./bin/mixmesh --config ./etc/mother-local.conf
     (mixmesh@localhost)1> servator:make_release(mixmesh).
 	
 Or if the release tag is not correct
@@ -280,13 +289,13 @@ To install that release do
 Now copy the configure file to the final place
 
     cd mixmesh
-    cp ./etc/mixmesh-local.conf /etc/erlang/mixmesh/mixmesh-local.conf
+    cp ./etc/mixmesh-local.conf /etc/erlang/mixmesh/mother-local.conf
 	
 Edit the /etc/erlang/mixmesh/mixmesh.run script to add the 
 applcation specific optionfor parsing the json config files. 
 Search for OPTS and set it.
 
-    OPTS="--config $ETC/mixmesh-local.conf"
+    OPTS="--config $ETC/mother-local.conf"
 	
 IMPORTANT updated for systemd
 
@@ -304,17 +313,17 @@ Maybe stop sometime
 
     /etc/erlang/mixmesh/mixmesh.run stop
 
-# install Systemd script
+# Install Systemd script
 
 	cd mixmesh
     sudo cp ./etc/mixmesh.service /etc/systemd/system/
 	sudo chmod u+rwx /etc/systemd/system/mixmesh.service
-	
+
 Enable the service, so it is run when machine is booting
 
-	
+
 	sudo systemctl enable mixmesh
-	
+
 Start it now
 
 	sudo systemctl start mixmesh
@@ -322,5 +331,3 @@ Start it now
 Stop it now
 
 	sudo systemctl stop mixmesh
-
-	
