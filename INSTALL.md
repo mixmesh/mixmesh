@@ -114,17 +114,17 @@ Make sure that these modules are loaded in /etc/pulse/system.pa (add them last t
 Add a systemd script to start PulseAudio as a system daemon:
 
         sudo cat > /etc/systemd/system/pulseaudio.service
-[Unit]
-Description=PulseAudio Daemon
-
-[Install]
-WantedBy=multi-user.target
-
-[Service]
-Type=simple
-PrivateTmp=true
-ExecStart=/usr/bin/pulseaudio --system --realtime --disallow-exit --no-cpu-limit
-<Ctrl-D>
+        [Unit]
+        Description=PulseAudio Daemon
+        
+        [Install]
+        WantedBy=multi-user.target
+        
+        [Service]
+        Type=simple
+        PrivateTmp=true
+        ExecStart=/usr/bin/pulseaudio --system --realtime --disallow-exit --no-cpu-limit
+        &lt;Ctrl-d&gt;
 
         sudo systemctl enable pulseaudio
         sudo systemctl start pulseaudio
@@ -137,16 +137,16 @@ Patch the BCM chip to enable the bleutooth headset microphone as described in ht
 
 ### Pair a bluetooth headeset
 
-pi@black:~ $ bluetoothctl 
-Agent registered
-[CHG] Controller B8:27:EB:61:F9:D0 Pairable: yes
-[bluetooth]# pair 20:74:CF:C4:F4:A0
-[bluetooth]# connect 20:74:CF:C4:F4:A0
-Attempting to connect to 20:74:CF:C4:F4:A0
-[OpenMove by AfterShokz]# trust 20:74:CF:C4:F4:A0
-[CHG] Device 20:74:CF:C4:F4:A0 Trusted: yes
-Changing 20:74:CF:C4:F4:A0 trust succeeded
-[OpenMove by AfterShokz]# 
+        pi@black:~ $ bluetoothctl
+        Agent registered
+        [CHG] Controller B8:27:EB:61:F9:D0 Pairable: yes
+        [bluetooth]# pair 20:74:CF:C4:F4:A0
+        [bluetooth]# connect 20:74:CF:C4:F4:A0
+        Attempting to connect to 20:74:CF:C4:F4:A0
+        [OpenMove by AfterShokz]# trust 20:74:CF:C4:F4:A0
+        [CHG] Device 20:74:CF:C4:F4:A0 Trusted: yes
+        Changing 20:74:CF:C4:F4:A0 trust succeeded
+        [OpenMove by AfterShokz]# 
 
 Note: Use "scan on" to figure out the device address of the bluetooth headset
 
@@ -162,7 +162,7 @@ Now download Erlang, unpack, configure, make and install
 	./configure
 	make
 	sudo make install
-    sudo setcap 'cap_net_bind_service=+ep' /usr/local/lib/erlang/erts-11.1.4/bin/beam.smp
+        sudo setcap 'cap_net_bind_service=+ep' /usr/local/lib/erlang/erts-11.1.4/bin/beam.smp
 
 Add erlang libraries to your path
 
@@ -203,8 +203,8 @@ Now we can clone other applications need and build everything
 
     Start Erlang and run dbus:setup/0 (ERL_LIBS must be set)
 
-    erl
-    dbus:setup().
+        erl
+        dbus:setup().
     
 # (PiMesh)
 
