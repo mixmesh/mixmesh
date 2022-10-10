@@ -17,28 +17,28 @@ box above comes with a 16GB card class 10.
 Download for example this image, or use a image managaer from rasperrypi.org
 
 
-        https://downloads.raspberrypi.org/raspios_lite_armhf_latest
+    https://downloads.raspberrypi.org/raspios_lite_armhf_latest
 
 It is about 500 Mb. The downloaded image may be called
 
-        2020-08-20-raspios-buster-armhf-lite.zip
+    2020-08-20-raspios-buster-armhf-lite.zip
 
 So unpackit using unzip
 
-        unzip 2020-08-20-raspios-buster-armhf-lite.zip
+    unzip 2020-08-20-raspios-buster-armhf-lite.zip
 
 ## Transfer the image to SD card
 
 Now dd the image onto the inserted SD card following this guide
 
-        https://www.raspberrypi.org/documentation/installation/installing-images/linux.md
+    https://www.raspberrypi.org/documentation/installation/installing-images/linux.md
 
 Or (linux) locate the the device /dev/sdX (X is the name it got)
 [Joakim: On my Ubuntu 20.04 LTS laptop the device was named /dev/mmcblk0]
 
-        sudo umount /dev/sdX1
-        sudo dd bs=4M if=2020-08-20-raspios-buster-armhf-lite.img of=/dev/sdX conv=fsync status=progress
-        sudo sync
+    sudo umount /dev/sdX1
+    sudo dd bs=4M if=2020-08-20-raspios-buster-armhf-lite.img of=/dev/sdX conv=fsync status=progress
+    sudo sync
 
 Remove the card and reinsert it in again.
 
@@ -49,7 +49,7 @@ under /media/<user>/rootfs  and /media/<user>/boot
 
 ### Enable ssh
 
-        sudo touch boot/ssh
+    sudo touch boot/ssh
 
 Creates a file that enable ssh server login. Then we must
 make raspberry pi connect to your wifi, by updating the file
@@ -67,7 +67,7 @@ add the lines
         ssid="Your-Home-network-Name-Here"
         psk="Your-Home-Network-Password-Here"
         key_mgmt=WPA-PSK
-        }
+    }
 
 ## Boot and login
 
@@ -75,7 +75,7 @@ Save and sync (program sync) eject the card and insert it into the
 Raspberry pi. When the LED has a steady green glow after a minuit
 or so try login
 
-        ssh pi@raspberrypi.local
+    ssh pi@raspberrypi.local
 
 default password is "raspberry"
 
@@ -86,67 +86,67 @@ and find the IP of the raspberry pi and use that instead of reaspberrypi.local
 
 ### Update with the latest fixes
 
-        sudo apt update
-        sudo apt upgrade
+    sudo apt update
+    sudo apt upgrade
 
 Install needed packages
 
-        sudo apt install git wget emacs-nox isc-dhcp-server bluez-tools libncurses-dev libssl-dev libgmp-dev libsodium-dev screen pulseaudio libasound2-dev libopus-dev libsbc-dev libudev-dev python3-pip pulseaudio-module-bluetooth
+    sudo apt install git wget emacs-nox isc-dhcp-server bluez-tools libncurses-dev libssl-dev libgmp-dev libsodium-dev screen pulseaudio libasound2-dev libopus-dev libsbc-dev libudev-dev python3-pip pulseaudio-module-bluetooth
 
 ### Reconfiogure PulseAudio
 
 Setup pulseaudio to run as a system daemon according to https://www.freedesktop.org/wiki/Software/PulseAudio/Documentation/User/SystemWide/
 
-        sudo systemctl --global disable pulseaudio.service pulseaudio.socket
-        sudo usermod -a -G audio pulse
-        sudo usermod -a -G bluetooth pulse
-        sudo usermod -a -G pulse-access pi
-        sudo usermod -a -G pulse-access root
+    sudo systemctl --global disable pulseaudio.service pulseaudio.socket
+    sudo usermod -a -G audio pulse
+    sudo usermod -a -G bluetooth pulse
+    sudo usermod -a -G pulse-access pi
+    sudo usermod -a -G pulse-access root
 
 Make sure that these modules are loaded in /etc/pulse/system.pa (add them last to the file):
 
-        # Updated by Mixmesh
-        load-module module-bluetooth-policy
-        load-module module-bluetooth-discover autodetect_mtu=yes
-        load-module module-switch-on-connect
-        load-module module-dbus-protocol
+    # Updated by Mixmesh
+    load-module module-bluetooth-policy
+    load-module module-bluetooth-discover autodetect_mtu=yes
+    load-module module-switch-on-connect
+    load-module module-dbus-protocol
 
 Add a systemd script to start PulseAudio as a system daemon:
 
-        sudo cat > /etc/systemd/system/pulseaudio.service
-        [Unit]
-        Description=PulseAudio Daemon
-        
-        [Install]
-        WantedBy=multi-user.target
-        
-        [Service]
-        Type=simple
-        PrivateTmp=true
-        ExecStart=/usr/bin/pulseaudio --system --realtime --disallow-exit --no-cpu-limit
-        &lt;Ctrl-d&gt;
+    sudo cat > /etc/systemd/system/pulseaudio.service
+    [Unit]
+    Description=PulseAudio Daemon
+    
+    [Install]
+    WantedBy=multi-user.target
+    
+    [Service]
+    Type=simple
+    PrivateTmp=true
+    ExecStart=/usr/bin/pulseaudio --system --realtime --disallow-exit --no-cpu-limit
+    &lt;Ctrl-d&gt;
 
-        sudo systemctl enable pulseaudio
-        sudo systemctl start pulseaudio
+    sudo systemctl enable pulseaudio
+    sudo systemctl start pulseaudio
 
 ### Patch the BCM chip
 
 Patch the BCM chip to enable the bleutooth headset microphone as described in http://youness.net/raspberry-pi/how-to-connect-bluetooth-headset-or-speaker-to-raspberry-pi-3
 
-        sudo cp mixmesh/bin/rc.local /etc/rc.local
+    sudo cp mixmesh/bin/rc.local /etc/rc.local
 
 ### Pair a bluetooth headeset
 
-        pi@black:~ $ bluetoothctl
-        Agent registered
-        [CHG] Controller B8:27:EB:61:F9:D0 Pairable: yes
-        [bluetooth]# pair 20:74:CF:C4:F4:A0
-        [bluetooth]# connect 20:74:CF:C4:F4:A0
-        Attempting to connect to 20:74:CF:C4:F4:A0
-        [OpenMove by AfterShokz]# trust 20:74:CF:C4:F4:A0
-        [CHG] Device 20:74:CF:C4:F4:A0 Trusted: yes
-        Changing 20:74:CF:C4:F4:A0 trust succeeded
-        [OpenMove by AfterShokz]# 
+    pi@black:~ $ bluetoothctl
+    Agent registered
+    [CHG] Controller B8:27:EB:61:F9:D0 Pairable: yes
+    [bluetooth]# pair 20:74:CF:C4:F4:A0
+    [bluetooth]# connect 20:74:CF:C4:F4:A0
+    Attempting to connect to 20:74:CF:C4:F4:A0
+    [OpenMove by AfterShokz]# trust 20:74:CF:C4:F4:A0
+    [CHG] Device 20:74:CF:C4:F4:A0 Trusted: yes
+    Changing 20:74:CF:C4:F4:A0 trust succeeded
+    [OpenMove by AfterShokz]# 
 
 Note: Use "scan on" to figure out the device address of the bluetooth headset
 
@@ -154,81 +154,79 @@ Note: Use "scan on" to figure out the device address of the bluetooth headset
 
 Now download Erlang, unpack, configure, make and install
 
-        mkdir src
-        cd src
-        wget https://github.com/erlang/otp/releases/download/OTP-X.Y.Z/otp_src_X.Y.Z.tar.gz
-        tar xf otp_src_X.Y.Z.tar.gz
-        cd otp_src_X.Y.Z/
-        ./configure
-        make
-        sudo make install
-        sudo setcap 'cap_net_bind_service=+ep' /usr/local/lib/erlang/erts-11.1.4/bin/beam.smp
+    mkdir src
+    cd src
+    wget https://github.com/erlang/otp/releases/download/OTP-X.Y.Z/otp_src_X.Y.Z.tar.gz
+    tar xf otp_src_X.Y.Z.tar.gz
+    cd otp_src_X.Y.Z/
+    ./configure
+    make
+    sudo make install
+    sudo setcap 'cap_net_bind_service=+ep' /usr/local/lib/erlang/erts-11.1.4/bin/beam.smp
 
 Add erlang libraries to your path
 
-        cd
-	emacs .bashrc
+    cd
+    emacs .bashrc
 
 Append the lines
 
-	export ERL_LIBS=$HOME/erlang
-	export ERL_CRASH_DUMP_SECONDS=0
-	export EDITOR=emacs
+    export ERL_LIBS=$HOME/erlang
+    export ERL_CRASH_DUMP_SECONDS=0
+    export EDITOR=emacs
 
 ### Install Mixmesh
 
 Fetch the top-level application
 
-	mkdir erlang
-	cd erlang
-        git clone https://github.com/mixmesh/mixmesh
+    mkdir erlang
+    cd erlang
+    git clone https://github.com/mixmesh/mixmesh
 
 And make a link to the top-level makefile
 
-	ln -s mixmesh/Makefile.top-level Makefile
+    ln -s mixmesh/Makefile.top-level Makefile
 
 Now we can clone other applications need and build everything
 
-	make clone
-	make
+    make clone
+    make
 
 ### Install vosk
 
     cd vosk/priv
-	make py_install
-	make copy_so
-	make download
+    make py_install
+    make copy_so
+    make download
 
 ### Prepare dbus
 
     Start Erlang and run dbus:setup/0 (ERL_LIBS must be set)
 
-        erl
-        dbus:setup().
+    erl
+    dbus:setup().
     
 # (PiMesh)
 
 For pimesh (MixMesh on Raspberry pi) you need the following packages
 in the mixmesh directory.
 
- ```
- git clone https://github.com/tonyrog/gpio
- git clone https://github.com/tonyrog/pwm
- git clone https://github.com/tonyrog/i2c
- git clone https://github.com/tonyrog/uart
- git clone https://github.com/mixmesh/pimesh
- ```
+    git clone https://github.com/tonyrog/gpio
+    git clone https://github.com/tonyrog/pwm
+    git clone https://github.com/tonyrog/i2c
+    git clone https://github.com/tonyrog/uart
+    git clone https://github.com/mixmesh/pimesh
  
 ### Setup configuration
 
     cd mixmesh
-	sudo mkdir -p /etc/erlang/mixmesh
-	sudo chown pi:pi /etc/erlang/mixmesh
-	sudo mkdir -p /var/erlang/mixmesh
-	sudo chown pi:pi /var/erlang/mixmesh
-	./bin/mixmesh --self-signed-ssl-cert > cert.pem
-	./bin/mkconfig /etc/erlang/mixmesh cert.pem mother
-        sed 's#/home/pi/mixmesh#/etc/erlang/mixmesh#g' ./etc/mother.conf > ./etc/mother-local.conf
+    sudo mkdir -p /etc/erlang/mixmesh
+    sudo chown pi:pi /etc/erlang/mixmesh
+    sudo mkdir -p /var/erlang/mixmesh
+    sudo chown pi:pi /var/erlang/mixmesh
+    ./bin/mixmesh --self-signed-ssl-cert > cert.pem
+    ./bin/mkconfig /etc/erlang/mixmesh cert.pem mother
+    sed 's#/home/pi/mixmesh#/etc/erlang/mixmesh#g' ./etc/mother.conf > ./etc/mother-local.conf
 
 NOTE: Here we use the mother config file. YMMV.
 
@@ -237,24 +235,24 @@ NOTE: Here we use the mother config file. YMMV.
 Edit the configuration created above and change the
 hardware from 'none' to 'pimesh'
 
-	"system": { ... "hardware": "pimesh" }
+    "system": { ... "hardware": "pimesh" }
 
 ### Start application
 
-	./bin/mixmesh --config ./etc/mother-local.conf
+    ./bin/mixmesh --config ./etc/mother-local.conf
 
 or start in a screen session
 
-        screen
-	./bin/mixmesh --config ./etc/mother-local.conf
-        C-a d (to detach from screen)
+    screen
+    ./bin/mixmesh --config ./etc/mother-local.conf
+    C-a d (to detach from screen)
 
 to re-attach to a running screen session
 
-        screen -r
+    screen -r
 
-        C-a c (to create a new shell)
-        C-a " (to switch between shells)
+    C-a c (to create a new shell)
+    C-a " (to switch between shells)
 
 # Make a servator release and install it
 
@@ -317,19 +315,19 @@ Maybe stop sometime
 
 # Install Systemd script
 
-	cd mixmesh
+    cd mixmesh
     sudo cp ./etc/mixmesh.service /etc/systemd/system/
-	sudo chmod u+rwx /etc/systemd/system/mixmesh.service
+    sudo chmod u+rwx /etc/systemd/system/mixmesh.service
 
 Enable the service, so it is run when machine is booting
 
 
-	sudo systemctl enable mixmesh
+    sudo systemctl enable mixmesh
 
 Start it now
 
-	sudo systemctl start mixmesh
+    sudo systemctl start mixmesh
 
 Stop it now
 
-	sudo systemctl stop mixmesh
+    sudo systemctl stop mixmesh
